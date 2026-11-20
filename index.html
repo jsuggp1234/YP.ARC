@@ -1,37 +1,31 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-mode="light">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>YP.ARC — Architecture Portfolio</title>
-  <meta name="description" content="YP.ARC — 건축 설계 포트폴리오" />
+  <meta name="description" content="YP.ARC — 건축 설계 포트폴리오. 대지, 구조, 빛과 재료로 공간을 짓는 설계 작업 모음." />
+  <meta name="theme-color" content="#f7f7f5" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" />
   <link rel="stylesheet" href="assets/css/site.css" />
+  <script>
+    // 저장해 둔 라이트/다크를 화면이 그려지기 전에 적용해요 (기본은 흰 배경)
+    try { if (localStorage.getItem("yp-mode") === "dark") document.documentElement.dataset.mode = "dark"; } catch (e) {}
+  </script>
 </head>
 <body data-page="home">
-  <section class="hero">
-    <canvas id="hero-media"></canvas>
-    <div class="copy">
-      <h1 id="hero-title" class="split"></h1>
-      <div class="meta"><span id="hero-tag"></span><span class="scroll-cue">Scroll</span></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="sec-head"><p class="label">01 — Studio</p><a href="about.html">About →</a></div>
-    <p id="intro" class="statement split"></p>
-  </section>
-
-  <section class="section" style="padding-top:0">
-    <div class="sec-head"><p class="label">02 — Selected Works</p><a href="projects.html">All Works →</a></div>
-    <div id="works" class="works wide"></div>
-  </section>
-
-  <section class="section" style="padding-top:0">
-    <div class="sec-head"><p class="label">03 — Method</p></div>
-    <ol id="process" class="process" style="border-top:0;margin-top:0"></ol>
-  </section>
-
+  <main id="main"></main>
+  <noscript><p class="wrap" style="padding-top:120px">이 사이트는 JavaScript가 켜져 있어야 보여요.</p></noscript>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
   <script src="assets/js/data.js"></script>
+  <script src="assets/js/drawings.js"></script>
+  <script src="assets/js/hero2d.js"></script>
+  <script src="assets/js/hero3d.js"></script>
   <script src="assets/js/site.js"></script>
 </body>
 </html>
