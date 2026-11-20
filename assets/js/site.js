@@ -7,7 +7,7 @@
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-const PAGE = document.body.dataset.page; // home | projects | project | tools | about
+const PAGE = document.body.dataset.page; // home | projects | project | about
 const ROOT = document.body.dataset.root || ""; // 하위 폴더 페이지에서 경로 보정용
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -23,7 +23,6 @@ const split = (text) =>
 function chrome() {
   const links = [
     ["projects.html", "Projects", "projects"],
-    ["tools.html", "Tools", "tools"],
     ["about.html", "About", "about"],
   ];
   document.body.insertAdjacentHTML(
@@ -185,7 +184,6 @@ const render = {
         </div></section>`).join("")}
       <a class="next" href="project.html?p=${next.slug}" data-cursor="Next"><span class="label">Next project</span><b>${next.title} →</b></a>`;
   },
-  tools() {},
   about() {
     $("#about-intro").innerHTML = split(SITE.intro);
     $("#cv").innerHTML = `
