@@ -1,0 +1,65 @@
+/* style.css = 마감재. 색, 글꼴, 간격, 배치를 정해요. */
+:root {
+  --bg: #f6f5f2;
+  --card: #ffffff;
+  --ink: #1d1d1b;
+  --muted: #6b6a66;
+  --line: #dcdad4;
+  --accent: #1d1d1b;
+  --ok: #1f7a4d;
+  --ng: #b3261e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161615;
+    --card: #1f1f1d;
+    --ink: #ecebe7;
+    --muted: #a19f99;
+    --line: #34332f;
+    --accent: #ecebe7;
+    --ok: #5cc28e;
+    --ng: #ef7b72;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Pretendard", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  line-height: 1.5;
+}
+main { max-width: 640px; margin: 0 auto; padding: 40px 16px 64px; }
+.brand { font-weight: 800; letter-spacing: 0.2em; font-size: 13px; margin: 0; }
+h1 { font-size: 28px; margin: 8px 0; }
+.sub, .note { color: var(--muted); font-size: 14px; }
+form, #result:not(:empty) {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+input, select {
+  display: block; width: 100%; margin-top: 6px; padding: 10px 12px;
+  font-size: 16px; color: var(--ink); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 8px;
+}
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
+details { margin: 8px 0 16px; }
+summary { cursor: pointer; font-size: 14px; margin-bottom: 12px; }
+button {
+  width: 100%; padding: 12px; font-size: 16px; font-weight: 700;
+  color: var(--bg); background: var(--accent); border: 0; border-radius: 8px; cursor: pointer;
+}
+h2 { font-size: 18px; margin: 0 0 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+th, td { text-align: left; padding: 10px 4px; border-bottom: 1px solid var(--line); }
+th { font-weight: 500; color: var(--muted); }
+td:nth-child(2) { font-variant-numeric: tabular-nums; text-align: right; }
+td:last-child { text-align: right; font-weight: 700; white-space: nowrap; }
+td:nth-child(2) { white-space: nowrap; }
+.ok { color: var(--ok); }
+.ng { color: var(--ng); }
