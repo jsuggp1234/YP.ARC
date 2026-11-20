@@ -193,18 +193,28 @@ const render = {
   },
 };
 
-// ---------- 6) 히어로 모션아트 ----------
-// 도시 매스를 선으로만 그린 축측투상(액소노메트릭). 높이가 천천히 호흡하고, 마우스에 따라 시점이 살짝 돌아가요.
+// ---------- 6) 히어로: 작품 아이소 매스 ----------
+// 작품마다 data.js의 mass(상자 목록)를 액소노메트릭으로 그려요.
+// 주변엔 흐린 도시 매스가 숨 쉬듯 움직이고, 작품에 마우스를 올리면 강조 + 이름표, 클릭하면 작품 페이지로 가요.
 function heroArt(canvas) {
   const ctx = canvas.getContext("2d");
-  let W, H, dpr, mx = 0, my = 0, t = 0;
-  const N = 9; // 9 x 9 블록
-  const blocks = [];
-  for (let i = 0; i < N; i++)
-    for (let j = 0; j < N; j++) {
-      const d = Math.hypot(i - N / 2, j - N / 2);
-      blocks.push({ i, j, base: Math.max(0.15, 1.6 - d * 0.28) * (0.5 + Math.random()), ph: Math.random() * 6.28, empty: Math.random() < 0.18 });
-    }
+  const cur = $(".cursor");
+  let W, H, dpr, mx = 0, my = 0, t = 0, hover = -1, px = -1, py = -1;
+  const G = 6; // 격자 반경 (-6 ~ 6)
+
+  // 작품 상자들
+  const works = PROJECTS.filter((p) => p.mass && p.pos).map((p) => ({
+    p, lift: 0,
+    boxes: p.mass.map(([x, y, w, d, h]) => ({ x: p.pos[0] + x, y: p.pos[1] + y, w, d, h })),
+  }));
+  // 작품 자리를 피해서 흐린 주변 매스 배치
+  const taken = (i, j) => works.some((wk) => wk.boxes.some((b) => i + 1 > b.x - 0.5 && i < b.x + b.w + 0.5 && j + 1 > b.y - 0.5 && j < b.y + b.d + 0.5));
+  const ctxBlocks = [];
+  for (let i = -G; i < G; i++)
+    for (let j = -G; j < G; j++)
+      if (!taken(i, j) && Math.random() < 0.55)
+        ctxBlocks.push({ x: i + 0.15, y: j + 0.15, w: 0.7, d: 0.7, base: 0.15 + Math.random() * 0.9 * Math.max(0.2, 1 - Math.hypot(i, j) / 8), ph: Math.random() * 6.28 });
+
   const resize = () => {
     dpr = Math.min(devicePixelRatio || 1, 2);
     W = canvas.clientWidth; H = canvas.clientHeight;
@@ -212,46 +222,119 @@ function heroArt(canvas) {
   };
   resize(); addEventListener("resize", resize);
   addEventListener("mousemove", (e) => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; });
+  canvas.addEventListener("mousemove", (e) => { const r = canvas.getBoundingClientRect(); px = e.clientX - r.left; py = e.clientY - r.top; });
+  canvas.addEventListener("mouseleave", () => { px = py = -1; });
+  canvas.addEventListener("click", (e) => {
+    const r = canvas.getBoundingClientRect(); px = e.clientX - r.left; py = e.clientY - r.top;
+    const k = pick();
+    if (k < 0) return;
+    $(".curtain").classList.add("in");
+    setTimeout(() => (location.href = `project.html?p=${works[k].p.slug}`), REDUCED ? 0 : 550);
+  });
+
+  let P; // 3D → 화면 좌표 변환 (매 프레임 갱신)
+  const corners = (b, h) => {
+    const c = [[b.x, b.y], [b.x + b.w, b.y], [b.x + b.w, b.y + b.d], [b.x, b.y + b.d]];
+    return { bot: c.map(([a, q]) => P(a, q, 0)), top: c.map(([a, q]) => P(a, q, h)) };
+  };
+  // 점들을 감싸는 볼록 다각형 (클릭 판정용)
+  const hull = (pts) => {
+    pts = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    const lo = [], up = [];
+    for (const p of pts) { while (lo.length > 1 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); }
+    for (const p of pts.reverse()) { while (up.length > 1 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); }
+    return lo.slice(0, -1).concat(up.slice(0, -1));
+  };
+  const inside = (poly, x, y) => {
+    let c = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const [xi, yi] = poly[i], [xj, yj] = poly[j];
+      if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c;
+    }
+    return c;
+  };
+  const pick = () => {
+    if (px < 0 || !P) return -1;
+    let best = -1, depth = -Infinity;
+    works.forEach((wk, k) => wk.boxes.forEach((b) => {
+      const { bot, top } = corners(b, b.h * (1 + wk.lift * 0.12));
+      if (inside(hull(bot.concat(top)), px, py) && bot[2][1] > depth) { depth = bot[2][1]; best = k; }
+    }));
+    return best;
+  };
+
+  // 면을 뒤에서 앞 순서로 하나씩 칠하고 테두리를 그려서, 가려진 선이 보이지 않게 해요.
+  const drawBox = (b, h, fill, stroke, lw) => {
+    const { bot, top } = corners(b, h);
+    const face = (pts) => {
+      ctx.beginPath(); pts.forEach((p, k) => (k ? ctx.lineTo(...p) : ctx.moveTo(...p))); ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    };
+    ctx.fillStyle = fill; ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.lineJoin = "round";
+    [0, 1, 2, 3]
+      .map((k) => { const k2 = (k + 1) % 4; return { pts: [bot[k], bot[k2], top[k2], top[k]], y: (bot[k][1] + bot[k2][1]) / 2 }; })
+      .sort((m, n) => m.y - n.y)
+      .forEach((f) => face(f.pts));
+    face(top);
+    return top;
+  };
 
   const draw = () => {
     t += REDUCED ? 0 : 0.008;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
-    const s = Math.min(W, H) / 13; // 블록 크기
-    const ang = Math.PI / 4 + mx * 0.5 + Math.sin(t * 0.3) * 0.08;
-    const tilt = 0.5 + my * 0.15;
-    const ox = W * 0.62, oy = H * 0.42;
-    const P = (x, y, z) => {
+    const wide = W > 820;
+    const s = Math.min(W * (wide ? 0.62 : 0.95), H) / (G * 2.4);
+    const ang = Math.PI / 4 + mx * 0.25 + Math.sin(t * 0.3) * 0.05;
+    const tilt = 0.5 + my * 0.08;
+    const ox = W * (wide ? 0.6 : 0.5), oy = H * (wide ? 0.44 : 0.4);
+    P = (x, y, z) => {
       const rx = x * Math.cos(ang) - y * Math.sin(ang);
       const ry = x * Math.sin(ang) + y * Math.cos(ang);
       return [ox + rx * s, oy + ry * s * tilt - z * s];
     };
+
     // 바닥 그리드
-    ctx.strokeStyle = "rgba(21,21,19,0.08)"; ctx.lineWidth = 1;
-    for (let k = -1; k <= N + 1; k++) {
-      ctx.beginPath(); ctx.moveTo(...P(k - N / 2, -1 - N / 2, 0)); ctx.lineTo(...P(k - N / 2, N + 1 - N / 2, 0)); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(...P(-1 - N / 2, k - N / 2, 0)); ctx.lineTo(...P(N + 1 - N / 2, k - N / 2, 0)); ctx.stroke();
+    ctx.strokeStyle = "rgba(21,21,19,0.07)"; ctx.lineWidth = 1;
+    for (let k = -G; k <= G; k++) {
+      ctx.beginPath(); ctx.moveTo(...P(k, -G, 0)); ctx.lineTo(...P(k, G, 0)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(...P(-G, k, 0)); ctx.lineTo(...P(G, k, 0)); ctx.stroke();
     }
-    // 매스 (뒤에서 앞으로 정렬해서 그리기)
-    const sorted = blocks.slice().sort((a, b) => P(a.i, a.j, 0)[1] - P(b.i, b.j, 0)[1]);
-    sorted.forEach((b) => {
-      if (b.empty) return;
-      const h = b.base * (1 + 0.35 * Math.sin(t * 1.2 + b.ph)) * 2.2;
-      const x = b.i - N / 2 + 0.12, y = b.j - N / 2 + 0.12, w = 0.76;
-      const c = [[x, y], [x + w, y], [x + w, y + w], [x, y + w]];
-      const top = c.map(([a, bb]) => P(a, bb, h));
-      const bot = c.map(([a, bb]) => P(a, bb, 0));
-      ctx.fillStyle = "rgba(250,250,248,0.94)";
-      ctx.beginPath(); top.forEach((p, k) => (k ? ctx.lineTo(...p) : ctx.moveTo(...p))); ctx.closePath(); ctx.fill();
-      for (let k = 0; k < 4; k++) {
-        const k2 = (k + 1) % 4;
-        ctx.beginPath(); ctx.moveTo(...bot[k]); ctx.lineTo(...bot[k2]); ctx.lineTo(...top[k2]); ctx.lineTo(...top[k]); ctx.closePath(); ctx.fill();
+
+    hover = pick();
+    canvas.style.cursor = hover >= 0 ? "pointer" : "";
+    if (cur) { cur.classList.toggle("big", hover >= 0); if (hover >= 0) cur.textContent = "View"; else if (cur.textContent === "View" && !document.querySelector("[data-cursor]:hover")) cur.textContent = ""; }
+    works.forEach((wk, k) => (wk.lift += ((k === hover ? 1 : 0) - wk.lift) * 0.15));
+
+    // 앞뒤 순서대로 그리기 (뒤에 있는 것부터)
+    const items = [];
+    ctxBlocks.forEach((b) => items.push({ b, kind: 0, h: b.base * (1 + 0.3 * Math.sin(t * 1.2 + b.ph)) }));
+    works.forEach((wk, k) => wk.boxes.forEach((b) => items.push({ b, kind: 1, k, h: b.h * (1 + wk.lift * 0.12) })));
+    const depth = (b) => P(b.x + b.w / 2, b.y + b.d / 2, 0)[1];
+    items.sort((a, c) => depth(a.b) - depth(c.b));
+    const tops = {};
+    items.forEach((it) => {
+      if (it.kind === 0) drawBox(it.b, it.h, "rgba(250,250,248,0.96)", "rgba(21,21,19,0.16)", 1);
+      else {
+        const on = it.k === hover;
+        const top = drawBox(it.b, it.h, on ? "rgb(234,232,226)" : "rgb(250,250,248)", on ? "rgba(21,21,19,1)" : "rgba(21,21,19,0.78)", on ? 1.6 : 1.2);
+        const y = Math.min(...top.map((p) => p[1]));
+        if (!tops[it.k] || y < tops[it.k][1]) tops[it.k] = [top.reduce((a, p) => a + p[0], 0) / 4, y];
       }
-      ctx.strokeStyle = `rgba(21,21,19,${0.3 + Math.min(h / 6, 0.45)})`;
-      ctx.beginPath();
-      top.forEach((p, k) => (k ? ctx.lineTo(...p) : ctx.moveTo(...p))); ctx.closePath();
-      for (let k = 0; k < 4; k++) { ctx.moveTo(...bot[k]); ctx.lineTo(...top[k]); }
-      ctx.stroke();
+    });
+
+    // 작품 이름표: 평소엔 번호, 마우스 올리면 이름
+    ctx.textAlign = "center"; ctx.textBaseline = "bottom";
+    works.forEach((wk, k) => {
+      const [x, y] = tops[k] || [0, 0];
+      const on = k === hover;
+      ctx.strokeStyle = "rgba(21,21,19,0.35)"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x, y - 6); ctx.lineTo(x, y - 22 - wk.lift * 6); ctx.stroke();
+      ctx.fillStyle = on ? "#151513" : "rgba(21,21,19,0.6)";
+      ctx.font = `${on ? 500 : 400} 11px ${getComputedStyle(document.body).fontFamily}`;
+      const no = String(PROJECTS.indexOf(wk.p) + 1).padStart(2, "0");
+      ctx.fillText(on ? `[ ${wk.p.title} ]  ${wk.p.year}` : no, x, y - 26 - wk.lift * 6);
     });
     requestAnimationFrame(draw);
   };
