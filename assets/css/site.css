@@ -1,7 +1,7 @@
 /* ============================================================
    site.css — 포트폴리오 전체 마감재
    ============================================================ */
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+@import url("https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable.min.css");
 
 :root {
   --bg: #fafaf8;
