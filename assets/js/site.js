@@ -227,7 +227,7 @@ function heroArt(canvas) {
       return [ox + rx * s, oy + ry * s * tilt - z * s];
     };
     // 바닥 그리드
-    ctx.strokeStyle = "rgba(238,236,231,0.08)"; ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(21,21,19,0.08)"; ctx.lineWidth = 1;
     for (let k = -1; k <= N + 1; k++) {
       ctx.beginPath(); ctx.moveTo(...P(k - N / 2, -1 - N / 2, 0)); ctx.lineTo(...P(k - N / 2, N + 1 - N / 2, 0)); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(...P(-1 - N / 2, k - N / 2, 0)); ctx.lineTo(...P(N + 1 - N / 2, k - N / 2, 0)); ctx.stroke();
@@ -241,13 +241,13 @@ function heroArt(canvas) {
       const c = [[x, y], [x + w, y], [x + w, y + w], [x, y + w]];
       const top = c.map(([a, bb]) => P(a, bb, h));
       const bot = c.map(([a, bb]) => P(a, bb, 0));
-      ctx.fillStyle = "rgba(21,21,19,0.92)";
+      ctx.fillStyle = "rgba(250,250,248,0.94)";
       ctx.beginPath(); top.forEach((p, k) => (k ? ctx.lineTo(...p) : ctx.moveTo(...p))); ctx.closePath(); ctx.fill();
       for (let k = 0; k < 4; k++) {
         const k2 = (k + 1) % 4;
         ctx.beginPath(); ctx.moveTo(...bot[k]); ctx.lineTo(...bot[k2]); ctx.lineTo(...top[k2]); ctx.lineTo(...top[k]); ctx.closePath(); ctx.fill();
       }
-      ctx.strokeStyle = `rgba(238,236,231,${0.25 + Math.min(h / 6, 0.5)})`;
+      ctx.strokeStyle = `rgba(21,21,19,${0.3 + Math.min(h / 6, 0.45)})`;
       ctx.beginPath();
       top.forEach((p, k) => (k ? ctx.lineTo(...p) : ctx.moveTo(...p))); ctx.closePath();
       for (let k = 0; k < 4; k++) { ctx.moveTo(...bot[k]); ctx.lineTo(...top[k]); }
