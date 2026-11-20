@@ -360,7 +360,8 @@
     const hl = SITE.hero.lines.map((l) => `<span>${words(l)}</span>`).join("");
     const M = SITE.manifesto, PL = SITE.pillars, NT = SITE.philosophy, AH = SITE.approachHead;
     const odo = (list) => `<span class="odo num" aria-hidden="true"><span class="odo-col">${list.map((t) => `<i>${t}</i>`).join("")}</span></span>`;
-    const fws = M.en.split(" ").map((w) => `<span class="fw">${esc(w)}</span>`).join(" ");
+    const keys = (M.keys || []).map((k) => k.toLowerCase());
+    const fws = M.en.split(" ").map((w) => `<span class="fw${keys.includes(w.toLowerCase().replace(/[^a-z&]/g, "")) ? " key" : ""}">${esc(w)}</span>`).join(" ");
     $("#main").innerHTML = `
       <section class="hero" id="top">
         <div class="stage" id="stage"></div>

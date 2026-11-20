@@ -285,6 +285,8 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .mf-txt { font-size: clamp(19px, 2.15vw, 34px); font-weight: 300; line-height: 1.26; letter-spacing: -0.022em; max-width: 25em; text-wrap: pretty; }
 .fw { color: color-mix(in srgb, var(--ink) 12%, var(--bg)); transition: color 0.5s var(--ease); }
 .fw.on { color: var(--ink); }
+.fw.key { background: linear-gradient(currentColor, currentColor) 0 96% / 0 1px no-repeat; transition: color 0.5s var(--ease), background-size 0.9s var(--ease) 0.15s; }
+.fw.key.on { background-size: 100% 1px; }
 .mf-ko { margin-top: 26px; max-width: 38em; color: var(--mid); opacity: 0; transform: translateY(10px); transition: opacity 0.8s var(--ease), transform 0.9s var(--ease); }
 .mf-ko.on { opacity: 1; transform: none; }
 .mf-steps { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--gap); border-top: 1px solid var(--line); padding-top: 12px; }

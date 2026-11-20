@@ -384,6 +384,24 @@
       return FG(0, ax) + FG(1, bub) + FG(2, FP("M80 120H320V360H80Z", "k2") + col) +
         FG(3, FP("M164 244H236V300H164Z") + FP("M164 244L236 300M236 244L164 300", "s") + dim + FT(80, 476, "STRUCTURAL GRID  7.2 × 7.2 M"));
     },
+    // 공기와 빛: 단면 위로 햇빛 각도와 맞통풍 경로
+    air() {
+      const arrow = (x, y, dx, dy) => FP(`M${x - dx * 9 - dy * 5} ${y - dy * 9 + dx * 5}L${x} ${y}L${x - dx * 9 + dy * 5} ${y - dy * 9 - dx * 5}`);
+      let rays = "", patch = "";
+      // 위층 창(172–200)과 아래층 창(262–300)으로 38° 햇빛이 들어와 바닥에 닿아요
+      [0, 1, 2].forEach((i) => {
+        const y1 = 176 + i * 10, x1 = 80 + (230 - y1) / 0.78;
+        rays += FP(`M${n(80 - (y1 - 110) / 0.78)} 110L${n(x1)} 230`, "r");
+        const y2 = 266 + i * 14, x2 = 80 + (330 - y2) / 0.78;
+        rays += FP(`M${n(80 - (y2 - 200) / 0.78)} 200L${n(x2)} 330`, "r");
+      });
+      patch = FP("M118 228H152M126 328H164", "k2");
+      return FG(0, FP("M20 430H380", "k2") + FP("M80 430V300M80 262V200M80 172V150H330V172M330 200V270M330 300V430", "k2") + FP("M80 330H330M80 230H330", "k") + FP("M70 150H340", "k2") + FP("M240 150V120H330V150", "k") + FP("M80 172V200M80 262V300M330 172V200M330 270V300", "s")) +
+        FG(1, rays + patch) +
+        FG(2, FP("M30 286C110 286 180 300 236 276C286 254 306 214 352 190", "s") + arrow(352, 190, 0.88, -0.47) +
+          FP("M30 186C120 190 200 210 260 170C290 150 300 130 336 112", "s") + arrow(336, 112, 0.89, -0.45)) +
+        FG(3, FP("M40 110H70M40 110L64 129", "s") + FT(20, 100, "SUN 38°") + FT(170, 222, "DAYLIGHT") + FT(176, 322, "DAYLIGHT") + FT(196, 270, "CROSS VENT.") + FT(250, 110, "STACK") + FT(346, 334, "+3.6") + FT(346, 234, "+7.2") + FT(20, 470, "SECTION — AIR AND DAYLIGHT"));
+    },
     // 디테일: 벽 단면 (콘크리트, 단열, 마감, 창호)
     craft() {
       let hatch = "", ins = "M196 30";
@@ -397,7 +415,7 @@
           FP("M150 490H252") + FP("M146 494L154 486M248 494L256 486") + FT(201, 486, "320", "middle"));
     },
   };
-  const FIGCAP = { site: "Site reading, NTS", context: "Site plan, NTS", order: "Structural grid, 1:500", craft: "Wall section, 1:20" };
+  const FIGCAP = { site: "Site reading, NTS", context: "Site and problem, NTS", air: "Section, air and light, 1:200", order: "Structural grid, 1:500", craft: "Wall joint detail, 1:20" };
 
   const META = {
     plan: ["Floor Plan", "1:200", plan],

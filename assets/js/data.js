@@ -31,41 +31,43 @@ const SITE = {
 
   // 첫 화면 문장 (줄마다 끊어서)
   hero: {
-    tag: ["Architecture", "Shapes Life"],
-    lines: ["Architecture that reads", "the site and builds", "with quiet intent."],
-    motto: "Precise order. Quiet form.",
-    sub: "대지를 읽고, 구조로 질서를 세우고, 빛과 재료로 마무리하는 건축가 지망생입니다.",
+    tag: ["Practical", "Architecture"],
+    lines: ["Architecture is", "an answer", "before an image."],
+    motto: "Air and light. Structure and joints.",
+    sub: "공기와 빛, 그리고 실제로 지어질 수 있는 구조와 접합부에서 해답을 찾는 건축가 지망생입니다.",
   },
-  // Philosophy 첫 장면: 스크롤하면 단어가 하나씩 채워지는 선언문
+  // Philosophy 첫 장면: 스크롤하면 단어가 하나씩 채워지는 선언문 (나의 설계 철학)
   manifesto: {
-    en: "Space shapes the way we live. I begin by reading the site, set order through structure, and finish with light and material, so that a building can quietly hold everyday life.",
-    ko: "공간은 삶의 방식을 만듭니다. 대지를 읽는 데서 시작해 구조로 질서를 세우고, 빛과 재료로 마무리합니다. 건물이 일상을 조용히 담을 수 있도록.",
-    steps: ["Read the site", "Set the order", "Finish with light"],
+    en: "I believe architecture is an answer before an image — found in air and light, structure and joints that can truly be built.",
+    ko: "건축은 이미지보다 먼저 하나의 해답이라고 믿습니다. 그 해답은 공기와 빛, 그리고 실제로 지어질 수 있는 구조와 접합부 안에 있습니다.",
+    steps: ["Answer before image", "Air and light", "Structure and joints"],
+    keys: ["answer", "air", "light", "structure", "joints", "built"], // 밑줄이 그어지는 핵심 단어
   },
-  // 세 가지 키워드 (고정 화면에서 하나씩 넘어가요. fig: context · order · craft 도면)
+  // 세 가지 키워드 (고정 화면에서 하나씩 넘어가요. fig: context · air · craft · order 도면)
   pillars: [
-    { k: "Context", en: "Every form begins as an answer to its site.", d: "대지와 사람의 움직임에서 시작합니다. 형태보다 조건을 먼저 읽습니다.", fig: "context" },
-    { k: "Order", en: "A clear grid lets space vary without losing itself.", d: "그리드, 비례, 구조로 공간의 뼈대를 세웁니다. 단순할수록 오래갑니다.", fig: "order" },
-    { k: "Craft", en: "The last millimetre changes how a room is felt.", d: "빛과 재료, 디테일까지 끝까지 다듬습니다. 마지막 1mm가 경험을 바꿉니다.", fig: "craft" },
+    { k: "Answer", en: "Define the problem before drawing the picture.", d: "보기 좋은 이미지보다 먼저, 대지와 프로그램이 던지는 문제를 정의하고 그 답을 찾습니다.", fig: "context" },
+    { k: "Air & Light", en: "Space is shaped by how air moves and light falls.", d: "채광, 일조, 맞통풍을 단면에서 먼저 검토합니다. 쾌적함은 형태가 아니라 해법에서 나옵니다.", fig: "air" },
+    { k: "Structure & Joints", en: "A design is finished only when it can truly be built.", d: "구조의 질서부터 재료가 만나는 접합부까지, 실제로 지어질 수 있는지를 기준으로 그립니다.", fig: "craft" },
   ],
   // 건축에 대한 메모 (번호가 굴러가며 하나씩)
   philosophy: [
-    "건축은 대지가 이미 가진 질문에 대한 대답이라고 생각합니다.",
-    "좋은 공간은 화려한 형태보다 정확한 비례와 빛에서 나옵니다.",
-    "설계의 반복되는 과정을 도구로 만들면, 더 많은 시간을 판단에 쓸 수 있습니다.",
+    "좋은 건축은 그럴듯한 이미지가 아니라 정확한 해답에서 시작한다고 믿습니다.",
+    "공기와 빛이 어떻게 드나드는지가 공간의 질을 결정합니다. 그래서 단면부터 확인합니다.",
+    "도면 위의 선은 결국 누군가 실제로 세우는 부재입니다. 지어질 수 있는 접합부까지 그립니다.",
+    "반복되는 설계 과정을 도구로 만들면, 더 많은 시간을 판단에 쓸 수 있습니다.",
   ],
   // Approach 머리말 (cycle: 돌아가며 바뀌는 단어)
   approachHead: {
-    cycle: ["light", "steps", "materials", "years"],
-    line1: "The site asks the question —",
-    line2: "the drawing answers it.",
-    intro: "조건을 읽고, 질서를 세우고, 빛과 재료로 완성하는 네 가지 방식으로 설계에 접근합니다.",
+    cycle: ["air", "light", "structure", "joints"],
+    line1: "Not how it looks first —",
+    line2: "how it works, and how it is built.",
+    intro: "문제를 정의하고, 환경을 해석하고, 구조와 디테일로 답하는 방식으로 설계에 접근합니다.",
   },
   // 접근 방식 (펼쳐 보기)
   approach: [
-    { t: "Site before form", s: "형태보다 대지가 먼저", d: "주변 맥락, 법규, 일조, 보행 흐름을 데이터로 정리한 뒤에 매스를 시작합니다. 대지 분석이 설계의 절반이라고 생각합니다." },
-    { t: "Structure as order", s: "구조가 곧 질서", d: "기둥 간격과 코어 위치를 먼저 정하고, 그 질서 안에서 공간을 변주합니다. 구조와 공간이 따로 놀지 않게 설계합니다." },
-    { t: "Light and material", s: "빛과 재료로 완성", d: "같은 평면도 빛이 들어오는 방향과 재료의 질감에 따라 전혀 다른 경험이 됩니다. 단면에서 빛을 먼저 그립니다." },
+    { t: "Problem before form", s: "형태보다 문제가 먼저", d: "대지 조건, 법규, 프로그램, 예산을 먼저 정리해 무엇을 풀어야 하는지 정의합니다. 형태는 그 답의 결과라고 생각합니다." },
+    { t: "Air and light in section", s: "단면에서 공기와 빛", d: "일조, 채광, 맞통풍을 단면에서 검토합니다. 같은 평면도 빛과 바람의 경로에 따라 전혀 다른 공간이 됩니다." },
+    { t: "Built, not just drawn", s: "그려지는 것이 아니라 지어지는 것", d: "기둥 간격과 코어로 구조의 질서를 세우고, 방수와 단열이 끊기지 않는 접합부까지 실제 시공을 기준으로 그립니다." },
     { t: "Process as tool", s: "과정을 도구로", d: "Grasshopper와 코드, AI로 반복 작업을 자동화합니다. 대안을 빠르게 비교하고, 판단에 집중합니다." },
   ],
   // 설계 프로세스 (순서가 있는 단계)
@@ -204,7 +206,7 @@ const PROJECTS = [
 // About / CV
 const CV = {
   intro:
-    "대지의 조건을 데이터처럼 읽고, 구조와 비례로 질서를 세우는 설계를 합니다. 졸업을 앞두고, 설계와 함께 반복되는 과정을 코드와 AI로 도구화하는 작업을 이어가고 있습니다.",
+    "건축은 이미지보다 먼저 하나의 해답이라고 믿습니다. 공기와 빛, 그리고 실제로 지어질 수 있는 구조와 접합부에서 그 답을 찾습니다. 졸업을 앞두고, 반복되는 설계 과정을 코드와 AI로 도구화하는 작업도 함께 하고 있습니다.",
   education: [["2022 – 2027", "OO대학교 건축학과 (5년제), 졸업예정"]], // TODO
   experience: [["2025 하계", "OO건축사사무소 인턴 (예시)"]], // TODO
   awards: [
