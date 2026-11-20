@@ -333,6 +333,72 @@
     return L(W / 2, 0, W / 2, H, "dh") + L(0, H / 2, W, H / 2, "dh") + C(W / 2, H * 0.4, W * 0.16, "dthin") + `<path class="dthin" d="M${n(W * 0.22)} ${n(H)} C ${n(W * 0.24)} ${n(H * 0.66)}, ${n(W * 0.76)} ${n(H * 0.66)}, ${n(W * 0.78)} ${n(H)}"/>`;
   }
 
+  // ------------------------------------------------------------
+  // 스크롤에 맞춰 "그려지는" 선 도면 (Philosophy 장면용)
+  //   <g data-g="0..3"> 묶음 순서대로 그려져요. 선마다 pathLength=1.
+  // ------------------------------------------------------------
+  const FP = (d, c = "k") => `<path class="${c}" pathLength="1" d="${d}"/>`;
+  const FT = (x, y, s, a) => `<text x="${x}" y="${y}"${a ? ` text-anchor="${a}"` : ""}>${s}</text>`;
+  const FG = (i, inner) => `<g data-g="${i}">${inner}</g>`;
+  const ring = (cx, cy, r) => `M${n(cx - r)} ${n(cy)}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0`;
+  const blob = (cx, cy, rx, ry, k, ph) => {
+    let d = "";
+    for (let i = 0; i <= 64; i++) {
+      const a = (i / 64) * Math.PI * 2;
+      const f = 1 + 0.11 * Math.sin(3 * a + ph) + 0.05 * Math.cos(5 * a + ph * 2) + k;
+      d += (i ? "L" : "M") + n(cx + Math.cos(a) * rx * f) + " " + n(cy + Math.sin(a) * ry * f);
+    }
+    return d + "Z";
+  };
+  const FIGS = {
+    // 배치도: 등고선 → 도로 → 대지 경계 → 건물과 방위
+    site() {
+      let c = "";
+      for (let i = 0; i < 6; i++) c += FP(blob(232, 146, 34 + i * 27, 22 + i * 19, 0, 0.6 + i * 0.35), "s");
+      return FG(0, c) +
+        FG(1, FP("M0 268C110 254 250 276 400 240") + FP("M0 284C112 270 252 292 400 256") + FP("M296 0C286 80 300 170 318 262", "s")) +
+        FG(2, FP("M150 82L300 70L322 200L162 216Z", "r")) +
+        FG(3, FP("M184 104H272V140H218V190H184Z", "k2") + FP(ring(362, 40, 13)) + FP("M362 22L368 46L362 41L356 46Z") +
+          FT(362, 70, "N", "middle") + FT(150, 236, "SITE  A = 2,410 M²") + FT(40, 160, "+18.0") + FT(110, 60, "+12.0"));
+    },
+    // 맥락: 배치도를 세로 시트로
+    context() {
+      let c = "";
+      for (let i = 0; i < 7; i++) c += FP(blob(206, 220, 30 + i * 26, 26 + i * 22, 0, 1.1 + i * 0.3), "s");
+      return FG(0, c) +
+        FG(1, FP("M0 420C120 398 260 430 400 380") + FP("M0 438C122 416 262 448 400 398") + FP("M120 0C128 120 104 260 86 410", "s")) +
+        FG(2, FP("M126 140L292 118L318 300L142 322Z", "r")) +
+        FG(3, FP("M168 168H264V206H206V262H168Z", "k2") + FP("M226 230H276V280H226Z", "k2") + FP(ring(356, 44, 13)) + FP("M356 26L362 50L356 45L350 50Z") +
+          FT(356, 74, "N", "middle") + FT(126, 344, "SITE BOUNDARY") + FT(30, 236, "+24.0") + FT(300, 120, "+16.0"));
+    },
+    // 질서: 구조 그리드, 기둥, 코어, 치수
+    order() {
+      const xs = [80, 160, 240, 320], ys = [120, 240, 360];
+      let ax = "", bub = "", col = "";
+      xs.forEach((x, i) => { ax += FP(`M${x} 52V452`, "s"); bub += FP(ring(x, 34, 11)) + FT(x, 37, i + 1, "middle"); });
+      ys.forEach((y, i) => { ax += FP(`M52 ${y}H372`, "s"); bub += FP(ring(34, y, 11)) + FT(34, y + 3, "ABC"[i], "middle"); });
+      xs.forEach((x) => ys.forEach((y) => (col += `<rect class="kf" x="${x - 5}" y="${y - 5}" width="10" height="10"/>`)));
+      let dim = FP("M80 410H320");
+      xs.forEach((x) => (dim += FP(`M${x - 4} 414L${x + 4} 406`)));
+      [0, 1, 2].forEach((i) => (dim += FT(xs[i] + 40, 402, "7,200", "middle")));
+      return FG(0, ax) + FG(1, bub) + FG(2, FP("M80 120H320V360H80Z", "k2") + col) +
+        FG(3, FP("M164 244H236V300H164Z") + FP("M164 244L236 300M236 244L164 300", "s") + dim + FT(80, 476, "STRUCTURAL GRID  7.2 × 7.2 M"));
+    },
+    // 디테일: 벽 단면 (콘크리트, 단열, 마감, 창호)
+    craft() {
+      let hatch = "", ins = "M196 30";
+      for (let y = 40; y < 470; y += 22) hatch += FP(`M152 ${y + 14}L172 ${y - 6}M168 ${y + 18}L188 ${y - 2}`, "s");
+      for (let y = 30, s = 1; y < 466; y += 12, s = -s) ins += `Q${s > 0 ? 236 : 196} ${y + 6} ${s > 0 ? 196 : 236} ${y + 12}`;
+      const lead = (x1, y1, y2, t) => FP(`M${x1} ${y1}L296 ${y2}H312`) + FT(318, y2 + 3, t);
+      return FG(0, FP("M150 24V476M190 24V476", "k2") + FP("M40 292H150M40 300H150M40 334H150", "k")) +
+        FG(1, hatch + FP(ins, "s")) +
+        FG(2, FP("M244 24V118M252 24V118M244 262V476M252 262V476", "k2") + FP("M236 122H262V252H236Z") + FP("M246 126V248M252 126V248", "s") + FP("M228 252L274 264V270L228 260Z") + FP("M228 118L270 110", "s")) +
+        FG(3, lead(170, 70, 60, "RC 200") + lead(216, 170, 160, "INSUL. 100") + lead(262, 262, 262, "SILL FLASHING") + lead(248, 380, 380, "CLADDING 15") +
+          FP("M150 490H252") + FP("M146 494L154 486M248 494L256 486") + FT(201, 486, "320", "middle"));
+    },
+  };
+  const FIGCAP = { site: "Site reading, NTS", context: "Site plan, NTS", order: "Structural grid, 1:500", craft: "Wall section, 1:20" };
+
   const META = {
     plan: ["Floor Plan", "1:200", plan],
     section: ["Section A–A′", "1:200", section],
@@ -345,6 +411,8 @@
 
   window.Drawing = {
     META,
+    FIGCAP,
+    fig: (kind) => (FIGS[kind] || FIGS.order)(),
     svg(kind, seed, W = 1200, H = 900, mass = null) {
       const [title, scale, fn] = META[kind] || META.axon;
       const r = rng(kind + ":" + seed);

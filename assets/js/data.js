@@ -29,24 +29,38 @@ const SITE = {
   updated: "2026.11.20",
   rev: "04",
 
-  // 첫 화면 선언 문장
+  // 첫 화면 문장 (줄마다 끊어서)
   hero: {
-    line1: "Space shapes",
-    line2: "the way we live.",
-    sub: "공간은 삶의 방식을 만든다. 대지를 읽고, 질서를 세우고, 그 과정을 도구로 만드는 건축가 지망생입니다.",
+    tag: ["Architecture", "Shapes Life"],
+    lines: ["Architecture that reads", "the site and builds", "with quiet intent."],
+    motto: "Precise order. Quiet form.",
+    sub: "대지를 읽고, 구조로 질서를 세우고, 빛과 재료로 마무리하는 건축가 지망생입니다.",
   },
-  // 세 가지 키워드
+  // Philosophy 첫 장면: 스크롤하면 단어가 하나씩 채워지는 선언문
+  manifesto: {
+    en: "Space shapes the way we live. I begin by reading the site, set order through structure, and finish with light and material, so that a building can quietly hold everyday life.",
+    ko: "공간은 삶의 방식을 만듭니다. 대지를 읽는 데서 시작해 구조로 질서를 세우고, 빛과 재료로 마무리합니다. 건물이 일상을 조용히 담을 수 있도록.",
+    steps: ["Read the site", "Set the order", "Finish with light"],
+  },
+  // 세 가지 키워드 (고정 화면에서 하나씩 넘어가요. fig: context · order · craft 도면)
   pillars: [
-    { k: "Context", d: "대지와 사람의 움직임에서 시작합니다. 형태보다 조건을 먼저 읽습니다." },
-    { k: "Order", d: "그리드, 비례, 구조로 공간의 뼈대를 세웁니다. 단순할수록 오래갑니다." },
-    { k: "Craft", d: "빛과 재료, 디테일까지 끝까지 다듬습니다. 마지막 1mm가 경험을 바꿉니다." },
+    { k: "Context", en: "Every form begins as an answer to its site.", d: "대지와 사람의 움직임에서 시작합니다. 형태보다 조건을 먼저 읽습니다.", fig: "context" },
+    { k: "Order", en: "A clear grid lets space vary without losing itself.", d: "그리드, 비례, 구조로 공간의 뼈대를 세웁니다. 단순할수록 오래갑니다.", fig: "order" },
+    { k: "Craft", en: "The last millimetre changes how a room is felt.", d: "빛과 재료, 디테일까지 끝까지 다듬습니다. 마지막 1mm가 경험을 바꿉니다.", fig: "craft" },
   ],
-  // 철학
+  // 건축에 대한 메모 (번호가 굴러가며 하나씩)
   philosophy: [
     "건축은 대지가 이미 가진 질문에 대한 대답이라고 생각합니다.",
     "좋은 공간은 화려한 형태보다 정확한 비례와 빛에서 나옵니다.",
     "설계의 반복되는 과정을 도구로 만들면, 더 많은 시간을 판단에 쓸 수 있습니다.",
   ],
+  // Approach 머리말 (cycle: 돌아가며 바뀌는 단어)
+  approachHead: {
+    cycle: ["light", "steps", "materials", "years"],
+    line1: "The site asks the question —",
+    line2: "the drawing answers it.",
+    intro: "조건을 읽고, 질서를 세우고, 빛과 재료로 완성하는 네 가지 방식으로 설계에 접근합니다.",
+  },
   // 접근 방식 (펼쳐 보기)
   approach: [
     { t: "Site before form", s: "형태보다 대지가 먼저", d: "주변 맥락, 법규, 일조, 보행 흐름을 데이터로 정리한 뒤에 매스를 시작합니다. 대지 분석이 설계의 절반이라고 생각합니다." },

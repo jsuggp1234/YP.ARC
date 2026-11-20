@@ -357,37 +357,69 @@
       `<path pathLength="1" d="M10 6H170V104H10ZM10 84H170M118 84V104M24 18H86V72H24ZM98 18H156V44H98ZM98 52H156V72H98Z"/><path class="s" pathLength="1" d="M24 18L86 72M86 18L24 72"/>`,
     ];
     wi = 0;
-    const l1 = words(SITE.hero.line1), l2 = words(SITE.hero.line2);
+    const hl = SITE.hero.lines.map((l) => `<span>${words(l)}</span>`).join("");
+    const M = SITE.manifesto, PL = SITE.pillars, NT = SITE.philosophy, AH = SITE.approachHead;
+    const odo = (list) => `<span class="odo num" aria-hidden="true"><span class="odo-col">${list.map((t) => `<i>${t}</i>`).join("")}</span></span>`;
+    const fws = M.en.split(" ").map((w) => `<span class="fw">${esc(w)}</span>`).join(" ");
     $("#main").innerHTML = `
       <section class="hero" id="top">
         <div class="stage" id="stage"></div>
         <div class="xh" id="xh" aria-hidden="true"><i class="h"></i><i class="v"></i><span class="rd mono num"></span></div>
         <div class="labels" id="labels" style="position:absolute;inset:0;pointer-events:none"></div>
         <div class="hero-ui wrap">
-          <div class="hero-h"><h1 class="intro-play"><span>${l1}</span><span>${l2}</span></h1><p>${esc(SITE.hero.sub)}</p></div>
+          <div class="hero-h"><p class="hero-tag mono"><span>${esc(SITE.hero.tag[0])}</span><span class="mid">${esc(SITE.hero.tag[1])}</span></p><h1 class="intro-play">${hl}</h1><p>${esc(SITE.hero.sub)}</p></div>
           <nav class="hero-list mono" aria-label="Selected works">
             ${PROJECTS.map((p, i) => `<a href="project.html#${p.slug}" data-k="${i}"><span class="mid num">${pad(i + 1)}</span><span class="t">${esc(p.title)}</span><span class="mid num">${p.year}</span></a>`).join("")}
           </nav>
-          <div class="hero-foot mono mid"><span class="num">${esc(SITE.coords)}</span><span class="scroll-cue">Scroll to discover</span></div>
+          <div class="hero-foot mono mid"><span class="num">${esc(SITE.coords)}</span><span class="motto">${esc(SITE.hero.motto)}</span><span class="scroll-cue">Scroll to discover</span></div>
         </div>
       </section>
 
-      <section class="sec wrap" id="principles" aria-label="Principles">
-        <div class="sec-hd mono"><span>Principles</span><span class="mid">설계의 세 가지 기준</span><span class="mid">${esc(SITE.pillars.map((p) => p.k).join(" · "))}</span></div>
-        <div class="pillars">${SITE.pillars.map((p, i) => `
-          <article class="pillar" data-reveal style="--d:${i * 0.12}s"><h3>${esc(p.k)}.</h3><p>${esc(p.d)}</p></article>`).join("")}
+      <section class="mf story" id="philosophy">
+        <div class="mf-stick wrap">
+          <div class="sec-hd mono"><span>Philosophy</span><span class="mid">무엇을 믿고 설계하는가</span><span class="mid num"><span class="mf-pct">000</span> / 100</span></div>
+          <div class="mf-body grid">
+            <div class="mf-side"><p class="mono mid">(Manifesto)</p><figure><svg class="pf mf-fig" viewBox="0 0 400 300" aria-hidden="true">${Drawing.fig("site")}</svg><figcaption class="mono mid">Fig. 00 — ${Drawing.FIGCAP.site}</figcaption></figure></div>
+            <div class="mf-main"><p class="mf-txt">${fws}</p><p class="mf-ko">${esc(M.ko)}</p></div>
+          </div>
+          <ol class="mf-steps mono"><span class="bar" aria-hidden="true"></span>${M.steps.map((t, i) => `<li><span class="num">${pad(i + 1)}</span>${esc(t)}</li>`).join("")}</ol>
         </div>
       </section>
 
-      <section class="sec wrap philo" id="philosophy">
-        <div class="sec-hd mono"><span>Philosophy</span><span class="mid">무엇을 믿고 설계하는가</span><span class="mid">${pad(SITE.philosophy.length)} notes</span></div>
-        <div class="grid"><p class="lbl mono mid">Notes on architecture</p>
-          <ol>${SITE.philosophy.map((t, i) => `<li data-reveal><span class="mono mid num">${pad(i)}</span><p>${esc(t)}</p></li>`).join("")}</ol>
+      <section class="pl story" id="principles" aria-label="Principles">
+        <div class="pl-stick wrap">
+          <div class="sec-hd mono"><span>Principles</span><span class="mid">설계의 세 가지 기준</span><span class="mid">${esc(PL.map((p) => p.k).join(" · "))}</span></div>
+          <div class="pl-body grid">
+            <div class="pl-side">
+              <div class="pl-count">${odo(PL.map((_, i) => pad(i + 1)))}<span class="mono mid num">/ ${pad(PL.length)}</span></div>
+              <ol class="pl-idx mono">${PL.map((p, i) => `<li><span class="num">${pad(i + 1)}</span>${esc(p.k)}</li>`).join("")}</ol>
+            </div>
+            <div class="pl-words">${PL.map((p) => `
+              <article class="pl-it"><h3><span>${esc(p.k)}.</span></h3><p class="en">${esc(p.en)}</p><p class="ko">${esc(p.d)}</p></article>`).join("")}
+            </div>
+            <div class="pl-figs" aria-hidden="true">${PL.map((p, i) => `
+              <figure class="pl-fig"><div class="sheet"><svg class="pf" viewBox="0 0 400 500">${Drawing.fig(p.fig)}</svg></div><figcaption class="mono mid"><span class="num">Fig. P-${pad(i + 1)}</span><span>${esc(Drawing.FIGCAP[p.fig] || "")}</span></figcaption></figure>`).join("")}
+            </div>
+          </div>
+          <div class="pl-foot mono mid"><span>Scroll</span><span class="pl-bar"><i></i></span><span class="num pl-pct">01 / ${pad(PL.length)}</span></div>
+        </div>
+      </section>
+
+      <section class="sec wrap nt" id="notes">
+        <div class="sec-hd mono"><span>Notes</span><span class="mid">건축에 대한 메모</span><span class="mid num">${pad(NT.length)} notes</span></div>
+        <div class="grid">
+          <div class="nt-side">${odo(NT.map((_, i) => pad(i)))}<p class="mono mid">Notes on architecture</p></div>
+          <ol class="nt-list">${NT.map((t, i) => `<li data-i="${i}" data-reveal><span class="mono mid num">Note ${pad(i)}</span><p>${esc(t)}</p></li>`).join("")}</ol>
         </div>
       </section>
 
       <section class="sec wrap" id="approach">
         <div class="sec-hd mono"><span>Approach</span><span class="mid">설계에 접근하는 네 가지 방식</span><span class="mid">Click to expand</span></div>
+        <div class="ap-hd grid">
+          <p class="ap-cyc mono mid">Measured in <span class="cyc"><span class="cyc-col">${AH.cycle.concat(AH.cycle[0]).map((w) => `<i>${esc(w)}</i>`).join("")}</span></span></p>
+          <h3 class="ap-h" data-reveal="words">${words(AH.line1)}<br>${words(AH.line2)}</h3>
+          <p class="ap-intro" data-reveal>${esc(AH.intro)}</p>
+        </div>
         <div class="acc">${SITE.approach.map((a, i) => `
           <div class="acc-i${i === 0 ? " open" : ""}" data-reveal style="--d:${i * 0.06}s">
             <button class="acc-b" type="button" aria-expanded="${i === 0}" aria-controls="acc-${i}" id="accb-${i}">
@@ -440,6 +472,9 @@
         </div>
       </section>`;
 
+    story();
+    cycler();
+
     // 첫 화면 3D
     const ui = heroUI();
     const api = (window.hero3D && window.hero3D($("#stage"), ui)) || window.hero2D($("#stage"), ui);
@@ -488,6 +523,79 @@
     // 다른 페이지에서 #섹션 링크로 들어온 경우
     if (location.hash && location.hash.length > 1) setTimeout(() => scrollToEl(location.hash, true), 60);
   };
+
+  // ---------- Philosophy 장면: 고정된 화면에서 스크롤로 진행 ----------
+  function story() {
+    const mf = $(".mf"), pl = $(".pl"), nt = $(".nt");
+    if (!mf || !pl) return;
+    if (REDUCED) HTML.classList.add("rm");
+    const prog = (el) => { const r = el.getBoundingClientRect(); return clamp(-r.top / Math.max(1, r.height - innerHeight), 0, 1); };
+    const draw = (svg, t, step, span) => svg && $$("[data-g]", svg).forEach((g) => g.style.setProperty("--o", (1 - clamp((t - +g.dataset.g * step) / span, 0, 1)).toFixed(3)));
+
+    // 선언문: 단어가 하나씩 채워지고, 배치도가 그려져요
+    const fw = $$(".fw", mf), steps = $$(".mf-steps li", mf), pct = $(".mf-pct", mf), fig = $(".mf-fig", mf), ko = $(".mf-ko", mf), bar = $(".mf-steps .bar", mf);
+    let lastN = -1;
+    const upMf = () => {
+      const p = REDUCED ? 1 : prog(mf), t = clamp(p / 0.8, 0, 1);
+      const n = Math.round(t * fw.length);
+      if (n !== lastN) { fw.forEach((w, i) => w.classList.toggle("on", i < n)); lastN = n; }
+      pct.textContent = pad(Math.round(p * 100), 3);
+      steps.forEach((s, i) => s.classList.toggle("on", t > i / steps.length + 0.01 || t > 0.99));
+      bar.style.transform = `scaleX(${t.toFixed(4)})`;
+      ko.classList.toggle("on", t > 0.88);
+      draw(fig, t, 0.2, 0.4);
+    };
+
+    // 세 키워드: 한 장면씩 넘어가며 도면이 그려져요
+    const its = $$(".pl-it", pl), figs = $$(".pl-fig", pl), idx = $$(".pl-idx li", pl), col = $(".pl-count .odo-col", pl), pbar = $(".pl-bar i", pl), ppct = $(".pl-pct", pl);
+    const flat = () => REDUCED || innerWidth <= 760;
+    let lastK = -1;
+    const upPl = () => {
+      if (flat()) {
+        if (lastK !== -2) { its.forEach((it) => { it.classList.add("on"); it.classList.remove("past"); }); figs.forEach((f) => draw($("svg", f), 1, 0.2, 0.4)); lastK = -2; }
+        return;
+      }
+      const p = prog(pl), n = its.length;
+      const k = Math.min(n - 1, Math.floor(p * n)), local = clamp(p * n - k, 0, 1);
+      if (k !== lastK) {
+        its.forEach((it, i) => { it.classList.toggle("on", i === k); it.classList.toggle("past", i < k); });
+        figs.forEach((f, i) => f.classList.toggle("on", i === k));
+        idx.forEach((li, i) => li.classList.toggle("on", i === k));
+        col.style.setProperty("--k", k);
+        ppct.textContent = pad(k + 1) + " / " + pad(n);
+        lastK = k;
+      }
+      draw($("svg", figs[k]), clamp(local * 1.6, 0, 1), 0.18, 0.4);
+      pbar.style.transform = `scaleX(${p.toFixed(4)})`;
+    };
+
+    let busy = false;
+    const on = () => { if (busy) return; busy = true; requestAnimationFrame(() => { busy = false; upMf(); upPl(); }); };
+    addEventListener("scroll", on, { passive: true });
+    addEventListener("resize", on);
+    on();
+
+    // 메모: 지나갈 때마다 번호가 굴러가요
+    const ncol = $(".nt-side .odo-col", nt);
+    if (ncol && "IntersectionObserver" in window) {
+      const nio = new IntersectionObserver((es) => es.forEach((en) => { if (en.isIntersecting) ncol.style.setProperty("--k", en.target.dataset.i); }), { rootMargin: "-42% 0px -52% 0px" });
+      $$(".nt-list li", nt).forEach((li) => nio.observe(li));
+    }
+  }
+
+  // 돌아가며 바뀌는 단어
+  function cycler() {
+    const c = $(".cyc-col");
+    if (!c || REDUCED) return;
+    const n = c.children.length - 1;
+    let i = 0;
+    setInterval(() => {
+      i++;
+      c.style.transition = "";
+      c.style.transform = `translateY(${-i * 1.5}em)`;
+      if (i === n) setTimeout(() => { c.style.transition = "none"; c.style.transform = "translateY(0)"; i = 0; }, 850);
+    }, 2200);
+  }
 
   // 첫 화면 이름표/십자선/목록 연결
   function heroUI() {
