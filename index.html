@@ -3,56 +3,39 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>YP.ARC 법규 검토</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>YP.ARC — Architecture Portfolio</title>
+  <meta name="description" content="YP.ARC — 건축 설계 포트폴리오" />
+  <link rel="stylesheet" href="assets/css/site.css" />
 </head>
-<body>
-  <!-- index.html = 건물의 골조와 벽. 화면에 무엇이 어디에 있는지만 정해요. -->
-  <main>
-    <header>
-      <p class="brand">YP.ARC</p>
-      <h1>건폐율·용적률 검토</h1>
-      <p class="sub">대지면적과 용도지역을 넣으면 최대 건축면적·연면적을 계산하고, 계획안의 적합 여부를 확인해요.</p>
-    </header>
+<body data-page="home">
+  <section class="hero">
+    <canvas id="hero-media"></canvas>
+    <div class="copy">
+      <h1 id="hero-title" class="split"></h1>
+      <div class="meta"><span id="hero-tag"></span><span class="scroll-cue">Scroll</span></div>
+    </div>
+  </section>
 
-    <form id="form">
-      <label>대지면적 (㎡)
-        <input id="site" type="number" min="1" step="0.01" required placeholder="예: 520" />
-      </label>
+  <section class="section">
+    <div class="sec-head"><p class="label">01 — Studio</p><a href="about.html">About →</a></div>
+    <p id="intro" class="statement split"></p>
+  </section>
 
-      <label>용도지역
-        <select id="zone"></select>
-      </label>
-      <p id="legalNote" class="note"></p>
+  <section class="section" style="padding-top:0">
+    <div class="sec-head"><p class="label">02 — Selected Works</p><a href="projects.html">All Works →</a></div>
+    <div id="works" class="works wide"></div>
+  </section>
 
-      <div class="row">
-        <label>적용 건폐율 (%)
-          <input id="bcrLimit" type="number" min="0" step="0.1" required />
-        </label>
-        <label>적용 용적률 (%)
-          <input id="farLimit" type="number" min="0" step="0.1" required />
-        </label>
-      </div>
+  <section class="section" style="padding-top:0">
+    <div class="sec-head"><p class="label">03 — Method</p></div>
+    <ol id="process" class="process" style="border-top:0;margin-top:0"></ol>
+  </section>
 
-      <details>
-        <summary>계획안도 검토하기 (선택)</summary>
-        <div class="row">
-          <label>계획 건축면적 (㎡)
-            <input id="footprint" type="number" min="0" step="0.01" />
-          </label>
-          <label>계획 용적률산정 연면적 (㎡)
-            <input id="floorArea" type="number" min="0" step="0.01" />
-          </label>
-        </div>
-      </details>
-
-      <button type="submit">검토하기</button>
-    </form>
-
-    <section id="result" aria-live="polite"></section>
-  </main>
-
-  <script src="zoning.js"></script>
-  <script src="app.js"></script>
+  <section class="section" style="padding-top:0">
+    <div class="sec-head"><p class="label">04 — Tools</p><a href="tools.html">All Tools →</a></div>
+    <p class="statement rv">설계 과정의 반복 작업을 코드와 AI로 자동화한 도구를 직접 만듭니다.</p>
+  </section>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/site.js"></script>
 </body>
 </html>
