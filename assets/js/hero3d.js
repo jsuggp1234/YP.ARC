@@ -29,7 +29,7 @@ window.hero3D = function hero3D(host, ui) {
 
   const scene = new T.Scene();
   const cam = new T.OrthographicCamera(-1, 1, 1, -1, 0.1, 300);
-  const hemi = new T.HemisphereLight(0xffffff, 0xd8d6cf, 0.85);
+  const hemi = new T.HemisphereLight(0xffffff, 0xd4d4d4, 0.85);
   scene.add(hemi);
   const sun = new T.DirectionalLight(0xffffff, 0.48);
   sun.position.set(-16, 26, 10);

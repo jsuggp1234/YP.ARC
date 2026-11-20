@@ -4,16 +4,16 @@
    one confident statement per screen, drawings and white models as the imagery.
    ============================================================ */
 :root {
-  --bg: #f7f7f5;
-  --ink: #111110;
-  --mid: #6d6c67;
-  --soft: #a8a69f;
-  --line: #e1e0db;
-  --tint: #eeede9;
+  --bg: #ffffff;
+  --ink: #111111;
+  --mid: #6b6b6b;
+  --soft: #a3a3a3;
+  --line: #e6e6e6;
+  --tint: #f4f4f4;
   --red: #c4432b;
-  --model: #fbfbf9;
-  --model-2: #f0efeb;
-  --model-hi: #e4e2dc;
+  --model: #ffffff;
+  --model-2: #f1f1f1;
+  --model-hi: #e2e2e2;
 
   --sans: "IBM Plex Sans KR", "IBM Plex Sans", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -33,16 +33,16 @@
   color-scheme: light;
 }
 :root[data-mode="dark"] {
-  --bg: #0e0e0d;
-  --ink: #ecebe6;
-  --mid: #9b9993;
-  --soft: #5e5d58;
-  --line: #262624;
-  --tint: #171716;
+  --bg: #0d0d0d;
+  --ink: #ededed;
+  --mid: #9a9a9a;
+  --soft: #5c5c5c;
+  --line: #262626;
+  --tint: #171717;
   --red: #e2664c;
-  --model: #2b2b28;
-  --model-2: #1c1c1a;
-  --model-hi: #3d3c38;
+  --model: #2a2a2a;
+  --model-2: #1b1b1b;
+  --model-hi: #3c3c3c;
   color-scheme: dark;
 }
 
