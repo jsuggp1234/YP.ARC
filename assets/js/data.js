@@ -2492,20 +2492,8 @@ const SITE = {
       {
         "heading": "Six Joints",
         "text": "The room hangs from three bolts in one tree, climbs that tree on its own sleeve, and lowers, extends and docks its leaves by hand. Every moving joint is pinned, visible and replaceable; every docking joint leaves the two trees free to sway.",
-        "stack": true,
-      "images": [
-          {
-            "src": "assets/img/the-tree-house/joints-key.jpg",
-            "caption": "Key — south deck open, east leaf docked to a neighbour",
-          "w": "80%",
-            "r": 0.866
-          },
-          {
-            "src": "assets/img/the-tree-house/joints-six.jpg",
-            "caption": "Hang · climb · hinge · drawbridge · tread carriage · docking latch",
-            "r": 1.103
-          }
-        ]
+        "images": [],
+        "keyed": {"key":{"src":"assets/img/the-tree-house/joints-key.jpg","r":0.855,"caption":"Key — south deck open, east leaf docked to a neighbour"},"items":[{"src":"assets/img/the-tree-house/joint-1.jpg","r":0.742,"t":"Hang","x":34.8,"y":39.5},{"src":"assets/img/the-tree-house/joint-2.jpg","r":0.742,"t":"Climb","x":38,"y":81},{"src":"assets/img/the-tree-house/joint-3.jpg","r":0.742,"t":"Hinge","x":21.1,"y":77.3},{"src":"assets/img/the-tree-house/joint-4.jpg","r":0.742,"t":"Drawbridge","x":45.4,"y":55.9},{"src":"assets/img/the-tree-house/joint-5.jpg","r":0.742,"t":"Tread carriage","x":65.5,"y":89.3},{"src":"assets/img/the-tree-house/joint-6.jpg","r":0.742,"t":"Docking latch","x":87.1,"y":91.3}]}
       },
       {
         "big": true,

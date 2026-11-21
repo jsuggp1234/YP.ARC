@@ -2532,6 +2532,17 @@
     };
   };
   // 핀 #8(2026-11-22): 여러 칸으로 된 그림을 스크롤에 따라 왼쪽부터 한 칸씩 드러내요 (data.js 그림의 reveal: 칸 수)
+  // 핀 #11(2026-11-22): 왼쪽 디테일 줄 + 오른쪽 고정 키. 지금 화면 가운데에 온 디테일의 자리를 키 위에 고리로 표시해요
+  const keyedHtml = (q) => `<div class="kj" data-kj><div class="kj-list">${q.items.map((it, i) => `<figure class="kj-it" data-i="${i}"><div class="media" style="aspect-ratio:${it.r}"><img class="dg" src="${esc(it.src)}" alt="${esc(it.t)}" loading="lazy" decoding="async"></div></figure>`).join("")}</div><div class="kj-key"><figure><div class="media" style="aspect-ratio:${q.key.r}"><img class="dg" src="${esc(q.key.src)}" alt="${esc(q.key.caption || "")}" decoding="async">${q.items.map((it, i) => `<span class="kj-ring" data-i="${i}" style="left:${it.x}%;top:${it.y}%"><b>${i + 1}</b></span>`).join("")}</div><figcaption class="mid"><span class="kj-n">01</span> ${esc(q.items[0].t)} <span class="kj-c">— ${esc(q.key.caption || "")}</span></figcaption></figure></div></div>`;
+  const keyedInit = () => $$("[data-kj]").forEach((el) => {
+    const its = $$(".kj-it", el), rings = $$(".kj-ring", el), n = $(".kj-n", el), cap = $("figcaption", el), names = its.map((f) => $("img", f).alt);
+    let cur = -1;
+    const set = (i) => { if (i === cur) return; cur = i; rings.forEach((r, j) => r.classList.toggle("on", j === i)); n.textContent = pad(i + 1); cap.childNodes[1].nodeValue = " " + names[i] + " "; };
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) e.target.classList.add("in"); }), { rootMargin: "0px 0px -12% 0px" });
+    its.forEach((f) => io.observe(f));
+    const upd = () => { const mid = innerHeight * 0.5; let best = 0, bd = 1e9; its.forEach((f, i) => { const b = f.getBoundingClientRect(), d = Math.abs(b.top + b.height / 2 - mid); if (d < bd) { bd = d; best = i; } }); set(best); };
+    addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
+  });
   const revealCols = () => {
     const els = $$(".media:has(> .rv-c)"); if (!els.length || REDUCED) return;
     const upd = () => els.forEach((m) => {
@@ -2708,7 +2719,7 @@
               <section class="pj-sec${s.big || /scene|render|view|interior|exterior/i.test(s.heading) ? " ph" : ""}${s.beside ? " bes" : ""}" id="s${si + 1}" data-toc="${esc(s.heading)}" data-v="${si % 4}">
                 <div class="hd"><span class="num">${pad(si + 1)}.</span><h2>${esc(s.heading)}</h2></div>
                 <p class="txt" data-reveal>${esc(s.text)}</p>
-                ${s.sim ? simHtml(s.sim) : ""}${s.panel ? mapHtml(s.panel) : ""}${s.widget && s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}${s.seq ? seqHtml(s.seq) : ""}${s.seasons ? ssnHtml(s.seasons) : ""}${s.pan && !s.pan.after ? panHtml(s.pan) : ""}${s.widget && !s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}
+                ${s.sim ? simHtml(s.sim) : ""}${s.panel ? mapHtml(s.panel) : ""}${s.widget && s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}${s.seq ? seqHtml(s.seq) : ""}${s.seasons ? ssnHtml(s.seasons) : ""}${s.keyed ? keyedHtml(s.keyed) : ""}${s.pan && !s.pan.after ? panHtml(s.pan) : ""}${s.widget && !s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}
                 ${s.images.length ? `<div class="figs ${s.cols ? "gc" : s.stack ? "n1 stk" : `n${Math.min(3, s.images.length)}`}"${s.cols ? ` style="--c:${s.cols}${s.cw ? `;grid-template-columns:${s.cw.map((x) => x + "fr").join(" ")}` : ""}"` : ""}>${s.images.map((im, ii) => {
                   const big = s.stack || s.images.length === 1 || (s.images.length === 3 && ii === 0);
                   return figure(im, `${p.slug}-${si}-${ii}`, big ? 1600 : 1200, s.images.length === 1 ? 1000 : 900);
@@ -2731,7 +2742,7 @@
         </article>`;
 
       simInit(p);
-      seqInit(p); ssnInit(p); panInit(); revealCols();
+      seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit();
       if (window.TideWidgets) $$("[data-tw]").forEach((w) => TideWidgets.mount(w, w.dataset.tw));
       if (window.MVSims) $$("[data-mv]").forEach((w) => MVSims.mount(w, w.dataset.mv));
       // 목차 + 현재 위치 표시
