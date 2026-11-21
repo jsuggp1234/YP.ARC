@@ -1599,9 +1599,9 @@ html.hi-on .cs-ix { opacity: 0; }
 .pcx { position: relative; height: calc((var(--n) * 60 + 100) * 1svh); margin-top: 64px; }
 .pcx-st { position: sticky; top: 0; height: 100svh; overflow: hidden; align-content: start; padding-top: calc(var(--hdr) + 56px); }
 .pcx-lab { grid-column: 1; grid-row: 1; }
-.pcx-row { grid-column: 1 / -1; grid-row: 2; display: flex; gap: 56px; margin-top: 18svh; white-space: nowrap; transition: transform 0.9s var(--ease); will-change: transform; }
-.pcx-k { display: inline-flex; gap: 14px; align-items: baseline; font-size: var(--t-xxl); letter-spacing: -0.04em; line-height: 1; color: var(--soft); transition: color 0.5s var(--ease); }
-.pcx-k .num { font-size: var(--t-xs); letter-spacing: 0; }
+.pcx-row { grid-column: 1 / -1; grid-row: 2; display: flex; gap: clamp(40px, 6vw, 96px); margin-top: 18svh; white-space: nowrap; transition: transform 0.9s var(--ease); will-change: transform; }
+.pcx-k { display: inline-flex; flex-direction: column; gap: 2px; font-size: var(--t-l); text-transform: uppercase; letter-spacing: 0; line-height: 1.15; color: var(--soft); transition: color 0.5s var(--ease); }
+.pcx-k .num { font-size: inherit; }
 .pcx-k.on { color: var(--ink); }
 .pcx-d { grid-column: 3 / span 2; grid-row: 3; position: relative; margin-top: 36px; min-height: 9em; }
 .pcx-di { position: absolute; left: 0; top: 0; right: 0; opacity: 0; transform: translateY(12px); transition: opacity 0.5s var(--ease), transform 0.7s var(--ease); max-width: 30em; }
@@ -1620,7 +1620,6 @@ html.hi-on .cs-ix { opacity: 0; }
   .ab-lead > .dr { grid-column: 1; }
   .cvx-c, .cvx-c:nth-of-type(n) { grid-column: 1 / -1; grid-row: auto; min-height: 0; }
   .cvx-fig svg { width: 50%; }
-  .pcx-k { font-size: var(--t-xl); }
   .pcx-row { gap: 32px; }
   .pcx-d { grid-column: 1 / -1; }
   .ab-cv > .ab-lab, .ab-cvb { grid-column: 1 / -1; }
