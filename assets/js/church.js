@@ -35,7 +35,7 @@
     cv.className = "mv-cv"; el.appendChild(cv);
     let W = 0, H = 0, live = false, raf = 0, t0 = performance.now(), hover = null;
     const size = () => { const d = Math.min(2, devicePixelRatio || 1); W = el.clientWidth; H = el.clientHeight; cv.width = Math.round(W * d); cv.height = Math.round(H * d); g.setTransform(d, 0, 0, d, 0, 0); };
-    const loop = (now) => { raf = 0; if (!W) size(); g.clearRect(0, 0, W, H); draw(g, W, H, reduce ? 6 : (now - t0) / 1000, hover); if (live && !reduce) raf = requestAnimationFrame(loop); };
+    const loop = (now) => { raf = 0; if (!W) size(); g.clearRect(0, 0, W, H); const more = draw(g, W, H, reduce ? 6 : (now - t0) / 1000, hover); if (live && !reduce && more !== false) raf = requestAnimationFrame(loop); };
     const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
     new ResizeObserver(() => { size(); kick(); }).observe(el);
     new IntersectionObserver(([e]) => { live = e.isIntersecting; if (live) kick(); }).observe(el);
@@ -420,15 +420,22 @@
     const DOTS = [[50, 7], [280, 6], [298, 6], [413, 7], [518, 4], [548, 4], [611, 4], [670, 6], [708, 6], [738, 6], [752, 4], [778, 6], [792, 6], [843, 11], [897, 7], [925, 6], [943, 11], [980, 4], [997, 4], [1002, 4], [1068, 4], [1122, 7], [1243, 6], [1292, 7], [1339, 6], [1486, 7], [1625, 7], [1852, 7]];
     const dens = (x) => { for (let i = 0; i < CURVE.length - 1; i++) { const [a, b] = [CURVE[i], CURVE[i + 1]]; if (x <= b[0]) { const k = (x - a[0]) / (b[0] - a[0]); return (272 - (a[1] + (b[1] - a[1]) * k)) / 198; } } return 0.02; };
     const r = rnd(9), people = [], cars = [], glow = DOTS.map(() => 0);
-    let last = 0, scrollOff = 0, lastY = scrollY;
-    addEventListener("scroll", () => { scrollOff += (scrollY - lastY) * 1.4; lastY = scrollY; }, { passive: true });
-    stage(el, (g, W, H, t) => {
-      const dt = Math.min(0.05, t - last); last = t;
-      const sc = H / 544, tw = TW * sc, off = ((t * 38 + scrollOff) % TW + TW) % TW; // 띠가 흐르는 양 (원본 단위)
+    // 핀 #3(2026-11-22): 끝없이 돌지 않고 세 바퀴(사람이 서쪽 끝에서 대지까지 걷는 시간 × 3)만 움직인 뒤 멈춰요.
+    // 멈춘 뒤에는 스크롤할 때만 한 장씩 다시 그리고, 그림을 누르면 처음부터 다시 세 바퀴.
+    const ROUNDS = 3, ROUND_S = 15;
+    let last = 0, scrollOff = 0, lastY = scrollY, run = 0, done = false, st = null;
+    addEventListener("scroll", () => { scrollOff += (scrollY - lastY) * 1.4; lastY = scrollY; if (done && st) st.kick(); }, { passive: true });
+    el.addEventListener("click", () => { if (!done) return; done = false; run = 0; if (st) st.kick(); });
+    const pats = {}; // 점 무늬: 매 프레임 수천 개 점을 찍는 대신 한 번 만든 무늬로 채워요
+    const dotPat = (g, sc, col) => { const k = sc.toFixed(3) + col; if (pats[k]) return pats[k]; const c = document.createElement("canvas"), n = Math.max(2, Math.round(9 * sc * 2)) , s = 9 * sc; c.width = Math.ceil(s * 2 * 2); c.height = Math.ceil(s * 2 * 2); const x = c.getContext("2d"); x.scale(2, 2); x.fillStyle = col; const d = Math.max(0.8, sc * 1.6); x.fillRect(0, 0, d, d); x.fillRect(s / 2, s, d, d); x.fillRect(s, 0, d, d); x.fillRect(s * 1.5, s, d, d); const p = g.createPattern(c, "repeat"); if (p && p.setTransform) p.setTransform(new DOMMatrix().scale(0.5)); return (pats[k] = p || col); };
+    st = stage(el, (g, W, H, t) => {
+      const dt = done ? 0 : Math.min(0.05, t - last); last = t;
+      run += dt; if (!done && run >= ROUNDS * ROUND_S) { done = true; people.length = 0; cars.length = 0; glow.fill(0); }
+      const sc = H / 544, tw = TW * sc, off = ((run * 38 + scrollOff) % TW + TW) % TW; // 띠가 흐르는 양 (원본 단위)
       const X = (x) => x * sc, Y = (y) => y * sc, dark = root.dataset.mode === "dark";
       // 사람: 서쪽 끝에서 생겨 동쪽으로 걸어요. 밀도가 낮은 곳일수록 많이 흩어져요(빠져나가요)
-      if (!reduce) {
-        const spawn = 14 * dt; for (let k = 0; k < Math.floor(spawn + r()); k++) { let x = 16; for (let n = 0; n < 6; n++) { const q = 16 + r() * 1080; if (r() < dens(q) + 0.15) { x = q; break; } } people.push({ x, y: 296 + r() * 18, v: 70 + r() * 60, a: 0, life: 1, ph: r() * 6 }); }
+      if (!reduce && !done) {
+        const spawn = 14 * (run < (ROUNDS - 0.7) * ROUND_S ? dt : 0); // 마지막 바퀴엔 새 사람이 안 생겨요 for (let k = 0; k < Math.floor(spawn + r()); k++) { let x = 16; for (let n = 0; n < 6; n++) { const q = 16 + r() * 1080; if (r() < dens(q) + 0.15) { x = q; break; } } people.push({ x, y: 296 + r() * 18, v: 70 + r() * 60, a: 0, life: 1, ph: r() * 6 }); }
         for (const p of people) { p.x += p.v * dt; p.ph += dt * 6; const d = dens(p.x); if (p.a < 1) p.a = Math.min(1, p.a + dt * 2);
           if (r() < dt * (p.x > 1095 ? 0.55 : 0.08) * (1.25 - d) * 1.6) p.leave = p.leave || r() < 0.5; // 문턱을 넘으면 흐름이 끊겨요
           if (p.leave) { p.life -= dt * 1.6; p.y += dt * 14 * (p.ph % 2 > 1 ? 1 : -1); }
@@ -447,8 +454,8 @@
         g.save(); g.translate(ox, 0);
         if (ox + tw < 0) { g.restore(); continue; }
         // 밀도 곡선 + 점 채움
-        g.beginPath(); g.moveTo(X(16), Y(272)); { const Pt = CURVE.map(([x, y]) => [x, 272 - (272 - y) * (1 + 0.035 * Math.sin(t * 1.2 + x / 160))]); g.lineTo(X(Pt[0][0]), Y(Pt[0][1])); for (let i = 1; i < Pt.length - 1; i++) { const mxp = (Pt[i][0] + Pt[i + 1][0]) / 2, myp = (Pt[i][1] + Pt[i + 1][1]) / 2; g.quadraticCurveTo(X(Pt[i][0]), Y(Pt[i][1]), X(mxp), Y(myp)); } const e = Pt[Pt.length - 1]; g.lineTo(X(e[0]), Y(e[1])); } g.lineTo(X(1962), Y(272)); g.closePath();
-        g.save(); g.clip(); g.fillStyle = soft; for (let y = 60; y < 272; y += 9) for (let x = 16 + ((y / 9) % 2) * 4.5; x < 1962; x += 9) g.fillRect(X(x), Y(y), Math.max(0.8, sc * 1.6), Math.max(0.8, sc * 1.6)); g.restore();
+        g.beginPath(); g.moveTo(X(16), Y(272)); { const Pt = CURVE.map(([x, y]) => [x, 272 - (272 - y) * (1 + 0.035 * Math.sin(run * 1.2 + x / 160))]); g.lineTo(X(Pt[0][0]), Y(Pt[0][1])); for (let i = 1; i < Pt.length - 1; i++) { const mxp = (Pt[i][0] + Pt[i + 1][0]) / 2, myp = (Pt[i][1] + Pt[i + 1][1]) / 2; g.quadraticCurveTo(X(Pt[i][0]), Y(Pt[i][1]), X(mxp), Y(myp)); } const e = Pt[Pt.length - 1]; g.lineTo(X(e[0]), Y(e[1])); } g.lineTo(X(1962), Y(272)); g.closePath();
+        g.save(); g.clip(); g.fillStyle = dotPat(g, sc, soft); g.fillRect(0, Y(56), X(1962), Y(220)); g.restore();
         g.strokeStyle = ink; g.lineWidth = Math.max(1, sc * 2.4); g.stroke();
         g.beginPath(); g.moveTo(X(16), Y(272)); g.lineTo(X(1962), Y(272)); g.lineWidth = Math.max(1, sc * 2); g.stroke();
         // 팝업 점 (사람이 지나가면 잠깐 부풀어요)
@@ -457,14 +464,14 @@
         g.setLineDash([X(14), X(5), X(2), X(5)]); g.strokeStyle = soft; g.lineWidth = 1; g.beginPath(); g.moveTo(X(1095), Y(57)); g.lineTo(X(1095), Y(395)); g.stroke(); g.setLineDash([]);
         // 아래 띠: 개발됨(점) · 문턱(점선) · 미개발(빗금)
         g.strokeStyle = soft; g.lineWidth = 1; g.strokeRect(X(16), Y(349), X(1155), Y(39));
-        g.save(); g.beginPath(); g.rect(X(16), Y(349), X(1155), Y(39)); g.clip(); g.fillStyle = faint; for (let y = 352; y < 388; y += 9) for (let x = 20 + ((y / 9) % 2) * 4.5; x < 1171; x += 9) g.fillRect(X(x), Y(y), Math.max(0.8, sc * 1.6), Math.max(0.8, sc * 1.6)); g.restore();
+        g.save(); g.beginPath(); g.rect(X(16), Y(349), X(1155), Y(39)); g.clip(); g.fillStyle = dotPat(g, sc, faint); g.fillRect(X(16), Y(349), X(1155), Y(39)); g.restore();
         g.setLineDash([X(6), X(5)]); g.beginPath(); g.moveTo(X(1171), Y(349)); g.lineTo(X(1598), Y(349)); g.moveTo(X(1171), Y(388)); g.lineTo(X(1598), Y(388)); g.stroke(); g.setLineDash([]);
         g.strokeRect(X(1598), Y(349), X(364), Y(39)); g.save(); g.beginPath(); g.rect(X(1598), Y(349), X(364), Y(39)); g.clip(); g.beginPath(); for (let x = 1598; x < 2000; x += 22) { g.moveTo(X(x), Y(388)); g.lineTo(X(x + 39), Y(349)); } g.strokeStyle = soft; g.stroke(); g.restore();
         // 사람
         for (const p of people) { g.globalAlpha = p.a * Math.max(0, p.life); g.fillStyle = C.mix(0.7); g.beginPath(); g.arc(X(p.x), Y(p.y + Math.sin(p.ph) * 0.8), Math.max(1.1, X(2.6)), 0, 6.283); g.fill(); }
         g.globalAlpha = 1;
         // 대지: 빨간 틀이 숨 쉬고, 차가 들어와 머물러요
-        const pulse = 0.5 + 0.5 * Math.sin(t * 2.2);
+        const pulse = done ? 0.5 : 0.5 + 0.5 * Math.sin(run * 2.2);
         g.fillStyle = `rgba(192,53,58,${dark ? 0.16 + 0.08 * pulse : 0.1 + 0.06 * pulse})`; g.fillRect(X(1528), Y(57), X(65), Y(337)); g.strokeStyle = RED; g.lineWidth = Math.max(1, sc * 2); g.strokeRect(X(1528), Y(57), X(65), Y(337));
         for (const c of cars) { g.globalAlpha = Math.max(0, c.life ?? 1); g.fillStyle = RED; const cx = X(c.x), cy = Y(c.y), cw = X(22), ch = X(10); g.fillRect(cx - cw / 2, cy - ch / 2, cw, ch); g.fillStyle = C.bg; g.fillRect(cx - cw * 0.32, cy - ch * 0.3, cw * 0.22, ch * 0.6); g.globalAlpha = 1; }
         // 글자 (사이트 토큰 크기, 자간 넓게)
@@ -478,6 +485,8 @@
         sp("approx. 260 m", X(1307), Y(482), "center", RED); sp("W", X(22), Y(517)); sp("E", X(1943), Y(517));
         g.restore();
       }
+      el.classList.toggle("mv-done", done);
+      return !done;
     });
   };
 

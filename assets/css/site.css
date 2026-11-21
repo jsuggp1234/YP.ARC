@@ -1704,3 +1704,10 @@ html.hi-on .cs-ix { opacity: 0; }
   .cx-nt { grid-column: 1 / -1; }
   .cx-nm { grid-column: 1 / -1; grid-row: 1; justify-self: end; width: 34%; margin-bottom: 24px; }
 }
+
+/* 핀 #3: 멈춘 단면 시뮬레이션은 누르면 다시 재생 */
+.mv-transect.mv-done { cursor: pointer; }
+/* 핀 #6(2026-11-22): Contact 창이 열려 있을 때는 운영체제 기본 커서를 다시 보여 줘요 (사이트 커서는 창 밑에 깔려서 숨김) */
+/* 핀 #7: 메뉴 화면도 같아요 */
+html.ct-lock body, html.ct-lock .ct, html.ct-lock .ct *, html.mn-on body, html.mn-on #menu, html.mn-on #menu *, html.mn-on .hdr * { cursor: auto !important; }
+html.ct-lock .ct a, html.ct-lock .ct button, html.ct-lock .ct [data-ct-close], html.mn-on #menu a, html.mn-on .hdr a, html.mn-on .hdr button { cursor: pointer !important; }
