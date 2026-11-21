@@ -1546,3 +1546,89 @@ html.hi-on .cs-ix { opacity: 0; }
   .cl-pv { display: none; }
   .cs-ix { left: var(--g4-e); top: 72px; }
 }
+
+/* ============ v2 8–10단계: About ============ */
+.ab2 { padding-bottom: 80px; }
+.dr { display: inline-block; vertical-align: middle; margin-left: 8px; padding: 1px 6px; border: 1px solid currentColor; border-radius: 99px; font-size: var(--t-xs); font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; color: var(--mid); line-height: 1.4; }
+/* 한 줄씩 올라오기 */
+.lr-l { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; }
+.lr-i { display: inline-block; transform: translateY(105%); transition: transform 1.2s var(--ease) calc(var(--i) * 0.09s); }
+.lr.in .lr-i { transform: none; }
+/* 8: 큰 문장 + About me + What I do */
+.ab-st { padding-top: 110px; }
+.ab-big { grid-column: 1 / span 3; margin: 0; font-size: var(--t-xxl); font-weight: 400; letter-spacing: -0.04em; line-height: 1.12; }
+.ab-me, .ab-do { margin-top: clamp(96px, 16vh, 180px); align-items: start; }
+.ab-pic { grid-column: 1; position: relative; width: 75%; aspect-ratio: 3 / 4; overflow: hidden; background: var(--line); }
+.ab-pic .mz { position: absolute; inset: 0; }
+.ab-pic img, .ab-pic svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ab-pic2 { aspect-ratio: 4 / 5; }
+.ab-col { grid-column: 3 / span 2; max-width: 34em; }
+.ab-lab { margin: 0 0 22px; font-size: var(--t-s); font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em; }
+.ab-col .ab-lab:not(:first-child) { margin-top: 48px; }
+.ab-p { margin: 0 0 14px; font-size: var(--t-m); line-height: 1.55; }
+.ab-ol { list-style: none; margin: 0; padding: 0; font-size: var(--t-m); line-height: 1.55; }
+.ab-ol li { display: flex; gap: 20px; }
+.ab-ol .num { min-width: 2.2em; color: var(--mid); }
+/* 9: Core values */
+.ab-lead { margin-top: clamp(120px, 22vh, 240px); align-items: start; }
+.ab-big2 { grid-column: 2 / span 3; margin: 0; font-size: var(--t-xxl); font-weight: 400; letter-spacing: -0.04em; line-height: 1.12; }
+.ab-lead > .dr { grid-column: 2; justify-self: start; margin: 16px 0 0; }
+.cvx { position: relative; margin-top: 64px; row-gap: var(--g4-gap); isolation: isolate; }
+.cvx-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 0.6s var(--ease); }
+.cvx.hov .cvx-bg { opacity: 1; }
+.cvx-f { position: absolute; inset: 6vh 18vw; opacity: 0; transition: opacity 0.5s var(--ease); }
+.cvx-f.on { opacity: 1; }
+.cvx-f svg { width: 100%; height: 100%; }
+.cvx-f path { stroke-dashoffset: 1; transition: stroke-dashoffset 1.8s var(--ease); }
+.cvx-f.on path { stroke-dashoffset: 0; }
+.cvx .pf text { display: none; } /* 도면 안 글자는 넣지 않아요 (CLAUDE.md) */
+.cvx .pf .r { stroke: var(--ink); }
+.cvx-c { position: relative; grid-row: 1; display: flex; flex-direction: column; gap: 16px; min-height: min(70svh, 620px); padding: 16px; border: 1px solid var(--line); background: var(--bg); outline: none; transition: background-color 0.5s var(--ease), border-color 0.5s var(--ease); }
+.cvx-c:nth-of-type(1) { grid-column: 2; } .cvx-c:nth-of-type(2) { grid-column: 3; } .cvx-c:nth-of-type(3) { grid-column: 4; }
+.cvx-t { margin: 0; font-size: var(--t-s); font-weight: 400; text-transform: uppercase; display: flex; gap: 12px; }
+.cvx-fig { flex: 1; display: grid; place-items: center; min-height: 0; transition: opacity 0.4s var(--ease); }
+.cvx-fig svg { width: 70%; height: auto; max-height: 38svh; }
+.cvx-tx { transition: opacity 0.4s var(--ease); }
+.cvx-en { margin: 0 0 8px; font-size: var(--t-m); }
+.cvx-d { margin: 0; font-size: var(--t-xs); color: var(--mid); line-height: 1.55; }
+.cvx.hov .cvx-c { background: transparent; border-color: var(--ink); }
+.cvx.hov .cvx-c .cvx-fig, .cvx.hov .cvx-c:not(.on) .cvx-tx { opacity: 0; }
+.cvx.hov .cvx-c.on { background: color-mix(in srgb, var(--bg) 72%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.cvx-c:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* 10: Process — 고정 화면 */
+.pcx { position: relative; height: calc((var(--n) * 60 + 100) * 1svh); margin-top: 64px; }
+.pcx-st { position: sticky; top: 0; height: 100svh; overflow: hidden; align-content: start; padding-top: calc(var(--hdr) + 56px); }
+.pcx-lab { grid-column: 1; grid-row: 1; }
+.pcx-row { grid-column: 1 / -1; grid-row: 2; display: flex; gap: 56px; margin-top: 18svh; white-space: nowrap; transition: transform 0.9s var(--ease); will-change: transform; }
+.pcx-k { display: inline-flex; gap: 14px; align-items: baseline; font-size: var(--t-xxl); letter-spacing: -0.04em; line-height: 1; color: var(--soft); transition: color 0.5s var(--ease); }
+.pcx-k .num { font-size: var(--t-xs); letter-spacing: 0; }
+.pcx-k.on { color: var(--ink); }
+.pcx-d { grid-column: 3 / span 2; grid-row: 3; position: relative; margin-top: 36px; min-height: 9em; }
+.pcx-di { position: absolute; left: 0; top: 0; right: 0; opacity: 0; transform: translateY(12px); transition: opacity 0.5s var(--ease), transform 0.7s var(--ease); max-width: 30em; }
+.pcx-di.on { opacity: 1; transform: none; }
+.pcx-tg { margin: 0; font-size: var(--t-m); font-style: italic; color: var(--mid); }
+.pcx-c { grid-column: 4; grid-row: 1; justify-self: end; margin: 0; font-size: var(--t-xs); }
+/* CV */
+.ab-cv { margin-top: clamp(120px, 20vh, 220px); align-items: start; }
+.ab-cv > .ab-lab { grid-column: 1; }
+.ab-cvb { grid-column: 3 / span 2; }
+@media (max-width: 760px) {
+  .ab-big, .ab-big2 { grid-column: 1 / -1; }
+  .ab-pic { grid-column: 1 / span 2; width: 100%; }
+  .ab-col { grid-column: 1 / -1; margin-top: 28px; }
+  .ab-me, .ab-do { margin-top: 72px; }
+  .ab-lead > .dr { grid-column: 1; }
+  .cvx-c, .cvx-c:nth-of-type(n) { grid-column: 1 / -1; grid-row: auto; min-height: 0; }
+  .cvx-fig svg { width: 50%; }
+  .pcx-k { font-size: var(--t-xl); }
+  .pcx-row { gap: 32px; }
+  .pcx-d { grid-column: 1 / -1; }
+  .ab-cv > .ab-lab, .ab-cvb { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pcx { height: auto; }
+  .pcx-st { position: relative; height: auto; }
+  .pcx-row { flex-direction: column; gap: 8px; transform: none !important; white-space: normal; margin-top: 24px; }
+  .pcx-k { color: var(--ink); }
+  .pcx-d { display: none; }
+}

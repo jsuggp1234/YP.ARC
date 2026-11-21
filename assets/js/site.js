@@ -2664,7 +2664,163 @@
   };
 
   // ---------- 소개 ----------
+  // ---------- v2 About (계획 8–10단계) ----------
+  // 큰 문장: 단어를 줄 단위로 묶어 화면에 들어올 때 한 줄씩 아래에서 올라와요
+  function lineRise(el) {
+    if (!el) return;
+    const words = el.textContent.trim().split(/\s+/);
+    el.innerHTML = words.map((w) => `<span class="lr-w">${esc(w)}</span>`).join(" ");
+    const ws = $$(".lr-w", el), lines = [];
+    let top = null;
+    ws.forEach((w) => { if (w.offsetTop !== top) { lines.push([]); top = w.offsetTop; } lines[lines.length - 1].push(w.textContent); });
+    el.innerHTML = lines.map((l, i) => `<span class="lr-l"><span class="lr-i" style="--i:${i}">${l.map(esc).join(" ")}</span></span>`).join(" ");
+    el.classList.add("lr");
+    if (REDUCED || !("IntersectionObserver" in window)) return el.classList.add("in");
+    const o = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { el.classList.add("in"); o.disconnect(); } }), { threshold: 0.2 });
+    o.observe(el);
+  }
+  const draftTag = (x) => (x && x.draft ? ` <span class="dr" title="초안 — data.js에서 draft를 지우면 사라져요">Draft</span>` : "");
+
   render.about = () => {
+    const AB = SITE.about || {}, PL = SITE.pillars || [], steps = (AB.process && AB.process.steps) || [];
+    const list = (rows) => rows.map(([a, b, c, e]) => `<li><span class="mono">${esc(a)}</span><span>${esc(b)}${c ? ` <span class="aw-w">${esc(c)}</span>` : ""}${e ? `<small class="mid">${esc(e)}</small>` : ""}</span></li>`).join("");
+    const sec = (t, rows) => rows && rows.length ? `<section class="cv-sec" data-reveal><h2 class="mono mid">${t}</h2><ul>${list(rows)}</ul></section>` : "";
+    const fig = (k) => `<svg class="pf" viewBox="0 0 400 500" aria-hidden="true">${Drawing.fig(k)}</svg>`;
+    $("#main").innerHTML = `
+      <div class="ab2">
+        <section class="ab-st g4"><h1 class="ab-big">${esc(SITE.manifesto.en)}</h1></section>
+
+        <section class="ab-me g4">
+          <div class="ab-pic">${mz(art(SITE.portrait, "portrait", "me", 900, 1200, null, SITE.owner))}</div>
+          <div class="ab-col">
+            <h2 class="ab-lab">About me</h2>
+            <p class="ab-p">${esc(CV.intro)}</p>
+            <p class="ab-p mid">${esc(SITE.ownerKo || "")} ${esc(SITE.owner)} — ${esc(SITE.role)}, ${esc(SITE.based)}. ${esc(SITE.status)}.</p>
+          </div>
+        </section>
+
+        <section class="ab-do g4">
+          <div class="ab-pic ab-pic2">${AB.image2 ? mz(`<img src="${esc(AB.image2)}" alt="" loading="lazy" decoding="async">`) : ""}</div>
+          <div class="ab-col">
+            <h2 class="ab-lab">${esc(AB.doTitle || "What I do")}${draftTag(AB.approach)}</h2>
+            <ol class="ab-ol">${((AB.approach && AB.approach.items) || []).map((t, i) => `<li><span class="num">${pad(i + 1)}.</span>${esc(t)}</li>`).join("")}</ol>
+            <h2 class="ab-lab">${esc(AB.toolkitTitle || "Toolkit")}</h2>
+            <p class="ab-p">${CV.skills.map(([t]) => esc(t)).join(", ")}</p>
+          </div>
+        </section>
+
+        <section class="ab-lead g4"><p class="ab-big2">${esc((AB.valuesLead || {}).text || "")}</p>${draftTag(AB.valuesLead)}</section>
+        <section class="cvx g4" aria-label="Core values">
+          <div class="cvx-bg" aria-hidden="true">${PL.map((p, i) => `<div class="cvx-f" data-i="${i}">${fig(p.fig)}</div>`).join("")}</div>
+          ${PL.map((p, i) => `
+          <article class="cvx-c" data-i="${i}" tabindex="0">
+            <h3 class="cvx-t"><span class="num">${pad(i + 1)}.</span> ${esc(p.k)}</h3>
+            <div class="cvx-fig">${fig(p.fig)}</div>
+            <div class="cvx-tx"><p class="cvx-en">${esc(p.en)}</p><p class="cvx-d">${esc(p.d)}</p></div>
+          </article>`).join("")}
+        </section>
+
+        <section class="ab-lead g4"><p class="ab-big2">${esc((AB.processLead || {}).text || "")}</p>${draftTag(AB.processLead)}</section>
+        <section class="pcx" style="--n:${steps.length}" aria-label="Process">
+          <div class="pcx-st g4">
+            <h2 class="ab-lab pcx-lab">Process${draftTag(AB.process)}</h2>
+            <div class="pcx-row">${steps.map((st, i) => `<span class="pcx-k" data-i="${i}"><span class="num">${pad(i + 1)}.</span>${esc(st.k)}</span>`).join("")}</div>
+            <div class="pcx-d">${steps.map((st, i) => `<div class="pcx-di" data-i="${i}"><p class="ab-p">${esc(st.d)}</p><p class="pcx-tg">${esc(st.t)}</p></div>`).join("")}</div>
+            <p class="pcx-c num" aria-hidden="true"><span class="pcx-ci">01</span> / ${pad(steps.length)}</p>
+          </div>
+        </section>
+
+        <section class="ab-cv g4">
+          <h2 class="ab-lab">${esc(AB.cvTitle || "Profile")}</h2>
+          <div class="txt ab-cvb">
+            <dl class="facts mono">
+              <div><dt>Birth</dt><dd class="num">${esc(SITE.birth)}</dd></div>
+              <div><dt>Based</dt><dd>${esc(SITE.based)}</dd></div>
+              <div><dt>Status</dt><dd>${esc(SITE.status)}</dd></div>
+              <div><dt>Email</dt><dd><a class="lnk" href="mailto:${esc(SITE.email)}">${esc(SITE.email)}</a></dd></div>
+              ${SITE.links.map((l) => `<div><dt>${esc(l.label)}</dt><dd><a class="lnk" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.href.replace(/^https?:\/\/(www\.)?instagram\.com\//, "@"))}</a></dd></div>`).join("")}
+              <div><dt>Language</dt><dd>${esc(CV.languages.join(", "))}</dd></div>
+            </dl>
+            ${sec("Education", CV.education)}
+            ${sec("Experience", CV.experience)}
+            <section class="cv-sec" data-reveal><h2 class="mono mid">Awards</h2><ul>${CV.awards.map(([t, c, prize, w]) => `<li><span class="mono">${esc(t)}</span><span>${esc(c)} <b class="prize">${esc(prize)}</b> <span class="aw-w">${esc(w)}</span></span></li>`).join("")}</ul></section>
+            ${sec("Activities", CV.activities)}
+            ${sec("Certification", CV.certification)}
+            ${sec("Course", CV.courses)}
+            ${sec("Design Studio", CV.studios)}
+            ${sec("Military", CV.military)}
+          </div>
+        </section>
+      </div>`;
+    lineRise($(".ab-big"));
+    $$(".ab-big2").forEach(lineRise);
+    coreValues();
+    processPin();
+  };
+
+  // Core values: 카드에 올리면(또는 키보드로 들어가면) 그 선 도면이 화면 전체에 그려져요
+  function coreValues() {
+    const sec = $(".cvx");
+    if (!sec) return;
+    const set = (i) => {
+      sec.classList.toggle("hov", i >= 0);
+      $$(".cvx-c", sec).forEach((c) => c.classList.toggle("on", +c.dataset.i === i));
+      $$(".cvx-f", sec).forEach((f) => f.classList.toggle("on", +f.dataset.i === i));
+    };
+    $$(".cvx-c", sec).forEach((c) => {
+      c.addEventListener("pointerenter", (e) => { if (e.pointerType !== "touch") set(+c.dataset.i); });
+      c.addEventListener("focus", () => set(+c.dataset.i));
+      c.addEventListener("blur", () => set(-1));
+    });
+    sec.addEventListener("pointerleave", () => set(-1));
+  }
+
+  // Process: 구간이 화면에 고정되고, 스크롤 진행에 따라 단계 이름 줄이 옆으로 한 칸씩 밀려요.
+  // 지금 단계는 셋째 칸 시작점에 오고 진하게, 나머지는 흐리게. 스크롤이 멈추면 가까운 단계에 맞춰 멈춰요.
+  function processPin() {
+    const sec = $(".pcx");
+    if (!sec) return;
+    const row = $(".pcx-row", sec), ks = $$(".pcx-k", sec), ds = $$(".pcx-di", sec), ci = $(".pcx-ci", sec), n = ks.length;
+    if (!n) return;
+    let cur = -1, snapT = 0, curX = 0;
+    const anchor = () => { const c = $(".pcx-d", sec).getBoundingClientRect(); return c.left; };
+    const setStep = (i) => {
+      if (i === cur) return;
+      cur = i;
+      ks.forEach((k, j) => k.classList.toggle("on", j === i));
+      ds.forEach((dd, j) => dd.classList.toggle("on", j === i));
+      ci.textContent = pad(i + 1);
+      curX = $(".pcx-d", sec).offsetLeft - row.offsetLeft - (ks[i].offsetLeft - ks[0].offsetLeft); // offsetLeft는 밀기(transform)와 상관없는 원래 자리
+      row.style.transform = `translate3d(${curX.toFixed(1)}px,0,0)`;
+    };
+    const place = () => { // 크기가 바뀌면 처음부터 다시 계산
+      row.style.transition = "none"; row.style.transform = "none"; curX = 0;
+      const i = cur < 0 ? 0 : cur; cur = -1; setStep(i);
+      requestAnimationFrame(() => (row.style.transition = ""));
+    };
+    const prog = () => {
+      const b = sec.getBoundingClientRect(), len = sec.offsetHeight - innerHeight;
+      return { p: clamp(-b.top / Math.max(1, len), 0, 1), top: b.top + scrollY, len };
+    };
+    const on = () => {
+      const { p } = prog();
+      setStep(Math.min(n - 1, Math.floor(p * n * 0.9999)));
+      if (REDUCED) return;
+      clearTimeout(snapT);
+      snapT = setTimeout(() => { // 단계 사이에서 멈추면 가까운 단계의 가운데로
+        const { p: q, top, len } = prog();
+        if (q <= 0 || q >= 1) return;
+        const target = top + ((Math.min(n - 1, Math.floor(q * n)) + 0.5) / n) * len;
+        if (Math.abs(target - scrollY) < 8) return;
+        if (lenis) lenis.scrollTo(target, { duration: 0.6 }); else scrollTo({ top: target, behavior: "smooth" });
+      }, 180);
+    };
+    addEventListener("scroll", on, { passive: true });
+    addEventListener("resize", place);
+    place(); on();
+  }
+
+  render.aboutV1 = () => {
     // [기간, 이름, 보조 설명, 자세한 내용]
     const list = (rows) => rows.map(([a, b, c, e]) => `<li><span class="mono">${esc(a)}</span><span>${esc(b)}${c ? ` <span class="aw-w">${esc(c)}</span>` : ""}${e ? `<small class="mid">${esc(e)}</small>` : ""}</span></li>`).join("");
     const sec = (t, rows) => rows && rows.length ? `<section class="cv-sec" data-reveal><h2 class="mono mid">${t}</h2><ul>${list(rows)}</ul></section>` : "";

@@ -203,9 +203,9 @@
 5. ✅ **Menu 페이지 카드** (2026-11-22 완료 — `openMenu()`/`closeMenu()`, 카드 글은 `SITE.pages`·`SITE.archive`, archive 카드는 6단계 전까지 projects.html): 화면이 줄어들며 Works·Archive·About 카드 세 장이 나오고, 누르면 커지며 이동해요. 확인: 세 페이지 오가기.
 6. ✅ **Archive 페이지** (2026-11-22 완료 — 새 archive.html, 이미지 목록 SITE.archive.items): 큰 제목, 설명, 2022—2027, 아래 가로 이미지 띠(높이 같고 폭은 사진 비율). 확인: `projects.html`(또는 새 `archive.html`, 결정 필요).
 7. ✅ **Cases 이름 목록** (2026-11-22 완료 — projects.html을 이름 목록으로, 예전 목록은 render.projectsV1): 작품 이름 목록에 올리면 사진이 떠요. 확인: 목록 페이지.
-8. **About 1:** 큰 철학 문장(한 줄씩 올라옴), 프로필 사진, About me(`CV.intro`), What I do(초안 표시 + 툴킷). 확인: `about.html` 위쪽.
-9. **About 2 — Core values:** 세 장, 올리면 그 선 도면이 화면 전체에 그려지고 카드는 테두리 상자로 바뀌어요. 확인: hover.
-10. **About 3 — Process:** 6단계 고정 + 옆으로 밀림 + 단계마다 멈춤(초안 표시). 확인: 스크롤.
+8. ✅ **About 1** (about.html 위쪽: 철학 문장 줄마다 올라옴, 사진+About me, What I do(Draft)+Toolkit): 큰 철학 문장(한 줄씩 올라옴), 프로필 사진, About me(`CV.intro`), What I do(초안 표시 + 툴킷). 확인: `about.html` 위쪽.
+9. ✅ **About 2 — Core values** (hover하면 선 도면이 화면 전체, 카드는 테두리 상자): 세 장, 올리면 그 선 도면이 화면 전체에 그려지고 카드는 테두리 상자로 바뀌어요. 확인: hover.
+10. ✅ **About 3 — Process** (고정 + 옆으로 밀림 + 단계 맞춤, Draft 표시): 6단계 고정 + 옆으로 밀림 + 단계마다 멈춤(초안 표시). 확인: 스크롤.
 11. **케이스 1 — 머리:** 제목, 연도, 태그, 대표 이미지(오른쪽 절반), 큰 설명 문장, 시차. 확인: 작품 2개.
 12. **케이스 2 — 본문:** 01–06 번호 블록(폭과 시작 칸을 블록마다 다르게). 기존 `seq`, `sim`, `widget`은 블록 안에서 그대로 작동. 확인: RE:TIDE, Motorism.
 13. **케이스 3 — next case:** 아주 큰 "next case / 이름" + 작은 썸네일, 누르면 이동. 확인: 마지막 작품에서 첫 작품으로 넘어가는지.

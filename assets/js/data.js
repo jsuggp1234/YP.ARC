@@ -57,6 +57,30 @@ const SITE = {
     { key: "archive", title: "archive", href: "archive.html" },
     { key: "about", title: "about", href: "about.html" },
   ],
+  // About 페이지 (v2 8–10단계). draft: true 인 글은 제가 쓴 초안이라 화면에 "Draft"가 붙어요 — 확인 후 draft를 지우면 표시가 사라져요
+  about: {
+    image2: "assets/img/timteam-work/night-exterior.jpg", // What I do 옆 사진
+    doTitle: "What I do",
+    approach: {
+      draft: true,
+      items: ["Site reading", "Section first — air & light", "Structural order", "Joints & details", "Simulation & data", "Drawings & visualization"],
+    },
+    toolkitTitle: "Toolkit",
+    valuesLead: { draft: true, text: "Three principles hold every drawing together" },
+    processLead: { draft: true, text: "A process that moves from the question to the joint" },
+    process: {
+      draft: true,
+      steps: [
+        { k: "Read", d: "대지와 주변을 걸으며 흐름을 읽고, 풀어야 할 문제를 한 문장으로 적어요.", t: "Find the question first." },
+        { k: "Define", d: "프로그램과 규모, 법규를 정리해 무엇을 먼저 풀지 정해요.", t: "Name what must be solved." },
+        { k: "Section", d: "단면에서 빛이 들어오고 바람이 지나가는 길을 먼저 그려 봐요.", t: "Air and light come first." },
+        { k: "Structure", d: "구조의 질서와 모듈을 정해 공간의 뼈대를 세워요.", t: "Order before ornament." },
+        { k: "Joint", d: "재료가 만나는 접합부를 크게 그려 실제로 지어질 수 있는지 확인해요.", t: "Details decide the building." },
+        { k: "Draw", d: "도면·다이어그램·렌더로 해법을 누구나 읽을 수 있게 정리해요.", t: "Make the answer readable." },
+      ],
+    },
+    cvTitle: "Profile",
+  },
   // 작품 이름 목록 페이지(projects.html, v2 7단계)와 홈의 바로가기 글
   index: { title: "index", note: "Selected works", link: "Index of works" },
   // Archive 오른쪽 짧은 설명과 연도 범위 (5단계 메뉴 카드, 6단계 Archive 페이지에서 같이 써요)
