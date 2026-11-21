@@ -2508,6 +2508,28 @@ const SITE = {
         ]
       },
       {
+        "big": true,
+        "heading": "Detailed Plan",
+        "text": "Every wall is a leaf, so the plan changes with the day. Closed, a leaf is a 125 wall; down, the south petal makes a 6 m² terrace and the east stair leaf a landing that can slide on as a bridge. The trunk passes through a 900 opening — the flight round it carries the whole room.",
+        "cols": 2,
+        "cw": [
+          1.212,
+          0.55
+        ],
+        "images": [
+          {
+            "src": "assets/img/the-tree-house/plan.jpg",
+            "caption": "Plan 1:25 at FL +1,100 — south petal and east stair leaf down",
+            "r": 1.212
+          },
+          {
+            "src": "assets/img/the-tree-house/plan-states.jpg",
+            "caption": "One plan, four states — closed, terrace, terrace and landing, bridge",
+            "r": 1.151
+          }
+        ]
+      },
+      {
         "heading": "The Distance Chooses the Join",
         "text": "Below 5.4 m two rooms would touch; above 7.2 m the carriage cannot reach. Inside that band there is a join for every distance — terrace, bridge, ramp or stair — and each tree gets its own bolt height. Six hosts out of 191 stems; nothing felled, nothing cut.",
         "images": [
@@ -2633,51 +2655,6 @@ const SITE = {
         ]
       },
       {
-        "big": true,
-        "heading": "A Year in the Grove",
-        "text": "Inje, 38.1° N. At noon the sun stands 75.4° high in June and only 28.5° in December. A flap leaf 0.6 m deep cuts off rays steeper than 72.5° from the glass, while winter sun reaches the back wall. The birch adds a second, living shade, and the leaves close into shutters for the monsoon and the snow.",
-        "images": [],
-        "seq": {
-          "kind": "frames",
-          "r": 0.688,
-          "lite": true,
-          "fade": true,
-          "k": 0.7,
-          "steps": [
-            {
-              "src": "assets/img/the-tree-house/season-1.jpg",
-              "t": "Spring + autumn",
-              "s": "noon 51.5° · deck 0° · flap 0°",
-              "d": "Equinox sun slips under the flap and lights the first metre of floor; the birch is bare or just in bud."
-            },
-            {
-              "src": "assets/img/the-tree-house/season-2.jpg",
-              "t": "Summer",
-              "s": "noon 75.4° · skin open",
-              "d": "The flap keeps the noon sun off the glass from 24 May to 20 July; the crowns filter the rest. Glass in shade, deck in dappled sun."
-            },
-            {
-              "src": "assets/img/the-tree-house/season-3.jpg",
-              "t": "Monsoon",
-              "s": "deck up · flap 45° · vent open",
-              "d": "The deck comes in, the flap drops to 45° as an awning: rain shed 0.42 m off the skin, a vent above the wall."
-            },
-            {
-              "src": "assets/img/the-tree-house/season-4.jpg",
-              "t": "Winter day",
-              "s": "noon 28.5°",
-              "d": "Low sun passes under the flap and through the bare crowns to the back wall: a sun room in the snow."
-            },
-            {
-              "src": "assets/img/the-tree-house/season-5.jpg",
-              "t": "Snow",
-              "s": "all leaves closed",
-              "d": "Every leaf closed: a 125 shutter, 100 mm of still air, then the skin. −10 °C out, +18 °C in."
-            }
-          ]
-        }
-      },
-      {
         "heading": "Sun Path and the Year",
         "text": "Month by month, what the sun, the birch and the weather do — and what the leaves do back.",
         "images": [
@@ -2706,48 +2683,6 @@ const SITE = {
         ],
         "stack": true
       },
-      {
-        "big": true,
-        "heading": "Detailed Plan",
-        "text": "Every wall is a leaf, so the plan changes with the day. Closed, a leaf is a 125 wall; down, the south petal makes a 6 m² terrace and the east stair leaf a landing that can slide on as a bridge. The trunk passes through a 900 opening — the flight round it carries the whole room.",
-        "cols": 2,
-        "cw": [
-          1.212,
-          0.55
-        ],
-        "images": [
-          {
-            "src": "assets/img/the-tree-house/plan.jpg",
-            "caption": "Plan 1:25 at FL +1,100 — south petal and east stair leaf down",
-            "r": 1.212
-          },
-          {
-            "src": "assets/img/the-tree-house/plan-states.jpg",
-            "caption": "One plan, four states — closed, terrace, terrace and landing, bridge",
-            "r": 1.151
-          }
-        ]
-      },
-      {
-        "big": true,
-        "heading": "Hinge and Rail",
-        "text": "Every leaf hangs on four barrel hinges and is lowered by two stays from the corner masts. The stair leaf is a sleeve with a tread carriage inside: rollers in two stainless U-rails let it slide 1,800 out as a bridge, or turn at the tip into six level treads. Every part is bolted or pinned, and lifts out by hand.",
-        "images": [
-          {
-            "src": "assets/img/the-tree-house/hinge-rail.jpg",
-            "caption": "One corner cut back — barrel hinge, stays, U-rail and tread carriage (red: the parts that move)",
-            "r": 1.518,
-            "w": "80%"
-          },
-          {
-            "src": "assets/img/the-tree-house/hinge-details.jpg",
-            "caption": "Leaf root · barrel hinge · U-rail and roller · four modes of one carriage · closed corner",
-            "r": 1.402,
-            "w": "80%"
-          }
-        ],
-        "stack": true
-      }
     ],
     "drawings": []
   },
