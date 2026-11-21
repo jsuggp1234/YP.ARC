@@ -2567,7 +2567,8 @@
       const slug = decodeURIComponent(location.hash.slice(1));
       let i = PROJECTS.findIndex((p) => p.slug === slug);
       if (i < 0) i = 0;
-      const p = PROJECTS[i], ni = (i + 1) % N, nx = PROJECTS[ni];
+      const p = PROJECTS[i], LIVE = PROJECTS.filter((q) => !q.draft), li = LIVE.indexOf(p);
+      const nx = li >= 0 ? LIVE[(li + 1) % LIVE.length] : PROJECTS[(i + 1) % N], ni = PROJECTS.indexOf(nx);
       document.title = `${p.title} — ${SITE.name}`;
       const tb = $(".tb-title"); if (tb) tb.textContent = p.title;
       $$(".tblock dd")[0] && ($$(".tblock dd")[0].textContent = "A-1" + pad(i + 1));
@@ -2581,29 +2582,28 @@
       wi = 0;
       const title = words(p.title);
       $("#main").innerHTML = `
-        <article class="pg">
-          <header class="pj-hd wrap grid">
-            <div class="crumb mono"><a class="lnk mid" href="projects.html">← Index of Works</a><span class="mid num">A-1${pad(i + 1)} · ${pad(i + 1)} / ${pad(N)}</span></div>
-            <div class="ttl"><h1 class="intro-play">${title}</h1>
-              <div class="sub"><span>${esc(p.titleKo)}</span><span class="mono">${esc(p.type)} · ${esc(p.site)} · ${p.year}</span>${p.award && p.award !== "A+" ? `<span class="pj-award">${esc(p.award)}</span>` : ""}</div></div>
+        <article class="pg cx">
+          <header class="cx-hd g4">
+            <div class="cx-l">
+              <div class="cx-tt">
+                <h1 class="cx-h">${esc(p.title)}</h1>
+                <div class="cx-meta">
+                  <p><span>${esc(p.titleKo || p.title)}</span><span class="num">${esc(p.year)}</span></p>
+                  <p>${[p.type, p.studio, p.award && p.award !== "A+" ? p.award : ""].filter(Boolean).map((t) => `<span>${esc(t)}</span>`).join("")}</p>
+                </div>
+              </div>
+            </div>
+            <figure class="cx-cv"><div class="media" data-par>${mpar(cover(p, 1600, 2100))}</div></figure>
+            <div class="cx-lead">
+              <p class="cx-big">${esc(p.summary)}</p>
+              <dl class="pj-facts cx-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+            </div>
           </header>
-          <figure class="pj-cover wrap grid" data-reveal="wipe">
-            <dl class="mono pj-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
-            ${p.coverR ? `<div class="media" style="aspect-ratio:${p.coverR};--cr:${p.coverR}">${mz(cover(p, 1600, Math.round(1600 / p.coverR)))}</div>` : `<div class="media" data-par>${mpar(cover(p, 1600, 970))}</div>`}
-            <figcaption class="figcap mono"><span>${p.cover ? esc(p.coverCaption || "Cover") : "Axonometric, NTS"}</span><span>${esc(p.subtitle)}</span></figcaption>
-          </figure>
-          <div class="pj-body wrap grid">
-            <aside class="pj-aside">
-              <nav class="toc mono" aria-label="On this page"></nav>
-            </aside>
+          <div class="pj-body cx-body g4">
             <div class="pj-main">
-              <section class="pj-sec" id="s0" data-toc="Overview">
-                <div class="hd"><span class="mono mid num">00</span><h2>Overview</h2></div>
-                <p class="lead" data-reveal>${esc(p.summary)}</p>
-              </section>
               ${p.sections.map((s, si) => `
-              <section class="pj-sec${s.big || /scene|render|view|interior|exterior/i.test(s.heading) ? " ph" : ""}${s.beside ? " bes" : ""}" id="s${si + 1}" data-toc="${esc(s.heading)}">
-                <div class="hd"><span class="mono mid num">${pad(si + 1)}</span><h2>${esc(s.heading)}</h2></div>
+              <section class="pj-sec${s.big || /scene|render|view|interior|exterior/i.test(s.heading) ? " ph" : ""}${s.beside ? " bes" : ""}" id="s${si + 1}" data-toc="${esc(s.heading)}" data-v="${si % 4}">
+                <div class="hd"><span class="num">${pad(si + 1)}.</span><h2>${esc(s.heading)}</h2></div>
                 <p class="txt" data-reveal>${esc(s.text)}</p>
                 ${s.sim ? simHtml(s.sim) : ""}${s.panel ? mapHtml(s.panel) : ""}${s.widget && s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}${s.seq ? seqHtml(s.seq) : ""}${s.seasons ? ssnHtml(s.seasons) : ""}${s.pan && !s.pan.after ? panHtml(s.pan) : ""}${s.widget && !s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}
                 ${s.images.length ? `<div class="figs ${s.cols ? "gc" : s.stack ? "n1 stk" : `n${Math.min(3, s.images.length)}`}"${s.cols ? ` style="--c:${s.cols}${s.cw ? `;grid-template-columns:${s.cw.map((x) => x + "fr").join(" ")}` : ""}"` : ""}>${s.images.map((im, ii) => {
@@ -2621,8 +2621,9 @@
               <figcaption class="figcap mono"><span>Dwg. ${pad(di + 1)}</span><span>${esc(capOf(d))}</span></figcaption></figure>`).join("")}
             </div></div>
           </section>` : ""}
-          <a class="nx wrap" href="project.html#${nx.slug}" data-cursor="Next">
-            <div class="row"><span class="mono mid">Next project — ${pad(ni + 1)} / ${pad(N)}</span><span class="t">${esc(nx.title)}</span><div class="media">${mz(card(nx, 800, 1000))}</div></div>
+          <a class="cx-nx g4" href="project.html#${nx.slug}" aria-label="Next case: ${esc(nx.title)}">
+            <span class="cx-nt"><span class="cx-nl">next case</span><span class="cx-nn">${esc(nx.title)}</span></span>
+            <span class="cx-nm"><span class="media">${mz(card(nx, 600, 800))}</span></span>
           </a>
         </article>`;
 
@@ -2633,12 +2634,15 @@
       // 목차 + 현재 위치 표시
       const secs = $$("[data-toc]");
       const toc = $(".toc");
-      toc.innerHTML = secs.map((s) => `<button type="button" data-t="${s.id}">${esc(s.dataset.toc)}</button>`).join("");
-      $$("button", toc).forEach((b) => b.addEventListener("click", () => scrollToEl("#" + b.dataset.t)));
-      const spy = new IntersectionObserver((es) => es.forEach((en) => {
-        if (en.isIntersecting) $$("button", toc).forEach((b) => b.classList.toggle("on", b.dataset.t === en.target.id));
-      }), { rootMargin: "-35% 0px -60% 0px" });
-      secs.forEach((s) => spy.observe(s));
+      if (toc) toc.innerHTML = secs.map((s) => `<button type="button" data-t="${s.id}">${esc(s.dataset.toc)}</button>`).join("");
+      if (toc) {
+        $$("button", toc).forEach((b) => b.addEventListener("click", () => scrollToEl("#" + b.dataset.t)));
+        const spy = new IntersectionObserver((es) => es.forEach((en) => {
+          if (en.isIntersecting) $$("button", toc).forEach((b) => b.classList.toggle("on", b.dataset.t === en.target.id));
+        }), { rootMargin: "-35% 0px -60% 0px" });
+        secs.forEach((s) => spy.observe(s));
+      }
+      lineRise($(".cx-big"));
 
       // 도면 띠: 세로 스크롤로 가로 이동
       const sec = $(".dwg");
