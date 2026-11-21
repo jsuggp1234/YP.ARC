@@ -1496,3 +1496,20 @@ html.mn-on .cur { display: none !important; }
   .mn-pt { width: 62vw; }
 }
 @media (prefers-reduced-motion: reduce) { .mn-card, .mn::before { transition: none; } }
+
+/* ============ v2 6단계: Archive ============ */
+.ar-hd { position: fixed; left: 0; right: 0; top: 0; padding-top: 132px; pointer-events: none; z-index: 1; }
+.ar-h { grid-column: 1 / span 2; margin: 0; font-size: var(--t-xxl); font-weight: 400; letter-spacing: -0.04em; line-height: 1; }
+.ar-note { grid-column: 3; margin: 18px 0 0; font-size: var(--t-s); text-transform: uppercase; line-height: 1.3; }
+.ar-note span { display: block; margin-top: 12px; }
+/* 이미지: 높이 30% 화면, 폭은 사진 비율 */
+.ar .cs-card { width: auto; gap: 6px; }
+.ar .cs-card .media { height: 30svh; aspect-ratio: var(--r); }
+.ar-cap { position: absolute; left: 0; top: calc(-1.2em - 6px); line-height: 1.2; font-size: var(--t-xs); text-transform: uppercase; color: var(--mid); opacity: 0; transition: opacity 0.4s var(--ease); white-space: nowrap; }
+.ar .cs-card:hover .ar-cap, .ar .cs-card:focus-visible .ar-cap { opacity: 1; }
+.ar .cs-card { position: relative; }
+@media (max-width: 760px) {
+  .ar-hd { padding-top: 96px; }
+  .ar-h, .ar-note { grid-column: 1 / -1; }
+  .ar .cs-card .media { height: 34svh; }
+}

@@ -46,6 +46,7 @@
     const path = url.pathname;
     if (/projects\.html$/.test(path)) return ["A-100", "Index of Works"];
     if (/about\.html$/.test(path)) return ["A-900", "Profile"];
+    if (/archive\.html$/.test(path)) return ["A-200", "Archive"];
     if (/project\.html$/.test(path)) {
       const slug = decodeURIComponent((url.hash || "").slice(1));
       const i = Math.max(0, PROJECTS.findIndex((p) => p.slug === slug));
@@ -362,7 +363,7 @@
   // 카드 하나 = 그 페이지 첫 화면의 축소판(화면 전체 크기로 그린 뒤 75%로 줄이고 왼쪽 일부만 보여요).
   // 열 때: 지금 페이지 카드가 화면 전체 크기에서 카드 크기로 줄어들고, 나머지 카드가 옆에서 들어와요.
   // 카드를 누르면 그 카드가 다시 화면 전체로 커진 다음 그 페이지로 이동해요.
-  const MN_CUR = PAGE === "home" ? 0 : PAGE === "projects" ? 1 : PAGE === "about" ? 2 : -1;
+  const MN_CUR = PAGE === "home" ? 0 : PAGE === "archive" ? 1 : PAGE === "about" ? 2 : -1;
   const EASE_IO = "cubic-bezier(0.76, 0, 0.24, 1)";
   const mImg = (src) => (typeof src === "string" && src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async">` : "");
   function miniHtml(pg) {
@@ -722,6 +723,26 @@
         });
     };
   }
+
+  // ---------- v2 Archive (계획 6단계): 홈과 같은 가로 무한 띠(caseStrip)를 써요. 이미지는 높이가 같고 폭은 사진 비율대로 ----------
+  render.archive = () => {
+    HTML.classList.add("v2-home");
+    const A = SITE.archive || {};
+    const pg = (SITE.pages || []).find((x) => x.key === "archive") || { title: "archive" };
+    const one = (A.items || []).map(([slug, src, ra]) => {
+      const p = PROJECTS.find((q) => q.slug === slug && !q.draft);
+      return p ? `<a class="cs-card ar-it" href="project.html#${slug}" draggable="false" style="--r:${ra}" aria-label="${esc(p.title)}"><div class="media">${mz(`<img src="${esc(src)}" alt="${esc(p.title)}" loading="lazy" decoding="async">`)}</div><span class="ar-cap">${esc(p.title)}</span></a>` : "";
+    }).join("");
+    $("#main").innerHTML = `
+      <section class="ar-hd g4">
+        <h1 class="ar-h">${esc(pg.title)}</h1>
+        <p class="ar-note">${(A.lines || []).map(esc).join("<br>")}<span class="num">${esc(A.years || "")}</span></p>
+      </section>
+      <section class="cs ar" aria-label="Archive images">
+        <div class="cs-track">${[0, 1, 2].map((k) => `<div class="cs-set"${k === 1 ? "" : ' aria-hidden="true" inert'}>${one}</div>`).join("")}</div>
+      </section>`;
+    caseStrip();
+  };
 
   function caseStrip() {
     const sec = $(".cs"), track = $(".cs-track", sec), sets = $$(".cs-set", track);
