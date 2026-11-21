@@ -1711,3 +1711,7 @@ html.hi-on .cs-ix { opacity: 0; }
 /* 핀 #7: 메뉴 화면도 같아요 */
 html.ct-lock body, html.ct-lock .ct, html.ct-lock .ct *, html.mn-on body, html.mn-on #menu, html.mn-on #menu *, html.mn-on .hdr * { cursor: auto !important; }
 html.ct-lock .ct a, html.ct-lock .ct button, html.ct-lock .ct [data-ct-close], html.mn-on #menu a, html.mn-on .hdr a, html.mn-on .hdr button { cursor: pointer !important; }
+
+/* 핀 #5: 짓는 띠는 스크롤 길이를 두 배로(더 천천히), 마지막엔 전체 축소 */
+.pan.pan-build { height: 440vh; }
+@media (max-width: 760px) { .pan.pan-build { height: 380vh; } }

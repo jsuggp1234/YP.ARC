@@ -2476,10 +2476,15 @@
       const win = $(".pan-win", el), bar = $(".pan-bar i", el);
       const upd = () => {
         const r = el.getBoundingClientRect(), span = r.height - innerHeight, t = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
-        const iw = img.getBoundingClientRect().width;
-        img.style.transform = `translate3d(${-t * Math.max(0, iw - win.clientWidth)}px,0,0)`; bar.style.transform = `scaleX(${t})`;
+        const iw = img.getBoundingClientRect().width / (img._sc || 1), ww = win.clientWidth; // 축소한 만큼 되돌려 원래 폭
+        // 핀 #5(2026-11-22): 짓는 띠(build)는 앞 82%에서 왼쪽부터 지어지며 흐르고, 남은 18%에서 전체가 줄어들며 한 화면에 다 보여요
+        const build = el.hasAttribute("data-build"), k = build ? 0.82 : 1, tb = Math.min(1, t / k), z = build ? Math.max(0, (t - k) / (1 - k)) : 0;
+        const ez = z * z * (3 - 2 * z), fit = Math.min(1, ww / Math.max(1, iw)), sc = 1 + (fit - 1) * ez;
+        const x = -tb * Math.max(0, iw - ww) * (1 - ez) + (ww - iw * sc) / 2 * ez * (fit < 1 ? 0 : 1);
+        img.style.transformOrigin = "0 50%"; img._sc = sc;
+        img.style.transform = `translate3d(${x.toFixed(1)}px,0,0) scale(${sc.toFixed(4)})`; bar.style.transform = `scaleX(${t})`;
         // 알고리즘 생성 (핀 #245): 스크롤에 따라 왼쪽부터 컴포넌트가 하나씩 놓이고, 양 끝이 놓이면 선이 이어져요
-        if (parts) { const edge = Math.min(1, t * 1.04 + 0.02) * VW; parts.forEach(([e, a, b]) => e.classList.toggle("on", (b == null ? a : b) <= edge)); }
+        if (parts) { const edge = Math.min(1, tb * 1.04 + 0.02) * VW; parts.forEach(([e, a, b]) => e.classList.toggle("on", (b == null ? a : b) <= edge)); }
       };
       if (el.hasAttribute("data-build") && /\.svg$/.test(img.getAttribute("src"))) {
         fetch(img.getAttribute("src")).then((r) => r.text()).then((txt) => {
