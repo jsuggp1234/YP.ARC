@@ -2649,7 +2649,8 @@ const SITE = {
           {
             "src": "assets/img/the-tree-house/sun-year.jpg",
             "caption": "Sun path at 38.07° N · the year, leaf by leaf",
-            "r": 4.36
+            "r": 4.36,
+            "sun": true
           }
         ]
       },

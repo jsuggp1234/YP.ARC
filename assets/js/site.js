@@ -2543,6 +2543,34 @@
     const upd = () => { const mid = innerHeight * 0.5; let best = 0, bd = 1e9; its.forEach((f, i) => { const b = f.getBoundingClientRect(), d = Math.abs(b.top + b.height / 2 - mid); if (d < bd) { bd = d; best = i; } }); set(best); };
     addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
   });
+  // 핀 #14(2026-11-22): 태양 궤적 시뮬레이션. 그래프 좌표(그림 2000×459 기준): 방위 E 90°→x 85, W 270°→x 741 / 고도 0°→y 411, 80°→y 57
+  const sunInit = () => $$(".sun-ov").forEach((sv) => {
+    const media = sv.parentElement, lb = $(".sun-lb", media), dot = $(".sun-dot", sv), tr = $(".sun-tr", sv), col = $(".sun-col", sv), hl = $(".sun-h", sv);
+    media.after(lb); // 이름표는 그림 바로 아래 한 줄로
+    const R = Math.PI / 180, PHI = 38.07 * R, MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const decl = (m) => 23.44 * Math.sin(((360 / 365) * (284 + [21, 52, 80, 111, 141, 172, 202, 233, 264, 294, 325, 355][m])) * R) * R;
+    const pos = (m, hr) => { const dl = decl(m), H = (hr - 12) * 15 * R;
+      const alt = Math.asin(Math.sin(PHI) * Math.sin(dl) + Math.cos(PHI) * Math.cos(dl) * Math.cos(H));
+      const az = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(PHI) - Math.tan(dl) * Math.cos(PHI)) / R + 180;
+      return [85 + ((az - 90) / 180) * 656, 411 - (alt / R) * 4.425, alt / R]; };
+    const rise = (m) => { const c = -Math.tan(PHI) * Math.tan(decl(m)); return 12 - Math.acos(Math.max(-1, Math.min(1, c))) / R / 15; };
+    const DAY = 3.2; // 한 달(하루 궤적)에 3.2초
+    let t = 0, last = 0, raf = 0, live = false, done = false, lastM = -1;
+    const draw = () => {
+      const m = Math.min(11, Math.floor(t / DAY)), u = done ? 0.5 : (t % DAY) / DAY, r0 = rise(m), hr = r0 + (24 - 2 * r0) * u, [x, y, alt] = pos(m, hr);
+      if (m !== lastM) { lastM = m; let p = ""; for (let k = 0; k <= 40; k++) { const q = pos(m, r0 + ((24 - 2 * r0) * k) / 40); p += (k ? "L" : "M") + q[0].toFixed(1) + " " + Math.min(411, q[1]).toFixed(1); } tr.setAttribute("d", p); col.setAttribute("x", 1013 + m * 82); }
+      dot.setAttribute("cx", x.toFixed(1)); dot.setAttribute("cy", Math.min(411, y).toFixed(1));
+      hl.setAttribute("x1", x.toFixed(1)); hl.setAttribute("x2", x.toFixed(1)); hl.setAttribute("y1", Math.min(411, y).toFixed(1)); hl.setAttribute("y2", 411);
+      const hh = Math.floor(hr), mm = Math.floor((hr - hh) * 60);
+      lb.textContent = `21 ${MON[m]} · ${pad(hh)}:${pad(mm)} solar · altitude ${Math.max(0, alt).toFixed(1)}°`;
+    };
+    const loop = (now) => { raf = 0; const dt = last ? Math.min(0.05, (now - last) / 1000) : 0; last = now; if (!done) { t += dt; if (t >= 12 * DAY) { t = 12 * DAY - 0.001; done = true; } } draw(); media.classList.toggle("sun-done", done); if (live && !done) raf = requestAnimationFrame(loop); };
+    const kick = () => { last = 0; if (!raf) raf = requestAnimationFrame(loop); };
+    if (REDUCED) { t = 5 * DAY + 1.6; done = true; draw(); return; }
+    new IntersectionObserver(([e]) => { live = e.isIntersecting; if (live) kick(); }, { threshold: 0.3 }).observe(media);
+    media.addEventListener("click", () => { if (!done) return; done = false; t = 0; kick(); });
+    draw();
+  });
   const revealCols = () => {
     const els = $$(".media:has(> .rv-c)"); if (!els.length || REDUCED) return;
     const upd = () => els.forEach((m) => {
@@ -2689,7 +2717,7 @@
       const hs = $(".hud-s"), hn = $(".hud-n"); if (hs) hs.textContent = "A-1" + pad(i + 1); if (hn) hn.textContent = p.title; // 작품을 넘겨도 아래 표시가 따라오게
       let fig = 1;
       const figure = (im, seed, w, h) => `
-        <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}><div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.w ? `;width:${im.w}` : ""}"` : ""}>${im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.reveal ? Array.from({ length: im.reveal }, (_, j) => `<i class="rv-c" style="--j:${j};--n:${im.reveal}" aria-hidden="true"></i>`).join("") : ""}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>
+        <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}><div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.w ? `;width:${im.w}` : ""}"` : ""}>${im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.sun ? `<svg class="sun-ov" viewBox="0 0 2000 459" preserveAspectRatio="none" aria-hidden="true"><path class="sun-tr"/><rect class="sun-col" y="40" width="82" height="380"/><line class="sun-h"/><circle class="sun-dot" r="9"/></svg><span class="sun-lb"></span>` : ""}${im.reveal ? Array.from({ length: im.reveal }, (_, j) => `<i class="rv-c" style="--j:${j};--n:${im.reveal}" aria-hidden="true"></i>`).join("") : ""}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>
         ${im.notes ? `<ol class="fnotes" style="--n:${im.notes.length}${im.w ? `;width:${im.w}` : ""}">${im.notes.map(([n, t, d]) => `<li><b><span class="mid num">${esc(n)}</span> ${esc(t)}</b>${d ? `<span class="mid">${esc(d)}</span>` : ""}</li>`).join("")}</ol>` : ""}
         <figcaption class="figcap mono"><span>${esc(capOf(im))}</span></figcaption></figure>`;
       const facts = [["Year", p.year], ["Studio", p.studio], ["Award", p.award !== "A+" && p.award], ["Type", p.type], ["Program", p.program], ["Site", p.site], ["Area", p.area], ["Team", p.team], ["Tools", p.tools]].filter((f) => f[1]);
@@ -2742,7 +2770,7 @@
         </article>`;
 
       simInit(p);
-      seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit();
+      seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit(); sunInit();
       if (window.TideWidgets) $$("[data-tw]").forEach((w) => TideWidgets.mount(w, w.dataset.tw));
       if (window.MVSims) $$("[data-mv]").forEach((w) => MVSims.mount(w, w.dataset.mv));
       // 목차 + 현재 위치 표시

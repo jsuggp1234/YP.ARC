@@ -1752,3 +1752,14 @@ html.ct-lock .ct a, html.ct-lock .ct button, html.ct-lock .ct [data-ct-close], h
 }
 @media (prefers-reduced-motion: reduce) { .kj-it { opacity: 1; transform: none; transition: none; } }
 .cx-body .pj-sec:has(.kj) { --bx: 0%; --bw: 100%; }
+
+/* 핀 #14: 태양 궤적 시뮬레이션 (빨간 해 · 그날의 궤적 · 지금 달 칸) */
+.sun-ov { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; overflow: visible; }
+.sun-ov .sun-tr { fill: none; stroke: #c0353a; stroke-width: 2.2; vector-effect: non-scaling-stroke; opacity: .75; }
+.sun-ov .sun-h { stroke: #c0353a; stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; opacity: .6; }
+.sun-ov .sun-dot { fill: #c0353a; }
+.sun-ov .sun-col { fill: #c0353a; opacity: .08; transition: x .5s cubic-bezier(.2,.7,.2,1); }
+.sun-lb { display: block; margin-top: 10px; min-height: 1.4em; font-size: var(--t-xs); color: #c0353a; font-variant-numeric: tabular-nums; pointer-events: none; }
+.media.sun-done { cursor: pointer; }
+.cx-body .pj-sec:has(.sun-ov) { --bx: 0%; --bw: 100%; }
+.cx-body .pj-sec:has(.sun-ov) > .figs { width: 100%; }
