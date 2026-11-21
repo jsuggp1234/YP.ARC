@@ -199,7 +199,7 @@
    - 움직임: 휠과 드래그로 가로 이동, 무한 반복, 움직이는 동안 0.9배 축소와 간격 벌어짐, 사진 시차, hover 영상.
    - 확인: `index.html`.
 3. ✅ **로딩 인트로** (2026-11-22 완료 — `homeIntro()`, sessionStorage 키 `yp-hi`): 가운데 사진 플립북이 첫 카드 자리로 커져요. 한 번 본 뒤에는 짧게 건너뛰어요(sessionStorage, try/catch). 확인: 새로고침.
-4. **Contact 패널:** 덮개 + 패널, 탭(Email / Instagram / Portfolio PDF), 졸업·지원 안내, CLOSE와 Esc로 닫기. 확인: 모든 페이지에서 열고 닫기.
+4. ✅ **Contact 패널** (2026-11-22 완료 — `contactPanel()`, 글은 `SITE.contact`, PDF는 경로가 비어 있어 준비 중 표시): 덮개 + 패널, 탭(Email / Instagram / Portfolio PDF), 졸업·지원 안내, CLOSE와 Esc로 닫기. 확인: 모든 페이지에서 열고 닫기.
 5. **Menu 페이지 카드:** 화면이 줄어들며 Works·Archive·About 카드 세 장이 나오고, 누르면 커지며 이동해요. 확인: 세 페이지 오가기.
 6. **Archive 페이지:** 큰 제목, 설명, 2022—2027, 아래 가로 이미지 띠(높이 같고 폭은 사진 비율). 확인: `projects.html`(또는 새 `archive.html`, 결정 필요).
 7. **Cases 이름 목록:** 작품 이름 목록에 올리면 사진이 떠요. 확인: 목록 페이지.

@@ -89,7 +89,7 @@
         <div class="hdr-m"><button class="mode" type="button" aria-label="Switch light or dark"><i></i><span>Dark</span></button></div>
         <nav class="hdr-n" aria-label="Main">
           <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">${roll("Menu")}</button>
-          <a href="${PAGE === "home" ? "about.html#contact" : "#contact"}">${roll("Contact")}</a>
+          <a href="#contact" data-contact aria-haspopup="dialog">${roll("Contact")}</a>
         </nav>
         <div class="hdr-t"><span class="mid">Local time</span><span class="clock num">Seoul --:--</span></div>
         <span class="hdr-line" aria-hidden="true"><i></i></span>
@@ -122,6 +122,83 @@
         </div>
         <div class="ftr-bot g8"><span class="fb1">© ${new Date().getFullYear()} ${esc(SITE.owner)} — ${esc(SITE.name)}</span><span class="fb5 num mid">${esc(SITE.coords)}</span><span class="fb6 mid">${esc(SITE.role)}</span><button class="fb8 lnk" type="button" data-top>Back to top ↑</button></div>
       </footer>`);
+  }
+
+  // ---------- v2 Contact 패널 (계획 4단계) ----------
+  // 페이지가 어두워지고 가운데 큰 패널이 아래에서 올라와요. 위쪽 탭은 아래 줄 하나를 강조해요.
+  // 닫기: CLOSE, Esc, 어두운 바깥 누르기. 열려 있는 동안 페이지 스크롤은 멈춰요.
+  function contactPanel() {
+    const C = SITE.contact || {};
+    const ig = SITE.links.find((l) => /instagram/i.test(l.label));
+    const igName = ig ? "@" + ig.href.replace(/\/+$/, "").split("/").pop() : "";
+    const rows = [
+      ["email", "Email", `<button class="ct-big" type="button" data-copy="${esc(SITE.email)}"><span class="addr">${esc(SITE.email)}</span><span class="cp">Copy</span></button><a class="lnk" href="mailto:${esc(SITE.email)}">Write a mail ↗</a>`],
+      ig ? ["instagram", "Instagram", `<a class="ct-big" href="${esc(ig.href)}" target="_blank" rel="noopener">${esc(igName)} <span aria-hidden="true">↗</span></a>`] : null,
+      ["pdf", "Portfolio PDF", C.pdf ? `<a class="ct-big" href="${esc(C.pdf)}" target="_blank" rel="noopener">Download PDF <span aria-hidden="true">↓</span></a>` : `<span class="ct-big soft">Coming soon</span><span class="mid">${esc(C.pdfNote || "")}</span>`],
+    ].filter(Boolean);
+    BODY.insertAdjacentHTML("beforeend", `
+      <div class="ct" id="ct" hidden>
+        <div class="ct-dim" data-ct-close></div>
+        <div class="ct-p" role="dialog" aria-modal="true" aria-labelledby="ct-h" data-lenis-prevent tabindex="-1">
+          <div class="ct-top">
+            <div class="ct-tabs">${rows.map(([k, t], i) => `<button type="button" class="${i ? "" : "on"}" data-k="${k}">${esc(t)}</button>`).join("")}</div>
+            <button type="button" class="ct-x" data-ct-close>Close</button>
+          </div>
+          <div class="ct-hd">
+            <h2 id="ct-h" class="ct-h">${esc(C.title || "Contact")}</h2>
+            <p class="ct-note">${(C.note || [SITE.status]).map(esc).join("<br>")}</p>
+          </div>
+          <div class="ct-body">
+            <p class="ct-lead">${esc(C.lead || "")}</p>
+            <ol class="ct-rows">${rows.map(([k, t, html], i) => `<li class="ct-row${i ? "" : " on"}" data-k="${k}"><span class="ct-n num">${pad(i + 1)}.</span><span class="ct-t">${esc(t)}</span><div class="ct-v">${html}</div></li>`).join("")}</ol>
+          </div>
+        </div>
+      </div>`);
+    const box = $("#ct"), panel = $(".ct-p", box);
+    let back = null, timer = 0;
+    const open = () => {
+      if (!box.hidden && box.classList.contains("open")) return;
+      closeMenu();
+      back = D.activeElement;
+      clearTimeout(timer);
+      box.hidden = false;
+      HTML.classList.add("ct-lock");
+      lenis && lenis.stop();
+      requestAnimationFrame(() => requestAnimationFrame(() => { box.classList.add("open"); panel.focus({ preventScroll: true }); }));
+    };
+    const close = () => {
+      if (!box.classList.contains("open")) return;
+      box.classList.remove("open");
+      HTML.classList.remove("ct-lock");
+      lenis && lenis.start();
+      timer = setTimeout(() => (box.hidden = true), REDUCED ? 0 : 900);
+      back && back.focus && back.focus({ preventScroll: true });
+    };
+    // 캡처 단계에서 먼저 잡아서, 페이지 전환·스크롤 이동보다 앞서 패널을 열어요
+    D.addEventListener("click", (e) => {
+      const a = e.target.closest && e.target.closest("[data-contact]");
+      if (a) { e.preventDefault(); open(); return; }
+      if (e.target.closest && e.target.closest("[data-ct-close]")) { e.preventDefault(); close(); return; }
+      const tab = e.target.closest && e.target.closest(".ct-tabs button");
+      if (tab) {
+        $$(".ct-tabs button", box).forEach((b) => b.classList.toggle("on", b === tab));
+        $$(".ct-row", box).forEach((row) => row.classList.toggle("on", row.dataset.k === tab.dataset.k));
+        const row = $(`.ct-row[data-k="${tab.dataset.k}"]`, box);
+        row && row.scrollIntoView({ block: "nearest", behavior: REDUCED ? "auto" : "smooth" });
+      }
+    }, true);
+    addEventListener("keydown", (e) => {
+      if (!box.classList.contains("open")) return;
+      if (e.key === "Escape") { e.stopPropagation(); close(); }
+      if (e.key === "Tab") { // 패널 안에서만 포커스가 돌아요
+        const f = $$("button, a[href]", panel);
+        if (!f.length) return;
+        if (e.shiftKey && (D.activeElement === f[0] || D.activeElement === panel)) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && D.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    }, true);
+    // 다른 페이지에서 ...#contact 로 들어오면 바로 열어요
+    if (location.hash === "#contact") setTimeout(open, PAGE === "home" ? 3200 : 600);
   }
 
   // ---------- 라이트/다크 ----------
@@ -573,8 +650,9 @@
     const kick = () => { if (!raf && live) raf = requestAnimationFrame(frame); };
     // 휠: 세로로 굴려도 옆으로 흘러요(이 화면은 세로 스크롤이 없어요)
     addEventListener("wheel", (e) => {
+      if (e.target.closest && e.target.closest(".ct, #menu")) return;
       e.preventDefault();
-      if ($("#menu.open") || HTML.classList.contains("hi-on")) return;
+      if ($("#menu.open") || HTML.classList.contains("hi-on") || HTML.classList.contains("ct-lock")) return;
       tx += (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * (e.deltaMode === 1 ? 32 : 1);
       kick();
     }, { passive: false });
@@ -592,7 +670,7 @@
     sec.addEventListener("click", (e) => { if (moved) { e.preventDefault(); moved = false; } }, true);
     // 키보드: ← → 로 한 칸씩
     addEventListener("keydown", (e) => {
-      if ($("#menu.open") || HTML.classList.contains("hi-on") || !/^Arrow(Left|Right)$/.test(e.key)) return;
+      if ($("#menu.open") || HTML.classList.contains("hi-on") || HTML.classList.contains("ct-lock") || !/^Arrow(Left|Right)$/.test(e.key)) return;
       tx += (e.key === "ArrowRight" ? 1 : -1) * (items[0] ? items[0].w + 8 : 300); kick();
     });
     // 링크에 탭으로 들어가면 그 카드가 보이게
@@ -2469,6 +2547,7 @@
   clock();
   smooth();
   menu();
+  contactPanel();
   links();
   utils();
   (render[PAGE] || render.home)();

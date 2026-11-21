@@ -43,6 +43,14 @@ const SITE = {
     { label: "Instagram", href: "https://instagram.com/yee.oop" },
     // { label: "GitHub", href: "https://github.com/..." },
   ],
+  // Contact 패널 (v2 4단계). 전송 폼은 없어요(서버 없음). pdf가 비어 있으면 "준비 중"으로 보여요
+  contact: {
+    title: "Open to work",
+    note: ["2027년 2월 졸업 · 설계사무소 지원", "Based in Seoul, KR"],
+    lead: "인턴·신입 설계직을 찾고 있어요. 편하게 연락 주세요.",
+    pdf: "", // 예: "assets/portfolio.pdf" — 원본 PDF를 assets로 옮기면 채워요
+    pdfNote: "PDF는 준비 중이에요. 메일로 요청하시면 보내 드려요.",
+  },
   updated: "2026.11.20",
   rev: "04",
 

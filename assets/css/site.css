@@ -1399,3 +1399,59 @@ html.hi-end .hdr-m, html.hi-end .hdr-n, html.hi-end .hdr-t { animation: hi-fade 
 html.hi-on .hdr .logo { animation: hi-write 1.6s var(--ease) 0.2s both; }
 @keyframes hi-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes hi-write { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* ============ v2 4단계: Contact 패널 ============ */
+:root { --panel: #f2f2f2; --dim: rgba(0, 0, 0, 0.45); }
+:root[data-mode="dark"] { --panel: #1c1c1c; --dim: rgba(0, 0, 0, 0.6); }
+html.ct-lock, html.ct-lock body { overflow: hidden; }
+.ct { position: fixed; inset: 0; z-index: 90; }
+.ct[hidden] { display: none; }
+.ct-dim { position: absolute; inset: 0; background: var(--dim); opacity: 0; transition: opacity 0.7s var(--ease); }
+.ct.open .ct-dim { opacity: 1; }
+/* 패널: 레퍼런스처럼 좌우 15vw 안쪽, 위 100px부터 화면 아래까지. 아래에서 올라와요 */
+.ct-p {
+  position: absolute; left: 15.14vw; right: 15.14vw; top: 100px; bottom: 0; overflow-y: auto; overscroll-behavior: contain;
+  background: var(--panel); color: var(--ink); padding: 24px 24px 64px; outline: none;
+  transform: translateY(105%); transition: transform 0.9s var(--ease-io);
+}
+.ct.open .ct-p { transform: none; }
+.ct-p > * { opacity: 0; transform: translateY(24px); transition: opacity 0.6s var(--ease), transform 0.9s var(--ease); }
+.ct.open .ct-p > * { opacity: 1; transform: none; }
+.ct.open .ct-p > :nth-child(1) { transition-delay: 0.45s; }
+.ct.open .ct-p > :nth-child(2) { transition-delay: 0.55s; }
+.ct.open .ct-p > :nth-child(3) { transition-delay: 0.65s; }
+.ct-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.ct-tabs { display: flex; gap: 28px; }
+.ct-tabs button, .ct-x { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+.ct-tabs button { font-size: var(--t-xl); letter-spacing: -0.02em; color: var(--mid); position: relative; padding-bottom: 4px; }
+.ct-tabs button.on { color: var(--ink); }
+.ct-tabs button::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease); }
+.ct-tabs button.on::after, .ct-tabs button:hover::after { transform: scaleX(1); }
+.ct-x { font-size: var(--t-s); text-transform: uppercase; color: var(--mid); }
+.ct-x:hover { color: var(--ink); }
+/* 제목과 오른쪽 안내: 패널 안을 3칸으로 나눠 안내는 셋째 칸에서 시작 */
+.ct-hd { display: grid; grid-template-columns: 2fr 1fr; column-gap: 24px; align-items: end; margin-top: 56px; padding-bottom: 72px; border-bottom: 1px solid var(--ink); }
+.ct-h { font-size: var(--t-xxl); font-weight: 400; letter-spacing: -0.04em; line-height: 1; margin: 0; }
+.ct-note { font-size: var(--t-m); line-height: 1.5; margin: 0; }
+.ct-body { display: grid; grid-template-columns: 1fr 2fr; column-gap: 24px; padding-top: 20px; }
+.ct-lead { font-size: var(--t-m); line-height: 1.5; margin: 0; max-width: 22em; }
+.ct-rows { list-style: none; margin: 0; padding: 0; }
+.ct-row { display: grid; grid-template-columns: 2.2em 1fr 2fr; column-gap: 12px; align-items: baseline; padding: 4px 0 40px; color: var(--mid); transition: color 0.4s var(--ease); }
+.ct-row + .ct-row { border-top: 1px solid var(--line); padding-top: 18px; }
+.ct-row.on, .ct-row:hover, .ct-row:focus-within { color: var(--ink); }
+.ct-n, .ct-t { font-size: var(--t-m); }
+.ct-v { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; font-size: var(--t-xs); }
+.ct-big { font: inherit; font-size: var(--t-l); color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-align: left; display: inline-flex; gap: 12px; align-items: baseline; }
+.ct-big .cp { font-size: var(--t-xs); color: var(--mid); text-transform: uppercase; }
+a.ct-big:hover, button.ct-big:hover .addr { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 760px) {
+  .ct-p { left: 32px; right: 32px; top: min(160px, 19svh); padding: 16px 16px 48px; } /* 레퍼런스 모바일: 양옆 32px, 위 160px */
+  .ct-tabs { gap: 16px; }
+  .ct-hd, .ct-body { grid-template-columns: 1fr; row-gap: 20px; }
+  .ct-hd { margin-top: 36px; padding-bottom: 32px; }
+  .ct-row { grid-template-columns: 2.2em 1fr; }
+  .ct-v { grid-column: 2; margin-top: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .ct-p, .ct-p > *, .ct-dim { transition: none; } }
+/* 패널이 열려 있으면 따로 그린 커서(십자선·좌표)를 숨겨요 */
+html.ct-lock .cur, html.ct-lock .cur-x, html.ct-lock .cur-y { display: none !important; }
