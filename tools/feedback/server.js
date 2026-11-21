@@ -26,6 +26,14 @@ const imgList = (v) => (Array.isArray(v) ? v : [])
   .slice(0, 20);
 if (!fs.existsSync(LOG)) fs.writeFileSync(LOG, "");
 
+// 디자인 조정: assets/css/tune.json(원본 값) → assets/css/tune.css(사이트가 읽는 CSS)
+const Tune = require("./tune-css.js");
+const TUNE_JSON = path.join(ROOT, "assets/css/tune.json"), TUNE_CSS = path.join(ROOT, "assets/css/tune.css");
+let tune = [];
+try { tune = Tune.clean(JSON.parse(fs.readFileSync(TUNE_JSON, "utf8"))); } catch (e) {}
+const saveTune = () => { fs.writeFileSync(TUNE_JSON, JSON.stringify(tune, null, 2) + "\n"); fs.writeFileSync(TUNE_CSS, Tune.css(tune)); };
+if (!fs.existsSync(TUNE_CSS)) saveTune();
+
 let pins = [];
 try { pins = JSON.parse(fs.readFileSync(DB, "utf8")); } catch (e) {}
 const save = () => fs.writeFileSync(DB, JSON.stringify(pins, null, 2));
@@ -66,6 +74,15 @@ http.createServer(async (req, res) => {
     return;
   }
   if (p === "/api/pins" && req.method === "GET") return json(200, pins);
+  if (p === "/api/tune" && req.method === "GET") return json(200, tune);
+  if (p === "/api/tune" && req.method === "POST") {
+    try {
+      const b = await body(req);
+      tune = Tune.clean(b.rules); saveTune();
+      log({ event: "tune", count: tune.length, at: new Date().toISOString() });
+      return json(200, { ok: true, count: tune.length });
+    } catch (e) { return json(400, { error: "bad json" }); }
+  }
 
   // 이미지 업로드: 파일 내용을 그대로 받아 .feedback/uploads/ 에 저장
   if (p === "/api/upload" && req.method === "POST") {
@@ -153,7 +170,7 @@ try {
   fs.watch(ROOT, { recursive: true }, (ev, f) => {
     if (!f) return;
     f = f.replace(/\\/g, "/");
-    if (/^(\.|node_modules\/|tools\/)/.test(f) || !/\.(html|css|js|png|jpe?g|webp|svg)$/i.test(f)) return;
+    if (/^(\.|node_modules\/|tools\/)/.test(f) || /^assets\/css\/tune\./.test(f) || !/\.(html|css|js|png|jpe?g|webp|svg)$/i.test(f)) return;
     changed.add(f);
     clearTimeout(t);
     t = setTimeout(() => { send("reload", { files: [...changed] }); changed.clear(); }, 350);

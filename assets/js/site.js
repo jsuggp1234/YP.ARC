@@ -2570,6 +2570,7 @@
       const p = PROJECTS[i], LIVE = PROJECTS.filter((q) => !q.draft), li = LIVE.indexOf(p);
       const nx = li >= 0 ? LIVE[(li + 1) % LIVE.length] : PROJECTS[(i + 1) % N], ni = PROJECTS.indexOf(nx);
       document.title = `${p.title} — ${SITE.name}`;
+      HTML.dataset.slug = p.slug; // 디자인 조정(tune.css)에서 "이 작품에만" 규칙이 쓰는 이름
       const tb = $(".tb-title"); if (tb) tb.textContent = p.title;
       $$(".tblock dd")[0] && ($$(".tblock dd")[0].textContent = "A-1" + pad(i + 1));
       const hs = $(".hud-s"), hn = $(".hud-n"); if (hs) hs.textContent = "A-1" + pad(i + 1); if (hn) hn.textContent = p.title; // 작품을 넘겨도 아래 표시가 따라오게

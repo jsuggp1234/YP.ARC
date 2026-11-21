@@ -87,19 +87,72 @@
   .it .acts button:hover { color: var(--ink); text-decoration: underline; }
   .empty { padding: 28px 16px; color: var(--mid); }
   kbd { font: inherit; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+
+  /* ---- 디자인 조정 (T) ---- */
+  .tunebtn { display: inline-flex; gap: 8px; align-items: center; padding: 5px 14px; border-radius: 999px; border: 1px solid var(--ink); }
+  .tunebtn i { width: 8px; height: 8px; border: 1px solid currentColor; transform: rotate(45deg); }
+  .tunebtn.on { background: var(--ink); color: #fff; }
+  .tuning { --side: 380px; }
+  .tuning .ahd, .tuning .list { display: none; }
+  .tuning .layer .pin { display: none; }
+  .t-hov, .t-sel, .t-inn { position: absolute; left: 0; top: 0; display: none; pointer-events: none; }
+  .t-hov { outline: 1px dashed var(--red); outline-offset: -1px; background: rgba(196,67,43,.05); }
+  .t-sel { outline: 1.5px solid var(--red); outline-offset: -1px; }
+  .t-inn { outline: 1px dotted #2b6fc4; outline-offset: -1px; }
+  .t-sel b { position: absolute; left: -1px; top: -19px; background: var(--red); color: #fff; font-size: 10px; font-weight: 500; padding: 2px 6px; white-space: nowrap; }
+  .tp { grid-row: 1 / -1; overflow: auto; padding: 14px 16px 40px; display: grid; align-content: start; gap: 10px; }
+  .tp[hidden] { display: none; }
+  .tp-hd { display: flex; justify-content: space-between; align-items: baseline; }
+  .tp-hd b { font-size: 14px; font-weight: 600; }
+  .tp-save { color: var(--ok); font-size: 11px; }
+  .tp-help, .tp-note { color: var(--mid); font-size: 11px; line-height: 1.6; }
+  .tp-what { color: var(--mid); font-size: 11px; word-break: break-all; }
+  .tp-scope { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 11px; }
+  .tp-scope label { display: inline-flex; gap: 5px; align-items: center; color: var(--mid); }
+  .tp-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tp-nav button { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; font-size: 11px; }
+  .tp-nav button:hover:not(:disabled) { border-color: var(--ink); }
+  .tp-nav button:disabled { opacity: .35; cursor: default; }
+  .tp h4 { margin-top: 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .tp h4 span { color: var(--mid); font-weight: 400; }
+  .tr { display: grid; grid-template-columns: 70px minmax(0, 1fr) 58px 34px 18px; gap: 6px; align-items: center; font-size: 11px; }
+  .tr label { color: var(--mid); }
+  .tr.set label { color: var(--red); font-weight: 600; }
+  .tr input[type=range] { width: 100%; accent-color: var(--ink); }
+  .tr input[type=number] { width: 100%; border: 1px solid var(--line); padding: 2px 4px; font: inherit; }
+  .tr .u { color: var(--soft); font-size: 10px; }
+  .tr .x { color: var(--soft); font-size: 14px; line-height: 1; }
+  .tr .x:hover { color: var(--red); }
+  .tr small { grid-column: 2 / -1; color: var(--soft); font-size: 10px; margin-top: -4px; }
+  .tr.seg2, .tr.chips { grid-template-columns: 70px minmax(0, 1fr) 18px; }
+  .tr.chips { grid-template-columns: 70px minmax(0, 1fr); }
+  .sg { display: flex; flex-wrap: wrap; gap: 4px; }
+  .sg button { border: 1px solid var(--line); border-radius: 4px; padding: 2px 7px; font-size: 11px; }
+  .sg button:hover { border-color: var(--ink); }
+  .sg button.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .tl { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 11px; }
+  .tl b { font-weight: 500; display: block; word-break: break-all; }
+  .tl small { color: var(--mid); display: block; word-break: break-all; }
+  .tl span { display: flex; gap: 8px; align-items: start; white-space: nowrap; color: var(--mid); }
+  .tl button:hover { color: var(--ink); text-decoration: underline; }
 </style>
 </head>
 <body>
 <header>
   <b>YP.ARC</b><span style="color:var(--mid)">Feedback</span>
   <select id="page" aria-label="Page">
-    <option value="/index.html">메인 (A-000)</option>
-    <option value="/projects.html">작품 목록 (A-100)</option>
-    <option value="/project.html#shared-ground">작품 상세 (A-101)</option>
+    <option value="/index.html">홈 (A-000)</option>
+    <option value="/projects.html">작품 이름 목록 (A-100)</option>
+    <option value="/project.html#re-tide">RE:TIDE (A-101)</option>
+    <option value="/project.html#motorism">Motorism (A-102)</option>
+    <option value="/project.html#timteam-work">Tim(team) Work (A-103)</option>
+    <option value="/project.html#modular-o-housing">Modular O′ housing (A-104)</option>
+    <option value="/archive.html">Archive (A-200)</option>
     <option value="/about.html">소개 (A-900)</option>
   </select>
   <div class="seg" id="mode"><button data-m="desktop" class="on">Desktop</button><button data-m="mobile">Mobile 390</button></div>
   <span class="sp"></span>
+  <button class="tunebtn" id="tunebtn" type="button"><i></i>디자인 조정 <kbd>T</kbd></button>
   <button class="pinbtn" id="pinbtn" type="button"><i></i>핀 꽂기 <kbd>C</kbd></button>
   <span class="conn" id="conn"><i></i><span>연결 중…</span></span>
 </header>
@@ -118,6 +171,7 @@
       <p><kbd>C</kbd> 또는 "핀 꽂기"를 누르고 고치고 싶은 곳을 클릭하세요. 코멘트를 남기면 Claude가 바로 수정해요.<br>이미지는 사이트 위의 넣을 자리에 끌어다 놓으세요.</p>
     </div>
     <div class="list" id="list"></div>
+    <section class="tp" id="tp" hidden></section>
   </aside>
 </main>
 <script>
@@ -125,6 +179,7 @@
   "use strict";
   const $ = (s) => document.querySelector(s);
   const f = $("#f"), frame = $("#frame"), layer = $("#layer"), list = $("#list"), toastEl = $("#toast");
+  // (tune.js는 이 layer 위에 선택 테두리를 그려요)
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const ST = { open: "대기 중", working: "Claude 수정 중", done: "완료" };
   let pins = [], mode = "desktop", pinning = false, tab = "open", hl = null, pop = null;
@@ -138,6 +193,7 @@
     if (p.endsWith("/")) p += "index.html";
     return p + (p.endsWith("project.html") ? w.location.hash : "");
   };
+  const FB = window.FB = { win: () => win(), frame, layer: null, toast: (t) => toast(t), pageKey: () => pageKey(), getMode: () => mode, setPinning: (v) => setPinning(v), onLoad: [], onPin: [] };
   const toast = (t) => { toastEl.textContent = t; toastEl.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => toastEl.classList.remove("on"), 2600); };
 
   // ---- 화면 크기 ----
@@ -152,7 +208,7 @@
   $("#page").addEventListener("change", (e) => { f.src = e.target.value; });
 
   // ---- 핀 꽂기 모드 ----
-  const setPinning = (on) => { pinning = on; $("#main").classList.toggle("pinning", on); $("#pinbtn").classList.toggle("on", on); if (!on) closePop(); };
+  const setPinning = (on) => { if (on) FB.onPin.forEach((fn) => fn()); pinning = on; $("#main").classList.toggle("pinning", on); $("#pinbtn").classList.toggle("on", on); if (!on) closePop(); };
   $("#pinbtn").addEventListener("click", () => setPinning(!pinning));
   const onKey = (e) => {
     const t = e.target;
@@ -219,7 +275,7 @@
     pop.querySelector(".go").addEventListener("click", submit);
     ta.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && !ev.shiftKey && !ev.isComposing) { ev.preventDefault(); submit(); } if (ev.key === "Escape") closePop(); });
   };
-  $("#catch").addEventListener("click", (e) => { if (dropping) return; const d = draftAt(e.clientX, e.clientY); if (d) openPop(d); });
+  $("#catch").addEventListener("click", (e) => { if (dropping || $("#main").classList.contains("tuning")) return; const d = draftAt(e.clientX, e.clientY); if (d) openPop(d); });
 
   // ---- 이미지 끌어다 놓기 ----
   const OK_TYPES = /^(image\/(jpeg|png|webp|gif|avif)|video\/(mp4|webm|quicktime))$/;
@@ -341,8 +397,9 @@
     } catch (e) {}
     if (keepY !== null) { const y = keepY; keepY = null; setTimeout(() => w.scrollTo(0, y), 400); }
     if (pendingJump) { const j = pendingJump; pendingJump = null; setTimeout(j, 600); }
-    try { w.addEventListener("hashchange", render); } catch (e) {}
+    try { w.addEventListener("hashchange", () => { render(); FB.onLoad.forEach((fn) => fn()); }); } catch (e) {}
     render();
+    FB.onLoad.forEach((fn) => fn());
   });
 
   // ---- 서버와 실시간 연결 ----
@@ -365,7 +422,10 @@
   };
   connect();
   setMode(mode);
+  FB.layer = layer;
 })();
 </script>
+<script src="/tools/feedback/tune-css.js"></script>
+<script src="/tools/feedback/tune.js"></script>
 </body>
 </html>
