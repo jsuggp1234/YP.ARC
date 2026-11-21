@@ -87,12 +87,12 @@
       <!-- v2 상단바 (docs/redesign-plan.md 1단계): 4칸 — 1 로고 · 2 다크 토글 · 3 Menu/Contact · 4 서울 시각 -->
       <header class="hdr g4" id="hdr">
         <a class="logo" href="index.html" aria-label="${esc(SITE.name)} home">${roll(SITE.name)}</a>
-        <div class="hdr-m"><button class="mode" type="button" aria-label="Switch light or dark"><i></i><span>Dark</span></button></div>
+        <div class="hdr-m"><div class="dial" role="slider" tabindex="0" aria-label="Time travel — 점을 돌리면 시각이 바뀌어요. 누르면 라이트/다크 전환" aria-valuemin="-720" aria-valuemax="720" aria-valuenow="0"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25.5"/></svg><span class="dial-dot"></span></div></div>
         <nav class="hdr-n" aria-label="Main">
           <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">${roll("Menu")}</button>
           <a href="#contact" data-contact aria-haspopup="dialog">${roll("Contact")}</a>
         </nav>
-        <div class="hdr-t"><span class="mid">Local time</span><span class="clock num">Seoul --:--</span></div>
+        <div class="hdr-t"><span class="mid tt-l"><span class="tt-a">Local time</span><button type="button" class="tt-x" aria-label="지금 시각으로 돌아가기" hidden>Time travel <span aria-hidden="true">×</span></button></span><span class="clock num">Seoul --:--</span></div>
         <span class="hdr-line" aria-hidden="true"><i></i></span>
       </header>
       <div class="hud g8" aria-hidden="true">
@@ -202,26 +202,79 @@
   }
 
   // ---------- 라이트/다크 ----------
+  const setMode = (m) => {
+    if (HTML.dataset.mode === m) return;
+    HTML.dataset.mode = m;
+    $$(".mode span").forEach((s) => (s.textContent = m === "dark" ? "Light" : "Dark"));
+    D.dispatchEvent(new Event("yp:theme"));
+  };
   function modeUi() {
-    const set = (m) => {
-      HTML.dataset.mode = m;
-      $$(".mode span").forEach((s) => (s.textContent = m === "dark" ? "Light" : "Dark"));
-      D.dispatchEvent(new Event("yp:theme"));
-    };
-    set(HTML.dataset.mode === "dark" ? "dark" : "light");
+    HTML.dataset.mode = HTML.dataset.mode === "dark" ? "dark" : "light";
     D.addEventListener("click", (e) => {
       if (!e.target.closest(".mode")) return;
       const m = HTML.dataset.mode === "dark" ? "light" : "dark";
       ls.set("yp-mode", m);
-      set(m);
+      setMode(m);
     });
+    dial();
+  }
+
+  // ---------- Time travel 다이얼 (핀 #2, 2026-11-22) ----------
+  // 원 둘레의 점을 돌리면 시각이 앞뒤로 움직여요(한 바퀴 = 12시간). 바뀐 시각이 밤이면 배경이 점점 어두워지고(무채색),
+  // 절반을 넘으면 글자·도면도 다크 모드로 바뀌어요. 그냥 누르면 예전처럼 라이트/다크 전환, × 또는 Esc로 지금 시각으로.
+  const TT = { off: 0 }; // 분 단위로 얼마나 여행했는지
+  const seoulNow = () => { try { const p = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Seoul", hour: "numeric", minute: "numeric", hour12: false }).formatToParts(new Date()); return (+p.find((x) => x.type === "hour").value % 24) * 60 + +p.find((x) => x.type === "minute").value; } catch (e) { return new Date().getHours() * 60 + new Date().getMinutes(); } };
+  function dial() {
+    const el = $(".dial"), dot = $(".dial-dot"), x = $(".tt-x"), lab = $(".tt-a");
+    if (!el) return;
+    const sm = (a, b, v) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+    const dark = (min) => { const h = (((min / 60) % 24) + 24) % 24; return h < 12 ? 1 - sm(4.5, 7, h) : sm(17.5, 20, h); }; // 0 낮 ~ 1 밤
+    const paint = () => {
+      const on = Math.abs(TT.off) >= 1;
+      dot.style.transform = `rotate(${(TT.off / 2).toFixed(2)}deg)`;
+      el.setAttribute("aria-valuenow", Math.round(TT.off));
+      x.hidden = !on; lab.hidden = on;
+      HTML.classList.toggle("tt-on", on);
+      if (!on) { HTML.style.removeProperty("--bg"); setMode(ls.get("yp-mode") === "dark" ? "dark" : "light"); }
+      else {
+        const t = dark(seoulNow() + TT.off), v = Math.round(255 + (13 - 255) * t);
+        HTML.style.setProperty("--bg", `rgb(${v}, ${v}, ${v})`);
+        setMode(t >= 0.5 ? "dark" : "light");
+      }
+      $$(".clock").forEach((c) => (c.textContent = "Seoul " + hm(seoulNow() + TT.off)));
+    };
+    const hm = (min) => { const m = ((Math.round(min) % 1440) + 1440) % 1440; return pad(Math.floor(m / 60)) + ":" + pad(m % 60); };
+    TT.paint = paint;
+    let drag = null;
+    const ang = (e) => { const b = el.getBoundingClientRect(); return Math.atan2(e.clientY - (b.top + b.height / 2), e.clientX - (b.left + b.width / 2)) * 180 / Math.PI; };
+    el.addEventListener("pointerdown", (e) => { if (e.button) return; drag = { a: ang(e), moved: 0 }; el.setPointerCapture(e.pointerId); el.classList.add("grab"); e.preventDefault(); });
+    el.addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      const a = ang(e); let d = a - drag.a; if (d > 180) d -= 360; if (d < -180) d += 360;
+      drag.a = a; drag.moved += Math.abs(d);
+      if (drag.moved > 4) { TT.off = clamp(TT.off + d * 2, -1440 * 7, 1440 * 7); paint(); }
+    });
+    const up = () => {
+      if (!drag) return;
+      const click = drag.moved <= 4; drag = null; el.classList.remove("grab");
+      if (click) { if (TT.off) { TT.off = 0; paint(); } else { const m = HTML.dataset.mode === "dark" ? "light" : "dark"; ls.set("yp-mode", m); setMode(m); } }
+    };
+    el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+    el.addEventListener("keydown", (e) => {
+      const k = e.key, step = e.shiftKey ? 60 : 15;
+      if (k === "ArrowRight" || k === "ArrowUp") TT.off += step; else if (k === "ArrowLeft" || k === "ArrowDown") TT.off -= step;
+      else if (k === "Enter" || k === " ") { const m = HTML.dataset.mode === "dark" ? "light" : "dark"; ls.set("yp-mode", m); TT.off = 0; paint(); setMode(m); e.preventDefault(); return; }
+      else if (k === "Escape" || k === "Home") TT.off = 0; else return;
+      e.preventDefault(); paint();
+    });
+    x.addEventListener("click", () => { TT.off = 0; paint(); el.focus(); });
   }
 
   // ---------- 서울 시간 ----------
   function clock() {
     let f;
     try { f = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Seoul", hour: "2-digit", minute: "2-digit", hour12: false }); } catch (e) { return; }
-    const tick = () => $$(".clock").forEach((c) => (c.textContent = "Seoul " + f.format(new Date())));
+    const tick = () => (TT.off && TT.paint ? TT.paint() : $$(".clock").forEach((c) => (c.textContent = "Seoul " + f.format(new Date()))));
     tick();
     setInterval(tick, 15000);
   }

@@ -1341,11 +1341,22 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .hdr.g4::after, .hdr.g4 .hdr-line { display: none; }
 .hdr.g4 > * { padding: 0; }
 .hdr.g4 .logo { grid-column: 1; padding-left: 0; font-weight: 600; letter-spacing: 0.06em; }
-/* 핀 #1(2026-11-22): 다크/라이트 토글은 글자 없이 작은 동그라미로 맨 오른쪽 끝에 */
-.hdr-m { position: absolute; right: var(--g4-e); top: calc(env(safe-area-inset-top, 0px) + var(--hdr) / 2); transform: translateY(-50%); display: flex; align-items: center; }
-.hdr.g4 .mode span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 글자는 화면 읽기 프로그램용으로만 */
-.hdr.g4 .mode { padding: 6px; margin: -6px; cursor: pointer; }
-.hdr.g4 .mode i { width: 9px; height: 9px; transform: none; transition: background-color 0.3s var(--ease); }
+/* 핀 #2(2026-11-22): 맨 오른쪽 Time travel 다이얼 (핀 #1의 작은 토글 자리) */
+.hdr-m { position: absolute; right: var(--g4-e); top: calc(env(safe-area-inset-top, 0px) + 16px); z-index: 2; }
+.hdr.g4 > .hdr-t { align-items: flex-start; padding-right: 64px; } /* 시계 글자가 다이얼을 덮지 않게 */
+.dial { position: relative; width: 52px; height: 52px; cursor: grab; touch-action: none; user-select: none; outline: none; }
+.dial.grab { cursor: grabbing; }
+.dial svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.dial circle { fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.dial-dot { position: absolute; inset: 0; pointer-events: none; }
+.dial-dot::after { content: ""; position: absolute; left: 50%; top: 6px; width: 7px; height: 7px; margin-left: -3.5px; border: 1px solid currentColor; border-radius: 50%; transition: background-color 0.3s var(--ease); }
+:root[data-mode="dark"] .dial-dot::after { background: currentColor; }
+.dial:focus-visible circle { stroke-width: 2; }
+.tt-l { display: inline-flex; }
+.tt-x { font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; gap: 8px; }
+.tt-x[hidden], .tt-a[hidden] { display: none; }
+html.tt-on .hdr-t .mid { opacity: 1; }
+body { transition: background-color 0.25s linear; }
 .hdr-n { grid-column: 3; display: flex; flex-direction: column; align-items: flex-start; }
 .hdr-n > * { font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; background: none; border: 0; padding: 0; cursor: pointer; line-height: 1.2; }
 .hdr.g4 .menu-btn { display: inline-block; }
@@ -1360,7 +1371,10 @@ a:hover > .roll > span, button:hover > .roll > span, a:focus-visible > .roll > s
 @media (max-width: 760px) {
   .hdr.g4 > .logo { grid-column: 1 / span 2; }
   .hdr.g4 > .hdr-n { grid-column: 3; }
-  .hdr.g4 > .hdr-t { grid-column: 4; padding-right: 16px; }
+  .hdr.g4 > .hdr-t { grid-column: 4; padding-right: 30px; }
+  .dial { width: 32px; height: 32px; }
+  .dial-dot::after { top: 3px; width: 6px; height: 6px; margin-left: -3px; }
+  .hdr-m { top: calc(env(safe-area-inset-top, 0px) + 6px); }
 }
 
 /* ============ v2 2단계: 홈 가로 작품 카드 띠 ============ */
