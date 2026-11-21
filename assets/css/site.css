@@ -1763,3 +1763,8 @@ html.ct-lock .ct a, html.ct-lock .ct button, html.ct-lock .ct [data-ct-close], h
 .media.sun-done { cursor: pointer; }
 .cx-body .pj-sec:has(.sun-ov) { --bx: 0%; --bw: 100%; }
 .cx-body .pj-sec:has(.sun-ov) > .figs { width: 100%; }
+/* 핀 #17(2026-11-22): Menu 옆에 Contact를 나란히, 상단바 글씨체는 참고 사이트와 같은 순서
+   (Helvetica Now Variable → Helvetica Neue → Helvetica → Arial. Helvetica Now는 유료 글꼴이라 파일은 넣지 않고, 깔려 있으면 그대로 써요) */
+.hdr.g4 { font-family: "Helvetica Now Variable", "Helvetica Now Text", "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 400; letter-spacing: 0; }
+.hdr.g4 .hdr-n { flex-direction: row; align-items: flex-start; gap: 0 20px; }
+@media (max-width: 760px) { .hdr.g4 .hdr-n { gap: 0 10px; flex-wrap: wrap; } }
