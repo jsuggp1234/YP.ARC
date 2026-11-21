@@ -198,7 +198,7 @@
    - 모션 아트·이미지 띠 호출을 끄고, 작품 카드 띠를 넣어요.
    - 움직임: 휠과 드래그로 가로 이동, 무한 반복, 움직이는 동안 0.9배 축소와 간격 벌어짐, 사진 시차, hover 영상.
    - 확인: `index.html`.
-3. **로딩 인트로:** 가운데 사진 플립북이 첫 카드 자리로 커져요. 한 번 본 뒤에는 짧게 건너뛰어요(sessionStorage, try/catch). 확인: 새로고침.
+3. ✅ **로딩 인트로** (2026-11-22 완료 — `homeIntro()`, sessionStorage 키 `yp-hi`): 가운데 사진 플립북이 첫 카드 자리로 커져요. 한 번 본 뒤에는 짧게 건너뛰어요(sessionStorage, try/catch). 확인: 새로고침.
 4. **Contact 패널:** 덮개 + 패널, 탭(Email / Instagram / Portfolio PDF), 졸업·지원 안내, CLOSE와 Esc로 닫기. 확인: 모든 페이지에서 열고 닫기.
 5. **Menu 페이지 카드:** 화면이 줄어들며 Works·Archive·About 카드 세 장이 나오고, 누르면 커지며 이동해요. 확인: 세 페이지 오가기.
 6. **Archive 페이지:** 큰 제목, 설명, 2022—2027, 아래 가로 이미지 띠(높이 같고 폭은 사진 비율). 확인: `projects.html`(또는 새 `archive.html`, 결정 필요).

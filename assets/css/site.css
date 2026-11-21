@@ -1381,3 +1381,21 @@ html.v2-home .ftr, html.v2-home .hud { display: none; }
   .cs { --cw: calc(100vw - 80px); --ch: min(calc(var(--cw) * 1.3224), calc(100svh - var(--hdr) - 120px)); }
 }
 @media (prefers-reduced-motion: reduce) { .cs-card .mz { transform: none; } }
+
+/* ============ v2 3단계: 홈 로딩 인트로 ============ */
+/* 가운데 작은 사진(한 칸 폭의 약 45%) — 사진이 빠르게 바뀌다가 첫 카드 자리로 커져요 */
+.hi {
+  position: fixed; left: 50%; top: 50%; z-index: 58; transform: translate(-50%, -50%); transform-origin: 50% 50%;
+  width: calc(var(--g4-col) * 0.4534); aspect-ratio: 397 / 525; overflow: hidden; background: var(--line); pointer-events: none;
+}
+@media (max-width: 760px) { .hi { width: calc((100vw - 80px) * 0.4534); } }
+.hi img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* 인트로 동안: 카드·이름표·상단 메뉴를 숨겨 두고, 로고만 왼쪽부터 써지듯 나타나요 */
+html.hi-on .cs-card:not(.hi-in) { opacity: 0; }
+html.hi-on .cs-lab, html.hi-end .cs-lab { opacity: 0; animation: hi-fade 0.8s var(--ease) 0.6s forwards; }
+html.hi-on .cs-lab { animation: none; }
+html.hi-on .hdr-m, html.hi-on .hdr-n, html.hi-on .hdr-t { opacity: 0; }
+html.hi-end .hdr-m, html.hi-end .hdr-n, html.hi-end .hdr-t { animation: hi-fade 0.8s var(--ease) 0.3s both; }
+html.hi-on .hdr .logo { animation: hi-write 1.6s var(--ease) 0.2s both; }
+@keyframes hi-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes hi-write { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }

@@ -491,9 +491,57 @@
         <h1 class="sr">${esc(SITE.name)} — Selected works</h1>
         <div class="cs-track">${[0, 1, 2].map((k) => `<div class="cs-set"${k === 1 ? "" : ' aria-hidden="true" inert'}>${one}</div>`).join("")}</div>
       </section>`;
+    // 인트로는 탭(세션)마다 홈에 처음 왔을 때 한 번만. 움직임 줄이기 설정이면 건너뛰어요
+    const playIntro = !REDUCED && !ss.get("yp-hi");
+    if (playIntro) HTML.classList.add("hi-on");
     caseStrip();
     cardFx();
+    if (playIntro) { ss.set("yp-hi", "1"); homeIntro(list); }
   };
+
+  // ---------- v2 로딩 인트로 (계획 3단계) ----------
+  function homeIntro(list) {
+    const srcs = list.map((p) => p.thumb || p.cover).filter((x) => typeof x === "string");
+    const firstCard = $(".cs-set:nth-child(2) .cs-card");
+    const done = () => { HTML.classList.remove("hi-on"); HTML.classList.add("hi-end"); setTimeout(() => HTML.classList.remove("hi-end"), 1400); };
+    if (!srcs.length || !firstCard) return done();
+    // 마지막 장면은 첫 카드 사진이 되도록 순서를 거꾸로 돌려요
+    const seq = [...srcs.slice(1).reverse(), ...srcs.slice(1).reverse(), srcs[0]];
+    const box = D.createElement("div");
+    box.className = "hi";
+    box.setAttribute("aria-hidden", "true");
+    box.innerHTML = `<img alt="" decoding="async" src="${esc(seq[0])}">`;
+    BODY.appendChild(box);
+    seq.forEach((u) => { const im = new Image(); im.src = u; }); // 미리 불러오기
+    const img = $("img", box);
+    let k = 0;
+    const flip = setInterval(() => {
+      k++;
+      if (k < seq.length) { img.src = seq[k]; return; }
+      clearInterval(flip);
+      expand();
+    }, 115);
+    const expand = () => {
+      const media = $(".media", firstCard), a = box.getBoundingClientRect(), b = media.getBoundingClientRect();
+      const dx = b.left + b.width / 2 - (a.left + a.width / 2), dy = b.top + b.height / 2 - (a.top + a.height / 2), sc = b.width / a.width;
+      const ease = "cubic-bezier(0.76, 0, 0.24, 1)";
+      box.animate([{ transform: "translate(-50%, -50%)" }, { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${sc})` }], { duration: 1100, easing: ease, fill: "forwards" })
+        .finished.then(() => {
+          firstCard.classList.add("hi-in");
+          // 나머지 카드: 첫 카드 뒤에 겹쳐 있다가 제자리로 미끄러져 나와요
+          const x0 = firstCard.getBoundingClientRect().left;
+          $$(".cs-card").forEach((c) => {
+            if (c === firstCard) return;
+            const l = c.getBoundingClientRect().left;
+            if (l < -50 || l > innerWidth + 50) { c.classList.add("hi-in"); return; }
+            c.classList.add("hi-in");
+            c.animate([{ translate: `${x0 - l}px 0`, opacity: 0 }, { translate: "0 0", opacity: 1, offset: 0.25 }, { translate: "0 0", opacity: 1 }], { duration: 1200, easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
+          });
+          requestAnimationFrame(() => box.remove());
+          done();
+        });
+    };
+  }
 
   function caseStrip() {
     const sec = $(".cs"), track = $(".cs-track", sec), sets = $$(".cs-set", track);
@@ -525,14 +573,14 @@
     const kick = () => { if (!raf && live) raf = requestAnimationFrame(frame); };
     // 휠: 세로로 굴려도 옆으로 흘러요(이 화면은 세로 스크롤이 없어요)
     addEventListener("wheel", (e) => {
-      if ($("#menu.open")) return;
       e.preventDefault();
+      if ($("#menu.open") || HTML.classList.contains("hi-on")) return;
       tx += (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * (e.deltaMode === 1 ? 32 : 1);
       kick();
     }, { passive: false });
     // 끌기: 5px 넘게 움직였을 때만 끌기로 보고, 그보다 짧으면 카드 링크가 그대로 눌려요
     let down = null, moved = false;
-    sec.addEventListener("pointerdown", (e) => { if (e.button) return; down = { x: e.clientX, tx, id: e.pointerId }; moved = false; });
+    sec.addEventListener("pointerdown", (e) => { if (e.button || HTML.classList.contains("hi-on")) return; down = { x: e.clientX, tx, id: e.pointerId }; moved = false; });
     sec.addEventListener("pointermove", (e) => {
       if (!down) return;
       const dx = e.clientX - down.x;
@@ -544,7 +592,7 @@
     sec.addEventListener("click", (e) => { if (moved) { e.preventDefault(); moved = false; } }, true);
     // 키보드: ← → 로 한 칸씩
     addEventListener("keydown", (e) => {
-      if ($("#menu.open") || !/^Arrow(Left|Right)$/.test(e.key)) return;
+      if ($("#menu.open") || HTML.classList.contains("hi-on") || !/^Arrow(Left|Right)$/.test(e.key)) return;
       tx += (e.key === "ArrowRight" ? 1 : -1) * (items[0] ? items[0].w + 8 : 300); kick();
     });
     // 링크에 탭으로 들어가면 그 카드가 보이게
@@ -2426,7 +2474,7 @@
   (render[PAGE] || render.home)();
   chromeScroll();
   if (PAGE !== "project") { reveals(); parallax(); } else reveals($("footer"));
-  if (showLoader) loader(() => ready.fire());
+  if (showLoader && PAGE !== "home") loader(() => ready.fire());
   else {
     if (fromVeil) { ss.del("yp-veil"); $(".vl", veil).textContent = fromVeil; veilOut(); }
     setTimeout(() => ready.fire(), fromVeil ? 300 : 0);
