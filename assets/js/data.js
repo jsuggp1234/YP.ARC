@@ -57,6 +57,8 @@ const SITE = {
     { key: "archive", title: "archive", href: "archive.html" },
     { key: "about", title: "about", href: "about.html" },
   ],
+  // 작품 이름 목록 페이지(projects.html, v2 7단계)와 홈의 바로가기 글
+  index: { title: "index", note: "Selected works", link: "Index of works" },
   // Archive 오른쪽 짧은 설명과 연도 범위 (5단계 메뉴 카드, 6단계 Archive 페이지에서 같이 써요)
   archive: { lines: ["Renders, drawings", "and studies"], years: "2022—2027",
     // [작품 slug, 이미지, 가로/세로 비율] — scratchpad/arch-items.js로 만들었어요(작품마다 최대 4장)

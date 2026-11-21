@@ -670,6 +670,7 @@
     $("#main").innerHTML = `
       <section class="cs" id="cases" data-ind="Cases" aria-label="Works">
         <h1 class="sr">${esc(SITE.name)} — Selected works</h1>
+        <a class="cs-ix lnk" href="projects.html">${esc((SITE.index || {}).link || "Index")} <span class="num">(${pad(list.length)})</span></a>
         <div class="cs-track">${[0, 1, 2].map((k) => `<div class="cs-set"${k === 1 ? "" : ' aria-hidden="true" inert'}>${one}</div>`).join("")}</div>
       </section>`;
     // 인트로는 탭(세션)마다 홈에 처음 왔을 때 한 번만. 움직임 줄이기 설정이면 건너뛰어요
@@ -2188,7 +2189,46 @@
   }
 
   // ---------- 작품 목록 ----------
+  // ---------- v2 작품 이름 목록 (계획 7단계) ----------
   render.projects = () => {
+    const I = SITE.index || {}, list = PROJECTS.filter((p) => !p.draft);
+    const src = (p) => (typeof (p.thumb || p.cover) === "string" ? p.thumb || p.cover : "");
+    $("#main").innerHTML = `
+      <section class="ar-hd cl-hd g4">
+        <h1 class="ar-h">${esc(I.title || "index")}</h1>
+        <p class="ar-note">${esc(I.note || "")}<span class="num">(${pad(list.length)})</span></p>
+      </section>
+      <ol class="cl">${list.map((p, i) => `
+        <li><a class="cl-row g4" href="project.html#${p.slug}" data-i="${i}">
+          <span class="cl-t"><span class="cl-n num">${pad(i + 1)}</span>${esc(p.title)}</span>
+          <span class="cl-m">${esc(p.type)} — ${esc(p.titleKo || "")}</span>
+          <span class="cl-y num">${esc(p.year)}</span>
+          <span class="cl-th" aria-hidden="true">${src(p) ? `<img src="${esc(src(p))}" alt="" loading="lazy" decoding="async">` : ""}</span>
+        </a></li>`).join("")}
+      </ol>
+      <div class="cl-pv" aria-hidden="true">${list.map((p) => `<img data-src="${esc(src(p))}" alt="">`).join("")}</div>`;
+    const pv = $(".cl-pv"), imgs = $$("img", pv);
+    let x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y, on = -1, raf = 0, loaded = false;
+    const load = () => { if (loaded) return; loaded = true; imgs.forEach((im) => (im.src = im.dataset.src)); };
+    const frame = () => {
+      raf = 0;
+      const k = REDUCED ? 1 : 0.16;
+      x += (tx - x) * k; y += (ty - y) * k;
+      pv.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+      if (Math.abs(tx - x) + Math.abs(ty - y) > 0.3) raf = requestAnimationFrame(frame);
+    };
+    const show = (i) => { on = i; imgs.forEach((im, j) => im.classList.toggle("on", j === i)); pv.classList.toggle("on", i >= 0); };
+    $(".cl").addEventListener("pointerenter", load, { once: true });
+    $$(".cl-row").forEach((a) => {
+      a.addEventListener("pointerenter", (e) => { if (e.pointerType === "touch") return; if (on < 0) { x = tx = e.clientX; y = ty = e.clientY; } show(+a.dataset.i); });
+      a.addEventListener("focus", () => { load(); const b = a.getBoundingClientRect(); x = tx = b.left + b.width * 0.55; y = ty = b.top + b.height / 2; show(+a.dataset.i); frame(); });
+      a.addEventListener("blur", () => show(-1));
+    });
+    $(".cl").addEventListener("pointerleave", () => show(-1));
+    addEventListener("pointermove", (e) => { if (on < 0) return; tx = e.clientX; ty = e.clientY; if (!raf) raf = requestAnimationFrame(frame); }, { passive: true });
+  };
+
+  render.projectsV1 = () => {
     const types = ["All", ...new Set(PROJECTS.map((p) => p.type))];
     wi = 0;
     $("#main").innerHTML = `
