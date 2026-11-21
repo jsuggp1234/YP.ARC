@@ -17,6 +17,19 @@
 
 const SITE = {
   name: "YP.STUDIO",
+  // 표지 다음 화면의 휘어진 이미지 띠 — [작품 slug, 사진, 가로/세로 비율]. 작품 사진(렌더)만, 작품마다 1~2장
+  reel: [
+    ["re-tide", "assets/img/re-tide/cover.jpg", 0.859],
+    ["motorism", "assets/img/motorism/cover.jpg", 2.034],
+    ["timteam-work", "assets/img/timteam-work/cover.jpg", 2.01],
+    ["modular-o-housing", "assets/img/modular-o-housing/cover.jpg", 1.778],
+    ["samgakji-residential", "assets/img/samgakji-residential/guesthouse.jpg", 1.502],
+    ["smart-pixel", "assets/img/smart-pixel/cover.jpg", 1.683],
+    ["campus-renovation", "assets/img/campus-renovation/eng1-courtyard-winter.jpg", 1.778],
+    ["re-tide", "assets/img/re-tide/scene-2.jpg", 0.973],
+    ["motorism", "assets/img/motorism/interior-museum.jpg", 1.778],
+    ["timteam-work", "assets/img/timteam-work/night-exterior.jpg", 0.635],
+  ],
   owner: "Jeong Seungyeop",
   ownerKo: "정승엽",
   birth: "1999.08.26",

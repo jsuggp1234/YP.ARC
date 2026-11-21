@@ -404,6 +404,70 @@
   // ============================================================
   const render = {};
 
+  // ---------- 표지 다음 화면: 휘어진 무한 이미지 띠 (2026-11-21 채팅 요청) ----------
+  // 제목 → 띠 → 설계 철학 한 줄 + Works·About. 띠 위아래 곡선 마스크(var(--bg))로 가운데가 오목하게 보여요.
+  const reelHtml = () => {
+    const list = (SITE.reel || []).map(([slug, src, r]) => ({ p: PROJECTS.find((q) => q.slug === slug && !q.draft), src, r })).filter((x) => x.p);
+    if (!list.length) return "";
+    const cards = (k) => list.map(({ p, src, r }) => `<a class="fl-card" href="project.html#${p.slug}" draggable="false"${r ? ` style="aspect-ratio:${r}"` : ""}${k ? ' aria-hidden="true" tabindex="-1"' : ""}><img src="${esc(src)}" alt="${esc(p.title)}" draggable="false" decoding="async"></a>`).join("");
+    const mask = (dd, c) => `<svg class="fl-m ${c}" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path d="${dd}"/></svg>`;
+    return `
+      <section class="fl" id="reel" data-ind="YP.STUDIO" aria-label="Works in images">
+        <h2 class="fl-h">${esc(SITE.name)} <span class="mid">— ${esc(SITE.owner)}</span></h2>
+        <div class="fl-band" data-flow>
+          <div class="fl-track">${cards(0)}${cards(1)}</div>
+          ${mask("M0 0H1440V50C1440 50 1200 100 720 100C240 100 0 50 0 50V0Z", "fl-t")}
+          ${mask("M0 100H1440V50C1440 50 1200 0 720 0C240 0 0 50 0 50V100Z", "fl-b")}
+        </div>
+        <p class="fl-p">${esc(SITE.manifesto.en)}</p>
+        <p class="fl-lk"><a class="fl-u" href="#works">Works</a><a class="fl-u" href="about.html">About</a></p>
+      </section>`;
+  };
+  function reel() {
+    const band = $("[data-flow]"); if (!band) return;
+    const track = $(".fl-track", band);
+    let x = 0, v = 0, half = 0, raf = 0, vis = false, drag = null, block = false;
+    const AUTO = REDUCED ? 0 : -0.8; // 매 프레임 왼쪽으로 0.8px (움직임 줄이기 설정이면 자동 흐름 없음)
+    const measure = () => { half = track.scrollWidth / 2; };
+    const wrap = () => { if (half > 0) { while (x <= -half) x += half; while (x > 0) x -= half; } };
+    const paint = () => { track.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`; };
+    const frame = () => {
+      raf = 0;
+      if (!drag) { x += AUTO + v; v *= 0.95; if (Math.abs(v) < 0.02) v = 0; }
+      wrap(); paint();
+      // 화면 밖이거나 탭이 숨으면 멈춰요
+      if (vis && !document.hidden && (AUTO || v || drag)) raf = requestAnimationFrame(frame);
+    };
+    const kick = () => { if (!raf && vis && !document.hidden) raf = requestAnimationFrame(frame); };
+    band.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0) return;
+      drag = { id: e.pointerId, x0: e.clientX, lx: e.clientX, lt: performance.now(), cap: false }; v = 0; block = false; kick();
+    });
+    band.addEventListener("pointermove", (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.lx, now = performance.now(), dt = Math.max(1, now - drag.lt);
+      // 5px 넘게 끌어야 '끌기'로 보고 포인터를 붙잡아요(그 전에는 보통 클릭)
+      if (!drag.cap && Math.abs(e.clientX - drag.x0) >= 5) { drag.cap = true; block = true; try { band.setPointerCapture(e.pointerId); } catch (_) {} band.classList.add("grabbing"); }
+      if (drag.cap) { x += dx; v = dx * (16.7 / dt); wrap(); paint(); }
+      drag.lx = e.clientX; drag.lt = now;
+    });
+    const up = (e) => {
+      if (!drag || (e && e.pointerId !== drag.id)) return;
+      if (performance.now() - drag.lt > 80) v = 0; // 멈췄다 놓으면 미끄러지지 않아요
+      drag = null; band.classList.remove("grabbing"); kick();
+    };
+    band.addEventListener("pointerup", up); band.addEventListener("pointercancel", up); band.addEventListener("lostpointercapture", up);
+    // 끌었다 놓은 건 클릭으로 치지 않아요
+    band.addEventListener("click", (e) => { if (block) { e.preventDefault(); e.stopPropagation(); block = false; } }, true);
+    band.addEventListener("dragstart", (e) => e.preventDefault());
+    $$("img", track).forEach((im) => im.addEventListener("load", measure, { once: true }));
+    addEventListener("resize", () => { measure(); wrap(); paint(); });
+    document.addEventListener("visibilitychange", kick);
+    measure();
+    if ("IntersectionObserver" in window) new IntersectionObserver(([en]) => { vis = en.isIntersecting; measure(); kick(); }).observe(band);
+    else { vis = true; kick(); }
+  }
+
   // ---------- 메인 ----------
   // 화면 가운데의 가로선(.lines b)을 기준선 삼아, 제목은 선 바로 아래에 걸리게 배치해요 (santalarch 방식).
   render.home = () => {
@@ -429,6 +493,7 @@
       </section>
 
       <!-- 3D 작품 모형(#top)은 핀 #432로 뺐어요. 원래 마크업은 git 이전 버전에 있어요 -->
+      ${reelHtml()}
       <section class="wk" id="works" data-ind="Works">
         <div class="wk-hd g8">
           <h2 class="wk-h">Selected Works <sup class="num">(${pad(N)})</sup></h2>
@@ -467,8 +532,9 @@
 
     scenes();
     intro();
+    reel();
     cardFx();
-    worksHandoff();
+    // worksHandoff(); — 표지와 Works 사이에 이미지 띠(#reel)가 들어와 모듈이 사진 위로 날아가서 꺼 뒀어요(코드는 남김, #440에서 다시)
     profileAxes();
 
     // 첫 화면 3D

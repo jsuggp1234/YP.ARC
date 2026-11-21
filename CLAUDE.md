@@ -50,6 +50,8 @@
 - Philosophy 장면은 `position: sticky` + 스크롤 진행률로 움직여요. 폭 760px 이하와 `prefers-reduced-motion`에서는 일반 목록으로 펼쳐져요.
 - 3D 색은 CSS 변수(`--model`, `--model-2`, `--model-hi`, `--ink`)를 읽어요. 테마가 바뀌면 `yp:theme` 이벤트가 나가요.
 - 저장소(localStorage/sessionStorage) 접근은 모두 try/catch로 감싸 두었어요.
+- 긴 수정 스크립트는 Bash 명령 안에 통째로 쓰지 않아요(2026-11-21 사용자 요청). Write 도구로 스크래치패드에 .js 파일을 먼저 만들고 `node 파일`로 실행해요.
+- 표지 다음 화면 `#reel`(2026-11-21 채팅 요청): 제목 → 휘어진 무한 이미지 띠 → 설계 철학 한 줄 + Works·About 밑줄 링크. 사진 목록은 `data.js`의 `SITE.reel`([slug, 사진, 가로/세로 비율]). 핀 #448로 카드는 높이만 같고(데스크톱 420px, 모바일 260px) 폭은 사진 비율대로라 잘리지 않아요. 움직임은 `site.js`의 `reel()`(requestAnimationFrame, 매 프레임 0.8px, 5px 넘게 끌면 드래그·놓으면 0.95배씩 감속, 화면 밖·숨은 탭에서 멈춤, 움직임 줄이기 설정이면 드래그만). 위아래 곡선 마스크는 `var(--bg)`라 다크 모드도 맞아요.
 
 ## 확인 방법
 - 데스크톱 1440×900, 모바일 390×844에서 각 페이지를 열어 콘솔 오류와 가로 스크롤이 없는지 봐요.
@@ -78,5 +80,5 @@
 - 처리 순서: `node tools/feedback/reply.js <id> working` → 코드 수정(저장하면 피드백 화면이 자동 새로고침) → 답글을 UTF-8 파일로 써서 `node tools/feedback/reply.js <id> done @파일`.
 - 핀 데이터는 `.feedback/pins.json` (git 제외). 위치는 `page`, `mode`, 문서 좌표 `x,y`, 그때 화면 폭 `vw`, 클릭한 요소 `sel`/`txt`로 기록돼요.
 - 이미지: 사용자가 사이트 위에 이미지를 끌어다 놓으면 그 자리에 핀이 생기고(기존 핀 위면 그 핀에 추가), 파일은 `.feedback/uploads/`에 임시 저장돼요. 핀의 `images`에 경로가 들어 있어요. Claude는 이 파일을 `assets/img/<작품 slug>/`로 알맞은 영어 이름으로 옮기고(복사 후 원본 삭제) `data.js`의 `cover`/`src`에 연결해요. 25MB 이하 jpg·png·webp·gif·avif만 받아요.
-- 모션 아트 → Works 넘기기(2026-11-21 채팅 요청): `site.js`의 `worksHandoff()`. 스크롤 후반에 도시 모듈(윗면 정사각형)들이 떠올라 첫 카드 세 장의 자리를 9칸 타일로 채우고, 내려앉으면 카드 사진이 드러나요. 스크롤에 묶여 되감기도 돼요. 화면 고정 캔버스 `.hand-cv`.
+- 모션 아트 → Works 넘기기(2026-11-21 채팅 요청): `site.js`의 `worksHandoff()`. 같은 날 이미지 띠 화면(#reel)이 사이에 들어오면서 호출을 꺼 뒀어요(모듈이 사진 위로 날아감). 핀 #440에서 넘기기를 다시 정해요. 스크롤 후반에 도시 모듈(윗면 정사각형)들이 떠올라 첫 카드 세 장의 자리를 9칸 타일로 채우고, 내려앉으면 카드 사진이 드러나요. 스크롤에 묶여 되감기도 돼요. 화면 고정 캔버스 `.hand-cv`.
 - 작품 카드 hover 영상: `assets/img/<slug>/card-loop.mp4`(원본 `portfolio-source/대표사진 영상/`), `CARD_FX`에 연결. 영상은 사진과 같은 비율·같은 첫 장면이라 사진의 object-position을 따라가요.

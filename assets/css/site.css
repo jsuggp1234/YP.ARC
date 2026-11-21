@@ -1314,3 +1314,19 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .pan-lb { position: absolute; top: calc(100% - 3.1em); width: 5.2%; font-size: var(--t-xs); line-height: 1.45; display: flex; flex-direction: column; white-space: nowrap; }
 .pan-lb b { font-size: var(--t-s); font-weight: 600; }
 .pan-lb b .num { margin-right: .5em; font-weight: 400; }
+
+/* 표지 다음 화면: 휘어진 무한 이미지 띠 (2026-11-21 채팅 요청). 사진 모서리는 사이트 다른 이미지처럼 각지게 */
+.fl { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: 28px; padding: calc(var(--hdr) + 24px) 0 48px; background: var(--bg); position: relative; z-index: 3; }
+.fl-h { padding: 0 var(--e); font-size: var(--t-l); font-weight: 400; letter-spacing: -0.02em; }
+.fl-band { position: relative; overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.fl-band.grabbing { cursor: grabbing; }
+.fl-track { display: flex; gap: 14px; width: max-content; padding-right: 14px; will-change: transform; }
+.fl-card { flex: none; display: block; width: auto; height: 420px; aspect-ratio: 0.625; overflow: hidden; background: var(--line); -webkit-user-drag: none; }
+.fl-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; -webkit-user-drag: none; }
+.fl-m { position: absolute; left: 0; width: 100%; height: 64px; fill: var(--bg); pointer-events: none; display: block; }
+.fl-t { top: -1px; } .fl-b { bottom: -1px; }
+.fl-p { padding: 0 var(--e); max-width: 46em; font-size: var(--t-m); line-height: 1.5; }
+.fl-lk { padding: 0 var(--e); display: flex; gap: 24px; font-size: var(--t-s); }
+.fl-u { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.fl-u:hover { color: var(--mid); }
+@media (max-width: 760px) { .fl { gap: 20px; } .fl-card { height: 260px; } .fl-track { gap: 12px; padding-right: 12px; } .fl-m { height: 32px; } }
