@@ -1341,7 +1341,11 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .hdr.g4::after, .hdr.g4 .hdr-line { display: none; }
 .hdr.g4 > * { padding: 0; }
 .hdr.g4 .logo { grid-column: 1; padding-left: 0; font-weight: 600; letter-spacing: 0.06em; }
-.hdr-m { grid-column: 2; display: flex; align-items: center; }
+/* 핀 #1(2026-11-22): 다크/라이트 토글은 글자 없이 작은 동그라미로 맨 오른쪽 끝에 */
+.hdr-m { position: absolute; right: var(--g4-e); top: calc(env(safe-area-inset-top, 0px) + var(--hdr) / 2); transform: translateY(-50%); display: flex; align-items: center; }
+.hdr.g4 .mode span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 글자는 화면 읽기 프로그램용으로만 */
+.hdr.g4 .mode { padding: 6px; margin: -6px; cursor: pointer; }
+.hdr.g4 .mode i { width: 9px; height: 9px; transform: none; transition: background-color 0.3s var(--ease); }
 .hdr-n { grid-column: 3; display: flex; flex-direction: column; align-items: flex-start; }
 .hdr-n > * { font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; background: none; border: 0; padding: 0; cursor: pointer; line-height: 1.2; }
 .hdr.g4 .menu-btn { display: inline-block; }
@@ -1354,8 +1358,9 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 a:hover > .roll > span, button:hover > .roll > span, a:focus-visible > .roll > span, button:focus-visible > .roll > span { transform: translateY(-1.2em); }
 @media (prefers-reduced-motion: reduce) { .roll > span { transition: none; } }
 @media (max-width: 760px) {
-  .hdr.g4 > .logo, .hdr.g4 > .hdr-m, .hdr.g4 > .hdr-n, .hdr.g4 > .hdr-t { grid-column: auto; padding-left: 0; }
-  .hdr.g4 .mode span { display: none; }
+  .hdr.g4 > .logo { grid-column: 1 / span 2; }
+  .hdr.g4 > .hdr-n { grid-column: 3; }
+  .hdr.g4 > .hdr-t { grid-column: 4; padding-right: 16px; }
 }
 
 /* ============ v2 2단계: 홈 가로 작품 카드 띠 ============ */
