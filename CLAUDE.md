@@ -28,10 +28,11 @@
 ## 구조
 | 경로 | 역할 |
 |---|---|
-| `index.html` | 메인 원페이지 (Philosophy 장면 → 3D 작품 모형 → Works → Profile → Contact) |
-| `projects.html` | 작품 목록 (List/Grid, 필터, 따라오는 미리보기) |
-| `project.html#<slug>` | 작품 상세 (목차, 도판, 가로로 흐르는 도면 띠, 다음 작품) |
-| `about.html` | 소개·CV |
+| `index.html` | 홈 (v2): 한 화면, 작품 카드 가로 무한 띠 + 첫 방문 로딩 인트로 (A-000) |
+| `projects.html` | 작품 이름 목록 index (올리면 사진이 커서를 따라옴, A-100) |
+| `archive.html` | Archive: 렌더·도면 이미지 가로 무한 띠 (A-200) |
+| `project.html#<slug>` | 작품 상세 (v2 머리 → 번호 블록 본문 → 도면 띠 → next case) |
+| `about.html` | 소개 (철학 문장 → About me → What I do → Core values → Process → CV, A-900) |
 | `assets/js/data.js` | **모든 글과 작품 정보.** 내용 수정은 여기서만 |
 | `assets/css/site.css` | 색, 글꼴, 배치, 모션 |
 | `assets/js/site.js` | 화면 그리기, 스크롤 장면(`scenes()`), 커서, 페이지 전환 |
@@ -53,6 +54,7 @@
 - v2 작품 이름 목록(2026-11-22, 계획 7단계): `projects.html`. 큰 제목 "index" + 줄마다 번호·이름(`--t-xl`)·종류·연도, 이름에 마우스를 올리면 그 작품 사진(세로형)이 커서를 따라와요(`.cl-pv`). 모바일은 줄 왼쪽에 작은 사진. 글은 `SITE.index`. 홈 셋째 칸 위쪽에 "Index of works (09)" 바로가기(`.cs-ix`). 예전 List/Grid 목록은 `render.projectsV1`에 남김.
 - v2 About(2026-11-22, 계획 8–10단계): `render.about`(예전은 `render.aboutV1`). 철학 문장(`lineRise()`, 한 줄씩 올라옴) → 사진+About me(`CV.intro`) → What I do(`SITE.about.approach`)+Toolkit(`CV.skills` 이름) → Core values(`SITE.pillars`, `coreValues()`: 올리면 `Drawing.fig` 선 도면이 화면 전체에 그려지고 카드는 테두리 상자) → Process 6단계(`SITE.about.process`, `processPin()`: sticky 고정, 지금 단계가 셋째 칸에 오도록 줄이 밀리고 스크롤이 멈추면 가까운 단계로 맞춤) → CV. `draft: true` 글엔 Draft 표시. 참고: Playwright 일반 스크린샷은 sticky 구간에서 빈 화면이 나와서 CDP `Page.captureScreenshot`(fromSurface)로 찍어요.
 - v2 작품 상세(2026-11-22, 계획 11–13단계): `render.project` 머리 `.cx-hd`(왼쪽 `.cx-tt` sticky 제목·메타, 오른쪽 `.cx-cv` 화면 높이 대표 이미지, `.cx-lead` 설명 문장 `lineRise` + `pj-facts`), 본문 `.cx-body`(목차 옆 칸 없음, 섹션마다 `data-v` 0–3으로 시작·폭이 달라요, 사진 섹션 `.ph`는 전체 폭), 끝 `.cx-nx` next case(draft 아닌 작품끼리 돌고 마지막 → 첫 작품). `.pg.cx`는 위 여백 0.
+- v2 마무리(2026-11-22, 계획 14단계): 움직임 줄이기·키보드 포커스·다크 모드를 6개 페이지 × 2 크기로 확인. 쓰지 않는 예전 코드(`render.homeV1`, `render.projectsV1`, `render.aboutV1`, `intro()` 모션 아트, `reel()`, `worksHandoff()`, 예전 로더)는 사용자 결정 전까지 남겨 둬요.
 - 상단바 아래 선은 스크롤에 따라 메뉴 눈금까지 자라고, 화면 아래 고정 표시(`.hud`)에 시트 번호 · 구간 이름 · `01 | 03`이 나와요. 구간은 `data-ind` 속성으로 정해요.
 - 메인 첫 장면: `intro()`(모션 아트). 2026-11-21 핀 #408: 도면(펜 윤곽·포셰·기둥) → 기울며 층층이 건물 → 도시(도로망·공원·사람·차) 서사, 화면 아래 단계 자막. 차는 `build.streets`(둘레+글자 사이 골목, 화면 밖까지)를 달려요. 예전 Philosophy 장면 코드(`.mf`, `.pl`)는 `scenes()`에 남아 있지만 요소가 없으면 건너뛰어요.
 - 작품 주소는 `project.html#slug` (해시). 쿼리스트링은 쓰지 않아요.
