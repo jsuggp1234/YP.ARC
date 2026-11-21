@@ -2499,11 +2499,44 @@
       addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); img.addEventListener("load", upd); upd();
     });
   };
+  // 핀 #4(2026-11-22): 장면 넘김 그림 위를 달리는 빨간 네모. 단계마다 한 구간씩 — 직선 → 램프 → 원 한 바퀴.
+  // 좌표는 그림(2000×691 비율) 기준. 원은 반시계 방향(그림의 화살표 방향)으로 한 바퀴 돌고 들어온 자리에서 멈춰요.
+  const CAR_PATHS = {
+    strategy: {
+      vb: "0 0 2000 691",
+      legs: ["M75 342 L610 342", "M610 342 L720 342 C772 342 800 55 885 55 C958 55 975 250 1022 380 C1080 510 1150 625 1270 625 C1380 625 1420 503 1525 503", "M1525 503 A178 178 0 0 0 1525 147 A178 178 0 0 0 1525 503"],
+    },
+  };
+  const seqCar = (stage, kind) => {
+    const P = CAR_PATHS[kind]; if (!stage || !P) return null;
+    const NS = "http://www.w3.org/2000/svg", sv = document.createElementNS(NS, "svg");
+    sv.setAttribute("viewBox", P.vb); sv.setAttribute("class", "seq-car"); sv.setAttribute("aria-hidden", "true"); sv.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    const full = P.legs.map((d, i) => (i ? d.replace(/^M[^A-LN-Z]+/, "") : d)).join(" "); // 한 줄로 이어야 점선(지나간 길)이 끊기지 않아요
+    sv.innerHTML = `<path class="sc-trail" d="${full}"/><g class="sc-box"><rect x="-13" y="-13" width="26" height="26"/></g>`;
+    stage.appendChild(sv);
+    const trail = sv.querySelector(".sc-trail"), box = sv.querySelector(".sc-box");
+    const tmp = document.createElementNS(NS, "path"); sv.appendChild(tmp);
+    const lens = P.legs.map((d) => { tmp.setAttribute("d", d); return tmp.getTotalLength(); }); tmp.remove();
+    const starts = lens.map((_, i) => lens.slice(0, i).reduce((a, b) => a + b, 0)), tot = lens.reduce((a, b) => a + b, 0);
+    trail.style.strokeDasharray = `0 ${tot + 10}`;
+    const ease = (u) => (u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
+    let last = -1;
+    return (t, N) => {
+      const n = P.legs.length, f = Math.min(n - 1e-6, t * n), i = Math.floor(f), u = Math.min(1, (f - i) / 0.85);
+      let d = starts[i] + lens[i] * ease(u); if (t >= 0.999) d = tot; if (Math.abs(d - last) < 0.05) return; last = d;
+      const a = trail.getPointAtLength(Math.min(tot, d)), b = trail.getPointAtLength(Math.min(tot, d + 2)), c = trail.getPointAtLength(Math.max(0, d - 2));
+      const ang = Math.atan2(b.y - c.y, b.x - c.x) * 180 / Math.PI;
+      box.setAttribute("transform", `translate(${a.x.toFixed(1)} ${a.y.toFixed(1)}) rotate(${ang.toFixed(1)})`);
+      trail.style.strokeDasharray = `${d.toFixed(1)} ${tot + 10}`;
+      sv.classList.toggle("end", d >= tot - 0.5);
+    };
+  };
   const seqInit = (p) => {
     const qs = p.sections.filter((x) => x.seq).map((x) => x.seq);
     $$("[data-seq]").forEach((el, k) => {
       const q = qs[k], N = q.steps.length, lis = $$(".seq-side li", el), ctr = $(".seq-ctr b", el), bar = $(".seq-bar i", el);
       const imgs = q.kind === "frames" ? $$(".seq-stage img", el) : [], top = $(".seq-top", el);
+      const car = q.car ? seqCar($(".seq-stage", el), q.car) : null;
       const M = q.L ? q.L.length : 0, lds = q.L ? [$$(".seq-ln", el), $$(".seq-dt", el), $$(".seq-lb", el)] : null;
       // 핀 #139: 지시선은 정보 위계 순서로 — 층 구분(프로그램) → 주요 구조체(기둥·슬래브·보·아치) → 외피·접합부 → 마감·설비. 같은 위계 안에서는 위에서부터
       const tier = (l) => (l[5] ? 0 : /foot|shoe/i.test(l[3]) ? 2 : /column|slab|girder|core|arch|frame/i.test(l[3]) ? 1 : /facade|curtain wall|parapet/i.test(l[3]) ? 2 : 3);
@@ -2522,6 +2555,7 @@
         const r = el.getBoundingClientRect(), span = r.height - innerHeight;
         const t = span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
         bar.style.transform = `scaleX(${t})`;
+        if (car) car(t, N);
         if (lds) {
           // 지시선은 위계 순서로 하나씩: 처음 한 칸은 엑소노만
           const v = Math.max(0, Math.min(M, Math.floor(t * (M + 2)) - 1));
