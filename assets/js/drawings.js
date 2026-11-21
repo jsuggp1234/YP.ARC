@@ -221,7 +221,7 @@
   }
   function bounds(boxes) {
     let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
-    boxes.forEach((b) => [[b.x, b.y, 0], [b.x + b.w, b.y, 0], [b.x, b.y + b.d, 0], [b.x + b.w, b.y + b.d, 0], [b.x, b.y, b.h], [b.x + b.w, b.y, b.h], [b.x, b.y + b.d, b.h], [b.x + b.w, b.y + b.d, b.h]].forEach(([x, y, z]) => {
+    boxes.forEach((b) => [[b.x, b.y, 0], [b.x + b.w, b.y, 0], [b.x, b.y + b.d, 0], [b.x + b.w, b.y + b.d, 0], [b.x, b.y, b.z + b.h], [b.x + b.w, b.y, b.z + b.h], [b.x, b.y + b.d, b.z + b.h], [b.x + b.w, b.y + b.d, b.z + b.h]].forEach(([x, y, z]) => {
       const [px, py] = proj(x, y, z); x0 = Math.min(x0, px); x1 = Math.max(x1, px); y0 = Math.min(y0, py); y1 = Math.max(y1, py);
     }));
     return { x0, y0, x1, y1 };
@@ -243,15 +243,15 @@
     // 그림자
     if (opt.shadow !== false) boxes.forEach((b) => {
       const base = [[b.x, b.y], [b.x + b.w, b.y], [b.x + b.w, b.y + b.d], [b.x, b.y + b.d]];
-      const pts = base.concat(base.map(([x, y]) => [x + b.h * 0.7, y - b.h * 0.15])).map(([x, y]) => P(x, y, 0));
+      const pts = base.concat(base.map(([x, y]) => [x + (b.z + b.h) * 0.7, y - (b.z + b.h) * 0.15])).map(([x, y]) => P(x, y, 0));
       o += PG(hull(pts), "dsh");
     });
     // 매스 (뒤에서 앞으로)
-    boxes.slice().sort((a, b) => a.x + a.w / 2 + a.y + a.d / 2 - (b.x + b.w / 2 + b.y + b.d / 2) || a.h - b.h).forEach((b) => {
-      const { x, y, w, d, h } = b;
-      o += PG([P(x + w, y, 0), P(x + w, y + d, 0), P(x + w, y + d, h), P(x + w, y, h)], "dface2");
-      o += PG([P(x, y + d, 0), P(x + w, y + d, 0), P(x + w, y + d, h), P(x, y + d, h)], "dface1");
-      if (opt.floors !== false) for (let z = 0.5; z < h - 0.05; z += 0.5) {
+    boxes.slice().sort((a, b) => a.x + a.w / 2 + a.y + a.d / 2 - (b.x + b.w / 2 + b.y + b.d / 2) || a.z - b.z || a.h - b.h).forEach((b) => {
+      const { x, y, w, d } = b, z0 = b.z, h = b.z + b.h; // z0: 바닥에서 떠 있는 높이
+      o += PG([P(x + w, y, z0), P(x + w, y + d, z0), P(x + w, y + d, h), P(x + w, y, h)], "dface2");
+      o += PG([P(x, y + d, z0), P(x + w, y + d, z0), P(x + w, y + d, h), P(x, y + d, h)], "dface1");
+      if (opt.floors !== false) for (let z = z0 + 0.5; z < h - 0.05; z += 0.5) {
         const a = P(x + w, y, z), c = P(x + w, y + d, z), e = P(x, y + d, z);
         o += `<polyline class="dfl" points="${n(a[0])},${n(a[1])} ${n(c[0])},${n(c[1])} ${n(e[0])},${n(e[1])}"/>`;
       }
@@ -259,7 +259,7 @@
     });
     return o;
   }
-  const toBoxes = (mass) => mass.map(([x, y, w, d, h]) => ({ x, y, w, d, h }));
+  const toBoxes = (mass) => mass.map(([x, y, w, d, h, z = 0]) => ({ x, y, w, d, h, z }));
   const randomMass = (r) => {
     const m = [[0, 0, 2 + r() * 1.5, 1 + r(), 0.8 + r()]];
     m.push([r() * 1.5, 0.6 + r(), 1 + r(), 1 + r() * 0.8, 1.2 + r() * 1.4]);
@@ -274,9 +274,9 @@
   function concept(W, H, r, fs, mass) {
     const boxes = toBoxes(mass || randomMass(r));
     let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity, hm = 0;
-    boxes.forEach((b) => { x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.w); y1 = Math.max(y1, b.y + b.d); hm = Math.max(hm, b.h); });
-    const env = [{ x: x0, y: y0, w: x1 - x0, d: y1 - y0, h: hm * 0.62 }];
-    const cut = boxes.map((b) => ({ ...b, h: Math.min(b.h, hm * 0.62) }));
+    boxes.forEach((b) => { x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.w); y1 = Math.max(y1, b.y + b.d); hm = Math.max(hm, b.z + b.h); });
+    const env = [{ x: x0, y: y0, w: x1 - x0, d: y1 - y0, h: hm * 0.62, z: 0 }];
+    const cut = boxes.filter((b) => b.z < hm * 0.62).map((b) => ({ ...b, h: Math.min(b.h, hm * 0.62 - b.z) }));
     const fit = bounds(env.concat(boxes));
     const pw = W / 3;
     let o = "";

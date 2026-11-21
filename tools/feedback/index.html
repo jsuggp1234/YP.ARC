@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>YP.ARC Feedback</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+<style>
+  /* 로컬 전용 피드백 도구. 사이트(iframe) 위에 핀을 꽂고, 오른쪽 목록에서 상태를 봐요. */
+  :root { --bg: #fff; --ink: #111; --mid: #6b6b6b; --soft: #767676; --line: #e6e6e6; --tint: #f4f4f4; --red: #c4432b; --ok: #2f7d4f; --side: 340px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: var(--tint); color: var(--ink); font: 12.5px/1.45 "Helvetica Neue", Helvetica, Inter, "Pretendard", "Malgun Gothic", sans-serif; letter-spacing: -0.01em; display: grid; grid-template-rows: 44px minmax(0, 1fr); overflow: hidden; }
+  button, select, textarea { font: inherit; color: inherit; }
+  button { background: none; border: 0; cursor: pointer; }
+  header { display: flex; align-items: center; gap: 18px; padding: 0 16px; background: var(--bg); border-bottom: 1px solid var(--line); font-weight: 500; }
+  header b { letter-spacing: 0.08em; font-weight: 600; }
+  header .sp { flex: 1; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+  .seg button { padding: 4px 12px; color: var(--mid); }
+  .seg button.on { background: var(--ink); color: var(--bg); }
+  select { border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; background: var(--bg); }
+  .pinbtn { display: inline-flex; gap: 8px; align-items: center; padding: 5px 14px; border-radius: 999px; border: 1px solid var(--ink); }
+  .pinbtn i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid currentColor; }
+  .pinbtn.on { background: var(--red); border-color: var(--red); color: #fff; }
+  .pinbtn.on i { background: #fff; border-color: #fff; }
+  .conn { display: inline-flex; gap: 6px; align-items: center; color: var(--mid); }
+  .conn i { width: 6px; height: 6px; border-radius: 50%; background: var(--soft); }
+  .conn.on i { background: var(--ok); }
+
+  main { display: grid; grid-template-columns: minmax(0, 1fr) var(--side); min-height: 0; }
+  .stagewrap { position: relative; overflow: auto; display: grid; place-items: start center; padding: 0; }
+  .frame { position: relative; width: 100%; height: 100%; background: var(--bg); }
+  .mobile .stagewrap { padding: 20px; }
+  .mobile .frame { width: 390px; height: min(844px, calc(100vh - 84px)); box-shadow: 0 0 0 1px var(--line), 0 20px 50px rgba(0,0,0,.08); }
+  iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: var(--bg); }
+  .catch { position: absolute; inset: 0; cursor: crosshair; display: none; z-index: 3; }
+  .pinning .catch { display: block; }
+  .layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 4; }
+  .pin { position: absolute; left: 0; top: 0; width: 26px; height: 26px; margin: -26px 0 0 -2px; pointer-events: auto; cursor: pointer;
+    display: grid; place-items: center; font-size: 11px; font-weight: 600; color: #fff; background: var(--ink);
+    border-radius: 50% 50% 50% 0; box-shadow: 0 2px 8px rgba(0,0,0,.25); transition: transform .2s; }
+  .pin span { transform: none; }
+  .pin.working { background: var(--red); animation: pulse 1.4s ease-in-out infinite; }
+  .pin.done { background: #fff; color: var(--ok); border: 1.5px solid var(--ok); }
+  .pin.hl { transform: scale(1.25); }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 7px rgba(196,67,43,.18); } }
+  .pop { position: absolute; z-index: 6; width: 280px; background: var(--bg); border: 1px solid var(--ink); padding: 10px; display: grid; gap: 8px; box-shadow: 0 12px 30px rgba(0,0,0,.15); }
+  .pop textarea { width: 100%; min-height: 84px; resize: vertical; border: 1px solid var(--line); padding: 8px; outline: none; }
+  .pop textarea:focus { border-color: var(--ink); }
+  .pop .row { display: flex; justify-content: space-between; align-items: center; color: var(--mid); font-size: 11px; }
+  .pop .go { background: var(--ink); color: #fff; padding: 5px 12px; border-radius: 999px; }
+  /* 이미지를 끌고 들어오면: 사이트 위에 점선 테두리 + 안내, 놓은 자리에 핀 */
+  .dropping .catch { display: block; cursor: copy; outline: 2px dashed var(--red); outline-offset: -8px; background: rgba(196,67,43,.04); }
+  .dropping .catch::after { content: "여기에 놓으면 이 위치에 핀과 이미지가 붙어요 · 기존 핀 위에 놓으면 그 핀에 추가"; position: absolute; left: 50%; top: 18px; transform: translateX(-50%);
+    background: var(--red); color: #fff; padding: 6px 14px; border-radius: 999px; font-weight: 500; white-space: nowrap; }
+  .dropping .pin { outline: 2px solid transparent; }
+  .pin.drop-hl { transform: scale(1.4); outline-color: var(--red); outline-offset: 3px; }
+  .pin .img { position: absolute; right: -6px; top: -6px; min-width: 14px; height: 14px; padding: 0 3px; border-radius: 7px; background: var(--red); color: #fff; font-size: 9px; line-height: 14px; text-align: center; }
+  .thumbs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .thumbs img { width: 56px; height: 56px; object-fit: cover; border: 1px solid var(--line); background: var(--tint); display: block; }
+  .it .thumbs img { width: 64px; height: 64px; }
+  .toast { position: absolute; left: 50%; bottom: 18px; transform: translate(-50%, 20px); opacity: 0; z-index: 7; background: var(--ink); color: #fff; padding: 8px 14px; border-radius: 999px; transition: .35s; pointer-events: none; }
+  .toast.on { transform: translate(-50%, 0); opacity: 1; }
+
+  aside { background: var(--bg); border-left: 1px solid var(--line); display: grid; grid-template-rows: auto minmax(0, 1fr); min-height: 0; }
+  .ahd { padding: 14px 16px; border-bottom: 1px solid var(--line); display: grid; gap: 8px; }
+  .ahd p { color: var(--mid); }
+  .tabs { display: flex; gap: 14px; font-weight: 500; }
+  .tabs button { color: var(--soft); }
+  .tabs button.on { color: var(--ink); }
+  .list { overflow: auto; }
+  .it { padding: 14px 16px; border-bottom: 1px solid var(--line); display: grid; gap: 6px; cursor: pointer; }
+  .it:hover, .it.hl { background: var(--tint); }
+  .it .top { display: flex; gap: 8px; align-items: center; font-weight: 500; }
+  .it .n { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; font-size: 10px; }
+  .it .st { margin-left: auto; font-size: 11px; color: var(--mid); }
+  .it.working .n { background: var(--red); }
+  .it.working .st { color: var(--red); }
+  .it.done .n { background: var(--ok); }
+  .it.done .st { color: var(--ok); }
+  .it .pg { color: var(--soft); font-size: 11px; }
+  .it .c { white-space: pre-wrap; }
+  .it .r { white-space: pre-wrap; color: var(--mid); border-left: 2px solid var(--line); padding-left: 8px; }
+  .it .r b { color: var(--ink); font-weight: 500; }
+  .it .acts { display: flex; gap: 12px; font-size: 11px; color: var(--mid); }
+  .it .acts button:hover { color: var(--ink); text-decoration: underline; }
+  .empty { padding: 28px 16px; color: var(--mid); }
+  kbd { font: inherit; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
+</style>
+</head>
+<body>
+<header>
+  <b>YP.ARC</b><span style="color:var(--mid)">Feedback</span>
+  <select id="page" aria-label="Page">
+    <option value="/index.html">메인 (A-000)</option>
+    <option value="/projects.html">작품 목록 (A-100)</option>
+    <option value="/project.html#shared-ground">작품 상세 (A-101)</option>
+    <option value="/about.html">소개 (A-900)</option>
+  </select>
+  <div class="seg" id="mode"><button data-m="desktop" class="on">Desktop</button><button data-m="mobile">Mobile 390</button></div>
+  <span class="sp"></span>
+  <button class="pinbtn" id="pinbtn" type="button"><i></i>핀 꽂기 <kbd>C</kbd></button>
+  <span class="conn" id="conn"><i></i><span>연결 중…</span></span>
+</header>
+<main id="main">
+  <div class="stagewrap">
+    <div class="frame" id="frame">
+      <iframe id="f" src="/index.html" title="Site preview"></iframe>
+      <div class="catch" id="catch"></div>
+      <div class="layer" id="layer"></div>
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+  <aside>
+    <div class="ahd">
+      <div class="tabs" id="tabs"><button data-t="open" class="on">진행 중</button><button data-t="done">완료</button><button data-t="all">전체</button></div>
+      <p><kbd>C</kbd> 또는 "핀 꽂기"를 누르고 고치고 싶은 곳을 클릭하세요. 코멘트를 남기면 Claude가 바로 수정해요.<br>이미지는 사이트 위의 넣을 자리에 끌어다 놓으세요.</p>
+    </div>
+    <div class="list" id="list"></div>
+  </aside>
+</main>
+<script>
+(() => {
+  "use strict";
+  const $ = (s) => document.querySelector(s);
+  const f = $("#f"), frame = $("#frame"), layer = $("#layer"), list = $("#list"), toastEl = $("#toast");
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const ST = { open: "대기 중", working: "Claude 수정 중", done: "완료" };
+  let pins = [], mode = "desktop", pinning = false, tab = "open", hl = null, pop = null;
+  try { mode = localStorage.getItem("fb-mode") === "mobile" ? "mobile" : "desktop"; } catch (e) {}
+
+  // ---- 지금 iframe에 떠 있는 페이지 이름 ----
+  const win = () => { try { return f.contentWindow; } catch (e) { return null; } };
+  const pageKey = () => {
+    const w = win(); if (!w) return "";
+    let p = w.location.pathname;
+    if (p.endsWith("/")) p += "index.html";
+    return p + (p.endsWith("project.html") ? w.location.hash : "");
+  };
+  const toast = (t) => { toastEl.textContent = t; toastEl.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => toastEl.classList.remove("on"), 2600); };
+
+  // ---- 화면 크기 ----
+  const setMode = (m) => {
+    mode = m;
+    $("#main").classList.toggle("mobile", m === "mobile");
+    document.querySelectorAll("#mode button").forEach((b) => b.classList.toggle("on", b.dataset.m === m));
+    try { localStorage.setItem("fb-mode", m); } catch (e) {}
+    render();
+  };
+  $("#mode").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) setMode(b.dataset.m); });
+  $("#page").addEventListener("change", (e) => { f.src = e.target.value; });
+
+  // ---- 핀 꽂기 모드 ----
+  const setPinning = (on) => { pinning = on; $("#main").classList.toggle("pinning", on); $("#pinbtn").classList.toggle("on", on); if (!on) closePop(); };
+  $("#pinbtn").addEventListener("click", () => setPinning(!pinning));
+  const onKey = (e) => {
+    const t = e.target;
+    if (t && (t.tagName === "TEXTAREA" || t.tagName === "INPUT" || t.isContentEditable)) { if (e.key === "Escape") closePop(); return; }
+    if ((e.key === "c" || e.key === "C") && !e.metaKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); setPinning(!pinning); }
+    if (e.key === "Escape") { closePop(); setPinning(false); }
+  };
+  addEventListener("keydown", onKey);
+
+  // 클릭한 요소를 다시 찾을 수 있게 간단한 CSS 경로를 만들어요
+  const cssPath = (el) => {
+    const parts = [];
+    while (el && el.nodeType === 1 && el.tagName !== "HTML" && parts.length < 6) {
+      if (el.id) { parts.unshift("#" + el.id); break; }
+      let s = el.tagName.toLowerCase();
+      const cls = [...el.classList].filter((c) => !/^(on|in|pre|rv|past|hl)$/.test(c)).slice(0, 2);
+      if (cls.length) s += "." + cls.join(".");
+      const sib = el.parentElement ? [...el.parentElement.children].filter((c) => c.tagName === el.tagName) : [];
+      if (sib.length > 1) s += `:nth-of-type(${sib.indexOf(el) + 1})`;
+      parts.unshift(s);
+      el = el.parentElement;
+    }
+    return parts.join(" > ");
+  };
+
+  const closePop = () => { if (pop) { pop.remove(); pop = null; } };
+  const thumbUrl = (p) => "/api/uploads/" + encodeURIComponent(p.split("/").pop());
+  const thumbs = (list) => list && list.length ? `<div class="thumbs">${list.map((p) => `<img src="${thumbUrl(p)}" alt="" loading="lazy">`).join("")}</div>` : "";
+
+  // 화면의 한 점(cx, cy)에 대한 핀 초안: 페이지, 문서 좌표, 클릭한 요소
+  const draftAt = (clientX, clientY) => {
+    const w = win(); if (!w) return null;
+    const r = frame.getBoundingClientRect();
+    const cx = clientX - r.left, cy = clientY - r.top;
+    const el = w.document.elementFromPoint(cx, cy);
+    return {
+      cx, cy,
+      data: {
+        page: pageKey(), mode, x: Math.round(cx), y: Math.round(cy + w.scrollY), vw: Math.round(r.width), vh: Math.round(r.height), sy: Math.round(w.scrollY),
+        sel: el ? cssPath(el) : "", txt: el ? (el.innerText || el.textContent || "").trim().replace(/\s+/g, " ").slice(0, 120) : "",
+      },
+    };
+  };
+  // 코멘트 입력 창. 이미지가 있으면 미리보기를 보여주고, 글은 비워도 보낼 수 있어요
+  const openPop = (d, images = []) => {
+    closePop();
+    const r = frame.getBoundingClientRect();
+    pop = document.createElement("div");
+    pop.className = "pop";
+    pop.style.left = Math.max(8, Math.min(d.cx + 10, r.width - 290)) + "px";
+    pop.style.top = Math.max(8, Math.min(d.cy + 10, r.height - (images.length ? 250 : 170))) + "px";
+    pop.innerHTML = `${thumbs(images.map((i) => i.path))}<textarea placeholder="${images.length ? "이미지 설명이나 캡션 (비워도 돼요) — 예: 대표 이미지로, 캡션 'South view'" : "여기를 어떻게 바꿀까요?"}"></textarea><div class="row"><span>Enter 보내기 · Shift+Enter 줄바꿈</span><button class="go" type="button">보내기</button></div>`;
+    frame.appendChild(pop);
+    const ta = pop.querySelector("textarea");
+    ta.focus();
+    const submit = async () => {
+      const comment = ta.value.trim(); if (!comment && !images.length) return;
+      try {
+        const res = await fetch("/api/pins", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...d.data, comment, images: images.map((i) => i.path) }) });
+        if (!res.ok) throw new Error(res.status);
+        closePop(); setPinning(false); toast(images.length ? `이미지 ${images.length}장과 코멘트를 보냈어요.` : "코멘트를 보냈어요. Claude가 확인할게요.");
+      } catch (err) { toast("보내지 못했어요. 서버가 켜져 있는지 확인해 주세요."); }
+    };
+    pop.querySelector(".go").addEventListener("click", submit);
+    ta.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && !ev.shiftKey && !ev.isComposing) { ev.preventDefault(); submit(); } if (ev.key === "Escape") closePop(); });
+  };
+  $("#catch").addEventListener("click", (e) => { if (dropping) return; const d = draftAt(e.clientX, e.clientY); if (d) openPop(d); });
+
+  // ---- 이미지 끌어다 놓기 ----
+  const OK_TYPES = /^(image\/(jpeg|png|webp|gif|avif)|video\/(mp4|webm|quicktime))$/;
+  const upload = async (files) => {
+    const out = [];
+    for (const file of files) {
+      if (!OK_TYPES.test(file.type)) { toast(`${file.name}: jpg, png, webp, gif, mp4, webm, mov만 올릴 수 있어요`); continue; }
+      toast(`올리는 중… ${file.name}`);
+      try {
+        const r = await fetch("/api/upload?name=" + encodeURIComponent(file.name), { method: "POST", headers: { "Content-Type": file.type }, body: file });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) { toast(j.error || "업로드에 실패했어요"); continue; }
+        out.push(j);
+      } catch (err) { toast("업로드에 실패했어요. 서버를 확인해 주세요."); }
+    }
+    return out;
+  };
+  const hasFiles = (e) => e.dataTransfer && [...(e.dataTransfer.types || [])].includes("Files");
+  let dropping = false, dropTimer = null;
+  const setDropping = (on) => {
+    dropping = on;
+    $("#main").classList.toggle("dropping", on);
+    if (!on) layer.querySelectorAll(".drop-hl").forEach((x) => x.classList.remove("drop-hl"));
+  };
+  // 파일을 끌고 창 안으로 들어오면 (사이트 iframe 안으로 바로 들어와도) 놓을 수 있는 상태로
+  const onDragEnter = (e) => { if (!hasFiles(e)) return; e.preventDefault(); closePop(); setDropping(true); };
+  const onDragOverAny = (e) => { if (!hasFiles(e)) return; e.preventDefault(); clearTimeout(dropTimer); dropTimer = setTimeout(() => setDropping(false), 400); };
+  addEventListener("dragenter", onDragEnter);
+  addEventListener("dragover", onDragOverAny);
+  addEventListener("drop", (e) => { if (hasFiles(e)) e.preventDefault(); setDropping(false); }); // 브라우저가 이미지를 새 창으로 여는 것 막기
+  const catchEl = $("#catch");
+  catchEl.addEventListener("dragover", (e) => { if (!hasFiles(e)) return; e.preventDefault(); e.dataTransfer.dropEffect = "copy"; });
+  catchEl.addEventListener("drop", async (e) => {
+    if (!hasFiles(e)) return;
+    e.preventDefault(); e.stopPropagation();
+    const d = draftAt(e.clientX, e.clientY);
+    const files = [...e.dataTransfer.files];
+    setDropping(false);
+    if (!d || !files.length) return;
+    const imgs = await upload(files);
+    if (imgs.length) openPop(d, imgs);
+  });
+  // 기존 핀 위에 놓으면 그 핀에 이미지를 추가
+  layer.addEventListener("dragover", (e) => {
+    const pinEl = e.target.closest(".pin"); if (!pinEl || !hasFiles(e)) return;
+    e.preventDefault(); e.dataTransfer.dropEffect = "copy";
+    layer.querySelectorAll(".drop-hl").forEach((x) => x !== pinEl && x.classList.remove("drop-hl"));
+    pinEl.classList.add("drop-hl");
+  });
+  layer.addEventListener("dragleave", (e) => { const pinEl = e.target.closest(".pin"); if (pinEl) pinEl.classList.remove("drop-hl"); });
+  layer.addEventListener("drop", async (e) => {
+    const pinEl = e.target.closest(".pin"); if (!pinEl || !hasFiles(e)) return;
+    e.preventDefault(); e.stopPropagation();
+    const files = [...e.dataTransfer.files];
+    setDropping(false);
+    const imgs = await upload(files);
+    if (!imgs.length) return;
+    const res = await fetch("/api/pins/" + pinEl.dataset.id, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ addImages: imgs.map((i) => i.path) }) });
+    toast(res.ok ? `#${pinEl.dataset.id} 핀에 이미지 ${imgs.length}장을 추가했어요` : "추가하지 못했어요");
+  });
+
+  // ---- 핀과 목록 그리기 ----
+  const here = (p) => p.page === pageKey() && p.mode === mode;
+  function render() {
+    const show = pins.filter((p) => tab === "all" || (tab === "done" ? p.status === "done" : p.status !== "done")).slice().reverse();
+    list.innerHTML = show.length ? show.map((p) => `
+      <div class="it ${p.status}${hl === p.id ? " hl" : ""}" data-id="${p.id}">
+        <div class="top"><span class="n">${p.id}</span><span>${esc(p.page.replace(/^\//, ""))}</span><span class="st">${ST[p.status] || p.status}</span></div>
+        <div class="pg">${p.mode === "mobile" ? "Mobile" : "Desktop"} · ${esc(p.txt ? "“" + p.txt.slice(0, 40) + "”" : p.sel)}</div>
+        <div class="c">${esc(p.comment)}</div>
+        ${thumbs(p.images)}
+        ${p.reply ? `<div class="r"><b>Claude</b> ${esc(p.reply)}</div>` : ""}
+        <div class="acts"><button data-a="go">위치로 이동</button>${p.status === "done" ? `<button data-a="reopen">다시 열기</button>` : ""}<button data-a="del">삭제</button></div>
+      </div>`).join("") : `<p class="empty">${tab === "done" ? "아직 완료된 코멘트가 없어요." : "남긴 코멘트가 없어요. C를 누르고 사이트 위를 클릭해 보세요."}</p>`;
+    layer.innerHTML = pins.filter(here).map((p) => `<div class="pin ${p.status}${hl === p.id ? " hl" : ""}" data-id="${p.id}" title="${esc(p.comment)}"><span>${p.id}</span>${p.images && p.images.length ? `<i class="img">${p.images.length}</i>` : ""}</div>`).join("");
+    place();
+  }
+  // 사이트를 스크롤하면 핀도 같이 움직여요
+  function place() {
+    const w = win(); const sy = w ? w.scrollY : 0;
+    layer.querySelectorAll(".pin").forEach((el) => {
+      const p = pins.find((x) => x.id === el.dataset.id); if (!p) return;
+      el.style.transform = `translate3d(${p.x}px,${p.y - sy}px,0)`;
+    });
+  }
+  (function loop() { place(); requestAnimationFrame(loop); })();
+
+  const goTo = (p) => {
+    hl = p.id;
+    if (p.mode !== mode) setMode(p.mode);
+    const jump = () => { const w = win(); if (w) w.scrollTo(0, Math.max(0, p.y - (frame.clientHeight / 2))); render(); };
+    if (pageKey() !== p.page) { f.src = p.page; pendingJump = jump; } else jump();
+  };
+  let pendingJump = null;
+  list.addEventListener("click", async (e) => {
+    const it = e.target.closest(".it"); if (!it) return;
+    const p = pins.find((x) => x.id === it.dataset.id); if (!p) return;
+    const a = e.target.closest("button") && e.target.closest("button").dataset.a;
+    if (a === "del") { if (confirm(`코멘트 #${p.id}를 삭제할까요?`)) await fetch("/api/pins/" + p.id, { method: "DELETE" }); return; }
+    if (a === "reopen") { const more = prompt("무엇이 아직 아쉬운가요? (비워 두면 그대로 다시 열어요)", ""); if (more === null) return;
+      await fetch("/api/pins/" + p.id, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status: "open", comment: more.trim() ? p.comment + "\n\n[추가] " + more.trim() : p.comment }) }); return; }
+    goTo(p);
+  });
+  layer.addEventListener("click", (e) => { const el = e.target.closest(".pin"); if (!el) return; hl = el.dataset.id; tab = "all"; syncTabs(); render(); const it = list.querySelector(`[data-id="${hl}"]`); it && it.scrollIntoView({ block: "center", behavior: "smooth" }); });
+  const syncTabs = () => document.querySelectorAll("#tabs button").forEach((b) => b.classList.toggle("on", b.dataset.t === tab));
+  $("#tabs").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; tab = b.dataset.t; syncTabs(); render(); });
+
+  // ---- iframe가 새로 열릴 때 ----
+  let keepY = null;
+  f.addEventListener("load", () => {
+    const w = win(); if (!w) return;
+    const opt = [...$("#page").options].find((o) => o.value === pageKey());
+    if (opt) $("#page").value = opt.value;
+    try {
+      w.document.addEventListener("keydown", onKey);
+      w.document.addEventListener("dragenter", onDragEnter);
+      w.document.addEventListener("dragover", onDragOverAny);
+      w.document.addEventListener("drop", (e) => { if (hasFiles(e)) e.preventDefault(); });
+    } catch (e) {}
+    if (keepY !== null) { const y = keepY; keepY = null; setTimeout(() => w.scrollTo(0, y), 400); }
+    if (pendingJump) { const j = pendingJump; pendingJump = null; setTimeout(j, 600); }
+    try { w.addEventListener("hashchange", render); } catch (e) {}
+    render();
+  });
+
+  // ---- 서버와 실시간 연결 ----
+  const conn = $("#conn");
+  const connect = () => {
+    const es = new EventSource("/api/events");
+    es.onopen = () => { conn.classList.add("on"); conn.lastChild.textContent = "실시간 연결됨"; };
+    es.onerror = () => { conn.classList.remove("on"); conn.lastChild.textContent = "연결 끊김 — 서버 확인"; };
+    es.addEventListener("pins", (e) => {
+      const next = JSON.parse(e.data);
+      next.forEach((p) => { const old = pins.find((x) => x.id === p.id); if (old && old.status !== "done" && p.status === "done") toast(`#${p.id} 수정 완료`); });
+      pins = next; render();
+    });
+    es.addEventListener("reload", () => {
+      const w = win(); keepY = w ? w.scrollY : 0;
+      try { w.sessionStorage.setItem("yp-seen", "1"); } catch (e) {}
+      f.contentWindow.location.reload();
+      toast("수정 사항을 반영했어요");
+    });
+  };
+  connect();
+  setMode(mode);
+})();
+</script>
+</body>
+</html>

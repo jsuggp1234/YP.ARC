@@ -18,7 +18,7 @@ window.hero2D = function hero2D(host, ui) {
   const G = 7;
   const works = PROJECTS.filter((p) => p.mass && p.pos).map((p, k) => ({
     p, k, lift: 0,
-    boxes: p.mass.map(([x, y, w, d, h]) => ({ x: p.pos[0] + x, y: p.pos[1] + y, w, d, h })),
+    boxes: p.mass.map(([x, y, w, d, h, z = 0]) => ({ x: p.pos[0] + x, y: p.pos[1] + y, w, d, h, z })),
   }));
   const taken = (i, j) => works.some((wk) => wk.boxes.some((b) => i + 1 > b.x - 0.6 && i < b.x + b.w + 0.6 && j + 1 > b.y - 0.6 && j < b.y + b.d + 0.6));
   let seed = 7;
@@ -44,9 +44,10 @@ window.hero2D = function hero2D(host, ui) {
   ui.whenReady(() => { started = true; t0 = performance.now(); });
 
   let P;
-  const corners = (b, h) => {
+  const corners = (b, h, g = 1) => {
+    const z = (b.z || 0) * g; // 바닥에서 떠 있는 높이 (필로티·브리지)
     const c = [[b.x, b.y], [b.x + b.w, b.y], [b.x + b.w, b.y + b.d], [b.x, b.y + b.d]];
-    return { bot: c.map(([a, q]) => P(a, q, 0)), top: c.map(([a, q]) => P(a, q, h)) };
+    return { bot: c.map(([a, q]) => P(a, q, z)), top: c.map(([a, q]) => P(a, q, z + h)) };
   };
   const inside = (poly, x, y) => {
     let c = false;
@@ -56,8 +57,8 @@ window.hero2D = function hero2D(host, ui) {
     }
     return c;
   };
-  const drawBox = (b, h, fill, stroke, lw) => {
-    const { bot, top } = corners(b, h);
+  const drawBox = (b, h, fill, stroke, lw, g = 1) => {
+    const { bot, top } = corners(b, h, g);
     const face = (pts) => { ctx.beginPath(); pts.forEach((p, k) => (k ? ctx.lineTo(...p) : ctx.moveTo(...p))); ctx.closePath(); ctx.fill(); ctx.stroke(); };
     ctx.fillStyle = fill; ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.lineJoin = "round";
     [0, 1, 2, 3].map((k) => { const k2 = (k + 1) % 4; return { pts: [bot[k], bot[k2], top[k2], top[k]], y: (bot[k][1] + bot[k2][1]) / 2 }; })
@@ -90,7 +91,7 @@ window.hero2D = function hero2D(host, ui) {
     hoverC = -1;
     if (px >= 0) works.forEach((w) => w.boxes.forEach((b) => {
       const g = ease(Math.max(0, (t - 0.6 - w.k * 0.14) / 1.2));
-      const { bot, top } = corners(b, b.h * g);
+      const { bot, top } = corners(b, b.h * g, g);
       if (inside(bot.slice(0, 2).concat(top.slice(1, 4)).concat([bot[3], bot[2]]), px, py) || inside(top, px, py)) hoverC = w.k;
     }));
     const hover = hoverUi >= 0 ? hoverUi : hoverC;
@@ -106,15 +107,15 @@ window.hero2D = function hero2D(host, ui) {
       w.lift += ((w.k === hover ? 1 : 0) - w.lift) * 0.15;
       const g = REDUCED ? 1 : ease(Math.max(0, (t - 0.6 - w.k * 0.14) / 1.2));
       w.g = g;
-      w.boxes.forEach((b) => items.push({ b, kind: 1, w, h: Math.max(0.001, b.h * g * (1 + w.lift * 0.1)) }));
+      w.boxes.forEach((b) => items.push({ b, kind: 1, w, g, h: Math.max(0.001, b.h * g * (1 + w.lift * 0.1)) }));
     });
     const depth = (b) => P(b.x + b.w / 2, b.y + b.d / 2, 0)[1];
-    items.sort((a, c) => depth(a.b) - depth(c.b));
+    items.sort((a, c) => depth(a.b) - depth(c.b) || (a.b.z || 0) - (c.b.z || 0));
     const tops = {};
     items.forEach((it) => {
       if (it.kind === 0) { ctx.globalAlpha = 1; drawBox(it.b, it.h, C.model2, hexA(C.ink, 0.18), 1); return; }
       const on = it.w.k === hover;
-      const { top } = drawBox(it.b, it.h, on ? C.hi : C.model, hexA(C.ink, hover >= 0 && !on ? 0.45 : 0.9), on ? 1.4 : 1.1);
+      const { top } = drawBox(it.b, it.h, on ? C.hi : C.model, hexA(C.ink, hover >= 0 && !on ? 0.45 : 0.9), on ? 1.4 : 1.1, it.g);
       const y = Math.min(...top.map((p) => p[1]));
       if (!tops[it.w.k] || y < tops[it.w.k][1]) tops[it.w.k] = [top.reduce((a, p) => a + p[0], 0) / 4, y];
     });
