@@ -2531,6 +2531,16 @@
       sv.classList.toggle("end", d >= tot - 0.5);
     };
   };
+  // 핀 #8(2026-11-22): 여러 칸으로 된 그림을 스크롤에 따라 왼쪽부터 한 칸씩 드러내요 (data.js 그림의 reveal: 칸 수)
+  const revealCols = () => {
+    const els = $$(".media:has(> .rv-c)"); if (!els.length || REDUCED) return;
+    const upd = () => els.forEach((m) => {
+      const r = m.getBoundingClientRect(), vh = innerHeight, cs = $$(".rv-c", m), n = cs.length;
+      const t = clamp((vh * 0.88 - r.top) / (vh * 0.5), 0, 1);
+      cs.forEach((c, j) => { const u = clamp(t * n - j, 0, 1); c.style.clipPath = `inset(${(u * 100).toFixed(1)}% 0 0 0)`; });
+    });
+    addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
+  };
   const seqInit = (p) => {
     const qs = p.sections.filter((x) => x.seq).map((x) => x.seq);
     $$("[data-seq]").forEach((el, k) => {
@@ -2668,7 +2678,7 @@
       const hs = $(".hud-s"), hn = $(".hud-n"); if (hs) hs.textContent = "A-1" + pad(i + 1); if (hn) hn.textContent = p.title; // 작품을 넘겨도 아래 표시가 따라오게
       let fig = 1;
       const figure = (im, seed, w, h) => `
-        <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}><div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.w ? `;width:${im.w}` : ""}"` : ""}>${im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>
+        <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}><div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.w ? `;width:${im.w}` : ""}"` : ""}>${im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.reveal ? Array.from({ length: im.reveal }, (_, j) => `<i class="rv-c" style="--j:${j};--n:${im.reveal}" aria-hidden="true"></i>`).join("") : ""}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>
         ${im.notes ? `<ol class="fnotes" style="--n:${im.notes.length}${im.w ? `;width:${im.w}` : ""}">${im.notes.map(([n, t, d]) => `<li><b><span class="mid num">${esc(n)}</span> ${esc(t)}</b>${d ? `<span class="mid">${esc(d)}</span>` : ""}</li>`).join("")}</ol>` : ""}
         <figcaption class="figcap mono"><span>${esc(capOf(im))}</span></figcaption></figure>`;
       const facts = [["Year", p.year], ["Studio", p.studio], ["Award", p.award !== "A+" && p.award], ["Type", p.type], ["Program", p.program], ["Site", p.site], ["Area", p.area], ["Team", p.team], ["Tools", p.tools]].filter((f) => f[1]);
@@ -2721,7 +2731,7 @@
         </article>`;
 
       simInit(p);
-      seqInit(p); ssnInit(p); panInit();
+      seqInit(p); ssnInit(p); panInit(); revealCols();
       if (window.TideWidgets) $$("[data-tw]").forEach((w) => TideWidgets.mount(w, w.dataset.tw));
       if (window.MVSims) $$("[data-mv]").forEach((w) => MVSims.mount(w, w.dataset.mv));
       // 목차 + 현재 위치 표시

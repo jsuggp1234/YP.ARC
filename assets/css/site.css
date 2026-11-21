@@ -1721,3 +1721,7 @@ html.ct-lock .ct a, html.ct-lock .ct button, html.ct-lock .ct [data-ct-close], h
 .seq-car .sc-trail { fill: none; stroke: #c0353a; stroke-width: 2.4; opacity: .55; }
 .seq-car .sc-box rect { fill: #c0353a; transition: transform .5s cubic-bezier(.2,.7,.2,1); transform-box: fill-box; transform-origin: center; }
 .seq-car.end .sc-box rect { transform: scale(1.35); }
+
+/* 핀 #8: 칸마다 덮개가 위에서 아래로 걷히며 그림이 하나씩 나와요 */
+.rv-c { position: absolute; top: -1px; bottom: -1px; left: calc(100% * var(--j) / var(--n)); width: calc(100% / var(--n) + 1px); background: var(--bg); z-index: 2; pointer-events: none; transition: clip-path .35s cubic-bezier(.2,.7,.2,1); }
+@media (prefers-reduced-motion: reduce) { .rv-c { display: none; } }

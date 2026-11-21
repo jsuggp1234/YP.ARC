@@ -2105,7 +2105,8 @@ const SITE = {
           {
             src: "assets/img/campus-renovation/structure-bridge.jpg",
             caption: "Main tower · Slab · Cable · Suspension",
-            r: 2.652
+            r: 2.652,
+            reveal: 4
           }
         ]
       },
@@ -2147,43 +2148,6 @@ const SITE = {
               t: "The upper truss + PV",
               s: "held by cables",
               d: "Hung from the upper level through cables and built as a truss like the lower one, to take the tension."
-            }
-          ]
-        }
-      },
-      {
-        heading: "Assembly",
-        text: "How the curved structure goes up, in four steps.",
-        images: [],
-        seq: {
-          kind: "frames",
-          r: 0.943,
-          fade: true,
-          k: 0.9,
-          steps: [
-            {
-              src: "assets/img/campus-renovation/build-1.jpg",
-              t: "Steel Frame",
-              s: "the anchor",
-              d: "The steel frame is built first: the support for the load-bearing parts and the anchor between them and the slab."
-            },
-            {
-              src: "assets/img/campus-renovation/build-2.jpg",
-              t: "Four Truss Beams",
-              s: "30 m each",
-              d: "Four truss beams, each spanning 30 metres, carry the single-level slab and sit directly on the precast concrete columns."
-            },
-            {
-              src: "assets/img/campus-renovation/build-3.jpg",
-              t: "Truss Beam Connect",
-              s: "braced by cables",
-              d: "The four beams are tied together by cable bracing so they work as one."
-            },
-            {
-              src: "assets/img/campus-renovation/build-4.jpg",
-              t: "Anchor Points & Facade",
-              s: "the media pod",
-              d: "Small joints are fixed to the beams, then the curved media pod is anchored on them."
             }
           ]
         }
