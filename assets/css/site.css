@@ -1330,3 +1330,30 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .fl-u { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 .fl-u:hover { color: var(--mid); }
 @media (max-width: 760px) { .fl { gap: 20px; } .fl-card { height: 260px; } .fl-track { gap: 12px; padding-right: 12px; } .fl-m { height: 32px; } }
+
+/* ============ v2 1단계 (docs/redesign-plan.md): 4칸 그리드 + 새 상단바 ============ */
+:root { --g4-e: 16px; --g4-gap: 8px; --g4-col: calc(28.125vw - var(--g4-gap)); } /* 레퍼런스처럼 한 칸 = 화면 폭의 28.125%(1440에서 405px), 넷째 칸은 남는 폭 */
+@media (max-width: 760px) { :root { --g4-e: 8px; --g4-col: minmax(0, 1fr); } }
+.g4 { display: grid; grid-template-columns: repeat(3, var(--g4-col)) minmax(0, 1fr); column-gap: var(--g4-gap); padding: 0 var(--g4-e); }
+.g4 > * { min-width: 0; }
+/* 상단바: 글자는 작은 대문자, 칸마다 두 줄까지. 흰 바탕에선 검정, 사진 위에선 반전(difference) 그대로 */
+.hdr.g4 { align-items: center; text-transform: uppercase; font-weight: 400; letter-spacing: 0.01em; line-height: 1.2; }
+.hdr.g4::after, .hdr.g4 .hdr-line { display: none; }
+.hdr.g4 > * { padding: 0; }
+.hdr.g4 .logo { grid-column: 1; padding-left: 0; font-weight: 600; letter-spacing: 0.06em; }
+.hdr-m { grid-column: 2; display: flex; align-items: center; }
+.hdr-n { grid-column: 3; display: flex; flex-direction: column; align-items: flex-start; }
+.hdr-n > * { font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; background: none; border: 0; padding: 0; cursor: pointer; line-height: 1.2; }
+.hdr.g4 .menu-btn { display: inline-block; }
+.hdr-t { grid-column: 4; display: flex; flex-direction: column; }
+.hdr-t .mid { color: inherit; opacity: 0.6; }
+/* 글자 굴리기: 두 벌을 세로로 쌓고 hover 때 한 줄 올려요 */
+.roll { display: inline-block; height: 1.2em; overflow: hidden; vertical-align: top; }
+.roll > span { display: block; transition: transform 0.5s var(--ease); }
+.roll > span::after { content: attr(data-t); display: block; }
+a:hover > .roll > span, button:hover > .roll > span, a:focus-visible > .roll > span, button:focus-visible > .roll > span { transform: translateY(-1.2em); }
+@media (prefers-reduced-motion: reduce) { .roll > span { transition: none; } }
+@media (max-width: 760px) {
+  .hdr.g4 > .logo, .hdr.g4 > .hdr-m, .hdr.g4 > .hdr-n, .hdr.g4 > .hdr-t { grid-column: auto; padding-left: 0; }
+  .hdr.g4 .mode span { display: none; }
+}

@@ -44,6 +44,7 @@
 - 빌드 도구 없음. 정적 파일이라 `python3 -m http.server 8000` 후 http://localhost:8000 에서 봐요.
 - 라이브러리는 CDN: Three.js r128, GSAP 3.12.5 + ScrollTrigger, Lenis 1.1.13. 글꼴은 Google Fonts의 Inter + jsDelivr의 Pretendard.
 - 배치는 8칸 그리드(`.g8`, 칸 사이 간격 없음). 장면의 제목은 화면 가운데 높이 바로 아래에 걸려요(예전 가로선 위치, 선 자체는 뺐어요).
+- v2 상단바(2026-11-22, `docs/redesign-plan.md` 1단계): 4칸 그리드 `.g4`(가장자리 16px·간격 8px, 한 칸 = 화면 폭 28.125%, 모바일 8px) — 1 YP.STUDIO · 2 다크 토글 · 3 Menu/Contact · 4 Local time 서울 시각. 글자에 마우스를 올리면 위로 굴러요(`roll()`). 예전 상단바 진행선(아래 줄)은 숨김.
 - 상단바 아래 선은 스크롤에 따라 메뉴 눈금까지 자라고, 화면 아래 고정 표시(`.hud`)에 시트 번호 · 구간 이름 · `01 | 03`이 나와요. 구간은 `data-ind` 속성으로 정해요.
 - 메인 첫 장면: `intro()`(모션 아트). 2026-11-21 핀 #408: 도면(펜 윤곽·포셰·기둥) → 기울며 층층이 건물 → 도시(도로망·공원·사람·차) 서사, 화면 아래 단계 자막. 차는 `build.streets`(둘레+글자 사이 골목, 화면 밖까지)를 달려요. 예전 Philosophy 장면 코드(`.mf`, `.pl`)는 `scenes()`에 남아 있지만 요소가 없으면 건너뛰어요.
 - 작품 주소는 `project.html#slug` (해시). 쿼리스트링은 쓰지 않아요.
@@ -58,7 +59,7 @@
 - 첫 화면은 매스 호버·클릭, 다크 토글, Philosophy 장면의 진행(시작·중간·끝)을 확인해요.
 
 ## 진행 상황
-- 작업 브랜치: `v1-calculator`, PR #1 열려 있음 (https://github.com/jsuggp1234/YP.ARC/pull/1).
+- 작업 브랜치: `v2-redesign`(2026-11-22부터, `v1-calculator`의 커밋 81cb4b8에서 갈라짐). 예전 `v1-calculator`는 PR #1 열려 있음 (https://github.com/jsuggp1234/YP.ARC/pull/1).
 - GitHub Pages 공개 배포는 아직 안 했어요. **공개 배포는 사용자에게 먼저 확인받기.**
 
 ## 남은 일

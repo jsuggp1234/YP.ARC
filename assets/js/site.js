@@ -73,6 +73,9 @@
     ? [["#intro", "Index", 2], ["#works", "Works", 4], ["#about", "About", 6], ["#contact", "Contact", 7]]
     : [["index.html", "Index", 2], ["projects.html", "Works", 4], ["about.html", "About", 6], ["#contact", "Contact", 7]];
 
+  // 글자 굴리기(roll): 화면 읽기 프로그램은 한 번만 읽도록 두 번째 줄은 CSS ::after로만 그려요
+  const roll = (t) => `<span class="roll"><span data-t="${esc(t)}">${esc(t)}</span></span>`;
+  const setRoll = (el, t) => { const sp = el && $(".roll > span", el); if (sp) { sp.textContent = t; sp.dataset.t = t; } else if (el) el.textContent = t; };
   function chrome() {
     const [sheet, sheetName] = sheetOf();
     const navHtml = NAV.map(([h, t, c]) => {
@@ -80,13 +83,15 @@
       return `<a class="${on ? "on" : ""}" href="${h}" style="grid-column:${c}">${t}</a>`;
     }).join("");
     BODY.insertAdjacentHTML("afterbegin", `
-      <header class="hdr g8" id="hdr">
-        <a class="logo" href="index.html" aria-label="${esc(SITE.name)} home"><b>${esc(SITE.name)}</b></a>
-        <nav class="nav" aria-label="Main">${navHtml}</nav>
-        <div class="hdr-r">
-          <button class="mode" type="button" aria-label="Switch light or dark"><i></i><span>Dark</span></button>
-          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
-        </div>
+      <!-- v2 상단바 (docs/redesign-plan.md 1단계): 4칸 — 1 로고 · 2 다크 토글 · 3 Menu/Contact · 4 서울 시각 -->
+      <header class="hdr g4" id="hdr">
+        <a class="logo" href="index.html" aria-label="${esc(SITE.name)} home">${roll(SITE.name)}</a>
+        <div class="hdr-m"><button class="mode" type="button" aria-label="Switch light or dark"><i></i><span>Dark</span></button></div>
+        <nav class="hdr-n" aria-label="Main">
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">${roll("Menu")}</button>
+          <a href="#contact">${roll("Contact")}</a>
+        </nav>
+        <div class="hdr-t"><span class="mid">Local time</span><span class="clock num">Seoul --:--</span></div>
         <span class="hdr-line" aria-hidden="true"><i></i></span>
       </header>
       <div class="hud g8" aria-hidden="true">
@@ -284,7 +289,7 @@
     m.classList.remove("open");
     m.setAttribute("aria-hidden", "true");
     $(".menu-btn").setAttribute("aria-expanded", "false");
-    $(".menu-btn").textContent = "Menu";
+    setRoll($(".menu-btn"), "Menu");
     lenis && lenis.start();
   }
   function menu() {
@@ -294,7 +299,7 @@
       m.classList.add("open");
       m.setAttribute("aria-hidden", "false");
       $(".menu-btn").setAttribute("aria-expanded", "true");
-      $(".menu-btn").textContent = "Close";
+      setRoll($(".menu-btn"), "Close");
       lenis && lenis.stop();
     });
     addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
