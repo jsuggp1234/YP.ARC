@@ -1357,3 +1357,27 @@ a:hover > .roll > span, button:hover > .roll > span, a:focus-visible > .roll > s
   .hdr.g4 > .logo, .hdr.g4 > .hdr-m, .hdr.g4 > .hdr-n, .hdr.g4 > .hdr-t { grid-column: auto; padding-left: 0; }
   .hdr.g4 .mode span { display: none; }
 }
+
+/* ============ v2 2단계: 홈 가로 작품 카드 띠 ============ */
+/* 홈은 세로 스크롤이 없는 한 화면이에요. 아래 시트 번호·푸터는 홈에서만 숨겨요 */
+html.v2-home, html.v2-home body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+html.v2-home .ftr, html.v2-home .hud { display: none; }
+.cs {
+  --cw: var(--g4-col); --ch: min(calc(var(--cw) * 1.3224), calc(100svh - var(--hdr) - 96px));
+  position: fixed; inset: 0; overflow: hidden; display: flex; align-items: flex-end;
+  padding-bottom: var(--g4-e); touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none;
+}
+.cs.drag { cursor: grabbing; }
+.cs.drag a { pointer-events: none; }
+.cs-track { display: flex; gap: var(--g4-gap); padding-left: var(--g4-e); will-change: transform; --s: 1; }
+.cs-set { display: flex; gap: var(--g4-gap); flex: none; }
+.cs-set + .cs-set { margin-left: 0; }
+.cs-card { flex: none; display: flex; flex-direction: column; gap: 8px; width: calc(var(--ch) / 1.3224); transform: scale(var(--s)); transform-origin: 50% 100%; -webkit-user-drag: none; }
+.cs-lab { font-size: var(--t-s); text-transform: uppercase; letter-spacing: 0.01em; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs-card .media { position: relative; height: var(--ch); overflow: hidden; background: var(--line); }
+.cs-card .mz { transform: scale(1.15); transition: none; will-change: transform; }
+.cs-card img { pointer-events: none; }
+@media (max-width: 760px) {
+  .cs { --cw: calc(100vw - 80px); --ch: min(calc(var(--cw) * 1.3224), calc(100svh - var(--hdr) - 120px)); }
+}
+@media (prefers-reduced-motion: reduce) { .cs-card .mz { transform: none; } }

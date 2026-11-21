@@ -89,7 +89,7 @@
         <div class="hdr-m"><button class="mode" type="button" aria-label="Switch light or dark"><i></i><span>Dark</span></button></div>
         <nav class="hdr-n" aria-label="Main">
           <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">${roll("Menu")}</button>
-          <a href="#contact">${roll("Contact")}</a>
+          <a href="${PAGE === "home" ? "about.html#contact" : "#contact"}">${roll("Contact")}</a>
         </nav>
         <div class="hdr-t"><span class="mid">Local time</span><span class="clock num">Seoul --:--</span></div>
         <span class="hdr-line" aria-hidden="true"><i></i></span>
@@ -475,7 +475,88 @@
 
   // ---------- 메인 ----------
   // 화면 가운데의 가로선(.lines b)을 기준선 삼아, 제목은 선 바로 아래에 걸리게 배치해요 (santalarch 방식).
+  // ---------- v2 홈 (docs/redesign-plan.md 2단계): 가로로 끝없이 도는 작품 카드 띠 ----------
+  // 휠·끌기·화살표 키로 옆으로 흘러요. 움직이는 동안 카드가 0.9배까지 작아지며(그래서 간격이 벌어져 보여요)
+  // 멈추면 돌아와요. 카드 안 사진은 1.15배로 키워 두고 화면 위치에 따라 살짝 반대로 밀려요(사진 속 시차).
   render.home = () => {
+    HTML.classList.add("v2-home");
+    const list = PROJECTS.filter((p) => !p.draft);
+    const one = list.map((p, i) => `
+      <a class="cs-card" href="project.html#${p.slug}" draggable="false" data-i="${i}">
+        <span class="cs-lab">${esc(p.title)}</span>
+        <div class="media">${mz(card(p, 800, 1060))}</div>
+      </a>`).join("");
+    $("#main").innerHTML = `
+      <section class="cs" id="cases" data-ind="Cases" aria-label="Works">
+        <h1 class="sr">${esc(SITE.name)} — Selected works</h1>
+        <div class="cs-track">${[0, 1, 2].map((k) => `<div class="cs-set"${k === 1 ? "" : ' aria-hidden="true" inert'}>${one}</div>`).join("")}</div>
+      </section>`;
+    caseStrip();
+    cardFx();
+  };
+
+  function caseStrip() {
+    const sec = $(".cs"), track = $(".cs-track", sec), sets = $$(".cs-set", track);
+    let W = 1, x = 0, tx = 0, px = 0, sc = 1, raf = 0, live = true, items = [];
+    const measure = () => {
+      W = sets[1].offsetLeft - sets[0].offsetLeft || 1;
+      items = $$(".cs-card", track).map((c) => ({ c, img: $(".mz", c), l: c.offsetLeft, w: c.offsetWidth }));
+    };
+    const wrap = (v) => ((v % W) + W) % W;
+    const frame = () => {
+      raf = 0;
+      x += REDUCED ? tx - x : (tx - x) * 0.09;
+      const v = x - px; px = x;
+      const goal = REDUCED ? 1 : 1 - Math.min(Math.abs(v) / 30, 1) * 0.1;
+      sc += (goal - sc) * 0.12;
+      const off = -W - wrap(x);
+      track.style.transform = `translate3d(${off}px,0,0)`;
+      track.style.setProperty("--s", sc.toFixed(4));
+      if (!REDUCED) {
+        const vw = innerWidth;
+        for (const it of items) {
+          const cx = it.l + off + it.w / 2;
+          if (cx < -it.w || cx > vw + it.w) continue;
+          it.img.style.transform = `translate3d(${(((cx - vw / 2) / vw) * -6).toFixed(2)}%,0,0) scale(1.15)`;
+        }
+      }
+      if (live && (Math.abs(tx - x) > 0.1 || Math.abs(sc - 1) > 0.001)) raf = requestAnimationFrame(frame);
+    };
+    const kick = () => { if (!raf && live) raf = requestAnimationFrame(frame); };
+    // 휠: 세로로 굴려도 옆으로 흘러요(이 화면은 세로 스크롤이 없어요)
+    addEventListener("wheel", (e) => {
+      if ($("#menu.open")) return;
+      e.preventDefault();
+      tx += (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * (e.deltaMode === 1 ? 32 : 1);
+      kick();
+    }, { passive: false });
+    // 끌기: 5px 넘게 움직였을 때만 끌기로 보고, 그보다 짧으면 카드 링크가 그대로 눌려요
+    let down = null, moved = false;
+    sec.addEventListener("pointerdown", (e) => { if (e.button) return; down = { x: e.clientX, tx, id: e.pointerId }; moved = false; });
+    sec.addEventListener("pointermove", (e) => {
+      if (!down) return;
+      const dx = e.clientX - down.x;
+      if (!moved && Math.abs(dx) > 5) { moved = true; sec.setPointerCapture(down.id); sec.classList.add("drag"); }
+      if (moved) { tx = down.tx - dx * 1.4; kick(); }
+    });
+    const up = () => { down = null; sec.classList.remove("drag"); };
+    sec.addEventListener("pointerup", up); sec.addEventListener("pointercancel", up);
+    sec.addEventListener("click", (e) => { if (moved) { e.preventDefault(); moved = false; } }, true);
+    // 키보드: ← → 로 한 칸씩
+    addEventListener("keydown", (e) => {
+      if ($("#menu.open") || !/^Arrow(Left|Right)$/.test(e.key)) return;
+      tx += (e.key === "ArrowRight" ? 1 : -1) * (items[0] ? items[0].w + 8 : 300); kick();
+    });
+    // 링크에 탭으로 들어가면 그 카드가 보이게
+    sec.addEventListener("focusin", (e) => { const c = e.target.closest(".cs-card"); if (!c) return; const it = items.find((q) => q.c === c); if (it) { tx = it.l - sets[1].offsetLeft + W - 16; kick(); } });
+    D.addEventListener("visibilitychange", () => { live = !D.hidden; kick(); });
+    addEventListener("resize", () => { measure(); kick(); });
+    measure();
+    $$("img", track).forEach((im) => im.complete || im.addEventListener("load", measure, { once: true }));
+    sc = 1; frame();
+  }
+
+  render.homeV1 = () => {
     const types = ["All", ...new Set(PROJECTS.map((p) => p.type))];
     wi = 0;
     const hl = SITE.hero.lines.map((l) => `<span>${words(l)}</span>`).join("");
@@ -662,12 +743,12 @@
 
   function cardFx() {
     if (REDUCED) return;
-    $$(".wcard .media img").forEach((im) => {
+    $$(".wcard .media img, .cs-card .media img").forEach((im) => {
       const key = Object.keys(CARD_FX).find((k) => (im.getAttribute("src") || "").includes(k));
       if (!key) return;
       // 실제 영상이 있으면(같은 폴더의 cover-loop.mp4 등, CARD_FX의 video) 마우스를 올렸을 때 영상을 재생해요
       if (CARD_FX[key].video) {
-        const mz = im.parentElement, card = mz.closest(".wcard"), v = document.createElement("video");
+        const mz = im.parentElement, card = mz.closest(".wcard, .cs-card"), v = document.createElement("video");
         Object.assign(v, { muted: true, loop: true, playsInline: true, preload: "none", src: CARD_FX[key].video }); v.className = "cvid"; v.setAttribute("aria-hidden", "true");
         mz.appendChild(v);
         // 핀 #437·#438: 영상은 사진과 같은 비율·같은 장면이라, 사진의 자르기 위치를 그대로 따라가면 겹쳐도 어긋나지 않아요
