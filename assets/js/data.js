@@ -51,6 +51,14 @@ const SITE = {
     pdf: "", // 예: "assets/portfolio.pdf" — 원본 PDF를 assets로 옮기면 채워요
     pdfNote: "PDF는 준비 중이에요. 메일로 요청하시면 보내 드려요.",
   },
+  // Menu 카드 세 장 (v2 5단계). Archive는 6단계 전까지 projects.html로 가요
+  pages: [
+    { key: "works", title: "works", href: "index.html" },
+    { key: "archive", title: "archive", href: "projects.html" },
+    { key: "about", title: "about", href: "about.html" },
+  ],
+  // Archive 오른쪽 짧은 설명과 연도 범위 (5단계 메뉴 카드, 6단계 Archive 페이지에서 같이 써요)
+  archive: { lines: ["Renders, drawings", "and studies"], years: "2022—2027" },
   updated: "2026.11.20",
   rev: "04",
 

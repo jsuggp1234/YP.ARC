@@ -98,9 +98,8 @@
         <span class="hud-l clock num">Seoul --:--</span>
         <span class="hud-r"><span class="hud-s num">${sheet}</span><span class="hud-n">${esc(sheetName)}</span><span class="hud-c num" hidden><span class="odo"><span class="odo-col"></span></span><b></b><span class="hud-t"></span></span></span>
       </div>
-      <div class="menu wrap" id="menu" aria-hidden="true">
-        <ol>${NAV.map(([h, t], i) => `<li><a href="${h}"><span class="mono mid">${pad(i + 1)}</span>${t}</a></li>`).join("")}<li><a href="projects.html"><span class="mono mid">${pad(NAV.length + 1)}</span>Index</a></li></ol>
-        <div class="mono mid" style="display:flex;justify-content:space-between"><span class="clock num">Seoul --:--</span><span>${esc(SITE.coords)}</span></div>
+      <div class="mn" id="menu" hidden role="dialog" aria-modal="true" aria-label="Menu">
+        ${(SITE.pages || []).map((pg, i) => `<a class="mn-card${i === MN_CUR ? " mn-cur" : ""}" href="${esc(pg.href)}" data-i="${i}" aria-label="${esc(pg.title)}"${i === MN_CUR ? ' aria-current="page"' : ""}><div class="mn-pg">${miniHtml(pg)}</div></a>`).join("")}
       </div>
       <div class="veil wrap" aria-hidden="true"><span class="mono vl"></span><span class="bar"></span></div>`);
 
@@ -158,7 +157,7 @@
     let back = null, timer = 0;
     const open = () => {
       if (!box.hidden && box.classList.contains("open")) return;
-      closeMenu();
+      closeMenu(true);
       back = D.activeElement;
       clearTimeout(timer);
       box.hidden = false;
@@ -359,27 +358,131 @@
     addEventListener("pageshow", (e) => { if (e.persisted) veil.className = "veil wrap"; });
   }
 
-  // ---------- 메뉴 (모바일) ----------
-  function closeMenu() {
+  // ---------- v2 메뉴 (계획 5단계): 페이지 카드 세 장 ----------
+  // 카드 하나 = 그 페이지 첫 화면의 축소판(화면 전체 크기로 그린 뒤 75%로 줄이고 왼쪽 일부만 보여요).
+  // 열 때: 지금 페이지 카드가 화면 전체 크기에서 카드 크기로 줄어들고, 나머지 카드가 옆에서 들어와요.
+  // 카드를 누르면 그 카드가 다시 화면 전체로 커진 다음 그 페이지로 이동해요.
+  const MN_CUR = PAGE === "home" ? 0 : PAGE === "projects" ? 1 : PAGE === "about" ? 2 : -1;
+  const EASE_IO = "cubic-bezier(0.76, 0, 0.24, 1)";
+  const mImg = (src) => (typeof src === "string" && src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async">` : "");
+  function miniHtml(pg) {
+    const top = `<div class="mn-top">${esc(SITE.name)}</div><h2 class="mn-t">${esc(pg.title)}</h2>`;
+    if (pg.key === "works") {
+      const list = PROJECTS.filter((p) => !p.draft).slice(0, 4);
+      return top + `<div class="mn-strip">${list.map((p) => `<div class="mn-c"><span>${esc(p.title)}</span><div class="mn-im">${mImg(p.thumb || p.cover)}</div></div>`).join("")}</div>`;
+    }
+    if (pg.key === "archive") {
+      const A = SITE.archive || {};
+      return top + `<p class="mn-note">${(A.lines || []).map(esc).join("<br>")}<span>${esc(A.years || "")}</span></p><div class="mn-row">${(SITE.reel || []).slice(0, 6).map(([, src, ra]) => `<div class="mn-ar" style="aspect-ratio:${ra || 1}">${mImg(src)}</div>`).join("")}</div>`;
+    }
+    return top + `<div class="mn-pt">${mImg(SITE.portrait)}</div>`;
+  }
+  let mnOff = 0, mnBusy = false, mnHover = -1;
+  const mnCards = () => $$(".mn-card");
+  const mnGeo = () => {
+    const vw = innerWidth, vh = innerHeight, mob = vw <= 760;
+    const sc = mob ? 0.6 : 0.75, W = mob ? vw * 0.6 : vw * 0.2806, step = mob ? W + 30 : vw * 0.3222; // 모바일은 레퍼런스처럼 60%
+    return { vw, vh, sc, W, step, x0: mob ? (vw - W) / 2 : vw * 0.12, y: (vh - vh * sc) / 2, R: Math.max(0, vw - W / sc) };
+  };
+  const mnRange = (g) => { const n = mnCards().length, b = Math.max(0, MN_CUR); return [-(n - 1 - b) * g.step, b * g.step]; };
+  const mnPlace = () => {
+    const g = mnGeo(), b = Math.max(0, MN_CUR);
+    mnCards().forEach((c, i) => {
+      const x = g.x0 + (i - b) * g.step + mnOff, h = i === mnHover ? 1.025 : 1;
+      c.style.width = g.vw + "px"; c.style.height = g.vh + "px";
+      c.style.transform = `translate(${x}px, ${g.y}px) scale(${g.sc * h})`;
+      c.style.clipPath = `inset(0px ${g.R}px 0px 0px)`;
+    });
+  };
+  const FULL = { transform: "translate(0px, 0px) scale(1)", clipPath: "inset(0px 0px 0px 0px)" };
+  const mnBtn = () => $(".menu-btn");
+  function openMenu() {
     const m = $("#menu");
-    if (!m || !m.classList.contains("open")) return;
+    if (!m || !m.hidden || mnBusy) return;
+    mnOff = 0; mnHover = -1;
+    m.hidden = false;
+    HTML.classList.add("mn-on");
+    lenis && lenis.stop();
+    mnBtn().setAttribute("aria-expanded", "true"); setRoll(mnBtn(), "Close");
+    $$(".mn-card img", m).forEach((im) => (im.loading = "eager"));
+    mnPlace();
+    const cards = mnCards();
+    requestAnimationFrame(() => m.classList.add("open"));
+    (cards[MN_CUR] || cards[0]).focus({ preventScroll: true });
+    if (REDUCED) return;
+    mnBusy = true;
+    cards.forEach((c, i) => {
+      if (i === MN_CUR) c.animate([{ ...FULL, opacity: 0 }, { opacity: 1, offset: 0.2 }, { transform: c.style.transform, clipPath: c.style.clipPath, opacity: 1 }], { duration: 1000, easing: EASE_IO });
+      else c.animate([{ translate: "140px 0", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 900, delay: 380 + Math.abs(i - Math.max(0, MN_CUR)) * 90, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" });
+    });
+    setTimeout(() => (mnBusy = false), 1000);
+  }
+  function closeMenu(instant) {
+    const m = $("#menu");
+    if (!m || m.hidden) return;
+    const done = () => {
+      mnCards().forEach((c) => c.getAnimations().forEach((a) => a.cancel()));
+      m.hidden = true; m.classList.remove("open"); HTML.classList.remove("mn-on");
+      lenis && lenis.start(); mnBusy = false;
+    };
+    mnBtn().setAttribute("aria-expanded", "false"); setRoll(mnBtn(), "Menu");
+    if (instant === true || REDUCED) return done();
+    mnBusy = true;
     m.classList.remove("open");
-    m.setAttribute("aria-hidden", "true");
-    $(".menu-btn").setAttribute("aria-expanded", "false");
-    setRoll($(".menu-btn"), "Menu");
-    lenis && lenis.start();
+    const c = mnCards()[MN_CUR];
+    mnCards().forEach((o) => { if (o !== c) o.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, fill: "forwards" }); });
+    if (c) c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath, opacity: 1 }, { ...FULL, opacity: 1, offset: 0.8 }, { ...FULL, opacity: 0 }], { duration: 1000, easing: EASE_IO, fill: "forwards" }).finished.then(done, done);
+    else m.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 450 }).finished.then(done, done);
   }
   function menu() {
-    $(".menu-btn").addEventListener("click", () => {
-      const m = $("#menu");
-      if (m.classList.contains("open")) return closeMenu();
-      m.classList.add("open");
-      m.setAttribute("aria-hidden", "false");
-      $(".menu-btn").setAttribute("aria-expanded", "true");
-      setRoll($(".menu-btn"), "Close");
-      lenis && lenis.stop();
+    const m = $("#menu");
+    mnBtn().addEventListener("click", () => (m.hidden ? openMenu() : closeMenu()));
+    addEventListener("keydown", (e) => {
+      if (m.hidden) return;
+      if (e.key === "Escape") closeMenu();
+      if (/^Arrow(Left|Right)$/.test(e.key)) { // ← → 로 카드 사이 이동
+        const cards = mnCards(), k = cards.indexOf(D.activeElement), n = clamp((k < 0 ? Math.max(0, MN_CUR) : k) + (e.key === "ArrowRight" ? 1 : -1), 0, cards.length - 1);
+        e.preventDefault(); cards[n].focus({ preventScroll: true });
+        const [lo, hi] = mnRange(mnGeo()); mnOff = clamp(-(n - Math.max(0, MN_CUR)) * mnGeo().step, lo, hi); mnPlace();
+      }
     });
-    addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
+    // 카드 누르기: 지금 페이지면 닫고, 다른 페이지면 커진 다음 이동
+    m.addEventListener("click", (e) => {
+      const c = e.target.closest(".mn-card");
+      e.preventDefault();
+      if (!c) return closeMenu();
+      if (mnBusy || mnMoved) return;
+      const i = +c.dataset.i;
+      if (i === MN_CUR) return closeMenu();
+      mnBusy = true;
+      c.style.zIndex = 2;
+      if (c.getAttribute("href") === "index.html") ss.set("yp-hi", "1"); // 메뉴로 홈에 가면 로딩 인트로는 건너뛰어요
+      const go2 = () => location.assign(c.href);
+      if (REDUCED) return go2();
+      c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath }, FULL], { duration: 900, easing: EASE_IO, fill: "forwards" }).finished.then(go2, go2);
+    });
+    m.addEventListener("pointerover", (e) => { const c = e.target.closest(".mn-card"); const i = c ? +c.dataset.i : -1; if (i !== mnHover && !mnBusy) { mnHover = i; mnPlace(); } });
+    m.addEventListener("pointerleave", () => { mnHover = -1; if (!mnBusy) mnPlace(); });
+    // 휠·끌기로 카드 줄을 옆으로
+    m.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      if (mnBusy) return;
+      const g = mnGeo(), [lo, hi] = mnRange(g);
+      mnOff = clamp(mnOff - (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY), lo, hi); mnPlace();
+    }, { passive: false });
+    let down = null, mnMoved = false;
+    m.addEventListener("pointerdown", (e) => { if (!e.button) { down = { x: e.clientX, o: mnOff, id: e.pointerId }; mnMoved = false; } });
+    m.addEventListener("pointermove", (e) => {
+      if (!down) return;
+      const dx = e.clientX - down.x;
+      if (!mnMoved && Math.abs(dx) > 5) { mnMoved = true; m.setPointerCapture(down.id); m.classList.add("drag"); }
+      if (mnMoved) { const [lo, hi] = mnRange(mnGeo()); mnOff = clamp(down.o + dx, lo, hi); mnPlace(); }
+    });
+    const up = () => { down = null; m.classList.remove("drag"); setTimeout(() => (mnMoved = false), 0); };
+    m.addEventListener("pointerup", up); m.addEventListener("pointercancel", up);
+    addEventListener("resize", () => { if (!m.hidden) mnPlace(); });
+    // 뒤로 가기로 돌아왔을 때(페이지 보관) 메뉴가 열린 채로 남지 않게
+    addEventListener("pageshow", (e) => { if (e.persisted) closeMenu(true); });
   }
 
   // ---------- 아래쪽 고정 표시: 지금 보고 있는 구간 이름 + 01 | 03 번호 ----------
