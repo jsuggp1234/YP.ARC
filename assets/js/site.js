@@ -2739,6 +2739,18 @@
         <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}><div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.w ? `;width:${im.w}` : ""}"` : ""}>${im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.flow ? flowSvg(im.flow) : ""}${im.sun ? `<svg class="sun-ov" viewBox="0 0 2000 459" preserveAspectRatio="none" aria-hidden="true"><path class="sun-tr"/><rect class="sun-col" y="40" width="82" height="380"/><line class="sun-h"/><circle class="sun-dot" r="9"/></svg><span class="sun-lb"></span>` : ""}${im.reveal ? Array.from({ length: im.reveal }, (_, j) => `<i class="rv-c" style="--j:${j};--n:${im.reveal}" aria-hidden="true"></i>`).join("") : ""}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>
         ${im.notes ? `<ol class="fnotes" style="--n:${im.notes.length}${im.w ? `;width:${im.w}` : ""}">${im.notes.map(([n, t, d]) => `<li><b><span class="mid num">${esc(n)}</span> ${esc(t)}</b>${d ? `<span class="mid">${esc(d)}</span>` : ""}</li>`).join("")}</ol>` : ""}
         <figcaption class="figcap mono"><span>${esc(capOf(im))}</span></figcaption></figure>`;
+      // 렌더 장면 줄 나누기: 가로(r ≥ 1.3)는 한 줄 한 장, 이어지는 세로·정사각은 두 장씩(남는 셋은 세 장 한 줄)
+      const scenesHtml = (sec, si) => {
+        const rows = [], im = sec.images; let i = 0;
+        while (i < im.length) {
+          if (im[i].r >= 1.3) { rows.push([im[i]]); i++; continue; }
+          let j = i; while (j < im.length && im[j].r < 1.3) j++;
+          let run = im.slice(i, j); i = j;
+          while (run.length) { const k = run.length === 3 ? 3 : Math.min(2, run.length); rows.push(run.slice(0, k)); run = run.slice(k); }
+        }
+        let ii = 0;
+        return `<div class="scn">${rows.map((row) => `<div class="scn-r" style="--n:${row.length}">${row.map((m) => figure(m, `${p.slug}-${si}-${ii++}`, 1600, 900)).join("")}</div>`).join("")}</div>`;
+      };
       const facts = [["Year", p.year], ["Studio", p.studio], ["Award", p.award !== "A+" && p.award], ["Type", p.type], ["Program", p.program], ["Site", p.site], ["Area", p.area], ["Team", p.team], ["Tools", p.tools]].filter((f) => f[1]);
       wi = 0;
       const title = words(p.title);
@@ -2767,7 +2779,7 @@
                 <div class="hd"><span class="num">${pad(si + 1)}.</span><h2>${esc(s.heading)}</h2></div>
                 <p class="txt" data-reveal>${esc(s.text)}</p>
                 ${s.sim ? simHtml(s.sim) : ""}${s.panel ? mapHtml(s.panel) : ""}${s.widget && s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}${s.seq ? seqHtml(s.seq) : ""}${s.seasons ? ssnHtml(s.seasons) : ""}${s.keyed ? keyedHtml(s.keyed) : ""}${s.pan && !s.pan.after ? panHtml(s.pan) : ""}${s.widget && !s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}
-                ${s.images.length ? `<div class="figs ${s.cols ? "gc" : s.stack ? "n1 stk" : `n${Math.min(3, s.images.length)}`}"${s.cols ? ` style="--c:${s.cols}${s.cw ? `;grid-template-columns:${s.cw.map((x) => x + "fr").join(" ")}` : ""}"` : ""}>${s.images.map((im, ii) => {
+                ${s.scenes ? scenesHtml(s, si) : s.images.length ? `<div class="figs ${s.cols ? "gc" : s.stack ? "n1 stk" : `n${Math.min(3, s.images.length)}`}"${s.cols ? ` style="--c:${s.cols}${s.cw ? `;grid-template-columns:${s.cw.map((x) => x + "fr").join(" ")}` : ""}"` : ""}>${s.images.map((im, ii) => {
                   const big = s.stack || s.images.length === 1 || (s.images.length === 3 && ii === 0);
                   return figure(im, `${p.slug}-${si}-${ii}`, big ? 1600 : 1200, s.images.length === 1 ? 1000 : 900);
                 }).join("")}</div>` : ""}${s.pan && s.pan.after ? panHtml(s.pan) : ""}
