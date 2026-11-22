@@ -434,6 +434,9 @@
     const top = `<div class="mn-top">${esc(SITE.name)}</div><h2 class="mn-t">${esc(pg.title)}</h2>`;
     if (pg.key === "works") {
       const list = PROJECTS.filter((p) => !p.draft).slice(0, 7); // Works 페이지 첫 화면과 같은 장수·배치 (커진 카드 = Works 화면 그대로)
+      const strip = (cls) => `<div class="mn-strip${cls}">${list.map((p) => `<div class="mn-c"><span>${esc(p.title)}</span><div class="mn-im">${mImg(p.thumb || p.cover)}</div></div>`).join("")}</div>`;
+      // 첫 화면(glyph 있음): 사진 줄은 숨겨 두고 글자 모듈 S. 누르면 S가 흩어지며 사진 줄이 드러나요
+      if (pg.glyph) return top + `<p class="mn-note mn-ph">${esc(pg.note || "")}</p>` + strip(" st-hide") + `<canvas class="mn-art" data-g="${esc(pg.glyph)}" aria-hidden="true"></canvas>`;
       return top + `<div class="mn-strip">${list.map((p) => `<div class="mn-c"><span>${esc(p.title)}</span><div class="mn-im">${mImg(p.thumb || p.cover)}</div></div>`).join("")}</div>`;
     }
     if (pg.key === "archive") {
@@ -848,12 +851,13 @@
       const go2 = () => location.assign(c.href);
       if (REDUCED) return go2();
       busy = true; c.style.zIndex = 2;
+      if (c.querySelector(".st-hide")) { c.classList.add("go"); const cv = c.querySelector(".mn-art"); if (cv && cv._scatter) cv._scatter(); } // studio: S → 작품 사진 줄
       c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath }, FULL], { duration: 900, easing: EASE_IO, fill: "forwards" }).finished.then(go2, go2);
     }, true);
   };
   function stArt(card, cv, glyph, delay) {
     const g = cv.getContext("2d");
-    let W = 0, H = 0, C = 6, mods = [], mx = -1e4, my = -1e4, raf = 0, live = true, t0 = performance.now() + delay, ink = "#111";
+    let W = 0, H = 0, C = 6, mods = [], mx = -1e4, my = -1e4, raf = 0, live = true, t0 = performance.now() + delay, ink = "#111", sc = 0; // sc: 흩어지기 시작 시각
     const build = () => {
       const dpr = Math.min(2, devicePixelRatio || 1);
       W = cv.clientWidth; H = cv.clientHeight; if (!W || !H) return;
@@ -886,8 +890,9 @@
         m.ox += (tx - m.ox) * 0.18; m.oy += (ty - m.oy) * 0.18; m.r += (tr - m.r) * 0.18;
         if (Math.abs(tx - m.ox) + Math.abs(ty - m.oy) + Math.abs(tr - m.r) > 0.02) busy = true;
         if (p <= 0) continue;
-        const y = m.y + (1 - p) * H * 0.9, sz = (C - 1) * (0.55 + 0.45 * p);
-        g.globalAlpha = p;
+        const q = sc ? ez((now - sc) / 520 - m.d * 0.6) : 0; if (sc && q < 1) busy = true; // 흩어지기: 위로 날아가며 사라져요
+        const y = m.y + (1 - p) * H * 0.9 - q * H * 0.7, sz = (C - 1) * (0.55 + 0.45 * p) * (1 - q * 0.5);
+        g.globalAlpha = p * (1 - q);
         if (m.r > 0.01) { g.save(); g.translate(m.x + m.ox, y + m.oy); g.rotate(m.r); g.fillRect(-sz / 2, -sz / 2, sz, sz); g.restore(); }
         else g.fillRect(m.x + m.ox - sz / 2, y + m.oy - sz / 2, sz, sz);
       }
@@ -898,6 +903,7 @@
     const paint = () => { ink = getComputedStyle(HTML).getPropertyValue("--ink").trim() || "#111"; kick(); };
     card.addEventListener("pointermove", (e) => { const b = cv.getBoundingClientRect(), k = b.width ? cv.clientWidth / b.width : 1; mx = (e.clientX - b.left) * k; my = (e.clientY - b.top) * k; kick(); });
     card.addEventListener("pointerleave", () => { mx = my = -1e4; kick(); });
+    cv._scatter = () => { sc = performance.now(); kick(); };
     D.addEventListener("yp:theme", paint);
     new ResizeObserver(build).observe(cv);
     paint();

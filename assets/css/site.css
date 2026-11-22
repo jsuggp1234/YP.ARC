@@ -1868,3 +1868,15 @@ html.st-home .ftr, html.st-home .hud { display: none; }
 .md-sw button:hover, .md-sw button[aria-pressed="true"] { opacity: 1; }
 .md-sw button:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
 @media (max-width: 760px) { .hdr-m { flex-direction: column-reverse; align-items: flex-end; gap: 6px; } .md-sw { gap: 6px; } } /* 모바일: 시각과 겹치지 않게 다이얼 아래 */
+
+/* 첫 화면 studio 카드: 글자 모듈 S, 누르면 S가 흩어지고 작품 사진 줄이 한 장씩 드러나요(Works 화면과 같은 자리) */
+.mn-strip.st-hide .mn-c { opacity: 0; transform: translateY(24px); transition: opacity .5s var(--ease), transform .7s var(--ease); }
+.mn-card.go .mn-strip.st-hide .mn-c { opacity: 1; transform: none; }
+.mn-card.go .mn-strip.st-hide .mn-c:nth-child(1) { transition-delay: 0.21s; }
+.mn-card.go .mn-strip.st-hide .mn-c:nth-child(2) { transition-delay: 0.27s; }
+.mn-card.go .mn-strip.st-hide .mn-c:nth-child(3) { transition-delay: 0.33s; }
+.mn-card.go .mn-strip.st-hide .mn-c:nth-child(4) { transition-delay: 0.39s; }
+.mn-card.go .mn-strip.st-hide .mn-c:nth-child(5) { transition-delay: 0.45s; }
+.mn-card.go .mn-strip.st-hide .mn-c:nth-child(6) { transition-delay: 0.51s; }
+.mn-card.go .mn-strip.st-hide .mn-c:nth-child(7) { transition-delay: 0.57s; }
+.mn-card.go .mn-note.mn-ph { opacity: 0; transition: opacity .3s var(--ease); }
