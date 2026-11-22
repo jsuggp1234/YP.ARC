@@ -1451,7 +1451,7 @@ const SITE = {
         big: true,
         heading: "High-rise Residence",
         text: "A tall mass is set against the high residential backdrop to the west, but its elevation is read as small low-rise houses stacked up. The alleys and the stacked parts are sized in proportion to the main tower, and the spaces left between them are fitted out for the fabric each one faces.",
-        images: [{ src: "assets/img/samgakji-residential/tower-elevation.jpg", caption: "From the tower down to the village", r: 3.528, w: "72%" }]
+        images: [{ src: "assets/img/samgakji-residential/tower-elevation.jpg", caption: "From the tower down to the village", r: 3.777, w: "100%" }]
       },
       {
         big: true,
