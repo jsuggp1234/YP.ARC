@@ -431,6 +431,9 @@
       const A = SITE.archive || {};
       return top + `<p class="mn-note">${(A.lines || []).map(esc).join("<br>")}<span>${esc(A.years || "")}</span></p><div class="mn-row">${(SITE.reel || []).slice(0, 6).map(([, src, ra]) => `<div class="mn-ar" style="aspect-ratio:${ra || 1}">${mImg(src)}</div>`).join("")}</div>`;
     }
+    if (pg.key === "philosophy") return top + `<p class="mn-note mn-ph">${esc(SITE.manifesto.en)}</p><canvas class="mn-art" data-g="${esc(pg.glyph || "P")}" aria-hidden="true"></canvas>`;
+    if (pg.key === "contact") { const CT = SITE.contact || {}; return top + `<p class="mn-note mn-ph">${esc(SITE.email || CT.email || "")}<span>Instagram · Portfolio PDF</span></p><canvas class="mn-art" data-g="${esc(pg.glyph || "@")}" aria-hidden="true"></canvas>`; }
+    if (pg.key === "philosophy" || pg.key === "contact") return top;
     return top + `<div class="mn-pt">${mImg(SITE.portrait)}</div>`;
   }
   let mnOff = 0, mnBusy = false, mnHover = -1;
@@ -788,25 +791,53 @@
     HTML.classList.add("st-home");
     const ST = SITE.start || [];
     $("#main").innerHTML = `
-      <section class="st" aria-label="${esc(SITE.name)}">
-        <h1 class="sr">${esc(SITE.name)} — ${esc(SITE.owner)} Architecture Portfolio</h1>
-        <nav class="st-row" aria-label="Start">${ST.map((c, i) => `
-          <a class="st-c" href="${esc(c.href)}"${c.contact ? " data-contact" : ""} style="--i:${i}" data-g="${esc(c.glyph)}">
-            <span class="st-top"><b>${esc(SITE.name)}</b><span class="num">${pad(i + 1)}</span></span>
-            <h2 class="st-t">${esc(c.title)}</h2>
-            <canvas class="st-cv" aria-hidden="true"></canvas>
-            <span class="st-d">${esc(c.note)}</span>
-          </a>`).join("")}</nav>
-      </section>`;
-    $$(".st-c").forEach((c, i) => stArt(c, $(".st-cv", c), c.dataset.g, REDUCED ? 0 : 450 + i * 140));
-    // 카드 누르기: 화면 전체로 커진 다음 이동 (contact는 패널이 열려요)
-    $(".st-row").addEventListener("click", (e) => {
-      const c = e.target.closest(".st-c"); if (!c || c.hasAttribute("data-contact") || REDUCED) return;
+      <h1 class="sr">${esc(SITE.name)} — ${esc(SITE.owner)} Architecture Portfolio</h1>
+      <nav class="mn st-mn open" aria-label="Start">${ST.map((pg, i) => `<a class="mn-card" href="${esc(pg.href)}"${pg.contact ? " data-contact" : ""} data-i="${i}" aria-label="${esc(pg.title)}"><div class="mn-pg">${miniHtml(pg)}</div></a>`).join("")}</nav>`;
+    const m = $(".st-mn"), cards = $$(".mn-card", m);
+    let off = 0, hov = -1, busy = false;
+    const range = (g) => [Math.min(0, -(cards.length - 1) * g.step + (g.vw - g.x0 - g.W - g.x0 * 0.5)), 0];
+    const place = () => {
+      const g = mnGeo();
+      cards.forEach((c, i) => {
+        const x = g.x0 + i * g.step + off, h = i === hov ? 1.025 : 1;
+        c.style.width = g.vw + "px"; c.style.height = g.vh + "px";
+        c.style.transform = `translate(${x}px, ${g.y}px) scale(${g.sc * h})`;
+        c.style.clipPath = `inset(0px ${g.R}px 0px 0px)`;
+      });
+    };
+    place();
+    // 들어올 때: 카드가 오른쪽에서 차례로 미끄러져 들어와요 (메뉴 열림과 같은 움직임)
+    if (!REDUCED) cards.forEach((c, i) => c.animate([{ translate: "160px 0", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1000, delay: 200 + i * 110, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
+    $$(".mn-art", m).forEach((cv, i) => stArt(cv.closest(".mn-card"), cv, cv.dataset.g, REDUCED ? 0 : 700 + i * 160));
+    m.addEventListener("pointerover", (e) => { const c = e.target.closest(".mn-card"); const i = c ? +c.dataset.i : -1; if (i !== hov && !busy) { hov = i; place(); } });
+    m.addEventListener("pointerleave", () => { hov = -1; if (!busy) place(); });
+    m.addEventListener("wheel", (e) => { e.preventDefault(); if (busy) return; const [lo, hi] = range(mnGeo()); off = clamp(off - (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY), lo, hi); place(); }, { passive: false });
+    let down = null, moved = false;
+    m.addEventListener("pointerdown", (e) => { if (!e.button) { down = { x: e.clientX, o: off, id: e.pointerId }; moved = false; } });
+    m.addEventListener("pointermove", (e) => {
+      if (!down) return; const dx = e.clientX - down.x;
+      if (!moved && Math.abs(dx) > 5) { moved = true; m.setPointerCapture(down.id); m.classList.add("drag"); }
+      if (moved) { const [lo, hi] = range(mnGeo()); off = clamp(down.o + dx, lo, hi); place(); }
+    });
+    const up = () => { down = null; m.classList.remove("drag"); setTimeout(() => (moved = false), 0); };
+    m.addEventListener("pointerup", up); m.addEventListener("pointercancel", up);
+    addEventListener("keydown", (e) => {
+      if (!/^Arrow(Left|Right)$/.test(e.key) || !$("#menu").hidden) return;
+      const k = cards.indexOf(D.activeElement), n = clamp((k < 0 ? 0 : k) + (e.key === "ArrowRight" ? 1 : -1), 0, cards.length - 1);
+      e.preventDefault(); cards[n].focus({ preventScroll: true }); const [lo, hi] = range(mnGeo()); off = clamp(-n * mnGeo().step, lo, hi); place();
+    });
+    addEventListener("resize", place);
+    // 카드 누르기: 화면 전체로 커진 다음 이동 (contact는 연락 패널)
+    m.addEventListener("click", (e) => {
+      const c = e.target.closest(".mn-card"); if (!c) return;
+      if (moved || busy) { e.preventDefault(); e.stopPropagation(); return; }
+      if (c.hasAttribute("data-contact")) return;
       e.preventDefault(); e.stopPropagation();
       if (c.getAttribute("href") === "works.html") ss.set("yp-hi", "1");
-      const b = c.getBoundingClientRect(), go2 = () => location.assign(c.href);
-      const ghost = D.createElement("div"); ghost.className = "st-ghost"; BODY.appendChild(ghost);
-      ghost.animate([{ clipPath: `inset(${b.top}px ${innerWidth - b.right}px ${innerHeight - b.bottom}px ${b.left}px)` }, { clipPath: "inset(0px 0px 0px 0px)" }], { duration: 800, easing: EASE_IO, fill: "forwards" }).finished.then(go2, go2);
+      const go2 = () => location.assign(c.href);
+      if (REDUCED) return go2();
+      busy = true; c.style.zIndex = 2;
+      c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath }, FULL], { duration: 900, easing: EASE_IO, fill: "forwards" }).finished.then(go2, go2);
     }, true);
   };
   function stArt(card, cv, glyph, delay) {
@@ -854,7 +885,7 @@
     };
     function kick() { if (!raf) raf = requestAnimationFrame(frame); }
     const paint = () => { ink = getComputedStyle(HTML).getPropertyValue("--ink").trim() || "#111"; kick(); };
-    card.addEventListener("pointermove", (e) => { const b = cv.getBoundingClientRect(); mx = e.clientX - b.left; my = e.clientY - b.top; kick(); });
+    card.addEventListener("pointermove", (e) => { const b = cv.getBoundingClientRect(), k = b.width ? cv.clientWidth / b.width : 1; mx = (e.clientX - b.left) * k; my = (e.clientY - b.top) * k; kick(); });
     card.addEventListener("pointerleave", () => { mx = my = -1e4; kick(); });
     D.addEventListener("yp:theme", paint);
     new ResizeObserver(build).observe(cv);
