@@ -2391,3 +2391,17 @@ html.cg-open { overflow: hidden; }
   .fp-lg li { padding: 4px 0; }
 }
 @media (max-width: 760px) { .fp-n { width: 14px; height: 14px; font-size: 8px; } .fp-lv { font-size: 7px; } }
+
+/* 작품 페이지 왼쪽 가장자리 끌어서 studio로 돌아가기 (site.js swipeBack) */
+.sb-edge { position: fixed; left: 0; top: 0; bottom: 0; width: 22px; z-index: 70; cursor: grab; touch-action: none; }
+.sb-gr { position: absolute; left: 6px; top: 50%; width: 2px; height: 56px; margin-top: -28px; border-radius: 2px; background: var(--ink); opacity: 0; transition: opacity .3s, height .3s, margin-top .3s; }
+.sb-edge:hover .sb-gr { opacity: .35; height: 80px; margin-top: -40px; }
+html.sb-on .sb-edge { width: 100%; cursor: grabbing; }
+html.sb-on .sb-edge .sb-gr { opacity: 0; }
+.sb-lb { position: fixed; left: 16px; top: 50%; translate: calc(var(--sb, 0px) * .35 - 8px) -50%; font-size: var(--t-s); color: var(--ink); opacity: 0; pointer-events: none; white-space: nowrap; }
+.sb-lb b { font-weight: 400; display: inline-block; translate: calc((1 - var(--sbk, 0)) * 6px) 0; }
+html.sb-on .sb-lb { opacity: var(--sbk, 0); }
+html.sb-on body { background: var(--mn-bg); }
+html.sb-on #main, html.sb-on .ftr { translate: var(--sb, 0px) 0; box-shadow: -1px 0 0 var(--line); background: var(--bg); }
+html.sb-on { overflow-x: hidden; }
+@media (max-width: 760px) { .sb-edge { width: 16px; } }

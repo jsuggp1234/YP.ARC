@@ -3835,6 +3835,43 @@
     });
   };
 
+  // 작품 페이지: 화면 왼쪽 가장자리를 잡고 오른쪽으로 끌면 studio(works.html)로 돌아가요. 페이지가 손을 따라 밀리고, 3분의 1 넘게 끌거나 빠르게 휙 밀면 이동, 아니면 제자리로
+  const swipeBack = () => {
+    if ($(".sb-edge")) return;
+    const root = document.documentElement;
+    const ed = document.createElement("div");
+    ed.className = "sb-edge"; ed.setAttribute("aria-hidden", "true");
+    ed.innerHTML = `<i class="sb-gr"></i><span class="sb-lb"><b>←</b> Studio</span>`;
+    document.body.appendChild(ed);
+    let x0 = null, dx = 0, t0 = 0, xl = 0, tl = 0, v = 0;
+    const set = (d) => { dx = d; root.style.setProperty("--sb", `${d}px`); root.style.setProperty("--sbk", Math.min(1, d / (innerWidth * 0.33)).toFixed(3)); };
+    const anim = (to, ms, done) => {
+      const from = dx, s = performance.now();
+      const step = (now) => { const k = Math.min(1, (now - s) / ms), e = 1 - Math.pow(1 - k, 3); set(from + (to - from) * e); if (k < 1) requestAnimationFrame(step); else done && done(); };
+      requestAnimationFrame(step);
+    };
+    ed.addEventListener("pointerdown", (e) => {
+      if (e.button || root.classList.contains("mn-on")) return;
+      e.preventDefault(); x0 = e.clientX; t0 = tl = performance.now(); xl = x0; v = 0;
+      try { ed.setPointerCapture(e.pointerId); } catch (er) {}
+      root.classList.add("sb-on"); if (lenis) lenis.stop(); set(0);
+    });
+    ed.addEventListener("pointermove", (e) => {
+      if (x0 == null) return;
+      const now = performance.now(); if (now > tl) { v = (e.clientX - xl) / (now - tl); xl = e.clientX; tl = now; }
+      set(Math.max(0, e.clientX - x0));
+    });
+    const end = () => {
+      if (x0 == null) return; x0 = null;
+      if (dx > innerWidth * 0.33 || (v > 0.5 && dx > 40)) {
+        root.classList.add("sb-go");
+        anim(innerWidth, REDUCED ? 1 : 320, () => { ss.set("yp-hi", "1"); location.href = "works.html"; });
+      } else anim(0, REDUCED ? 1 : 360, () => { root.classList.remove("sb-on"); if (lenis) lenis.start(); });
+    };
+    ed.addEventListener("pointerup", end); ed.addEventListener("pointercancel", end); ed.addEventListener("lostpointercapture", end);
+    // 뒤로 가기로 다시 돌아오면(bfcache) 페이지를 제자리로
+    addEventListener("pageshow", () => { root.classList.remove("sb-on", "sb-go"); set(0); if (lenis) lenis.start(); });
+  };
   render.project = () => {
     const draw = () => {
       if (hasGsap) ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -3966,6 +4003,7 @@
       hasGsap && ScrollTrigger.refresh();
     };
     draw();
+    swipeBack();
     addEventListener("hashchange", () => {
       draw();
       scrollToY(0, true);
