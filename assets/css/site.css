@@ -1844,8 +1844,8 @@ html.st-home .ftr, html.st-home .hud { display: none; }
 .phl-nx { grid-column: 2 / -1; display: flex; gap: 24px; margin: 6vh 0 0; font-size: var(--t-s); }
 @media (max-width: 760px) { .phl-k, .phl-s, .phl-ko, .phl-p, .phl-nx { grid-column: 1 / -1; } .phl-p { grid-template-columns: 1fr; } }
 /* Works 대표사진 크기 (핀 #33·#34): 모든 카드를 예전 크기의 72% 폭, 가로:세로 0.8로, 아래선은 그대로 */
-#cases .cs-card { width: calc(var(--ch) / 1.3224 * 0.72); }
-#cases .cs-card .media { height: calc(var(--ch) / 1.3224 * 0.72 / 0.8); }
+#cases .cs-card { width: calc(var(--ch) / 1.3224 * 0.88); }
+#cases .cs-card .media { height: calc(var(--ch) / 1.3224 * 0.88 / 0.8); }
 /* 마우스를 올린 대표사진만 커져요 (아래선 기준으로 위·옆으로, 옆 카드 위에 겹쳐요) */
 #cases .cs-card { position: relative; transition: transform .6s var(--ease); }
 #cases .cs-card:hover { z-index: 3; transform: scale(calc(var(--s) * 1.18)); }
@@ -1857,8 +1857,8 @@ html.st-home .ftr, html.st-home .hud { display: none; }
 /* 메뉴·첫 화면의 works 축소판 = Works 페이지와 똑같은 배치 (작은 대표사진 72%·0.8 비율, 상단바 아래 세로 가운데).
    카드가 화면 전체로 커지면 그대로 Works 페이지가 되어 사진 크기가 튀지 않아요 */
 .mn-pg .mn-strip { top: 50%; bottom: auto; transform: translateY(calc(-50% + var(--hdr) / 2)); }
-.mn-pg .mn-c { width: calc(var(--ch) / 1.3224 * 0.72); }
-.mn-pg .mn-im { height: calc(var(--ch) / 1.3224 * 0.72 / 0.8); background: var(--line); }
+.mn-pg .mn-c { width: calc(var(--ch) / 1.3224 * 0.88); }
+.mn-pg .mn-im { height: calc(var(--ch) / 1.3224 * 0.88 / 0.8); background: var(--line); }
 .mn-pg .mn-im img { transform: scale(1.15); } /* Works 카드 사진의 기본 확대(.cs-card .mz)와 같게 */
 
 /* 다이얼 옆 작은 Light / Dark 버튼 (2026-11-22 요청). 지금 모드는 진하게, 다른 쪽은 흐리게 */
@@ -1917,3 +1917,15 @@ html.st-home .ftr, html.st-home .hud { display: none; }
 /* contact 철자가 쓰이는 동안 카드들은 잠시 사라졌다 돌아와요 */
 .st-mn .mn-card { transition: transform 0.7s var(--ease), clip-path 0.7s var(--ease), background-color 0.6s var(--ease), opacity 0.45s var(--ease); }
 .st-mn.spell .mn-card { opacity: 0; }
+
+/* 모바일 상단바 작게 (2026-11-22 요청): 로고·Menu·Contact·시각·Light/Dark·다이얼 모두 한 단계 작게 */
+@media (max-width: 760px) {
+  .hdr, .hdr.g4, .hdr.g4 .logo, .hdr.g4 .hdr-n, .hdr.g4 .hdr-n *, .hdr.g4 .hdr-t, .hdr.g4 .hdr-t *, .cs-ix { font-size: var(--t-xs); }
+  .hdr.g4 .logo { letter-spacing: 0.04em; }
+  .hdr.g4 > .hdr-t { padding-right: 22px; }
+  .dial { width: 24px; height: 24px; }
+  .dial-dot::after { top: 2px; width: 5px; height: 5px; margin-left: -2.5px; }
+  .hdr-m { top: calc(env(safe-area-inset-top, 0px) + 8px); gap: 4px; }
+  .md-sw { gap: 5px; font-size: var(--t-xs); }
+  .md-sw button { padding: 2px 0; }
+}
