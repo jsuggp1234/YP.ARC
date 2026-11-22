@@ -1808,3 +1808,11 @@ html.ct-lock .ct a, html.ct-lock .ct button, html.ct-lock .ct [data-ct-close], h
   .scn-r[style*="--n:3"] figure:last-child { grid-column: 1 / -1; }
   .scn-r[style*="--n:3"] figure:last-child .media { height: calc(var(--sw) / 1.778); }
 }
+
+/* 핀 #26: 정면 십자가 + 층별 프로그램 이름표 (오른쪽) */
+.mv-prog .mv-lb span { left: auto; right: 0; text-align: right; opacity: .38; transition: opacity .4s; }
+.mv-prog .mv-lb span.on { opacity: 1; }
+.mv-prog .mv-lb span em { font-style: normal; color: var(--mid); margin-left: 4px; }
+.mv-prog .mv-lb span i { display: block; }
+/* 핀 #27: 세계지도 판 평면 시뮬레이션은 본문 전체 폭 */
+@media (min-width: 761px) { .cx-body .pj-sec:has(.mv-plan) { --bx: 0%; --bw: 100%; } }

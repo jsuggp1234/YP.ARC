@@ -2794,16 +2794,17 @@ const SITE = {
         "images": [
           {
             "sim": "plan",
+            "span": true,
           "src": "assets/img/metaverse-church/plan-worldmap-base.jpg",
-          "w": "min(100%, 1080px)",
+          "w": "100%",
             "caption": "World-map plate, EL +223.5 — physical and twin",
             "r": 1.8
           },
           {
-            "src": "assets/img/metaverse-church/plans-levels.jpg",
-          "w": "min(100%, 1149px)",
-            "caption": "Five cut levels, physical above twin",
-            "r": 1.107
+            "sim": "prog",
+            "src": "",
+            "caption": "Front of the cross — five layers, five programs; hover a name to hold it",
+            "r": 1.7
           },
           {
             "src": "assets/img/metaverse-church/plan-enlarged.jpg",

@@ -8,10 +8,15 @@ body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-
 /* home · media */
 body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media {
   overflow: hidden !important;
+  width: 91% !important;
+  height: auto !important;
+  aspect-ratio: 0.8 !important;
+  margin-top: 108px !important;
 }
 /* home · img “Campus Renovation J′” */
 body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media > div.mz > img {
   scale: 0.57 !important;
+  object-position: 58.5% 50% !important;
 }
 /* home · img “RE:TIDE” */
 body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(1) > div.media > div.mz > img {
@@ -27,16 +32,16 @@ body[data-page="home"] #cases > a.cs-ix.lnk {
   border-radius: 0px !important;
   margin-top: -140px !important;
 }
-/* project(모든 작품, 캠퍼스 양식) · cx-big “On SKKU's natural science ca” */
-body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > div.cx-lead:nth-of-type(2) > p.cx-big {
+/* project#campus-renovation · cx-big “On SKKU's natural science ca” */
+html[data-slug="campus-renovation"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > div.cx-lead:nth-of-type(2) > p.cx-big {
   font-size: 16px !important;
   max-width: 60.5em !important;
   line-height: 1.61 !important;
   height: 12svh !important;
   margin-top: -102px !important;
 }
-/* project(모든 작품, 캠퍼스 양식) · cx-l “Campus Renovation J′ 성균관대 자연” */
-body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > div.cx-l:nth-of-type(1) {
+/* project#campus-renovation · cx-l “Campus Renovation J′ 성균관대 자연” */
+html[data-slug="campus-renovation"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > div.cx-l:nth-of-type(1) {
   font-size: 7px !important;
 }
 /* project#campus-renovation · dg “Pedestrian-friendly · Centra” */

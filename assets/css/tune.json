@@ -100,7 +100,11 @@
     "media": "all",
     "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media",
     "props": {
-      "overflow": "hidden"
+      "overflow": "hidden",
+      "width": "91%",
+      "height": "auto",
+      "aspect-ratio": "0.8",
+      "margin-top": "108px"
     },
     "label": "home · media"
   },
@@ -111,7 +115,8 @@
     "media": "all",
     "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media > div.mz > img",
     "props": {
-      "scale": "0.57"
+      "scale": "0.57",
+      "object-position": "58.5% 50%"
     },
     "label": "home · img “Campus Renovation J′”"
   },
@@ -146,7 +151,7 @@
   {
     "id": "zlq55lb",
     "page": "project",
-    "slug": "",
+    "slug": "campus-renovation",
     "media": "all",
     "sel": "#main > article.pg.cx > header.cx-hd.g4 > div.cx-lead:nth-of-type(2) > p.cx-big",
     "props": {
@@ -156,18 +161,18 @@
       "height": "12svh",
       "margin-top": "-102px"
     },
-    "label": "project(모든 작품, 캠퍼스 양식) · cx-big “On SKKU's natural science ca”"
+    "label": "project#campus-renovation · cx-big “On SKKU's natural science ca”"
   },
   {
     "id": "dv349zj",
     "page": "project",
-    "slug": "",
+    "slug": "campus-renovation",
     "media": "all",
     "sel": "#main > article.pg.cx > header.cx-hd.g4 > div.cx-l:nth-of-type(1)",
     "props": {
       "font-size": "7px"
     },
-    "label": "project(모든 작품, 캠퍼스 양식) · cx-l “Campus Renovation J′ 성균관대 자연”"
+    "label": "project#campus-renovation · cx-l “Campus Renovation J′ 성균관대 자연”"
   },
   {
     "id": "xcqa7kl",

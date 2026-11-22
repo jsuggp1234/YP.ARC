@@ -127,7 +127,7 @@
     const s = stage(el, (g, W, H, t) => {
       if (bg.complete && bg.naturalWidth) g.drawImage(bg, 0, 0, W, H);
       const dt = Math.min(0.1, t - last); last = t;
-      const u = wrap24(t * 1.0), R = W * 0.03;
+      const u = wrap24(t * 1.6), R = W * 0.03;
       let tot = 0;
       P.forEach((c) => {
         const target = c.w * act(u + c.off); c.c += (target - c.c) * Math.min(1, dt * 2); tot += c.c;
@@ -145,6 +145,18 @@
         g.font = font(C.xs, 600); g.fillStyle = C.mix(0.95); g.textAlign = "left"; g.textBaseline = "middle";
         g.fillText(`LIVE ${Math.round(c.c)}`, x + rr + 4, y - rr - 2);
       });
+      // 도시 사이 만남: 깨어 있는 도시끼리 호를 그리며 아바타가 오가요 (핀 #27)
+      const on = P.filter((c) => c.c > c.w * 0.25);
+      on.forEach((a, i) => on.slice(i + 1).forEach((b, j) => {
+        const ax = a.x * W, ay = a.y * H, bx = b.x * W, by = b.y * H, mx = (ax + bx) / 2, my = Math.min(ay, by) - Math.hypot(bx - ax, by - ay) * 0.28, k = Math.min(a.c / a.w, b.c / b.w);
+        g.strokeStyle = C.red(0.18 + 0.4 * k); g.lineWidth = 0.8; g.beginPath(); g.moveTo(ax, ay); g.quadraticCurveTo(mx, my, bx, by); g.stroke();
+        for (let q = 0; q < 3; q++) { const f = (t * 0.45 + q / 3 + (i + j) * 0.21) % 1, dir = (q % 2 ? f : 1 - f), x = (1 - dir) * (1 - dir) * ax + 2 * (1 - dir) * dir * mx + dir * dir * bx, y = (1 - dir) * (1 - dir) * ay + 2 * (1 - dir) * dir * my + dir * dir * by;
+          g.fillStyle = C.red(Math.sin(f * Math.PI)); g.beginPath(); g.arc(x, y, 2.2, 0, Math.PI * 2); g.fill(); }
+      }));
+      // 접속 파동: 도시마다 접속이 늘 때 퍼지는 원
+      P.forEach((c, k) => { const ph = (t * 0.7 + k * 0.37) % 1, rr = R * (0.4 + 2.2 * ph); g.strokeStyle = C.red((1 - ph) * 0.5 * (c.c / c.w)); g.lineWidth = 1; g.beginPath(); g.arc(c.x * W, c.y * H, rr, 0, Math.PI * 2); g.stroke(); });
+      // 새로 들어오는 아바타: 판 바깥에서 자기 도시로 날아와 앉아요
+      P.forEach((c, k) => { for (let q = 0; q < 2; q++) { const f = (t * 0.6 + q * 0.5 + k * 0.29) % 1; if (c.c < c.w * 0.2) continue; const sx = c.x * W + (k % 2 ? 1 : -1) * W * 0.12, sy = -H * 0.05, e = 1 - Math.pow(1 - f, 3), x = sx + (c.x * W - sx) * e, y = sy + (c.y * H - sy) * e; g.fillStyle = C.mix(0.9, Math.sin(f * Math.PI) * 0.9); g.beginPath(); g.arc(x, y, 1.8, 0, Math.PI * 2); g.fill(); } });
       // SYNC: 현장 ↔ 트윈 0.2 s 마다 오가는 점
       [0.279, 0.53, 0.779].forEach((yy, k) => {
         for (let q = 0; q < 3; q++) {
@@ -228,12 +240,29 @@
     { n: "만남/소통 공간", en: "Meeting / Communion", k: [62, 76], N: 6607, el: "EL +186 – +228", arm: true },
     { n: "성전/예배당", en: "Sanctuary / Worship", k: [76, 99], N: 2182, el: "EL +228 – +297" },
   ];
-  let MODEL = null;
-  const model = () => {
+  let MODEL = null, LAND = null;
+  const MAP_SRC = "assets/img/metaverse-church/cross-worldmap.jpg", MAP_BOX = [58, 437, 1672, 1196]; // 원본 1800×2571 기준 지도 영역
+  const landMask = () => LAND || (LAND = new Promise((res) => {
+    const im = new Image(); im.onerror = () => res(null);
+    im.onload = () => {
+      const [x0, y0, x1, y1] = MAP_BOX, k = im.naturalWidth / 1800, CW = 151, CH = 73, c = document.createElement("canvas"); c.width = CW * 4; c.height = CH * 4;
+      const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, x0 * k, y0 * k, (x1 - x0) * k, (y1 - y0) * k, 0, 0, c.width, c.height);
+      const d = g.getImageData(0, 0, c.width, c.height).data, m = [];
+      for (let row = 0; row < CH; row++) for (let col = 0; col < CW; col++) { let dark = 0; for (let yy = 0; yy < 4; yy++) for (let xx = 0; xx < 4; xx++) { const i = ((row * 4 + yy) * c.width + col * 4 + xx) * 4; dark += 255 - (d[i] + d[i + 1] + d[i + 2]) / 3; } m.push(dark / 16 / 255); }
+      res({ CW, CH, m });
+    };
+    im.src = MAP_SRC;
+  }));
+  const model = (land) => {
     if (MODEL) return MODEL;
     const r = rnd(7), ph = Array.from({ length: 8 }, () => r() * 6.28);
     const val = (x, y, z) => Math.sin(x * 0.55 + ph[0]) * Math.sin(z * 0.23 + ph[1]) + 0.8 * Math.sin(y * 0.37 + ph[2]) * Math.sin(x * 0.29 + z * 0.15 + ph[3]) + 0.6 * Math.sin(z * 0.09 + y * 0.2 + ph[4]) - 1.6 * Math.max(0, Math.abs(z - 75) - 55) / 20 + 1.25 * r();
     MODEL = LAYERS.map((L) => {
+      if (L.arm && land) {
+        const out = [], { CW, CH, m } = land;
+        for (let row = 0; row < CH; row++) for (let col = 0; col < CW; col++) { const v = m[row * CW + col]; if (v < 0.09) continue; const lv = Math.min(L.k[1] - L.k[0], 1 + Math.round(v * 9)); for (let q = 0; q < lv; q++) out.push([(row - 36) * 3, (L.k[0] + q) * 3, -226.5 + col * 3]); }
+        L.N = out.length; return out;
+      }
       const ix0 = L.arm ? -36 : -5, ix1 = L.arm ? 36 : 4, cand = [];
       for (let k = L.k[0]; k < L.k[1]; k++) for (let iz = 0; iz < 151; iz++) for (let ix = ix0; ix <= ix1; ix++) {
         let v = val(ix, k, iz);
@@ -246,10 +275,11 @@
     });
     return MODEL;
   };
-  const three = (el, mode) => {
+  const three = (el, mode) => { landMask().then((land) => three0(el, mode, land)); };
+  const three0 = (el, mode, land) => {
     const T = window.THREE; if (!T) { el.textContent = ""; return; }
     let ren; try { ren = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); } catch (e) { return; }
-    const M = model(), elev = mode === "cross";
+    const M = model(land), prog = mode === "prog", elev = mode === "cross" || prog;
     el.insertAdjacentHTML("beforeend", `<div class="mv-ui"></div><div class="mv-lb"></div>`);
     el.prepend(ren.domElement); ren.domElement.className = "mv-cv";
     const ui = el.querySelector(".mv-ui"), lb = el.querySelector(".mv-lb");
@@ -269,7 +299,7 @@
     const water = new T.Mesh(new T.PlaneGeometry(4000, 4000), new T.MeshBasicMaterial({ transparent: true, opacity: 0.75, depthWrite: false }));
     water.rotation.x = -Math.PI / 2; water.position.y = -0.2; scene.add(water);
     const cw = new T.Mesh(new T.BoxGeometry(40, 1, 1400), new T.MeshLambertMaterial({ color: 0xffffff })); cw.position.set(0, -0.5, -500); scene.add(cw);
-    const twin = new T.Group(); twin.scale.y = -1; twin.visible = elev;
+    const twin = new T.Group(); twin.scale.y = -1; twin.visible = elev && !prog;
     const tm = new T.LineBasicMaterial({ transparent: true, opacity: 0.1, depthWrite: false });
     groups.forEach((G) => { const t = new T.LineSegments(G.lg, tm); t.frustumCulled = false; twin.add(t); }); scene.add(twin);
     const paint = () => {
@@ -280,13 +310,13 @@
     };
     // 카메라: az(돌림), el(내려다봄), 보이는 높이 fh, 바라보는 높이 ty
     const V = elev
-      ? { front: [0, 0, 700, 0], side: [Math.PI / 2, 0, 700, 0], back: [Math.PI, 0, 700, 0], axo: [-0.62, 0.42, 760, 60] }
+      ? { front: [0, 0, 700, 0], side: [Math.PI / 2, 0, 700, 0], back: [Math.PI, 0, 700, 0], axo: [-0.62, 0.42, 760, 60], top: [Math.PI / 2, 1.45, 700, 0], map: [Math.PI / 2, 1.5, 700, 0] }
       : { axo: [-0.95, 0.42, 620, 200], front: [0, 0.02, 560, 200], side: [Math.PI / 2, 0.02, 600, 200], top: [-0.95, 1.35, 700, 0] };
     const cur = { az: 0, el: 0, fh: 700, ty: 0 }, goal = { ...cur };
-    const go = (k) => { const [az, e, fh, ty] = V[k]; const d = ((az - goal.az + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI; Object.assign(goal, { az: goal.az + d, el: e, fh, ty }); sel(k); kick(); };
+    const go = (k) => { mapV = k === "map"; if (mapV && twin.visible) { twin.visible = false; const tb = ui.querySelector("[data-t]"); if (tb) tb.classList.remove("on"); } const [az, e, fh, ty] = V[k]; const d = ((az - goal.az + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI; Object.assign(goal, { az: goal.az + d, el: e, fh, ty }); sel(k); kick(); };
     const btn = (k, label) => `<button type="button" data-v="${k}">${label}</button>`;
     ui.innerHTML = elev
-      ? `${btn("front", "정면 Front")}${btn("side", "측면 Side")}${btn("back", "배면 Back")}${btn("axo", "아이소 Axo")}<span class="sep"></span><button type="button" data-t class="on">트윈 Twin</button>`
+      ? (prog ? "" : `${btn("front", "정면 Front")}${btn("side", "측면 Side")}${btn("back", "배면 Back")}${btn("axo", "아이소 Axo")}${btn("top", "위 Top")}${btn("map", "세계지도 World map")}<span class="sep"></span><button type="button" data-t class="on">트윈 Twin</button>`)
       : `${btn("axo", "아이소 Axo")}${btn("front", "정면 Front")}${btn("side", "측면 Side")}${btn("top", "위 Top")}<span class="sep"></span><button type="button" data-x class="on">30 m 띄우기</button>`;
     const sel = (k) => ui.querySelectorAll("[data-v]").forEach((b) => b.classList.toggle("on", b.dataset.v === k));
     ui.addEventListener("click", (e) => {
@@ -295,13 +325,15 @@
       if (b.hasAttribute("data-t")) { twin.visible = !twin.visible; b.classList.toggle("on", twin.visible); kick(); }
       if (b.hasAttribute("data-x")) { exp = exp ? 0 : 1; b.classList.toggle("on", !!exp); kick(); }
     });
-    let exp = elev ? 0 : 1, expC = exp, spin = !elev && !reduce, idle = 0;
+    let exp = elev ? 0 : 1, expC = exp, spin = !elev && !reduce, idle = 0, mapV = false, progT = 0, progI = -1;
     // 레이어 이름표 (레이어 모드) / 높이 표시 (입면 모드)
-    const labels = elev
+    const labels = prog
+      ? LAYERS.map((L, i) => ({ y: ((L.k[0] + L.k[1]) / 2) * 3, t: `<b>${i + 1}</b> ${L.n} <em>${L.en}</em><i>${L.el} · 모듈 ${L.N.toLocaleString()}개</i>`, li: i }))
+      : elev
       ? [[297, "+297"], [228, "+228"], [186, "+186"], [45, "+45"], [24, "+24"], [0, "±0 수면"], [-150, "DIGITAL TWIN 1:1"]].map(([y, t]) => ({ y, t, li: -1 }))
       : LAYERS.map((L, i) => ({ y: 0, t: `<b>${i + 1}</b> ${L.n}<i>${L.el} · 모듈 ${L.N.toLocaleString()}개</i>`, li: i }));
     lb.innerHTML = labels.map((l, i) => `<span data-i="${i}"${l.li >= 0 ? ` data-li="${l.li}"` : ""}>${l.t}</span>`).join("");
-    const spans = [...lb.children];
+    const spans = [...lb.children]; if (prog) el.classList.add("mv-prog");
     let focus = -1;
     lb.addEventListener("pointerover", (e) => { const s = e.target.closest("[data-li]"); focus = s ? +s.dataset.li : -1; kick(); });
     lb.addEventListener("pointerleave", () => { focus = -1; kick(); });
@@ -321,13 +353,16 @@
       raf = 0; if (!W) return;
       const dt = Math.min(0.05, (now - last) / 1000); last = now;
       if (!elev && !drag && !spin && now - idle > 4000 && !reduce) spin = true;
+      let hold = false;
+      if (prog && !reduce) { progT += dt; const i = Math.floor(progT / 2.6) % LAYERS.length; if (i !== progI) progI = i; hold = true; }
+      const fo = mapV ? 3 : prog ? (focus >= 0 ? focus : progI) : focus;
       if (spin) goal.az += dt * 0.18;
       let moving = spin;
       for (const k of ["az", "el", "fh", "ty"]) { const d = goal[k] - cur[k]; cur[k] += d * (reduce ? 1 : 0.09); if (Math.abs(d) > 1e-3) moving = true; }
       expC += (exp - expC) * (reduce ? 1 : 0.08); if (Math.abs(exp - expC) > 1e-3) moving = true;
       groups.forEach((G) => {
         G.grp.position.y = G.li * 30 * expC;
-        G.aT = focus < 0 || focus === G.li ? 1 : 0.06; G.a += (G.aT - G.a) * 0.15; if (Math.abs(G.aT - G.a) > 0.01) moving = true;
+        G.aT = fo < 0 || fo === G.li ? 1 : prog ? 0.14 : 0.06; G.a += (G.aT - G.a) * 0.15; if (Math.abs(G.aT - G.a) > 0.01) moving = true;
         G.mat.opacity = G.a; G.lm.opacity = G.a * 0.5; G.mat.depthWrite = G.a > 0.5;
       });
       water.visible = cw.visible = cur.el > -0.02 || elev;
@@ -337,7 +372,8 @@
       const y1 = 297 + (elev ? 0 : 4 * 30 * expC), y0 = elev && twin.visible ? -297 : 0;
       let r0 = 1e9, r1 = -1e9, u0 = 1e9, u1 = -1e9;
       for (const x of [-110, 110]) for (const y of [y0, y1]) for (const z of [-227, 227]) { const a = x * rt[0] + z * rt[2], b = x * up[0] + y * up[1] + z * up[2]; r0 = Math.min(r0, a); r1 = Math.max(r1, a); u0 = Math.min(u0, b); u1 = Math.max(u1, b); }
-      const fh = Math.max(u1 - u0, (r1 - r0) / asp) * 1.1, cr = (r0 + r1) / 2, cu = (u0 + u1) / 2;
+      let fh = Math.max(u1 - u0, (r1 - r0) / asp) * 1.1, cr = (r0 + r1) / 2; const cu = (u0 + u1) / 2;
+      if (prog) { fh = Math.max(u1 - u0, (r1 - r0) / (asp * 0.56)) * 1.12; cr -= fh * asp * 0.2; } // 십자가는 왼쪽, 이름표는 오른쪽
       cam.left = (-fh * asp) / 2; cam.right = (fh * asp) / 2; cam.top = fh / 2; cam.bottom = -fh / 2; cam.updateProjectionMatrix();
       const tx = cr * rt[0] + cu * up[0], ty = cu * up[1], tz = cr * rt[2] + cu * up[2];
       cam.position.set(tx - fw[0] * 1500, ty - fw[1] * 1500, tz - fw[2] * 1500);
@@ -346,11 +382,12 @@
       // 이름표 위치
       labels.forEach((l, i) => {
         const s = spans[i];
-        if (elev) { P.set(0, l.y, 0).project(cam); s.style.transform = `translate(0, ${((1 - P.y) / 2) * H}px) translateY(-50%)`; s.style.opacity = l.y < 0 && !twin.visible ? 0 : 1; return; }
+        if (prog) { P.set(0, l.y, 0).project(cam); s.style.transform = `translate(0, ${((1 - P.y) / 2) * H}px) translateY(-50%)`; s.classList.toggle("on", fo === l.li); return; }
+        if (elev) { P.set(0, l.y, 0).project(cam); s.style.transform = `translate(0, ${((1 - P.y) / 2) * H}px) translateY(-50%)`; s.style.opacity = (l.y < 0 && !twin.visible) || mapV || cur.el > 1 ? 0 : 1; return; }
         const L = LAYERS[l.li]; P.set(0, ((L.k[0] + L.k[1]) / 2) * 3 + l.li * 30 * expC, 0).project(cam);
         s.style.transform = `translate(0, ${((1 - P.y) / 2) * H}px) translateY(-50%)`; s.classList.toggle("on", focus === l.li);
       });
-      if (moving && live) raf = requestAnimationFrame(frame);
+      if ((moving || hold) && live) raf = requestAnimationFrame(frame);
     };
     function kick() { if (!raf) raf = requestAnimationFrame(frame); }
     new ResizeObserver(size).observe(el);
@@ -491,6 +528,6 @@
     });
   };
 
-  const KIND = { clock, plan, steps, plant, transect, cross: (el) => three(el, "cross"), layers: (el) => three(el, "layers") };
+  const KIND = { clock, plan, steps, plant, transect, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
   window.MVSims = { mount: (el, kind) => { if (el.dataset.on) return; el.dataset.on = 1; colors(); (KIND[kind] || (() => {}))(el); } };
 })();
