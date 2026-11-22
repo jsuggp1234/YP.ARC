@@ -2114,3 +2114,10 @@ html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
 .seq-tag { pointer-events: none; }
 .ab3 .ab-pic, .ab-me .ab-pic { width: 100%; }
 @media (min-width: 761px) { .ab-me .ab-pic { grid-column: 1 / span 2; width: 62%; } }
+/* 핀 #32 RE:TIDE 물 시뮬레이션: 평면과 단면을 나눠 위아래로, 둘 다 크게 — 평면 → 조절바 → 설명 → 긴 단면 → 경사 단면 */
+@media (min-width: 761px) {
+  .pj-sec .sim { grid-template-columns: minmax(0, 1fr); grid-template-areas: "v" "u" "d" "s1" "s2"; row-gap: 20px; align-items: start; }
+  .pj-sec .sim > .sim-view { width: min(100%, calc((100svh - 220px) * 1.462)); justify-self: center; }
+  .pj-sec .sim > .sim-sec, .pj-sec .sim > .sim-sec:nth-of-type(2) { width: 100% !important; justify-self: stretch; align-self: start; margin-top: 48px; }
+  .pj-sec .sim > .sim-ui { position: sticky; bottom: 16px; z-index: 3; background: var(--bg); padding: 10px 0; }
+}
