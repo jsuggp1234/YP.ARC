@@ -888,35 +888,60 @@
   // 카드를 누르면 화면 전체로 커진 다음 그 페이지로 가고, contact는 연락 패널을 열어요.
   render.home = () => {
     HTML.classList.add("st-home", "sl-home");
-    const ST = SITE.start || [];
+    const ST = SITE.start || [], N = 24, SETS = 3;
+    const item = (pg, i, k) => `<a class="sl-a" href="${esc(pg.href)}"${pg.contact ? " data-contact" : ""} data-i="${i}"${k ? ' aria-hidden="true" tabindex="-1"' : ` aria-label="${esc(pg.title)}"`}><span class="sl-t" aria-hidden="true">${esc(pg.title)}</span><span class="sl-g"></span></a>`;
     $("#main").innerHTML = `
       <h1 class="sr">${esc(SITE.name)} — ${esc(SITE.owner)} Architecture Portfolio</h1>
-      <nav class="sl" aria-label="Start">${ST.map((pg, i) => `<a class="sl-a" href="${esc(pg.href)}"${pg.contact ? " data-contact" : ""} data-i="${i}" aria-label="${esc(pg.title)}"><span class="sl-t" aria-hidden="true">${esc(pg.title)}</span><span class="sl-g"></span></a>`).join("")}</nav>`;
-    const as = $$(".sl-a"), N = 24;
-    as.forEach((a, i) => { const L = stGlyph(ST[i].glyph, N); $(".sl-g", a).appendChild(L); });
+      <nav class="sl" aria-label="Start"><div class="sl-tr">${[...Array(SETS)].map((_, k) => ST.map((pg, i) => item(pg, i, k)).join("")).join("")}</div></nav>`;
+    const nav = $(".sl"), tr = $(".sl-tr", nav), as = $$(".sl-a", nav);
+    as.forEach((a) => $(".sl-g", a).appendChild(stGlyph(ST[+a.dataset.i].glyph, N)));
     // 들어올 때: 층이 아래부터 쌓이고, 글자는 왼쪽부터 차례로
-    if (!REDUCED) as.forEach((a, i) => {
-      $$(".st-b", a).forEach((b, k) => b.animate([{ translate: "0 0.14em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1000, delay: 250 + i * 140 + (N - 1 - k) * 26, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
-      $(".sl-t", a).animate([{ opacity: 0, translate: "0 8px" }, { opacity: 1, translate: "0 0" }], { duration: 800, delay: 900 + i * 140, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" });
+    if (!REDUCED) as.forEach((a, j) => {
+      $$(".st-b", a).forEach((b, k) => b.animate([{ translate: "0 0.14em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1000, delay: 250 + j * 90 + (N - 1 - k) * 22, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
+      $(".sl-t", a).animate([{ opacity: 0, translate: "0 8px" }, { opacity: 1, translate: "0 0" }], { duration: 800, delay: 800 + j * 90, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" });
     });
 
-    // 물결: 층마다 지금 밀린 양(cur)을 목표(tg)로 부드럽게 따라가요
-    let mx = -1e4, my = -1e4, last = 0, busy = false, geo = [];
-    const measure = () => { geo = as.map((a) => { const g = $(".st-gl", a), rc = g.getBoundingClientRect(), fs = parseFloat(getComputedStyle(g).fontSize);
-      return { cx: rc.left + rc.width / 2, fs, sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; }); };
+    // 띠: 한 벌 폭(setW)마다 되감아 끝없이. 저절로 초당 DRIFT px, 글자에 올리면 멈춤, 휠·끌기·← →로 이동
+    const DRIFT = 50;
+    let setW = 1, off = 0, vel = 0, hovering = false, busy = false, mx = -1e4, my = -1e4, last = 0, prev = 0;
+    let geo = [];
+    const measure = () => {
+      setW = as[ST.length].offsetLeft - as[0].offsetLeft || 1;
+      geo = as.map((a) => { const g = $(".st-gl", a), fs = parseFloat(getComputedStyle(g).fontSize), rc = g.getBoundingClientRect();
+        return { a, g, fs, x0: a.offsetLeft + g.offsetLeft + g.offsetWidth / 2, sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; });
+    };
     measure(); addEventListener("resize", measure);
     addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; last = performance.now(); }, { passive: true });
     D.addEventListener("pointerleave", () => { mx = my = -1e4; });
+    nav.addEventListener("pointerover", (e) => { hovering = !!e.target.closest(".sl-a"); });
+    nav.addEventListener("pointerleave", () => { hovering = false; });
+    nav.addEventListener("wheel", (e) => { e.preventDefault(); if (!busy) vel -= (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * 0.12; }, { passive: false });
+    let down = null, moved = false;
+    nav.addEventListener("pointerdown", (e) => { if (!e.button) { down = { x: e.clientX, o: off, id: e.pointerId }; moved = false; } });
+    nav.addEventListener("pointermove", (e) => {
+      if (!down || busy) return; const dx = e.clientX - down.x;
+      if (!moved && Math.abs(dx) > 5) { moved = true; nav.setPointerCapture(down.id); nav.classList.add("drag"); }
+      if (moved) { off = down.o + dx; vel = 0; }
+    });
+    const up = () => { down = null; nav.classList.remove("drag"); setTimeout(() => (moved = false), 0); };
+    nav.addEventListener("pointerup", up); nav.addEventListener("pointercancel", up);
+    addEventListener("keydown", (e) => { if (!busy && /^Arrow(Left|Right)$/.test(e.key) && $("#menu").hidden) vel += e.key === "ArrowLeft" ? 14 : -14; });
+
     const tick = (t) => {
-      if (busy || !D.body.contains(as[0])) return;
+      if (busy || !D.body.contains(tr)) return;
+      const dt = Math.min(0.05, (t - (prev || t)) / 1000); prev = t;
       if (!D.hidden) {
+        if (!down) { off += vel; vel *= 0.92; if (!hovering && !REDUCED) off -= DRIFT * dt; }
+        off = ((off % setW) - setW) % setW; // 늘 -setW ~ 0 사이
+        tr.style.transform = `translate3d(${off.toFixed(2)}px, -50%, 0)`;
         const idle = t - last > 2500;
-        geo.forEach((g, i) => {
-          const A = g.fs * 0.16, sg = g.fs * 0.14, dxm = mx - g.cx, near = Math.exp(-Math.abs(dxm) / (g.fs * 0.9)), dir = dxm > 0 ? -1 : 1;
+        geo.forEach((g, j) => {
+          const cx = g.x0 + off, A = g.fs * 0.16, sg = g.fs * 0.14, dxm = mx - cx, near = Math.exp(-Math.abs(dxm) / (g.fs * 0.9)), dir = dxm > 0 ? -1 : 1;
+          if (cx < -g.fs * 2 || cx > innerWidth + g.fs * 2) return; // 화면 밖은 건너뛰어요
           g.sl.forEach((o, k) => {
             const dy = o.y - my;
-            let tg = dir * A * Math.exp(-(dy * dy) / (2 * sg * sg)) * near; // 커서를 피해 밀려요
-            if (idle) tg += g.fs * 0.018 * Math.sin(t / 900 - k * 0.11 - i * 1.1); // 가만히 있으면 잔물결
+            let tg = REDUCED ? 0 : dir * A * Math.exp(-(dy * dy) / (2 * sg * sg)) * near; // 커서를 피해 밀려요
+            if (idle && !REDUCED) tg += g.fs * 0.018 * Math.sin(t / 900 - k * 0.11 - j * 1.1); // 가만히 있으면 잔물결
             o.cur += (tg - o.cur) * 0.12;
             o.el.style.translate = `${o.cur.toFixed(2)}px 0`;
           });
@@ -924,29 +949,30 @@
       }
       requestAnimationFrame(tick);
     };
-    if (!REDUCED) requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
 
     // 누르기: 다른 글자는 층이 흩어지며 떨어지고, 누른 글자에서 단어가 써진 뒤 사라지고 이동 (contact는 연락 패널)
-    $(".sl").addEventListener("click", (e) => {
+    nav.addEventListener("click", (e) => {
       const a = e.target.closest(".sl-a"); if (!a) return;
+      if (moved) { e.preventDefault(); return; }
       const isC = a.hasAttribute("data-contact"), pg = ST[+a.dataset.i] || {};
       if (isC && REDUCED) return;
       e.preventDefault(); if (busy) return;
       if (a.getAttribute("href") === "works.html") ss.set("yp-hi", "1");
       if (REDUCED) return location.assign(a.href);
       busy = true; HTML.classList.add("sl-go"); a.classList.add("on");
-      geo.forEach((g) => g.sl.forEach((o) => (o.el.style.translate = "")));
+      geo.forEach((g) => g.sl.forEach((o) => { o.el.style.translate = ""; o.cur = 0; }));
       const A = [];
-      as.forEach((o, i) => { if (o === a) return;
+      as.forEach((o) => { if (o === a) return;
         $$(".st-b", o).forEach((b) => A.push(b.animate([{ translate: "0 0", rotate: "0deg", opacity: 1 }, { translate: `${(Math.random() - 0.5) * 0.3}em ${0.5 + Math.random() * 0.8}em`, rotate: `${(Math.random() - 0.5) * 14}deg`, opacity: 0 }], { duration: 700 + Math.random() * 300, delay: Math.random() * 220, easing: "cubic-bezier(0.55, 0, 0.75, 0.3)", fill: "forwards" })));
       });
-      $$(".sl-t").forEach((t) => A.push(t.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" })));
+      $$(".sl-t", nav).forEach((t) => A.push(t.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" })));
       setTimeout(() => stSpell(a, pg).then(() => {
         if (!isC) { ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "blank" })); return location.assign(a.href); }
         A.forEach((x) => x.cancel()); HTML.classList.remove("sl-go"); a.classList.remove("on"); const g0 = $(".st-gl", a); if (g0) g0.style.visibility = "";
-        const b = $(".hdr [data-contact]") || $("[data-contact]:not(.sl-a)"); if (b) b.click();
-        busy = false; requestAnimationFrame(tick);
-        if (!REDUCED) $$(".st-b", a).forEach((x, k) => x.animate([{ translate: "0 0.14em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 900, delay: 400 + (N - 1 - k) * 20, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
+        const btn = $(".hdr [data-contact]") || $("[data-contact]:not(.sl-a)"); if (btn) btn.click();
+        busy = false; prev = 0; requestAnimationFrame(tick);
+        $$(".st-b", a).forEach((x, k) => x.animate([{ translate: "0 0.14em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 900, delay: 400 + (N - 1 - k) * 20, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
       }), 380);
     });
   };

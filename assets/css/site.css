@@ -2069,3 +2069,12 @@ html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
   .sl { grid-template-columns: 1fr 1fr; row-gap: 5vh; align-content: end; padding-bottom: 6vh; }
   .sl-g { font-size: calc((100vw - 2 * var(--g4-e, 8px) - 8px) / 2 * 0.62); }
 }
+
+/* 첫 화면 글자 띠 (2026-11-22): 작게, 세로 가운데, 끝없이 흐름 */
+.sl { display: block; padding: 0; overflow: hidden; touch-action: pan-y; cursor: default; }
+.sl.drag { cursor: grabbing; }
+.sl-tr { position: absolute; top: 50%; left: 0; display: flex; align-items: flex-end; gap: clamp(56px, 9vw, 160px); padding-left: var(--g4-e, 16px); will-change: transform; transform: translate3d(0, -50%, 0); }
+.sl-tr .sl-a { flex: none; }
+.sl-g { font-size: clamp(96px, 11vw, 200px); }
+@media (max-width: 760px) { .sl-tr { gap: 44px; } .sl-g { font-size: 30vw; } }
+.sl-tr .st-gl[data-g="@"] { margin-right: -0.18em; } /* @를 0.8배로 줄인 만큼 간격 맞춤 */
