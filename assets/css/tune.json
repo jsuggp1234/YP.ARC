@@ -1,139 +1,124 @@
 [
   {
     "id": "zjx3duq",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "d",
     "sel": "#cases > div.cs-track",
     "props": {
       "width": "74.5%"
     },
-    "label": "home · cs-track “RE:TIDE MOTORISM TIM(TEAM) W”"
+    "label": "works · cs-track “RE:TIDE MOTORISM TIM(TEAM) W”"
   },
   {
     "id": "6qm6poa",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "d",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(5) > div.media > div.mz > img",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(5) > div.media > div.mz > img",
     "props": {
       "scale": "0.92",
       "object-position": "32.5% 50%"
     },
-    "label": "home · img “Samgakji Residential Project”"
+    "label": "works · img “Samgakji Residential Project”"
   },
   {
     "id": "9heq643",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "d",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media > div.mz > img",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(7) > div.media > div.mz > img",
     "props": {
       "scale": "0.92",
       "object-position": "67% 50%"
     },
-    "label": "home · img “Campus Renovation J′”"
+    "label": "works · img “Campus Renovation J′”"
   },
   {
     "id": "7e7pk3j",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "d",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(9) > div.media",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(9) > div.media",
     "props": {
       "overflow": "hidden"
     },
-    "label": "home · media"
+    "label": "works · media"
   },
   {
     "id": "hppj4sj",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "d",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(9) > div.media > div.mz > img",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(9) > div.media > div.mz > img",
     "props": {
       "scale": "0.91",
       "object-position": "52.5% 50%"
     },
-    "label": "home · img “Moduleverse Church”"
+    "label": "works · img “Moduleverse Church”"
   },
   {
     "id": "5qd8dlj",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "d",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(3) > div.media > div.mz > img",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(3) > div.media > div.mz > img",
     "props": {
       "scale": "0.92",
       "object-position": "50% 100%"
     },
-    "label": "home · img “Tim(team) Work”"
+    "label": "works · img “Tim(team) Work”"
   },
   {
     "id": "rb0pjwg",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "d",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(2) > div.media > div.mz > img",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(2) > div.media > div.mz > img",
     "props": {
       "scale": "0.88",
       "object-position": "25.5% 50%"
     },
-    "label": "home · img “Motorism”"
+    "label": "works · img “Motorism”"
   },
   {
     "id": "q1hjqj8",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "all",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(4) > div.media > div.mz > img",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(4) > div.media > div.mz > img",
     "props": {
       "scale": "0.92",
       "object-position": "51.5% 50%"
     },
-    "label": "home · img “Modular O′ housing”"
-  },
-  {
-    "id": "6vpct2z",
-    "page": "home",
-    "slug": "",
-    "media": "all",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media",
-    "props": {
-      "overflow": "hidden",
-      "width": "91%",
-      "height": "auto",
-      "aspect-ratio": "0.8",
-      "margin-top": "108px"
-    },
-    "label": "home · media"
+    "label": "works · img “Modular O′ housing”"
   },
   {
     "id": "f9ohrzk",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "all",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media > div.mz > img",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(7) > div.media > div.mz > img",
     "props": {
       "scale": "0.57",
       "object-position": "58.5% 50%"
     },
-    "label": "home · img “Campus Renovation J′”"
+    "label": "works · img “Campus Renovation J′”"
   },
   {
     "id": "g7zvq79",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "all",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(1) > div.media > div.mz > img",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(1) > div.media > div.mz > img",
     "props": {
       "object-fit": "cover"
     },
-    "label": "home · img “RE:TIDE”"
+    "label": "works · img “RE:TIDE”"
   },
   {
     "id": "htryr13",
-    "page": "home",
+    "page": "works",
     "slug": "",
     "media": "all",
     "sel": "#cases > a.cs-ix.lnk",
@@ -146,7 +131,7 @@
       "border-radius": "0px",
       "margin-top": "-140px"
     },
-    "label": "home · cs-ix “INDEX OF WORKS (09)”"
+    "label": "works · cs-ix “INDEX OF WORKS (09)”"
   },
   {
     "id": "zlq55lb",
@@ -397,7 +382,7 @@
     "page": "works",
     "slug": "",
     "media": "all",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(5) > div.media > div.mz > img",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(5) > div.media > div.mz > img",
     "props": {
       "scale": "0.89"
     },
@@ -408,7 +393,7 @@
     "page": "works",
     "slug": "",
     "media": "all",
-    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(5) > div.media",
+    "sel": "#cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(5) > div.media",
     "props": {
       "overflow": "hidden"
     },

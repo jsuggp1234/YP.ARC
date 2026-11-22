@@ -1845,3 +1845,6 @@ html.st-home .ftr, html.st-home .hud { display: none; }
 #cases .cs-card:hover { z-index: 3; transform: scale(calc(var(--s) * 1.18)); }
 #cases .cs-card .cs-lab { transition: opacity .3s; }
 @media (hover: none), (prefers-reduced-motion: reduce) { #cases .cs-card:hover { transform: scale(var(--s)); } }
+/* Works 대표사진 줄을 화면 아래가 아니라 세로 가운데에 (사용자 요청) — 커질 때도 가운데 기준 */
+#cases.cs { align-items: center; padding-bottom: 0; padding-top: var(--hdr); }
+#cases .cs-card { transform-origin: 50% 50%; }

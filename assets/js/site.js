@@ -729,7 +729,7 @@
       <section class="cs" id="cases" data-ind="Cases" aria-label="Works">
         <h1 class="sr">${esc(SITE.name)} — Selected works</h1>
         <a class="cs-ix lnk" href="projects.html">${esc((SITE.index || {}).link || "Index")} <span class="num">(${pad(list.length)})</span></a>
-        <div class="cs-track">${[0, 1, 2].map((k) => `<div class="cs-set"${k === 1 ? "" : ' aria-hidden="true" inert'}>${one}</div>`).join("")}</div>
+        <div class="cs-track">${[0, 1, 2].map((k) => k === 1 ? `<div class="cs-set">${one}</div>` : `<div class="cs-set" aria-hidden="true">${one.replace(/<a /g, '<a tabindex="-1" ')}</div>`).join("")}</div>
       </section>`;
     // 인트로는 탭(세션)마다 홈에 처음 왔을 때 한 번만. 움직임 줄이기 설정이면 건너뛰어요
     const playIntro = !REDUCED && !ss.get("yp-hi");
@@ -933,7 +933,7 @@
         <p class="ar-note">${(A.lines || []).map(esc).join("<br>")}<span class="num">${esc(A.years || "")}</span></p>
       </section>
       <section class="cs ar" aria-label="Archive images">
-        <div class="cs-track">${[0, 1, 2].map((k) => `<div class="cs-set"${k === 1 ? "" : ' aria-hidden="true" inert'}>${one}</div>`).join("")}</div>
+        <div class="cs-track">${[0, 1, 2].map((k) => k === 1 ? `<div class="cs-set">${one}</div>` : `<div class="cs-set" aria-hidden="true">${one.replace(/<a /g, '<a tabindex="-1" ')}</div>`).join("")}</div>
       </section>`;
     caseStrip();
   };

@@ -17,8 +17,16 @@
   const okSel = (s) => typeof s === "string" && s.length > 0 && s.length <= 400 && /^[\w\s.#:()>+~\-=\["'\]*,]+$/.test(s) && !/[{}<;@]/.test(s);
   const okName = (s) => typeof s === "string" && /^[\w-]{0,80}$/.test(s);
 
+  // 페이지가 바뀐 뒤에도 예전 값이 맞는 곳에 걸리게 고쳐요 (핀 #35: 예전 홈 작품 띠 → works.html, 띠는 세 벌 복제라 가운데 벌만 고르지 않게)
+  const RETIRED = ["6vpct2z"]; // 7번 카드 크기 따로 조정 — 모든 카드가 같은 크기가 되면서 뺐어요 (핀 #33·#34)
+  const migrate = (r) => {
+    if (!r || typeof r.sel !== "string" || RETIRED.includes(r.id)) return null;
+    if (r.page === "home" && /#cases|cs-card|cs-track/.test(r.sel)) r = { ...r, page: "works", label: String(r.label || "").replace(/^home/, "works") };
+    if (/cs-set:nth-of-type\(\d\)/.test(r.sel)) r = { ...r, sel: r.sel.replace(/div\.cs-set:nth-of-type\(\d\)/g, "div.cs-set") };
+    return r;
+  };
   function clean(list) {
-    return (Array.isArray(list) ? list : []).slice(0, 2000).map((r) => {
+    return (Array.isArray(list) ? list : []).slice(0, 2000).map(migrate).map((r) => {
       if (!r || !okName(r.page) || !r.page || !okName(r.slug || "") || !okSel(r.sel)) return null;
       const props = {};
       Object.keys(r.props || {}).forEach((k) => { if (PROPS.includes(k) && okVal(r.props[k])) props[k] = r.props[k]; });
