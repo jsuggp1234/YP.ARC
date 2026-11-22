@@ -689,7 +689,8 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 @media (max-width: 760px) {
   /* 휴대폰: 4칸 그리드, 고정 장면은 일반 목록으로 */
   /* 휴대폰 글자 크기: 큰 글자 토큰을 한 단계씩 줄여요 (핀 #39) */
-  :root { --t-l: 13px; --t-xl: 14.5px; --t-xxl: 20px; }
+  /* 2026-11-23 사용자 요청: 휴대폰은 모든 글자 토큰을 한 단계 더 작게 */
+  :root { --t-xs: 9px; --t-s: 9.5px; --t-m: 11px; --t-l: 12px; --t-xl: 13px; --t-xxl: 17px; }
   .g8 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .g8 > * { grid-column: 1 / -1; padding-left: var(--e); }
   .hdr > .logo { grid-column: 1 / span 2; }
