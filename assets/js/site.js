@@ -903,7 +903,7 @@
 
     // 스크롤 모션 아트 (2026-11-22 요청): 글자는 가운데에 서 있고, 스크롤하면 왼쪽 글자부터 한 자씩 왼쪽으로 밀리며 옅어져요.
     // 글자의 가로 층 24장은 위층일수록 더 멀리 밀려 층이 어긋나며 흩어지고, 다 사라지면 새 글자가 오른쪽에서 아래층부터 쌓이며 다시 서요.
-    // 위상 ph: 정수 = 글자가 서 있는 상태, 0.5 = 빈 화면. 손을 떼면 가까운 정수로 맞춰요(절반을 넘겼으면 새 글자, 아니면 원래 글자). 거꾸로 스크롤하면 되감겨요.
+    // (2026-11-22 4차) 사라지는 대신: 스크롤하면 글자들이 흥분해 화면 안을 종종걸음으로 도망 다니고, 멈추면 집으로 돌아와요 — 아래 actors()
     let ph = 0, tg = 0, dir = 1, hovering = false, busy = false, mx = -1e4, my = -1e4, last = 0, lastIn = 0;
     let geo = [];
     const clamp = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -913,14 +913,14 @@
       const fit = Math.min(1, (innerWidth - 2 * e) / (tr.scrollWidth || 1)); // 한 화면 폭 안에 들어오게
       if (fit < 1) tr.style.fontSize = parseFloat(getComputedStyle(tr).fontSize) * fit + "px";
       geo = as.map((a) => { const g = $(".st-gl", a), fs = parseFloat(getComputedStyle(g).fontSize), rc = g.getBoundingClientRect();
-        return { a, g, fs, hw: rc.width / 2, x0: rc.left + rc.width / 2 - (parseFloat(a.style.translate) || 0), bs: $$(".st-b", a), sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; });
+        return { a, g, fs, hw: rc.width / 2, x0: rc.left + rc.width / 2 - (parseFloat(a.style.translate) || 0), by: rc.bottom, bs: $$(".st-b", a), sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; });
     };
     measure(); addEventListener("resize", measure);
     addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; last = performance.now(); }, { passive: true });
     D.addEventListener("pointerleave", () => { mx = my = -1e4; });
     nav.addEventListener("pointerover", (e) => { hovering = !!e.target.closest(".sl-a"); });
     nav.addEventListener("pointerleave", () => { hovering = false; });
-    const push = (d) => { if (busy || REDUCED || !d) return; tg += d; dir = d > 0 ? 1 : -1; lastIn = performance.now(); };
+    const push = (d) => { if (busy || REDUCED || !d) return; lastIn = performance.now(); }; // 스크롤·끌기·키 = 글자들이 흥분해요
     nav.addEventListener("wheel", (e) => { e.preventDefault(); push((Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) / (innerHeight * 4)); }, { passive: false });
     let down = null, moved = false;
     nav.addEventListener("pointerdown", (e) => { if (!e.button) { down = { x: e.clientX, y: e.clientY, id: e.pointerId }; moved = false; } });
@@ -931,7 +931,7 @@
     });
     const up = () => { down = null; nav.classList.remove("drag"); setTimeout(() => (moved = false), 0); };
     nav.addEventListener("pointerup", up); nav.addEventListener("pointercancel", up);
-    addEventListener("keydown", (e) => { if (!busy && /^(Arrow(Left|Right|Up|Down)|PageDown|PageUp| )$/.test(e.key) && $("#menu").hidden) { e.preventDefault(); push(/Right|Down|PageDown| /.test(e.key) ? 1 : -1); tg = Math.round(tg); } });
+    addEventListener("keydown", (e) => { if (!busy && /^(Arrow(Left|Right|Up|Down)|PageDown|PageUp| )$/.test(e.key) && $("#menu").hidden) { e.preventDefault(); push(1); } });
 
     // 글자 j의 층 k: 떠날 때(0~0.5)와 다시 설 때(0.5~1) 진행률
     const n = as.length, LW = 0.22, LS = n > 1 ? (0.5 - LW - 0.04) / (n - 1) : 0;
@@ -968,20 +968,20 @@
     // 캐릭터 (2026-11-22 요청): 글자들이 서 있는 동안 저마다 성격이 있는 것처럼 움직여요.
     // 점(.)은 장난꾸러기 — 다른 글자 위로 뛰어올라 앉았다 내려와요. Y·P는 제자리에서 뛰거나 몇 걸음 걷고, 커서나 점 쪽으로 몸을 기울여 쳐다봐요.
     // STUDIO는 무거워서 작게 뛰거나 몸을 떨어요. 점이 날면 다른 글자들이 고개(기울기)로 따라가고, 점이 내려앉은 글자는 살짝 눌려요.
-    const CH = as.map((a) => ({ el: $(".sl-g", a), x: 0, y: 0, base: 0, sx: 1, sy: 1, rot: 0, act: null, q: [], imp: 0, on: -1, look: 0, lookT: 0 }));
+    const CH = as.map((a) => ({ el: $(".sl-g", a), x: 0, y: 0, base: 0, sx: 1, sy: 1, rot: 0, act: null, q: [], imp: 0, on: -1, look: 0, lookT: 0, mode: "home", tx: 0, ty: 0, gp: 0, dirx: 0 }));
     const DOT = ST.findIndex((pg) => pg.glyph === "."), WORD = ST.findIndex((pg) => (pg.glyph || "").length > 1);
     let nextAt = 0;
     const hop = (c, x1, y1, h, dur, t0) => ({ k: "hop", t0, dur, x0: c.x, y0: c.base, x1, y1, h });
     const later = (c, t, x1, y1, h, dur) => { const last = c.q.length ? c.q[c.q.length - 1] : c.act; const t0 = last ? last.t0 + last.dur + 40 : t; c.q.push(hop({ x: last ? last.x1 : c.x, base: last ? last.y1 : c.base }, x1, y1, h, dur, t0)); };
     const pick = (t) => {
       const fs0 = geo[0] ? geo[0].fs : 100, r = Math.random();
-      const who = r < 0.42 ? DOT : r < 0.64 ? 0 : r < 0.86 ? 1 : WORD;
-      const c = CH[who]; if (!c || c.act || c.q.length) return;
+      const who = r < 0.34 ? DOT : r < 0.66 ? 0 : r < 0.86 ? 1 : WORD;
+      const c = CH[who]; if (!c || c.act || c.q.length || c.mode !== "home") return;
       if (who === DOT) {
         if (c.on >= 0 && Math.random() < 0.55) { later(c, t, 0, 0, fs0 * 0.45, 820); c.on = -1; return; } // 집으로
-        const tg = [0, 1, WORD].filter((j) => j !== c.on && geo[j])[Math.floor(Math.random() * 2.999)];
+        const tg = [0, 1, WORD].filter((j) => j !== c.on && geo[j] && CH[j].mode === "home")[Math.floor(Math.random() * 2.999)];
         if (tg == null || !geo[tg] || !geo[DOT]) return;
-        const gt = geo[tg], dx = gt.x0 + (Math.random() - 0.5) * gt.hw * (tg === WORD ? 1.4 : 0.6) - geo[DOT].x0;
+        const gt = geo[tg], dx = gt.x0 + CH[tg].x + (Math.random() - 0.5) * gt.hw * (tg === WORD ? 1.4 : 0.6) - geo[DOT].x0;
         later(c, t, dx, -gt.fs * 0.73, fs0 * (0.5 + Math.random() * 0.25), 900 + Math.abs(dx) / fs0 * 120); c.on = tg; c.tgt = tg;
         if (Math.random() < 0.35) later(c, t, dx, -gt.fs * 0.73, fs0 * 0.12, 380); // 올라가서 한 번 더 통통
         return;
@@ -989,6 +989,13 @@
       if (CH[DOT] && CH[DOT].on === who) { if (who === WORD) c.shake = t; else c.lookT = t + 1500; return; } // 점이 올라앉아 있으면 뛰지 않고 몸만
       if (who === WORD) {
         if (Math.random() < 0.55) later(c, t, 0, 0, fs0 * 0.09, 620); else { c.shake = t; }
+        return;
+      }
+      if (who === 0 && Math.random() < 0.5) { // Y: 화면 왼쪽을 천천히 돌아다니다가 돌아와요
+        const g = geo[0]; if (!g) return;
+        const away = Math.abs(c.x) > g.fs * 0.3;
+        c.mode = "wander"; c.ty = 0;
+        c.tx = away && Math.random() < 0.55 ? 0 : Math.max(-g.x0 + g.hw + 16, Math.min(g.fs * 0.2, -g.fs * (0.4 + Math.random() * 2.4)));
         return;
       }
       const m = Math.random();
@@ -1007,20 +1014,59 @@
       c.x = x; c.y = y; c.sx = sx; c.sy = sy;
       return p >= 1;
     };
-    const actors = (t, rest) => {
-      if (REDUCED) return;
-      if (!rest || busy) { CH.forEach((c) => { if (c.act || c.q.length || c.x || c.base || c.y) { c.act = null; c.q = []; c.x = c.y = c.base = 0; c.on = -1; c.el.style.transform = ""; } }); nextAt = t + 1200; return; }
-      if (t > nextAt) { pick(t); nextAt = t + 900 + Math.random() * 1900; }
+    // 도망칠 곳: 화면 안 임의의 점 네 개 중 커서에서 가장 먼 곳 (한 번에 화면 폭의 45%까지만)
+    const fleeTo = (c, g) => {
+      const vw = innerWidth, vh = innerHeight, hd = 90, m = 16; let best = null, bd = -1;
+      for (let i = 0; i < 4; i++) {
+        const sx = m + g.hw + Math.random() * Math.max(1, vw - 2 * (m + g.hw)), sy = hd + g.fs + Math.random() * Math.max(1, vh - hd - g.fs - m * 3);
+        let tx = sx - g.x0, ty = sy - g.by; const lim = vw * 0.45, dx = tx - c.x;
+        if (Math.abs(dx) > lim) tx = c.x + Math.sign(dx) * lim;
+        const cx = g.x0 + tx, cy = g.by + ty - g.fs * 0.4, d = mx > -1e3 ? Math.hypot(cx - mx, cy - my) : Math.random();
+        if (d > bd) { bd = d; best = [tx, ty]; }
+      }
+      c.tx = best[0]; c.ty = best[1];
+    };
+    const actors = (t, dt, calm) => {
+      if (REDUCED) return true;
+      if (busy) { CH.forEach((c) => { if (c.act || c.q.length || c.x || c.base || c.y) { c.act = null; c.q = []; c.x = c.y = c.base = 0; c.on = -1; c.mode = "home"; c.el.style.transform = ""; } }); nextAt = t + 1200; return true; }
+      // 흥분: 입력이 들어오면 모두 도망, 1.1초 조용하면 진정하고 집으로
+      CH.forEach((c, j) => {
+        if (!calm && c.mode !== "run" && geo[j]) { c.mode = "run"; c.act = null; c.q = []; c.on = -1; c.lookT = 0; fleeTo(c, geo[j]); c.gp = Math.random() * 6; c.wait = t + Math.random() * 260; }
+        else if (calm && c.mode === "run") { c.mode = "back"; c.tx = 0; c.ty = 0; c.wait = t + Math.random() * 400; }
+      });
+      let rest = true;
+      CH.forEach((c, j) => {
+        const g = geo[j]; if (!g || c.mode === "home") return;
+        if (c.mode !== "wander") rest = false;
+        if (t < (c.wait || 0)) { c.gp += dt * 20; return; } // 출발 전 제자리에서 동동
+        const dx = c.tx - c.x, dy = c.ty - c.base, dist = Math.hypot(dx, dy);
+        const run = c.mode === "run", spd = run ? (j === WORD ? 105 : 150) : c.mode === "back" ? 210 : 60;
+        if (dist < 2) {
+          c.x = c.tx; c.base = c.ty;
+          if (run) { fleeTo(c, g); c.wait = t + 150 + Math.random() * 500; } // 아직 흥분 중이면 잠깐 두리번 → 다른 곳으로
+          else { if (c.mode === "wander") c.lookT = t + 1200; c.mode = "home"; if (!c.tx && !c.ty) c.x = c.base = 0; }
+          return;
+        }
+        const st = Math.min(dist, spd * dt);
+        c.x += (dx / dist) * st; c.base += (dy / dist) * st;
+        c.dirx = dx / dist;
+        c.gp += dt * (run ? 14 : c.mode === "back" ? 11 : 7); // 걸음 빠르기: 도망칠 땐 종종걸음
+      });
+      if (calm && t > nextAt) { pick(t); nextAt = t + 900 + Math.random() * 1900; }
       const dotC = CH[DOT], dotG = geo[DOT], dotAir = dotC && dotC.act && dotC.act.t0 <= t;
       CH.forEach((c, j) => {
         if (!c.act && c.q.length && c.q[0].t0 <= t) c.act = c.q.shift();
         if (c.act && c.act.t0 <= t) {
           if (pose(c, t)) { c.base = c.act.y1; c.x = c.act.x1; c.y = c.base; c.sx = c.sy = 1; if (j === DOT && c.on >= 0 && CH[c.on]) CH[c.on].imp = 1; c.act = null; }
+        } else if (c.mode !== "home") { // 종종걸음: 발을 디딜 때마다 살짝 눌리고, 가는 쪽으로 몸을 기울이며 좌우로 흔들려요
+          const ab = Math.abs(Math.sin(c.gp)), run = c.mode === "run";
+          c.y = c.base - ab * g0(j).fs * (run ? 0.07 : 0.04); c.sy = 1 - 0.07 * (1 - ab); c.sx = 1 + 0.04 * (1 - ab);
         } else { c.sx += (1 - c.sx) * 0.2; c.sy += (1 - c.sy) * 0.2; c.y = c.base; }
         // 쳐다보기: 점이 날고 있으면 점 쪽으로, 아니면 쳐다보기 중일 때 커서 쪽으로 (바닥을 축으로 기울어요)
         const g = geo[j]; let want = 0;
         if (g && j !== DOT && dotAir && dotG) want = Math.max(-7, Math.min(7, ((dotG.x0 + dotC.x - g.x0) / g.fs) * 5));
         else if (g && t < c.lookT && mx > -1e3) want = Math.max(-9, Math.min(9, ((mx - g.x0) / g.fs) * 6));
+        if (c.mode !== "home") want = c.dirx * (c.mode === "run" ? 9 : 5) + Math.sin(c.gp) * (c.mode === "run" ? 6 : 3);
         if (c.shake && t - c.shake < 700) want += Math.sin((t - c.shake) / 28) * 1.6 * (1 - (t - c.shake) / 700);
         if (j === WORD) want *= 0.4; // STUDIO는 넓어서 조금만 기울어요
         c.rot += (want - c.rot) * 0.08;
@@ -1029,20 +1075,16 @@
         const tf = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0) rotate(${c.rot.toFixed(2)}deg) scale(${sx.toFixed(3)}, ${sy.toFixed(3)})`;
         if (c.el.style.transform !== tf) c.el.style.transform = tf;
       });
+      return rest;
     };
+    const g0 = (j) => geo[j] || { fs: 100 };
 
     let prev = 0;
     const tick = (t) => {
       if (busy || !D.body.contains(tr)) return;
       const dt = Math.min(0.05, (t - (prev || t)) / 1000); prev = t;
       if (!D.hidden) {
-        if (!down && t - lastIn > 160 && tg !== Math.round(tg)) { const fl = Math.floor(tg), fr0 = tg - fl; tg = dir > 0 ? (fr0 > 0.05 ? fl + 1 : fl) : (fr0 < 0.95 ? fl : fl + 1); } // 손을 떼면 민 방향으로 5% 넘게 갔으면 끝까지, 아니면 제자리로
-        { const gap = tg - ph, v = Math.sign(gap) * Math.min(Math.abs(gap) * (1 - Math.exp(-dt * 2.6)), dt * 0.45); ph += v; } // 한 바퀴에 최소 2.2초
-        if (Math.abs(tg - ph) < 0.0005) ph = tg;
-        const fr = ph - Math.floor(ph);
-        draw(fr, Math.floor(ph));
-        const rest = fr < 0.002 || fr > 0.998, idle = t - last > 2500;
-        actors(t, rest);
+        const rest = actors(t, dt, !down && t - lastIn > 1100), idle = t - last > 2500;
         geo.forEach((g, j) => {
           const cx = g.x0, A = g.fs * 0.16, sg = g.fs * 0.14, dxm = mx - cx, near = Math.exp(-Math.max(0, Math.abs(dxm) - g.hw + g.fs * 0.3) / (g.fs * 0.9)), dir = dxm > 0 ? -1 : 1;
           g.sl.forEach((o, k) => {
@@ -1067,7 +1109,7 @@
       e.preventDefault(); if (busy) return;
       if (a.getAttribute("href") === "works.html") ss.set("yp-hi", "1");
       if (REDUCED) return location.assign(a.href);
-      busy = true; tg = ph = Math.round(ph); draw(0); CH.forEach((c) => { c.act = null; c.q = []; c.x = c.y = c.base = 0; c.on = -1; c.el.style.transform = ""; }); HTML.classList.add("sl-go"); a.classList.add("on");
+      busy = true; tg = ph = Math.round(ph); draw(0); CH.forEach((c) => { c.act = null; c.q = []; c.x = c.y = c.base = 0; c.on = -1; c.mode = "home"; c.el.style.transform = ""; }); HTML.classList.add("sl-go"); a.classList.add("on");
       geo.forEach((g) => g.sl.forEach((o) => { o.el.style.translate = ""; o.cur = 0; }));
       const A = [];
       as.forEach((o) => { if (o === a) return;
