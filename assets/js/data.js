@@ -1207,7 +1207,7 @@ const SITE = {
     coverVideo: "assets/img/samgakji-residential/cover-hq.mp4", // 핀 #51: 작품 머리에서 바로 재생되는 고화질 영상 (원본 portfolio-source/대표사진 영상)
     thumb: "assets/img/samgakji-residential/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverCaption: "Guesthouse on the commercial spine",
-    coverR: 1.502, // 표지를 사진 비율 그대로 (핀 #158)
+    coverR: 2.01, // 핀 #171: Tim work처럼 화면 폭 가득(위아래 조금 잘림)
     summary: "A triangular parcel left over where the railway, the main road, the army base and Yongsan Park meet. Instead of the usual apartment complex that wipes the block and turns its back, the design keeps the old parcel lines, lets the surrounding streets run on through the site, and gives each edge the program it already faces — a tower toward the high-rise west, small stacked houses toward the old lanes, and a green road through the middle that everyone may walk.",
     sections: [
       {
