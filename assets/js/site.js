@@ -89,7 +89,7 @@
       <!-- v2 상단바 (docs/redesign-plan.md 1단계): 4칸 — 1 로고 · 2 다크 토글 · 3 Menu/Contact · 4 서울 시각 -->
       <header class="hdr g4" id="hdr">
         <a class="logo" href="index.html" aria-label="${esc(SITE.name)} home">${roll(SITE.name)}</a>
-        <div class="hdr-m"><div class="dial" role="slider" tabindex="0" aria-label="Time travel — 점을 돌리면 시각이 바뀌어요. 누르면 라이트/다크 전환" aria-valuemin="-720" aria-valuemax="720" aria-valuenow="0"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25.5"/></svg><span class="dial-dot"></span></div></div>
+        <div class="hdr-m"><div class="md-sw" role="group" aria-label="화면 밝기"><button type="button" data-m="light" aria-pressed="true">Light</button><button type="button" data-m="dark" aria-pressed="false">Dark</button></div><div class="dial" role="slider" tabindex="0" aria-label="Time travel — 점을 돌리면 시각이 바뀌어요. 누르면 라이트/다크 전환" aria-valuemin="-720" aria-valuemax="720" aria-valuenow="0"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25.5"/></svg><span class="dial-dot"></span></div></div>
         <nav class="hdr-n" aria-label="Main">
           <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">${roll("Menu")}</button>
           <a href="#contact" data-contact aria-haspopup="dialog">${roll("Contact")}</a>
@@ -208,6 +208,7 @@
     if (HTML.dataset.mode === m) return;
     HTML.dataset.mode = m;
     $$(".mode span").forEach((s) => (s.textContent = m === "dark" ? "Light" : "Dark"));
+    $$(".md-sw button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.m === m)));
     D.dispatchEvent(new Event("yp:theme"));
   };
   function modeUi() {
@@ -218,6 +219,14 @@
       ls.set("yp-mode", m);
       setMode(m);
     });
+    // 다이얼 옆 작은 버튼: 누른 쪽으로 바로 (시간 여행 중이면 지금 시각으로 돌아오며)
+    D.addEventListener("click", (e) => {
+      const b = e.target.closest(".md-sw button"); if (!b) return;
+      ls.set("yp-mode", b.dataset.m);
+      if (TT.off && TT.paint) { TT.off = 0; TT.paint(); }
+      setMode(b.dataset.m);
+    });
+    $$(".md-sw button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.m === HTML.dataset.mode)));
     dial();
   }
 

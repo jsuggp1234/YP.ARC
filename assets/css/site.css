@@ -1860,3 +1860,11 @@ html.st-home .ftr, html.st-home .hud { display: none; }
 .mn-pg .mn-c { width: calc(var(--ch) / 1.3224 * 0.72); }
 .mn-pg .mn-im { height: calc(var(--ch) / 1.3224 * 0.72 / 0.8); background: var(--line); }
 .mn-pg .mn-im img { transform: scale(1.15); } /* Works 카드 사진의 기본 확대(.cs-card .mz)와 같게 */
+
+/* 다이얼 옆 작은 Light / Dark 버튼 (2026-11-22 요청). 지금 모드는 진하게, 다른 쪽은 흐리게 */
+.hdr-m { display: flex; align-items: center; gap: 14px; }
+.md-sw { display: flex; gap: 8px; font-size: var(--t-xs); line-height: 1; text-transform: uppercase; }
+.md-sw button { padding: 4px 0; color: inherit; opacity: .35; transition: opacity .3s var(--ease); cursor: pointer; }
+.md-sw button:hover, .md-sw button[aria-pressed="true"] { opacity: 1; }
+.md-sw button:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
+@media (max-width: 760px) { .hdr-m { flex-direction: column-reverse; align-items: flex-end; gap: 6px; } .md-sw { gap: 6px; } } /* 모바일: 시각과 겹치지 않게 다이얼 아래 */
