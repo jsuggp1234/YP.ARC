@@ -2021,3 +2021,14 @@ html.hi-on .st-l { opacity: 0; }
 .st-flow { overflow: hidden; background: var(--st-bg, var(--bg)); }
 .st-flow img { width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 0; }
 .st-veil.st-flow { z-index: 59; } /* 상단바는 그림 위에 그대로 — 앞 페이지와 같은 모습 */
+
+/* 첫 화면 카드 글자 (2026-11-22): 글자 하나를 가로 층으로 — 아래층부터 쌓이고, 올리면 위층일수록 더 비켜 나가요(캔틸레버) */
+.st-gl { position: absolute; left: calc(var(--stw, 30vw) * 0.07); bottom: 5vh; font-family: var(--sans); font-weight: 400; font-size: calc(var(--stw, 30vw) * 0.92); line-height: 1; letter-spacing: -0.04em; color: var(--ink); pointer-events: none; user-select: none; }
+.st-gl .st-g0 { visibility: hidden; display: block; }
+.st-gl .st-b { position: absolute; inset: 0; display: block; }
+.st-gl .st-b > i { display: block; font-style: normal; transform: translateX(0); transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: calc((24 - var(--k)) * 9ms); }
+.mn-card:hover .st-gl .st-b > i, .mn-card:focus-visible .st-gl .st-b > i { transform: translateX(calc((23 - var(--k)) * 0.0045em)); transition-delay: calc(var(--k) * 9ms); }
+.mn-card.st-on .st-gl .st-b > i { transform: none !important; }
+.st-flow-g { background: var(--bg); }
+.st-flow-g .st-gl { position: fixed; }
+@media (prefers-reduced-motion: reduce) { .st-gl .st-b > i { transition: none; } }

@@ -924,11 +924,10 @@
     // 2026-11-22 "훨씬 심플하게": 네모 모듈 모션아트(stArt)는 쓰지 않아요 — 캔버스를 지우고 가는 글자 하나 + 작은 이름만
     $$(".mn-card", m).forEach((c, i) => {
       const pg = ST[+c.dataset.i] || {}, cv = $(".mn-art", c); if (cv) cv.remove();
-      // 2026-11-22: 카드 속 글자는 빼고 사진 한 장(SITE.start의 img)
-      if (!pg.img) return;
-      const L = D.createElement("div"); L.className = "st-im"; L.setAttribute("aria-hidden", "true");
-      L.innerHTML = `<img src="${esc(pg.img)}" alt="" decoding="async" draggable="false">`;
-      c.appendChild(L);
+      // 2026-11-22: 카드 속은 글자 하나 — 가로 층(슬래브)으로 쪼개 아래층부터 쌓여요
+      if (!pg.glyph) return;
+      const L = stGlyph(pg.glyph); c.appendChild(L);
+      if (!REDUCED) $$(".st-b", L).forEach((b, k, all) => b.animate([{ translate: "0 0.12em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1100, delay: 420 + +c.dataset.i * 110 + (all.length - 1 - k) * 28, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
     });
 
     m.addEventListener("pointerover", (e) => { const c = e.target.closest(".mn-card"); const i = c ? +c.dataset.i : -1; if (i !== hov && !busy) { hov = i; place(); } });
@@ -970,18 +969,16 @@
       // 2026-11-22 넘김 모션: 다른 카드와 이름은 차례로 가라앉고, 누른 카드의 사진은 커지는 동안 살짝 확대됐다 제자리로
       cards.forEach((o, k) => { if (o !== c) o.animate([{ translate: "0 0", opacity: 1 }, { translate: "0 60px", opacity: 0 }], { duration: 650, delay: Math.abs(k - +c.dataset.i) * 50, easing: EASE_IO, fill: "forwards" }); });
       $$(".st-cap", m).forEach((t) => t.animate([{ opacity: 1 }, { opacity: 0, translate: "0 -10px" }], { duration: 400, easing: "ease-out", fill: "forwards" }));
-      { const im = $(".st-im img", c); if (im) im.animate([{ scale: 1.12 }, { scale: 1 }], { duration: 1300, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }); }
-      const studio = !!c.querySelector(".st-hide"); if (studio) c.classList.add("go"); // studio: 작품 사진 줄이 드러나요
+      const studio = false; // 2026-11-22: 네 카드 모두 같은 글자 넘김
       const cv = c.querySelector(".mn-art"), word = (ST[+c.dataset.i] || {}).title;
       const grow = c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath }, FULL], { duration: 900, easing: EASE_IO, fill: "forwards" }).finished.catch(() => {});
       // 글자 모듈 → 단어: P 조각들이 왼쪽으로 밀리며 philosophy 철자가 이어서 완성돼요. 다음 페이지가 같은 자리에서 이어받아요
       const spell = cv && cv._mods && word ? new Promise((res) => { const src = cv._mods(); cv._hide(); TX.leave(word, src, studio, res); }) : Promise.resolve();
       Promise.all([grow, spell]).then(() => {
         if (cv && word) ss.set("yp-tx", JSON.stringify({ word, t: Date.now(), bg: !studio, top: studio }));
-        if (studio) { ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "photo" })); return go2(); } // studio: 띠 사진이 이미 드러나 있어 바로 이어져요
-        // 화면 가득한 그림을 다음 페이지 첫 장면으로 그대로 넘겨요(같은 그림 → 끊김 없음)
-        const im = $(".st-im img", c);
-        ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "img", src: im ? im.getAttribute("src") : "" })); go2();
+        // 화면 가득한 글자를 같은 자리·같은 크기로 다음 페이지 첫 장면에 넘겨요(끊김 없음)
+        const gl = $(".st-gl", c), b = gl && gl.getBoundingClientRect();
+        ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "glyph", g: (ST[+c.dataset.i] || {}).glyph || "", x: b ? b.left : 0, y: b ? b.top : 0, fs: gl ? parseFloat(getComputedStyle(gl).fontSize) * (b.height / gl.offsetHeight || 1) : 0 })); go2();
       });
     }, true);
   };
@@ -1085,12 +1082,24 @@
     size(); paint();
   }
   // ---------- 첫 화면 → 페이지 도착 (2026-11-22): 바탕색 막이 위로 걷히고, 본문이 살짝 아래에서 올라와요 ----------
+  // 글자 하나를 N장의 가로 층으로: 층마다 같은 글자를 겹쳐 놓고 그 높이만 보이게 잘라요(clip-path)
+  function stGlyph(g, n = 24) {
+    const L = D.createElement("div"); L.className = "st-gl"; L.setAttribute("aria-hidden", "true");
+    let h = `<span class="st-g0">${esc(g)}</span>`;
+    for (let k = 0; k < n; k++) h += `<span class="st-b" style="--k:${k};clip-path:inset(${Math.max(0, (k * 100) / n - 0.25)}% -60% ${Math.max(0, 100 - ((k + 1) * 100) / n - 0.25)}% -60%)"><i>${esc(g)}</i></span>`;
+    L.innerHTML = h; return L;
+  }
   function stArrive() {
     let st = null; try { st = JSON.parse(ss.get("yp-st") || "null"); } catch (e) {}
     ss.set("yp-st", ""); if (!st || Date.now() - st.t > 6000 || REDUCED) return;
     const FLOW = "cubic-bezier(0.76, 0, 0.24, 1)", SOFT = "cubic-bezier(0.16, 1, 0.3, 1)";
     let lift = 0;
-    if (st.k === "img" && st.src) {
+    if (st.k === "glyph" && st.g && st.fs) {
+      const v = D.createElement("div"); v.className = "st-veil st-flow st-flow-g"; const L = stGlyph(st.g);
+      L.style.cssText = `left:${st.x}px;top:${st.y}px;bottom:auto;font-size:${st.fs}px`; v.appendChild(L); BODY.appendChild(v); lift = 520;
+      $$(".st-b", L).forEach((b, k) => b.animate([{ translate: "0 0", opacity: 1 }, { translate: "0 -0.25em", opacity: 0 }], { duration: 800, delay: 120 + k * 24, easing: FLOW, fill: "forwards" }));
+      v.animate([{ clipPath: "inset(0 0 0% 0)" }, { clipPath: "inset(0 0 100% 0)" }], { duration: 1000, delay: 520, easing: FLOW, fill: "forwards" }).finished.catch(() => {}).then(() => v.remove());
+    } else if (st.k === "img" && st.src) {
       // 앞 페이지 마지막 장면(화면 가득한 그림)으로 시작 → 그림은 위로 걷히고, 그림 속 내용은 반대로 조금 덜 움직여(시차) 물 흐르듯 빠져요
       const v = D.createElement("div"); v.className = "st-veil st-flow"; v.innerHTML = `<img src="${esc(st.src)}" alt="">`; BODY.appendChild(v);
       const img = $("img", v); lift = 380;
