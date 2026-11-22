@@ -2133,3 +2133,9 @@ html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
 .kj-nt ol { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 16px; }
 .kj-nt li { display: flex; gap: 8px; break-inside: avoid; line-height: 1.5; color: var(--mid); }
 .kj-nt li .num { color: var(--ink); min-width: 1.4em; }
+
+/* 핀 #39: 시뮬레이션 조절 (정지 자리 · 드릴 속도) */
+.mv-ui .mv-k { color: var(--mid); margin-right: -6px; }
+.mv-ui .mv-rg { display: inline-flex; align-items: center; gap: 8px; }
+.mv-ui .mv-rg input { width: 110px; accent-color: var(--ink); }
+.mv-ui .mv-rg b { font-weight: 600; font-variant-numeric: tabular-nums; min-width: 5em; }

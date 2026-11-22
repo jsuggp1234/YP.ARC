@@ -532,56 +532,62 @@
   // ── 핀 #23 Four Stops: 방이 줄기를 따라 340 mm씩 네 자리에 멈추고, 멈출 때마다 고정 핀이 들어가요 (입면 1:200)
   const stops = (el) => {
     const ST = [[0, "±0", "home · FL +5.00"], [-340, "−340", ""], [-680, "−680", "ramp neighbour"], [-1020, "−1,020", "build · storm park · FL +3.98"]];
-    const HOLD = 1.6, MOVE = 1.8, SEQ = [0, 1, 2, 3, 2, 1];
-    stage(el, (g, W, H, t) => {
-      const ez = (x) => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
-      const per = HOLD + MOVE, n = SEQ.length, k = Math.floor(t / per) % n, f = (t % per) - HOLD, a = SEQ[k], b = SEQ[(k + 1) % n];
-      const e = f < 0 ? 0 : ez(Math.min(1, f / MOVE)), lv = ST[a][0] + (ST[b][0] - ST[a][0]) * e, moving = f > 0 && f < MOVE;
+    const HOLD = 1.6, SEQ = [0, 1, 2, 3, 2, 1], LAPSE = 40; // 시간 압축 ×40
+    // 조절: 정지 자리 버튼(누르면 자동 순환 멈추고 그 자리로) · 드릴 속도 · 자동
+    el.insertAdjacentHTML("beforeend", `<div class="mv-ui"><span class="mv-k">stop</span>${ST.map(([, l], i) => `<button type="button" data-s="${i}">${l}</button>`).join("")}<span class="sep"></span><button type="button" data-auto class="on">auto</button><span class="sep"></span><label class="mv-rg"><span class="mv-k">drill</span><input type="range" min="100" max="600" step="10" value="300" aria-label="Drill speed, rpm"><b>300 rpm</b></label></div>`);
+    const bts = [...el.querySelectorAll("[data-s]")], au = el.querySelector("[data-auto]"), rg = el.querySelector(".mv-rg input"), rl = el.querySelector(".mv-rg b");
+    let lv = 0, tgt = 0, auto = true, k = 0, hold = 0, last = 0, rpm = 300, settled = 0;
+    const mark = () => { bts.forEach((x, i) => x.classList.toggle("on", !auto && i === tgt)); au.classList.toggle("on", auto); };
+    bts.forEach((x, i) => x.addEventListener("click", () => { auto = false; tgt = i; mark(); st.kick(); }));
+    au.addEventListener("click", () => { auto = !auto; if (auto) { k = SEQ.indexOf(tgt); if (k < 0) k = 0; hold = 0; } mark(); st.kick(); });
+    rg.addEventListener("input", () => { rpm = +rg.value; rl.textContent = rpm + " rpm"; st.kick(); });
+    const st = stage(el, (g, W, H, t) => {
+      const dt = last ? Math.min(0.05, t - last) : 0; last = t;
+      // 움직임: 200바퀴 = 340 mm → 1바퀴 1.7 mm, 화면에선 ×LAPSE
+      const want = ST[tgt][0], v = (rpm / 60) * 1.7 * LAPSE, d = want - lv;
+      if (Math.abs(d) > 0.01) { lv += Math.sign(d) * Math.min(Math.abs(d), v * dt); settled = 0; } else { lv = want; settled += dt; }
+      const moving = Math.abs(want - lv) > 0.01;
+      if (auto && !moving) { hold += dt; if (hold > HOLD) { hold = 0; k = (k + 1) % SEQ.length; tgt = SEQ[k]; } }
+      const a = ST.findIndex((x) => Math.abs(x[0] - lv) < 0.5);
       // 높이(m) → 화면: 땅 0 ~ 나무 끝 10.4 m
-      const top = H * 0.05, bot = H * 0.9, Y = (m) => bot - ((bot - top) * m) / 10.4, u = (bot - top) / 10.4, cx = W * 0.36;
+      const top = H * 0.09, bot = H * 0.9, Y = (m) => bot - ((bot - top) * m) / 10.4, u = (bot - top) / 10.4, cx = W * 0.36;
       g.lineCap = "butt";
-      // 땅
       g.strokeStyle = C.mix(0.8); g.lineWidth = 1.2; g.beginPath(); g.moveTo(cx - u * 2.6, Y(0)); g.lineTo(cx + u * 2.6, Y(0)); g.stroke();
-      // 줄기 (위로 갈수록 가늘게) + 나이테 결
       const tw = (m) => u * (0.26 - 0.012 * m);
       g.fillStyle = C.mix(0.06); g.strokeStyle = C.mix(0.55); g.lineWidth = 0.8;
       g.beginPath(); g.moveTo(cx - tw(0), Y(0)); g.lineTo(cx - tw(10.2), Y(10.2)); g.lineTo(cx + tw(10.2), Y(10.2)); g.lineTo(cx + tw(0), Y(0)); g.closePath(); g.fill(); g.stroke();
-      // 슬리브 +3.30 ~ +8.80, 나사 날개(flight) 사선
       const sw = u * 0.34;
       g.fillStyle = C.mix(0.12); g.fillRect(cx - sw, Y(8.8), sw * 2, Y(3.3) - Y(8.8)); g.strokeStyle = C.mix(0.7); g.lineWidth = 0.9; g.strokeRect(cx - sw, Y(8.8), sw * 2, Y(3.3) - Y(8.8));
       g.save(); g.beginPath(); g.rect(cx - sw, Y(8.8), sw * 2, Y(3.3) - Y(8.8)); g.clip(); g.strokeStyle = C.mix(0.35); g.lineWidth = 0.6;
-      const rot = (lv / 340) * 3 * 0.34 * u; // 한 자리 = 1/3바퀴 → 날개 무늬가 흘러요
+      const rot = (lv / 340) * 3 * 0.34 * u;
       for (let y = Y(8.8) - u + (rot % (u * 0.34)); y < Y(3.3) + u; y += u * 0.34) { g.beginPath(); g.moveTo(cx - sw, y); g.lineTo(cx + sw, y - u * 0.18); g.stroke(); }
       g.restore();
-      // 정지 자리 표시 (오른쪽 눈금)
       const tx = cx + u * 2.2;
       ST.forEach(([mm, lab, note], i) => {
-        const y = Y(5 + mm / 1000), ly = Y(6.3) + i * C.s * 3.6, on = !moving && i === a;
-        g.strokeStyle = on ? C.red(0.9) : C.mix(0.3); g.lineWidth = on ? 1.2 : 0.7; g.setLineDash(on ? [] : [2, 3]); g.beginPath(); g.moveTo(cx + sw + 4, y); g.lineTo(tx - u * 0.5, y); g.lineTo(tx - 6, ly); g.stroke(); g.setLineDash([]);
-        g.textAlign = "left"; g.textBaseline = "middle"; g.font = font(C.s, 600); g.fillStyle = on ? C.red() : C.mix(0.9); g.fillText(lab, tx, ly);
+        const y = Y(5 + mm / 1000), ly = Y(6.3) + i * C.s * 3.6, on = !moving && i === a, go = moving && i === tgt;
+        g.strokeStyle = on ? C.red(0.9) : go ? C.red(0.45) : C.mix(0.3); g.lineWidth = on ? 1.2 : 0.7; g.setLineDash(on ? [] : [2, 3]); g.beginPath(); g.moveTo(cx + sw + 4, y); g.lineTo(tx - u * 0.5, y); g.lineTo(tx - 6, ly); g.stroke(); g.setLineDash([]);
+        g.textAlign = "left"; g.textBaseline = "middle"; g.font = font(C.s, 600); g.fillStyle = on || go ? C.red() : C.mix(0.9); g.fillText(lab, tx, ly);
         if (note) { g.font = font(C.xs); g.fillStyle = C.mix(0.55); g.fillText(note, tx, ly + C.s * 1.2); }
       });
-      // 방 (바닥 보 + 벽 + 지붕) — 바닥 위치 = 5.00 + lv
       const fl = 5 + lv / 1000, rw = u * 1.45, rh = u * 2.3;
       g.fillStyle = C.bg; g.fillRect(cx - rw, Y(fl) - rh, rw * 2, rh);
       g.strokeStyle = C.mix(0.85); g.lineWidth = 1; g.strokeRect(cx - rw, Y(fl) - rh, rw * 2, rh);
       g.fillStyle = C.mix(0.95); g.fillRect(cx - rw, Y(fl) - u * 0.1, rw * 2, u * 0.12); g.fillRect(cx - rw, Y(fl) - rh, rw * 2, u * 0.12);
-      g.fillStyle = C.mix(0.12); g.fillRect(cx - tw(fl + 1), Y(fl) - rh + u * 0.12, tw(fl + 1) * 2, rh - u * 0.22); // 방을 뚫고 지나는 줄기
-      // 슬루잉 너트 (바닥 아래)
+      g.fillStyle = C.mix(0.12); g.fillRect(cx - tw(fl + 1), Y(fl) - rh + u * 0.12, tw(fl + 1) * 2, rh - u * 0.22);
       g.fillStyle = C.mix(0.85); g.fillRect(cx - sw * 1.25, Y(fl), sw * 2.5, u * 0.16);
-      // 고정 핀: 멈추면 빨간 핀이 쏙 들어가요
-      const pin = moving ? 0 : Math.min(1, (t % per) / 0.35);
+      const pin = moving ? 0 : Math.min(1, settled / 0.35);
       g.fillStyle = C.red(0.25 + 0.75 * pin); g.fillRect(cx + sw * 1.25 - u * 0.45 * pin, Y(fl) + u * 0.02, u * 0.45, u * 0.1);
-      // 드릴 회전 표시 (움직이는 동안 원이 돌아요)
-      const dx = cx - rw - u * 0.55, dy = Y(fl) - u * 0.5, ang = lv / 340 * Math.PI * 2 * 200;
+      const dx = cx - rw - u * 0.55, dy = Y(fl) - u * 0.5, ang = (lv / 340) * Math.PI * 2 * 200;
       g.strokeStyle = moving ? C.red(0.9) : C.mix(0.4); g.lineWidth = 1; g.beginPath(); g.arc(dx, dy, u * 0.22, 0, Math.PI * 2); g.stroke();
       g.beginPath(); g.moveTo(dx, dy); g.lineTo(dx + Math.cos(ang) * u * 0.22, dy + Math.sin(ang) * u * 0.22); g.stroke();
-      // 아래 읽기
-      const turns = Math.round(Math.abs(lv) / 340 * 200);
+      // 아래 읽기: 바퀴 수 · 걸리는 실제 시간
+      const turns = Math.round((Math.abs(lv) / 340) * 200), secs = Math.round(((Math.abs(want - lv) / 1.7) / rpm) * 60);
       g.textAlign = "left"; g.textBaseline = "alphabetic"; g.font = font(C.xs); g.fillStyle = C.mix(0.55);
       g.fillText("drill turns", W * 0.02, H * 0.97); g.font = font(C.xs, 600); g.fillStyle = C.mix(0.95); g.fillText(`${turns} / 600`, W * 0.02 + C.xs * 6, H * 0.97);
-      g.font = font(C.xs); g.fillStyle = C.mix(0.55); g.fillText(moving ? "moving · worm self-locks if the drill stops" : "held · lock pin in", W * 0.02 + C.xs * 13, H * 0.97);
+      g.font = font(C.xs); g.fillStyle = C.mix(0.55);
+      g.fillText(moving ? `moving · ${secs} s left at ${rpm} rpm · worm self-locks if the drill stops` : "held · lock pin in", W * 0.02 + C.xs * 13, H * 0.97);
     });
+    mark();
   };
 
   // ── 핀 #23 Room to Grow: 20년 동안 자작나무가 굵어지고, 해마다 가을이면 잭 8개가 2 mm씩 물러나요 (평면 1:20)
