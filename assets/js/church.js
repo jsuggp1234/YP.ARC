@@ -705,6 +705,46 @@
     });
   };
 
-  const KIND = { louver, clock, plan, steps, plant, transect, stops, grow, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
+  // ── 열두 마운드 (RE:TIDE, 핀 #81): 바닷물이 차오르면 바깥 등고선부터 잠겨 마운드가 섬이 되고,
+  // 물이 오를 때 파빌리온·전망대가 하나씩 마운드에서 들려 분해돼요(물이 빠지면 차례로 내려앉음). 높이 지도는 원본 등고선을 겹쳐 만든 것.
+  const mounds = (el) => {
+    const D = "assets/img/re-tide/", ld = (n) => { const i = new Image(); i.src = D + n; i.onload = () => k && k(); return i; };
+    const land = ld("mounds-land.jpg"), pav = ld("mounds-pav.png"), ex = ld("mounds-explode.png"), hm = ld("mounds-height.png");
+    // 파빌리온 여섯 채 [x0, y0, x1, y1] (그림 비율 0–1), 들리는 순서
+    const P = [[0.125, 0.1, 0.345, 0.5], [0.43, 0.255, 0.64, 0.645], [0.7, 0.005, 0.9, 0.38], [0.46, 0.025, 0.575, 0.276], [0.12, 0.452, 0.192, 0.7], [0.795, 0.465, 0.875, 0.76]];
+    let hd = null, mk = null, mg = null, lastL = -1, k = null;
+    const build = () => { if (hd || !hm.complete || !hm.naturalWidth) return; const c = document.createElement("canvas"); c.width = hm.naturalWidth; c.height = hm.naturalHeight; const x = c.getContext("2d"); x.drawImage(hm, 0, 0); hd = x.getImageData(0, 0, c.width, c.height); mk = document.createElement("canvas"); mk.width = c.width; mk.height = c.height; mg = mk.getContext("2d"); };
+    const water = (L) => { // L 0(간조)–1(만조): 밝은(낮은) 땅부터 잠겨요
+      if (Math.abs(L - lastL) < 0.004) return; lastL = L; const thr = 246 - L * 205, o = mg.createImageData(mk.width, mk.height), s = hd.data, d = o.data;
+      for (let i = 0; i < s.length; i += 4) { const a = Math.max(0, Math.min(1, (s[i] - thr) / 10)); d[i] = 120; d[i + 1] = 148; d[i + 2] = 166; d[i + 3] = a * 120; }
+      mg.putImageData(o, 0, 0);
+    };
+    const { kick } = stage(el, (g, W, H, t) => {
+      build(); if (!land.complete || !hd) return true;
+      const r = land.naturalWidth / land.naturalHeight, w = Math.min(W, H * r), h = w / r, x0 = (W - w) / 2, y0 = (H - h) / 2;
+      const ph = ((t % 16) / 16), L = reduce ? 0.55 : 0.5 - 0.5 * Math.cos(ph * Math.PI * 2); // 16초에 한 번 밀물·썰물
+      g.drawImage(land, x0, y0, w, h);
+      water(L); g.save(); g.globalCompositeOperation = "multiply"; g.imageSmoothingQuality = "high"; g.drawImage(mk, x0, y0, w, h); g.restore();
+      // 파빌리온: 물이 오를수록 하나씩 들림 (0 = 마운드 위에 내려앉음, 1 = 분해되어 떠 있음)
+      const es = P.map((p, i) => sm((L - 0.12 - i * 0.1) / 0.22));
+      if (ex.complete) { g.globalAlpha = Math.max(...es) * 0.9; g.drawImage(ex, x0, y0, w, h); g.globalAlpha = 1; }
+      if (pav.complete) P.forEach(([a, b, c, d], i) => {
+        const e = reduce ? 1 : es[i], pw = pav.naturalWidth, ph2 = pav.naturalHeight, sq = 0.62 + 0.38 * e;
+        g.save(); g.translate(x0, y0 + d * h * (1 - sq) + (1 - e) * h * 0.05); g.scale(w / pw, (h / ph2) * sq);
+        // 자기 칸에서 겹치는 이웃 칸은 빼고 오려요 (이웃이 두 번 그려지지 않게)
+        g.beginPath(); g.rect(a * pw, b * ph2, (c - a) * pw, (d - b) * ph2);
+        P.forEach(([a2, b2, c2, d2], j) => { if (j !== i && (c2 - a2) * (d2 - b2) < (c - a) * (d - b) && a2 < c && c2 > a && b2 < d && d2 > b) g.rect(Math.max(a, a2) * pw, Math.max(b, b2) * ph2, (Math.min(c, c2) - Math.max(a, a2)) * pw, (Math.min(d, d2) - Math.max(b, b2)) * ph2); });
+        g.clip("evenodd"); g.globalAlpha = 0.55 + 0.45 * e; g.drawImage(pav, 0, 0); g.restore();
+      });
+      const lv = 2.43 + L * (9.24 - 2.43);
+      g.font = font(C.xs, 600); g.fillStyle = C.mix(0.85); g.textBaseline = "bottom"; g.textAlign = "left";
+      g.fillText(`Sea +${lv.toFixed(2)} m`, x0 + 8, y0 + h - 8);
+      g.font = font(C.xs); g.fillStyle = C.mix(0.5);
+      g.fillText(L > 0.55 ? "flood — the mounds become islands, the pavilions lift" : "ebb — the mounds join, the pavilions settle", x0 + 8 + g.measureText(`Sea +${lv.toFixed(2)} m`).width * 1.15 + 14, y0 + h - 8);
+    });
+    k = kick;
+  };
+
+  const KIND = { mounds, louver, clock, plan, steps, plant, transect, stops, grow, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
   window.MVSims = { mount: (el, kind) => { if (el.dataset.on) return; el.dataset.on = 1; colors(); (KIND[kind] || (() => {}))(el); } };
 })();
