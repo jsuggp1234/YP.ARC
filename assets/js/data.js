@@ -786,7 +786,7 @@ const SITE = {
     ],
     drawings: [
       {src: "assets/img/timteam-work/floor-plans.jpg", caption: "Floor plans — nine of fourteen floors, grid @ 3,500", r: 2.639},
-      {src: "assets/img/timteam-work/sections.jpg", caption: "Sections A–A′ and B–B′", r: 1.817},
+      {src: "assets/img/timteam-work/sections.jpg", caption: "Sections A–A′ through the stair core (left) and B–B′ along the arcades (right) — cut lines heavy, lines beyond light", r: 1.376, tags: [[2.66,7.06,"RF +61,000","","lv"],[2.66,11.93,"14F +57,000","","lv"],[2.66,16.8,"13F +53,000","","lv"],[2.66,21.67,"12F +49,000","","lv"],[2.66,26.54,"11F +45,000","","lv"],[2.66,31.41,"10F +41,000","","lv"],[2.66,36.28,"9F +37,000","","lv"],[2.66,41.15,"8F +33,000","","lv"],[2.66,46.02,"7F +29,000","","lv"],[2.66,50.89,"6F +25,000","","lv"],[2.66,55.76,"5F +21,000","","lv"],[2.66,60.63,"4F +17,000","","lv"],[2.66,67.94,"3F +11,000","","lv"],[2.66,74.59,"2F +5,500","","lv"],[2.66,81.49,"GL ±0","","lv"],[2.66,87.99,"B1 −4,800","","lv"],[2.66,93.42,"B2 −9,300","","lv"]]},
     ],
   },
   {

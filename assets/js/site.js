@@ -3584,7 +3584,7 @@
           <section class="dwg" id="sd" data-toc="Drawing set">
             <div class="dwg-hd wrap mono"><span>Drawings <span class="mid num">(${pad(p.drawings.length)})</span></span><span class="mid">Scroll →</span></div>
             <div class="dwg-vp wrap"><div class="dwg-track">${p.drawings.map((d, di) => `
-              <figure${d.r ? ` class="r" style="--r:${d.r}"` : ""}><div class="media">${mz(art(d.src, d.kind, `${p.slug}-d${di}`, 1500, 1000, p.mass, d.caption))}</div>
+              <figure${d.r ? ` class="r" style="--r:${d.r}"` : ""}><div class="media">${mz(art(d.src, d.kind, `${p.slug}-d${di}`, 1500, 1000, p.mass, d.caption))}${d.tags ? d.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>
               <figcaption class="figcap mono"><span>Dwg. ${pad(di + 1)}</span><span>${esc(capOf(d))}</span></figcaption></figure>`).join("")}
             </div></div>
           </section>` : ""}
