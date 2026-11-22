@@ -2126,3 +2126,10 @@ html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
 .media .ftag.pt { width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-size: var(--t-xs); line-height: 1; font-variant-numeric: tabular-nums; }
 .media .ftag.lv { background: var(--bg); padding: 1px 4px; font-variant-numeric: tabular-nums; }
 @media (max-width: 760px) { .media .ftag.pt { width: 14px; height: 14px; font-size: 8px; } .media .ftag.lv { font-size: 8px; } }
+
+/* 핀 #44: 조인트 카드 아래 번호 목록 (그림 속 번호와 같은 번호) */
+.kj-nt { margin-top: 10px; font-size: var(--t-xs); }
+.kj-nt b { display: block; font-size: var(--t-s); font-weight: 600; margin-bottom: 6px; }
+.kj-nt ol { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 16px; }
+.kj-nt li { display: flex; gap: 8px; break-inside: avoid; line-height: 1.5; color: var(--mid); }
+.kj-nt li .num { color: var(--ink); min-width: 1.4em; }
