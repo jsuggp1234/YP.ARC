@@ -1966,3 +1966,25 @@ html.cs-grid .cs { cursor: default; }
 /* 카드는 벽에 붙인 도면 시트처럼 아주 얕은 그림자 */
 .st-mn .mn-card { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 18px 40px -22px rgba(0, 0, 0, 0.35); }
 .st-mn .mn-card.solid { box-shadow: none; }
+
+/* 첫 화면 심플 (2026-11-22): 카드 = 고운 회반죽 결 + 위에서 오는 옅은 빛, 가는 글자 하나를 살짝 눌러 새긴 듯, 이름은 아주 작게 */
+.st-mn .mn-card { background-color: var(--bg); background-image: linear-gradient(165deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.025)), var(--plas, none); background-size: auto, 256px 256px; }
+:root[data-mode="dark"] .st-mn .mn-card { background-image: linear-gradient(165deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.2)), var(--plas, none); }
+.st-l { position: absolute; left: var(--g4-e); top: var(--g4-e); width: calc(var(--g4-col) * 1.25); height: calc(100% - 2 * var(--g4-e)); display: flex; align-items: center; justify-content: center; pointer-events: none; transition: opacity 0.4s var(--ease); }
+@media (max-width: 760px) { .st-l { width: calc(100vw - 2 * var(--g4-e)); } }
+.st-l svg { width: 72%; height: auto; overflow: visible; }
+.st-l text { font-family: var(--sans); font-weight: 200; font-size: 118px; letter-spacing: 0; }
+.st-gt { fill: var(--mid); fill-opacity: 0.55; transition: fill 0.8s var(--ease), fill-opacity 0.8s var(--ease); }
+.st-gh { fill: #fff; fill-opacity: 0.9; } /* 아래·오른쪽 밝은 테 → 눌러 새긴 느낌 */
+:root[data-mode="dark"] .st-gh { fill: #fff; fill-opacity: 0.06; }
+.st-mn .mn-card:hover .st-gt, .st-mn .mn-card:focus-visible .st-gt { fill: var(--ink); fill-opacity: 0.85; }
+.st-nm { position: absolute; bottom: 30%; right: 16%; font-size: var(--t-xs); letter-spacing: 0.01em; color: var(--ink); }
+.st-lf .st-nm { right: auto; left: 16%; }
+.st-mn .mn-card.solid .st-l { opacity: 0; }
+html.hi-on .st-l { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .st-gt { transition: none; } }
+/* 글자는 가는 윤곽선만 (얇은 굵기 글꼴이 없는 컴퓨터에서도 같은 느낌) — 올리면 아주 옅게 채워져요 */
+.st-l text { font-weight: 400; }
+.st-gh { display: none; }
+.st-gt { fill: var(--ink); fill-opacity: 0; stroke: var(--ink); stroke-opacity: 0.55; stroke-width: 1px; vector-effect: non-scaling-stroke; transition: fill-opacity 0.9s var(--ease), stroke-opacity 0.9s var(--ease); }
+.st-mn .mn-card:hover .st-gt, .st-mn .mn-card:focus-visible .st-gt { fill: var(--ink); fill-opacity: 0.06; stroke-opacity: 0.9; }

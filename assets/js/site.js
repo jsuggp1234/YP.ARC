@@ -908,7 +908,15 @@
     // 들어올 때: 카드가 오른쪽에서 차례로 미끄러져 들어와요 (메뉴 열림과 같은 움직임)
     if (!REDUCED) cards.forEach((c, i) => c.animate([{ translate: "160px 0", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1000, delay: 200 + i * 110, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
     stConcrete(m);
-    $$(".mn-art", m).forEach((cv, i) => stArt(cv.closest(".mn-card"), cv, cv.dataset.g, REDUCED ? 0 : 700 + i * 160));
+    // 2026-11-22 "훨씬 심플하게": 네모 모듈 모션아트(stArt)는 쓰지 않아요 — 캔버스를 지우고 가는 글자 하나 + 작은 이름만
+    $$(".mn-card", m).forEach((c, i) => {
+      const pg = ST[+c.dataset.i] || {}, cv = $(".mn-art", c); if (cv) cv.remove();
+      if (!pg.glyph) return;
+      const L = D.createElement("div"); L.className = "st-l" + (i % 2 ? " st-lf" : ""); L.setAttribute("aria-hidden", "true");
+      L.innerHTML = `<svg viewBox="0 0 100 120" preserveAspectRatio="xMidYMid meet"><text class="st-gh" x="50.5" y="101" text-anchor="middle">${esc(pg.glyph)}</text><text class="st-gt" x="50" y="100" text-anchor="middle">${esc(pg.glyph)}</text></svg><span class="st-nm">${esc(pg.title || "")}</span>`;
+      c.appendChild(L);
+    });
+    stPlaster(m);
     m.addEventListener("pointerover", (e) => { const c = e.target.closest(".mn-card"); const i = c ? +c.dataset.i : -1; if (i !== hov && !busy) { hov = i; place(); } });
     m.addEventListener("pointerleave", () => { hov = -1; if (!busy) place(); });
     m.addEventListener("wheel", (e) => { e.preventDefault(); if (busy) return; const [lo, hi] = range(mnGeo()); off = clamp(off - (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY), lo, hi); place(); }, { passive: false });
@@ -1052,6 +1060,17 @@
     addEventListener("resize", size); D.addEventListener("visibilitychange", paint); D.addEventListener("yp:theme", paint);
     size(); paint();
   }
+  // ---------- 첫 화면 카드 재질: 고운 회반죽 결 (2026-11-22) ----------
+  // 작은 타일(256px)에 아주 옅은 입자와 결을 그려 카드 바탕에 반복해 깔아요(--plas). 무채색만
+  function stPlaster(m) {
+    const N = 256, c = D.createElement("canvas"); c.width = c.height = N; const g = c.getContext("2d"), id = g.createImageData(N, N), d = id.data;
+    let seed = 11; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+    for (let i = 0; i < d.length; i += 4) { const v = rnd() < 0.5 ? 0 : 255; d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = Math.round(rnd() * 9); }
+    g.putImageData(id, 0, 0);
+    for (let k = 0; k < 40; k++) { const x = rnd() * N, y = rnd() * N, w = 20 + rnd() * 70; g.strokeStyle = "rgba(0,0,0," + (0.008 + rnd() * 0.012) + ")"; g.lineWidth = 0.6; g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + w / 2, y + (rnd() - 0.5) * 8, x + w, y + (rnd() - 0.5) * 4); g.stroke(); } // 흙손 자국
+    m.style.setProperty("--plas", "url(" + c.toDataURL("image/png") + ")");
+  }
+
   // ---------- 첫 화면 바탕: 노출콘크리트 (2026-11-22) ----------
   // 거푸집 한 판(1800×900을 화면에 맞춘 크기)마다 줄눈 · 폼타이 구멍 6개 · 판마다 조금 다른 농도, 그 위에 큰 얼룩과 고운 입자, 작은 기포.
   // 무채색만 써요. 다크 모드면 어두운 콘크리트로 다시 그려요. 결과는 그림 한 장(--conc)으로 바탕에 깔려요.
