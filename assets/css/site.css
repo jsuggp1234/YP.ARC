@@ -2251,3 +2251,7 @@ html.cg-open { overflow: hidden; }
   .ld-svg, .ld-dot, .ld-lb { display: none; }
   .media .ftag.ld-alt { display: grid; }
 }
+
+/* 핀 #90: 지시선 그림의 번호 목록은 휴대폰에서만 (데스크톱은 오른쪽 이름표) */
+.fnotes.ld-m { display: none; }
+@media (max-width: 760px) { .fnotes.ld-m { display: grid; } }
