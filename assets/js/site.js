@@ -3624,7 +3624,14 @@
         if (lds) {
           // 지시선은 위계 순서로 하나씩: 처음 한 칸은 엑소노만
           const v = Math.max(0, Math.min(M, Math.floor(t * (M + 2)) - 1));
-          if (v !== vis) { vis = v; lds.forEach((g) => g.forEach((e, j) => e.classList.toggle("on", rank[j] < v))); }
+          if (v !== vis) { vis = v; lds.forEach((g) => g.forEach((e, j) => e.classList.toggle("on", rank[j] < v)));
+            if (innerWidth <= 760) { // 핀 #73: 모바일에선 글자가 겹치면 덜 중요한(나중에 나온) 이름표와 그 지시선을 숨겨요
+              const keep = { l: [], r: [] }, lb = lds[2];
+              lb.map((e, j) => j).filter((j) => rank[j] < v).sort((p, q2) => (q.L[q2][5] ? 1 : 0) - (q.L[p][5] ? 1 : 0) || rank[p] - rank[q2]).forEach((j) => {
+                const e = lb[j], c = e.offsetTop, h = e.offsetHeight / 2 + 1, side = keep[q.L[j][0]] || keep.r;
+                if (side.some(([c2, h2]) => Math.abs(c - c2) < h + h2)) lds.forEach((g) => g[j].classList.remove("on")); else side.push([c, h]);
+              });
+            } }
           show(v ? q.L[ord[v - 1]][4] : 0);
         } else show(Math.min(N - 1, Math.floor(t * N)));
       };
@@ -3871,10 +3878,7 @@
             <p class="ab-p">${esc(CV.intro)}</p>
             <h2 class="ab-lab">${esc(AB.toolkitTitle || "Toolkit")}</h2>
             <p class="ab-p">${CV.skills.map(([t]) => esc(t)).join(", ")}</p>
-          </div>
-        </section>
-
-        <section class="ab-cv g4">
+            <section class="ab-cv"> <!-- 핀 #76: Profile/CV를 사진 옆 칸 안으로 넣어 사진이 끝까지 따라와요 -->
           <h2 class="ab-lab">${esc(AB.cvTitle || "Profile")}</h2>
           <div class="txt ab-cvb">
             <dl class="facts mono">
@@ -3893,6 +3897,8 @@
             ${sec("Course", CV.courses)}
             ${sec("Design Studio", CV.studios)}
             ${sec("Military", CV.military)}
+            </div>
+            </section>
           </div>
         </section>
       </div>`;

@@ -578,7 +578,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .seq-lb.r { left: 77%; transform: translate(-8px, -50%); }
 .seq-lb.pgm { color: var(--ink); font-weight: 600; }
 .seq-lb.on { opacity: 1; transform: translate(0, -50%); transition-delay: .35s; }
-@media (max-width: 760px) { .seq-lead .seq-pin { grid-template-columns: 1fr; } .seq-lead .seq-stage { width: min(100%, calc((100vh - 200px) * var(--r))); } .seq-lead .seq-pin { overflow: hidden; } .seq-lb { font-size: 7px; letter-spacing: 0; white-space: normal; max-width: 23%; } }
+@media (max-width: 760px) { .seq-lead .seq-pin { grid-template-columns: 1fr; } .seq-lead .seq-stage { width: min(100%, calc((100vh - 200px) * var(--r))); } .seq-lead .seq-pin { overflow: hidden; } .seq-lb { font-size: 7px; letter-spacing: 0; white-space: normal; max-width: 23%; line-height: 1.1; } }
 @media (prefers-reduced-motion: reduce) { .seq-frames .seq-stage img, .seq-wipe .seq-top, .seq-ln, .seq-dt, .seq-lb { transition: none; } }
 /* 연한 선 그림 */
 .figs .media.lite img { opacity: .72; } /* 선만 연하게, 흰 배경은 그대로 (핀 #134) */
@@ -2197,3 +2197,25 @@ html.cg-open { overflow: hidden; }
   .cg-sun input { width: 110px; } .yi-play { bottom: 96px; }
 }
 @media (prefers-reduced-motion: reduce) { .cg, .cg.on, .cg-win { transition: none; } }
+
+/* ---------- 핀 정리 2026-11-22 저녁 ---------- */
+/* #77 메뉴 카드 큰 이름은 대문자 */
+.mn-t { text-transform: uppercase; }
+/* #76 yeop 프로필 사진은 스크롤해도 화면에 붙어 따라와요 (그 단락이 끝날 때까지) */
+@media (min-width: 761px) { .ab-me .ab-pic { position: sticky; top: calc(var(--hdr, 64px) + 24px); align-self: start; } }
+/* #84 시뮬레이션 시계 그림은 빼고 숫자만 */
+.sim-clk svg { display: none; }
+/* #70 next case 사진 크게 (모든 작품) */
+.cx-nm { width: 78%; }
+@media (max-width: 760px) { .cx-nm { width: 56%; } }
+/* #71 작품 프롤로그 문장 작게 (모든 작품) */
+.cx-big { font-size: var(--t-l); line-height: 1.4; letter-spacing: -0.01em; max-width: 34em; }
+/* #74 모바일: 고정된 키 그림 위 틈(상단바 뒤)으로 지나가는 그림이 비쳐 보이지 않게, 키 그림 바탕을 화면 맨 위까지 올려 덮어요 */
+@media (max-width: 760px) {
+  .kj-key { top: 0; padding-top: 56px; }
+  .kj-key::before { content: ""; position: absolute; left: calc(-1 * var(--g4-e, 8px)); right: calc(-1 * var(--g4-e, 8px)); top: 0; bottom: 0; background: var(--bg); z-index: -1; }
+}
+.ab3 .ab-me .ab-cv { display: block; margin-top: clamp(96px, 14vh, 160px); }
+.ab3 .ab-me .ab-cv > .ab-lab { margin-top: 0; }
+.ab3 .ab-me .ab-col { max-width: none; }
+.ab3 .ab-me .ab-col > .ab-p { max-width: 34em; }
