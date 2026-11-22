@@ -2501,6 +2501,16 @@
   };
   // 핀 #4(2026-11-22): 장면 넘김 그림 위를 달리는 빨간 네모. 단계마다 한 구간씩 — 직선 → 램프 → 원 한 바퀴.
   // 좌표는 그림(2000×691 비율) 기준. 원은 반시계 방향(그림의 화살표 방향)으로 한 바퀴 돌고 들어온 자리에서 멈춰요.
+  // 핀 #19(2026-11-22): 그림 칸마다 힘이 흐르는 길(흐르는 방향으로 그림). 좌표는 그림 2000×754 기준
+  const FLOW_PATHS = {
+    bridge: { vb: "0 0 2000 754", cols: [
+      ["M145 425 L145 620", "M322 425 L322 592"],
+      ["M749 525 L660 524", "M749 525 L838 527"],
+      [1200, 1220, 1240, 1260, 1280, 1300, 1320, 1338].map((x) => `M${x} 527 L${x} 500`),
+      ["M1767 500 L1700 500 Q1687 500 1687 488 L1687 427", "M1767 500 L1835 500 Q1847 500 1847 488 L1847 427", "M1767 556 L1700 556 Q1687 556 1687 568 L1687 617", "M1767 556 L1835 556 Q1847 556 1847 568 L1847 595"],
+    ] },
+  };
+  const flowSvg = (k) => { const f = FLOW_PATHS[k]; if (!f) return ""; return `<svg class="flow-ov" viewBox="${f.vb}" preserveAspectRatio="none" aria-hidden="true">${f.cols.map((ps, j) => `<g class="fl-c" data-j="${j}">${ps.map((p) => `<path class="fl-p" d="${p}" pathLength="1"/>`).join("")}</g>`).join("")}</svg>`; };
   const CAR_PATHS = {
     strategy: {
       vb: "0 0 2000 691",
@@ -2577,6 +2587,15 @@
       const r = m.getBoundingClientRect(), vh = innerHeight, cs = $$(".rv-c", m), n = cs.length;
       const t = clamp((vh * 0.88 - r.top) / (vh * 0.5), 0, 1);
       cs.forEach((c, j) => { const u = clamp(t * n - j, 0, 1); c.style.clipPath = `inset(${(u * 100).toFixed(1)}% 0 0 0)`; });
+      $$(".fl-c", m).forEach((g, j) => { const v = clamp((t * n - j - 0.35) / 0.65, 0, 1); $$(".fl-p", g).forEach((p) => (p.style.strokeDashoffset = (1 - v).toFixed(3))); g.classList.toggle("live", v >= 1); });
+    });
+    // 흐르는 점: 길마다 세 개, 2.4초에 한 번 끝까지
+    $$(".flow-ov").forEach((sv) => {
+      const NS = "http://www.w3.org/2000/svg", dots = [];
+      $$(".fl-p", sv).forEach((p) => { const L = p.getTotalLength(), g = p.parentNode; for (let k = 0; k < 3; k++) { const c = document.createElementNS(NS, "circle"); c.setAttribute("r", 6); c.setAttribute("class", "fl-d"); g.appendChild(c); dots.push([c, p, L, k / 3]); } });
+      let raf = 0, live = false;
+      const loop = (now) => { raf = 0; const tt = now / 2400; dots.forEach(([c, p, L, o]) => { const q = (tt + o) % 1, pt = p.getPointAtLength(q * L); c.setAttribute("cx", pt.x.toFixed(1)); c.setAttribute("cy", pt.y.toFixed(1)); c.style.opacity = Math.min(1, q * 6, (1 - q) * 6).toFixed(2); }); if (live) raf = requestAnimationFrame(loop); };
+      new IntersectionObserver(([e]) => { live = e.isIntersecting; if (live && !raf) raf = requestAnimationFrame(loop); }).observe(sv);
     });
     addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
   };
@@ -2717,7 +2736,7 @@
       const hs = $(".hud-s"), hn = $(".hud-n"); if (hs) hs.textContent = "A-1" + pad(i + 1); if (hn) hn.textContent = p.title; // 작품을 넘겨도 아래 표시가 따라오게
       let fig = 1;
       const figure = (im, seed, w, h) => `
-        <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}><div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.w ? `;width:${im.w}` : ""}"` : ""}>${im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.sun ? `<svg class="sun-ov" viewBox="0 0 2000 459" preserveAspectRatio="none" aria-hidden="true"><path class="sun-tr"/><rect class="sun-col" y="40" width="82" height="380"/><line class="sun-h"/><circle class="sun-dot" r="9"/></svg><span class="sun-lb"></span>` : ""}${im.reveal ? Array.from({ length: im.reveal }, (_, j) => `<i class="rv-c" style="--j:${j};--n:${im.reveal}" aria-hidden="true"></i>`).join("") : ""}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>
+        <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}><div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.w ? `;width:${im.w}` : ""}"` : ""}>${im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.flow ? flowSvg(im.flow) : ""}${im.sun ? `<svg class="sun-ov" viewBox="0 0 2000 459" preserveAspectRatio="none" aria-hidden="true"><path class="sun-tr"/><rect class="sun-col" y="40" width="82" height="380"/><line class="sun-h"/><circle class="sun-dot" r="9"/></svg><span class="sun-lb"></span>` : ""}${im.reveal ? Array.from({ length: im.reveal }, (_, j) => `<i class="rv-c" style="--j:${j};--n:${im.reveal}" aria-hidden="true"></i>`).join("") : ""}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>
         ${im.notes ? `<ol class="fnotes" style="--n:${im.notes.length}${im.w ? `;width:${im.w}` : ""}">${im.notes.map(([n, t, d]) => `<li><b><span class="mid num">${esc(n)}</span> ${esc(t)}</b>${d ? `<span class="mid">${esc(d)}</span>` : ""}</li>`).join("")}</ol>` : ""}
         <figcaption class="figcap mono"><span>${esc(capOf(im))}</span></figcaption></figure>`;
       const facts = [["Year", p.year], ["Studio", p.studio], ["Award", p.award !== "A+" && p.award], ["Type", p.type], ["Program", p.program], ["Site", p.site], ["Area", p.area], ["Team", p.team], ["Tools", p.tools]].filter((f) => f[1]);

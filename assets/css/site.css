@@ -1768,3 +1768,19 @@ html.ct-lock .ct a, html.ct-lock .ct button, html.ct-lock .ct [data-ct-close], h
 .hdr.g4 { font-family: "Helvetica Now Variable", "Helvetica Now Text", "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 400; letter-spacing: 0; }
 .hdr.g4 .hdr-n { flex-direction: row; align-items: flex-start; gap: 0 20px; }
 @media (max-width: 760px) { .hdr.g4 .hdr-n { gap: 0 10px; flex-wrap: wrap; } }
+
+/* 핀 #19(2026-11-22): 현수교 힘의 흐름 (빨간 길 + 흐르는 점) */
+.flow-ov { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; overflow: visible; }
+.flow-ov .fl-p { fill: none; stroke: #c0353a; stroke-width: 2.6; stroke-linecap: round; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.flow-ov .fl-d { fill: #c0353a; opacity: 0; }
+.flow-ov .fl-c:not(.live) .fl-d { display: none; }
+@media (prefers-reduced-motion: reduce) { .flow-ov .fl-p { stroke-dashoffset: 0 !important; } .flow-ov .fl-d { display: none; } }
+/* 핀 #18: Seasons — 사진은 크게(섹션 전체 폭), 장소 목록은 아래쪽에 */
+.cx-body .pj-sec:has(.ssn) { --bx: 0%; --bw: 100%; }
+@media (min-width: 761px) {
+  .ssn-pin { top: 64px; height: calc(100vh - 84px); grid-template-columns: minmax(0, 3.3fr) minmax(0, 1fr); gap: 24px; align-items: end; }
+  .ssn-stage { width: min(100%, calc((100vh - 110px) * 1.778)); align-self: center; justify-self: start; }
+  .ssn-side { align-self: end; padding-bottom: 2vh; }
+}
+/* 핀 #21: Six Joints 다크 모드 — 그림 바탕이 페이지 배경(#0d0d0d)과 똑같이 */
+:root[data-mode="dark"] .kj-it img, :root[data-mode="dark"] .kj-key img { filter: invert(.95) hue-rotate(180deg); }

@@ -2104,9 +2104,10 @@ const SITE = {
         images: [
           {
             src: "assets/img/campus-renovation/structure-bridge.jpg",
-            caption: "Main tower · Slab · Cable · Suspension",
+            caption: "Main tower · Slab · Cable · Suspension — the load runs from the deck up the cables, along the truss and down the towers",
             r: 2.652,
-            reveal: 4
+            reveal: 4,
+            flow: "bridge"
           }
         ]
       },
@@ -2155,13 +2156,8 @@ const SITE = {
       {
         heading: "Media Facade",
         text: "Wider, more frequent windows bring more light than the existing facade. The louvers carry a media BIPV layer that generates solar power, and their angle changes how much sunlight the facade lets through.",
-        images: [
-          {
-            src: "assets/img/campus-renovation/facade.jpg",
-            caption: "Window width and spacing · Media facade or BIPV · Permeability of the variable facade",
-            r: 2.477
-          }
-        ]
+        images: [],
+        seq: {"kind":"frames","r":1.1,"lite":true,"fade":true,"below":true,"k":0.75,"steps":[{"src":"assets/img/campus-renovation/facade-1.jpg","t":"Window width and spacing","s":"wider, more frequent openings","d":"The existing brick wall has small windows set far apart. Widening them and adding a louver bay between each pair brings more daylight deep into the rooms than the old facade allows."},{"src":"assets/img/campus-renovation/facade-2.jpg","t":"Media BIPV louver","s":"glass · media BIPV · steel · steel · pipe","d":"Each louver is a layered panel. Behind the outer glass sits a media BIPV sheet that makes solar power by day and shows images at night, held by two steel plates on a pipe."},{"src":"assets/img/campus-renovation/facade-3.jpg","t":"Variable permeability","s":"the louver angle sets the light","d":"Turned open, the louvers let the low sun reach the floor inside; turned flat, they throw it back out and shade the room. The same facade lets more or less sunlight through."}]}
       }
     ],
     drawings: [
@@ -2514,17 +2510,6 @@ const SITE = {
             "src": "assets/img/the-tree-house/plan-states.jpg",
             "caption": "One plan, four states — closed, terrace, terrace and landing, bridge",
             "r": 1.151
-          }
-        ]
-      },
-      {
-        "heading": "The Distance Chooses the Join",
-        "text": "Below 5.4 m two rooms would touch; above 7.2 m the carriage cannot reach. Inside that band there is a join for every distance — terrace, bridge, ramp or stair — and each tree gets its own bolt height. Six hosts out of 191 stems; nothing felled, nothing cut.",
-        "images": [
-          {
-            "src": "assets/img/the-tree-house/grove-host-join.jpg",
-            "caption": "The host · the distance chooses the join · the grove kept",
-            "r": 3.233
           }
         ]
       },

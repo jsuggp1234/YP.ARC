@@ -1,1 +1,162 @@
 /* 이 파일은 피드백 페이지의 "디자인 조정"이 자동으로 만들어요. 직접 고치지 말고 tune.json이나 피드백 페이지에서 바꿔요. */
+
+/* home · img “Modular O′ housing” */
+body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(4) > div.media > div.mz > img {
+  scale: 0.92 !important;
+  object-position: 51.5% 50% !important;
+}
+/* home · media */
+body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media {
+  overflow: hidden !important;
+}
+/* home · img “Campus Renovation J′” */
+body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media > div.mz > img {
+  scale: 0.57 !important;
+}
+/* home · img “RE:TIDE” */
+body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(1) > div.media > div.mz > img {
+  object-fit: cover !important;
+}
+/* home · cs-ix “INDEX OF WORKS (09)” */
+body[data-page="home"] #cases > a.cs-ix.lnk {
+  width: 7.5% !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  margin-left: 16% !important;
+  border-radius: 0px !important;
+  margin-top: -140px !important;
+}
+/* project#campus-renovation · cx-big “On SKKU's natural science ca” */
+html[data-slug="campus-renovation"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > div.cx-lead:nth-of-type(2) > p.cx-big {
+  font-size: 16px !important;
+  max-width: 60.5em !important;
+  line-height: 1.61 !important;
+  height: 12svh !important;
+  margin-top: -102px !important;
+}
+/* project#campus-renovation · cx-l “Campus Renovation J′ 성균관대 자연” */
+html[data-slug="campus-renovation"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > div.cx-l:nth-of-type(1) {
+  font-size: 7px !important;
+}
+/* project#campus-renovation · dg “Pedestrian-friendly · Centra” */
+html[data-slug="campus-renovation"] body[data-page="project"] #s2 > div.figs.n1:nth-of-type(2) > figure > div.media > div.mz > img.dg {
+  scale: 0.82 !important;
+  object-position: 49.5% 50% !important;
+}
+/* project#campus-renovation · media */
+html[data-slug="campus-renovation"] body[data-page="project"] #s2 > div.figs.n1:nth-of-type(2) > figure > div.media {
+  overflow: hidden !important;
+  margin-left: 37% !important;
+}
+/* project#campus-renovation · span “Pedestrian-friendly · Centra” */
+html[data-slug="campus-renovation"] body[data-page="project"] #s2 > div.figs.n1:nth-of-type(2) > figure > figcaption.figcap.mono > span {
+  margin-left: 77.5% !important;
+}
+/* project#the-tree-house · num “02.” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s2 > div.hd:nth-of-type(1) > span.num {
+  margin-top: -300px !important;
+}
+/* project#the-tree-house · h2 “FOUR JOINTS” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s2 > div.hd:nth-of-type(1) > h2 {
+  margin-top: -164px !important;
+}
+/* project#the-tree-house · txt “Hang, climb, hinge, slide. T” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s2 > p.txt {
+  margin-top: -168px !important;
+}
+/* project#the-tree-house · media */
+html[data-slug="the-tree-house"] body[data-page="project"] #s2 > div.figs.n1:nth-of-type(2) > figure > div.media {
+  margin-left: -13% !important;
+  margin-top: -130px !important;
+}
+/* project#the-tree-house · mid “06 Docking latch — Key — sou” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s4 > div.kj:nth-of-type(2) > div.kj-key:nth-of-type(2) > figure > figcaption.mid {
+  margin-left: 7% !important;
+}
+/* project#the-tree-house · dg “One plan, four states — clos” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s5 > div.figs.gc:nth-of-type(2) > figure:nth-of-type(2) > div.media > div.mz > img.dg {
+  scale: 1.01 !important;
+}
+/* project#the-tree-house · media */
+html[data-slug="the-tree-house"] body[data-page="project"] #s5 > div.figs.gc:nth-of-type(2) > figure:nth-of-type(2) > div.media {
+  overflow: hidden !important;
+  width: 60% !important;
+  margin-left: 32.5% !important;
+}
+/* project#the-tree-house · h2 “DETAILED PLAN” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s5 > div.hd:nth-of-type(1) > h2 {
+  margin-left: -0.5% !important;
+}
+/* project#the-tree-house · num “05.” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s5 > div.hd:nth-of-type(1) > span.num {
+  margin-left: 9.5% !important;
+}
+/* project#the-tree-house · txt “Every wall is a leaf, so the” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s5 > p.txt {
+  margin-left: 9.5% !important;
+}
+/* project#the-tree-house · span “One plan, four states — clos” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s5 > div.figs.gc:nth-of-type(2) > figure:nth-of-type(2) > figcaption.figcap.mono > span {
+  margin-left: 34.5% !important;
+}
+/* project#the-tree-house · media */
+html[data-slug="the-tree-house"] body[data-page="project"] #s5 > div.figs.gc:nth-of-type(2) > figure:nth-of-type(1) > div.media {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1.195 !important;
+  margin-left: 13.5% !important;
+}
+/* project#the-tree-house · span “Plan 1:25 at FL +1,100 — sou” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s5 > div.figs.gc:nth-of-type(2) > figure:nth-of-type(1) > figcaption.figcap.mono > span {
+  margin-left: 12.5% !important;
+}
+/* project#the-tree-house · media */
+html[data-slug="the-tree-house"] body[data-page="project"] #s6 > div.figs.n1:nth-of-type(2) > figure > div.media {
+  width: 100% !important;
+  overflow: hidden !important;
+}
+/* project#the-tree-house · dg “The host · the distance choo” */
+html[data-slug="the-tree-house"] body[data-page="project"] #s6 > div.figs.n1:nth-of-type(2) > figure > div.media > div.mz > img.dg {
+  scale: 0.89 !important;
+}
+/* project#re-tide · media */
+html[data-slug="re-tide"] body[data-page="project"] #s6 > div.figs.n1:nth-of-type(2) > figure > div.media {
+  width: 100% !important;
+}
+
+@media (min-width: 761px) {
+  /* home · cs-track “RE:TIDE MOTORISM TIM(TEAM) W” */
+  body[data-page="home"] #cases > div.cs-track {
+    width: 74.5% !important;
+  }
+  /* home · img “Samgakji Residential Project” */
+  body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(5) > div.media > div.mz > img {
+    scale: 0.92 !important;
+    object-position: 32.5% 50% !important;
+  }
+  /* home · img “Campus Renovation J′” */
+  body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media > div.mz > img {
+    scale: 0.92 !important;
+    object-position: 67% 50% !important;
+  }
+  /* home · media */
+  body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(9) > div.media {
+    overflow: hidden !important;
+  }
+  /* home · img “Moduleverse Church” */
+  body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(9) > div.media > div.mz > img {
+    scale: 0.91 !important;
+    object-position: 52.5% 50% !important;
+  }
+  /* home · img “Tim(team) Work” */
+  body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(3) > div.media > div.mz > img {
+    scale: 0.92 !important;
+    object-position: 50% 100% !important;
+  }
+  /* home · img “Motorism” */
+  body[data-page="home"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(2) > div.media > div.mz > img {
+    scale: 0.88 !important;
+    object-position: 25.5% 50% !important;
+  }
+}

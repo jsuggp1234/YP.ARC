@@ -1,1 +1,390 @@
-[]
+[
+  {
+    "id": "zjx3duq",
+    "page": "home",
+    "slug": "",
+    "media": "d",
+    "sel": "#cases > div.cs-track",
+    "props": {
+      "width": "74.5%"
+    },
+    "label": "home · cs-track “RE:TIDE MOTORISM TIM(TEAM) W”"
+  },
+  {
+    "id": "6qm6poa",
+    "page": "home",
+    "slug": "",
+    "media": "d",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(5) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.92",
+      "object-position": "32.5% 50%"
+    },
+    "label": "home · img “Samgakji Residential Project”"
+  },
+  {
+    "id": "9heq643",
+    "page": "home",
+    "slug": "",
+    "media": "d",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.92",
+      "object-position": "67% 50%"
+    },
+    "label": "home · img “Campus Renovation J′”"
+  },
+  {
+    "id": "7e7pk3j",
+    "page": "home",
+    "slug": "",
+    "media": "d",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(9) > div.media",
+    "props": {
+      "overflow": "hidden"
+    },
+    "label": "home · media"
+  },
+  {
+    "id": "hppj4sj",
+    "page": "home",
+    "slug": "",
+    "media": "d",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(9) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.91",
+      "object-position": "52.5% 50%"
+    },
+    "label": "home · img “Moduleverse Church”"
+  },
+  {
+    "id": "5qd8dlj",
+    "page": "home",
+    "slug": "",
+    "media": "d",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(3) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.92",
+      "object-position": "50% 100%"
+    },
+    "label": "home · img “Tim(team) Work”"
+  },
+  {
+    "id": "rb0pjwg",
+    "page": "home",
+    "slug": "",
+    "media": "d",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(2) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.88",
+      "object-position": "25.5% 50%"
+    },
+    "label": "home · img “Motorism”"
+  },
+  {
+    "id": "q1hjqj8",
+    "page": "home",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(4) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.92",
+      "object-position": "51.5% 50%"
+    },
+    "label": "home · img “Modular O′ housing”"
+  },
+  {
+    "id": "6vpct2z",
+    "page": "home",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media",
+    "props": {
+      "overflow": "hidden"
+    },
+    "label": "home · media"
+  },
+  {
+    "id": "f9ohrzk",
+    "page": "home",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(7) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.57"
+    },
+    "label": "home · img “Campus Renovation J′”"
+  },
+  {
+    "id": "g7zvq79",
+    "page": "home",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(1) > div.media > div.mz > img",
+    "props": {
+      "object-fit": "cover"
+    },
+    "label": "home · img “RE:TIDE”"
+  },
+  {
+    "id": "htryr13",
+    "page": "home",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > a.cs-ix.lnk",
+    "props": {
+      "width": "7.5%",
+      "font-size": "11px",
+      "text-transform": "uppercase",
+      "font-weight": "600",
+      "margin-left": "16%",
+      "border-radius": "0px",
+      "margin-top": "-140px"
+    },
+    "label": "home · cs-ix “INDEX OF WORKS (09)”"
+  },
+  {
+    "id": "zlq55lb",
+    "page": "project",
+    "slug": "campus-renovation",
+    "media": "all",
+    "sel": "#main > article.pg.cx > header.cx-hd.g4 > div.cx-lead:nth-of-type(2) > p.cx-big",
+    "props": {
+      "font-size": "16px",
+      "max-width": "60.5em",
+      "line-height": "1.61",
+      "height": "12svh",
+      "margin-top": "-102px"
+    },
+    "label": "project#campus-renovation · cx-big “On SKKU's natural science ca”"
+  },
+  {
+    "id": "dv349zj",
+    "page": "project",
+    "slug": "campus-renovation",
+    "media": "all",
+    "sel": "#main > article.pg.cx > header.cx-hd.g4 > div.cx-l:nth-of-type(1)",
+    "props": {
+      "font-size": "7px"
+    },
+    "label": "project#campus-renovation · cx-l “Campus Renovation J′ 성균관대 자연”"
+  },
+  {
+    "id": "xcqa7kl",
+    "page": "project",
+    "slug": "campus-renovation",
+    "media": "all",
+    "sel": "#s2 > div.figs.n1:nth-of-type(2) > figure > div.media > div.mz > img.dg",
+    "props": {
+      "scale": "0.82",
+      "object-position": "49.5% 50%"
+    },
+    "label": "project#campus-renovation · dg “Pedestrian-friendly · Centra”"
+  },
+  {
+    "id": "sqnnrou",
+    "page": "project",
+    "slug": "campus-renovation",
+    "media": "all",
+    "sel": "#s2 > div.figs.n1:nth-of-type(2) > figure > div.media",
+    "props": {
+      "overflow": "hidden",
+      "margin-left": "37%"
+    },
+    "label": "project#campus-renovation · media"
+  },
+  {
+    "id": "s2a9vqo",
+    "page": "project",
+    "slug": "campus-renovation",
+    "media": "all",
+    "sel": "#s2 > div.figs.n1:nth-of-type(2) > figure > figcaption.figcap.mono > span",
+    "props": {
+      "margin-left": "77.5%"
+    },
+    "label": "project#campus-renovation · span “Pedestrian-friendly · Centra”"
+  },
+  {
+    "id": "ifm3ou1",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s2 > div.hd:nth-of-type(1) > span.num",
+    "props": {
+      "margin-top": "-300px"
+    },
+    "label": "project#the-tree-house · num “02.”"
+  },
+  {
+    "id": "4z9s4qp",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s2 > div.hd:nth-of-type(1) > h2",
+    "props": {
+      "margin-top": "-164px"
+    },
+    "label": "project#the-tree-house · h2 “FOUR JOINTS”"
+  },
+  {
+    "id": "2qwlxng",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s2 > p.txt",
+    "props": {
+      "margin-top": "-168px"
+    },
+    "label": "project#the-tree-house · txt “Hang, climb, hinge, slide. T”"
+  },
+  {
+    "id": "jkj09fv",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s2 > div.figs.n1:nth-of-type(2) > figure > div.media",
+    "props": {
+      "margin-left": "-13%",
+      "margin-top": "-130px"
+    },
+    "label": "project#the-tree-house · media"
+  },
+  {
+    "id": "re74dhi",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s4 > div.kj:nth-of-type(2) > div.kj-key:nth-of-type(2) > figure > figcaption.mid",
+    "props": {
+      "margin-left": "7%"
+    },
+    "label": "project#the-tree-house · mid “06 Docking latch — Key — sou”"
+  },
+  {
+    "id": "io4mbop",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s5 > div.figs.gc:nth-of-type(2) > figure:nth-of-type(2) > div.media > div.mz > img.dg",
+    "props": {
+      "scale": "1.01"
+    },
+    "label": "project#the-tree-house · dg “One plan, four states — clos”"
+  },
+  {
+    "id": "ui7k4q1",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s5 > div.figs.gc:nth-of-type(2) > figure:nth-of-type(2) > div.media",
+    "props": {
+      "overflow": "hidden",
+      "width": "60%",
+      "margin-left": "32.5%"
+    },
+    "label": "project#the-tree-house · media"
+  },
+  {
+    "id": "k4wdeuh",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s5 > div.hd:nth-of-type(1) > h2",
+    "props": {
+      "margin-left": "-0.5%"
+    },
+    "label": "project#the-tree-house · h2 “DETAILED PLAN”"
+  },
+  {
+    "id": "cmbgr8n",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s5 > div.hd:nth-of-type(1) > span.num",
+    "props": {
+      "margin-left": "9.5%"
+    },
+    "label": "project#the-tree-house · num “05.”"
+  },
+  {
+    "id": "ruv5p30",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s5 > p.txt",
+    "props": {
+      "margin-left": "9.5%"
+    },
+    "label": "project#the-tree-house · txt “Every wall is a leaf, so the”"
+  },
+  {
+    "id": "9hb1nvq",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s5 > div.figs.gc:nth-of-type(2) > figure:nth-of-type(2) > figcaption.figcap.mono > span",
+    "props": {
+      "margin-left": "34.5%"
+    },
+    "label": "project#the-tree-house · span “One plan, four states — clos”"
+  },
+  {
+    "id": "2qgrwot",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s5 > div.figs.gc:nth-of-type(2) > figure:nth-of-type(1) > div.media",
+    "props": {
+      "width": "100%",
+      "height": "auto",
+      "aspect-ratio": "1.195",
+      "margin-left": "13.5%"
+    },
+    "label": "project#the-tree-house · media"
+  },
+  {
+    "id": "w6lawzr",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s5 > div.figs.gc:nth-of-type(2) > figure:nth-of-type(1) > figcaption.figcap.mono > span",
+    "props": {
+      "margin-left": "12.5%"
+    },
+    "label": "project#the-tree-house · span “Plan 1:25 at FL +1,100 — sou”"
+  },
+  {
+    "id": "7p3puzk",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s6 > div.figs.n1:nth-of-type(2) > figure > div.media",
+    "props": {
+      "width": "100%",
+      "overflow": "hidden"
+    },
+    "label": "project#the-tree-house · media"
+  },
+  {
+    "id": "46vmx91",
+    "page": "project",
+    "slug": "the-tree-house",
+    "media": "all",
+    "sel": "#s6 > div.figs.n1:nth-of-type(2) > figure > div.media > div.mz > img.dg",
+    "props": {
+      "scale": "0.89"
+    },
+    "label": "project#the-tree-house · dg “The host · the distance choo”"
+  },
+  {
+    "id": "uk93hvv",
+    "page": "project",
+    "slug": "re-tide",
+    "media": "all",
+    "sel": "#s6 > div.figs.n1:nth-of-type(2) > figure > div.media",
+    "props": {
+      "width": "100%"
+    },
+    "label": "project#re-tide · media"
+  }
+]

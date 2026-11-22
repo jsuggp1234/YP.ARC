@@ -81,7 +81,7 @@
   - 다이어그램·도면: 각 작품의 `다이어그램/`, `도면/` .ai를 일러스트레이터(PowerShell COM, `exportForScreens` → SVG, 글자는 윤곽선)로 내보내 `portfolio-source/_svg/`에 두고, `portfolio-source/_svg/crop.js`(브라우저에서 실행)로 필요한 칸만 남겨 `assets/img/<slug>/*.svg`로 저장해요. `<img>`로 쓰는 SVG는 웹폰트를 못 읽어서 글자를 윤곽선으로 내보내요.
   - 선이 너무 많아 SVG가 수 MB를 넘는 도면(예: LH 단면 A–A, 평면 4장)은 같은 벡터를 4000–7200px JPG로 직접 그려 써요.
   - RE:TIDE 다이어그램 원본(.ai "[변환됨]")은 이 컴퓨터에서 ·, ≈ 같은 기호가 €, Œ로 깨져서, 지금 사이트의 정리된 그래프를 그대로 둬요.
-- 작품 페이지 부품(`data.js` 섹션 옵션): `widget`(tide.js의 moon·loop·dial·sine·flow·orbit·zoning·skin), `seq`(장면 넘김, `fade` 제자리 교차, `k` 크기 배율), `pan`(`loop: true`면 마우스를 올리고 휠로 도는 무한 띠. `h` 높이, `solid` 불투명, `labels: [[x%, 번호, 이름, 설명], …]`로 각 그림 아래 사이트 글자 이름표. `after: true`면 그림들 뒤, `w`로 폭), `panel`(`left`/`right`가 비면 `mapp-wide`), 그림의 `reveal: N`(N칸 그림을 스크롤에 따라 왼쪽부터 한 칸씩 드러냄, 핀 #8), seq의 `car`(장면 위를 달리는 빨간 네모, `site.js`의 `CAR_PATHS`, 핀 #4), `cols`+`cw`(칸 너비 비율), `sim.sections`(평면 시뮬레이션과 같은 수위로 물선이 움직이는 단면, `ticks: [[m, 위에서부터 비율], …]`).
+- 작품 페이지 부품(`data.js` 섹션 옵션): `widget`(tide.js의 moon·loop·dial·sine·flow·orbit·zoning·skin), `seq`(장면 넘김, `fade` 제자리 교차, `k` 크기 배율), `pan`(`loop: true`면 마우스를 올리고 휠로 도는 무한 띠. `h` 높이, `solid` 불투명, `labels: [[x%, 번호, 이름, 설명], …]`로 각 그림 아래 사이트 글자 이름표. `after: true`면 그림들 뒤, `w`로 폭), `panel`(`left`/`right`가 비면 `mapp-wide`), 그림의 `reveal: N`(N칸 그림을 스크롤에 따라 왼쪽부터 한 칸씩 드러냄, 핀 #8), seq의 `car`(장면 위를 달리는 빨간 네모, `site.js`의 `CAR_PATHS`, 핀 #4), 그림의 `flow`(칸이 드러난 뒤 빨간 힘의 흐름 길과 흐르는 점, `site.js`의 `FLOW_PATHS`, 핀 #19), `cols`+`cw`(칸 너비 비율), `sim.sections`(평면 시뮬레이션과 같은 수위로 물선이 움직이는 단면, `ticks: [[m, 위에서부터 비율], …]`).
 3. 한국어 번역과 메모 문장 다듬기 (지금은 초안).
 4. 사용자 승인 후 GitHub Pages로 공개.
 
