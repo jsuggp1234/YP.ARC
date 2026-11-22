@@ -907,6 +907,7 @@
     place();
     // 들어올 때: 카드가 오른쪽에서 차례로 미끄러져 들어와요 (메뉴 열림과 같은 움직임)
     if (!REDUCED) cards.forEach((c, i) => c.animate([{ translate: "160px 0", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1000, delay: 200 + i * 110, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
+    stConcrete(m);
     $$(".mn-art", m).forEach((cv, i) => stArt(cv.closest(".mn-card"), cv, cv.dataset.g, REDUCED ? 0 : 700 + i * 160));
     m.addEventListener("pointerover", (e) => { const c = e.target.closest(".mn-card"); const i = c ? +c.dataset.i : -1; if (i !== hov && !busy) { hov = i; place(); } });
     m.addEventListener("pointerleave", () => { hov = -1; if (!busy) place(); });
@@ -1051,12 +1052,64 @@
     addEventListener("resize", size); D.addEventListener("visibilitychange", paint); D.addEventListener("yp:theme", paint);
     size(); paint();
   }
+  // ---------- 첫 화면 바탕: 노출콘크리트 (2026-11-22) ----------
+  // 거푸집 한 판(1800×900을 화면에 맞춘 크기)마다 줄눈 · 폼타이 구멍 6개 · 판마다 조금 다른 농도, 그 위에 큰 얼룩과 고운 입자, 작은 기포.
+  // 무채색만 써요. 다크 모드면 어두운 콘크리트로 다시 그려요. 결과는 그림 한 장(--conc)으로 바탕에 깔려요.
+  function stConcrete(m) {
+    let seed = 7;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+    const draw = () => {
+      seed = 7;
+      const W = Math.min(2400, Math.ceil(innerWidth)), H = Math.min(1600, Math.ceil(innerHeight)), dk = HTML.dataset.mode === "dark";
+      const c = D.createElement("canvas"); c.width = W; c.height = H; const g = c.getContext("2d");
+      const base = dk ? 30 : 226, sh = (v) => "rgb(" + v + "," + v + "," + v + ")";
+      g.fillStyle = sh(base); g.fillRect(0, 0, W, H);
+      // 거푸집 판: 폭은 화면 폭을 4.5판쯤, 높이는 폭의 절반
+      const pw = Math.max(560, Math.round(W / 1.7)), ph = Math.round(pw / 2), offY = Math.round((H % ph) / 2) - ph;
+      for (let y = offY, row = 0; y < H; y += ph, row++) for (let x = (row % 2 ? -pw / 2 : 0) - pw / 4; x < W; x += pw) { // 판마다 농도 ±
+        const k = (rnd() - 0.5) * (dk ? 6 : 7); g.fillStyle = k > 0 ? "rgba(255,255,255," + k / 255 * 2.2 + ")" : "rgba(0,0,0," + -k / 255 * 2.2 + ")"; g.fillRect(x, y, pw, ph);
+      }
+      // 큰 얼룩(물 자국 · 레이턴스)
+      for (let i = 0; i < 90; i++) {
+        const x = rnd() * W, y = rnd() * H, rr = 60 + rnd() * 300, a = 0.008 + rnd() * 0.022, dark = rnd() < 0.5;
+        const gr = g.createRadialGradient(x, y, 0, x, y, rr); gr.addColorStop(0, dark ? "rgba(0,0,0," + a + ")" : "rgba(255,255,255," + a * 1.2 + ")"); gr.addColorStop(1, "rgba(0,0,0,0)");
+        g.fillStyle = gr; g.fillRect(x - rr, y - rr, rr * 2, rr * 2);
+      }
+      // 세로 흘러내린 자국 몇 줄
+      for (let i = 0; i < 14; i++) { const x = rnd() * W, y = rnd() * H * 0.6, h = 80 + rnd() * 300, w = 2 + rnd() * 10, gr = g.createLinearGradient(0, y, 0, y + h); gr.addColorStop(0, "rgba(0,0,0," + (0.01 + rnd() * 0.018) + ")"); gr.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gr; g.fillRect(x, y, w, h); }
+      // 고운 입자 (픽셀마다 ±)
+      const id = g.getImageData(0, 0, W, H), d = id.data;
+      for (let i = 0; i < d.length; i += 4) { const n = (rnd() - 0.5) * (dk ? 7 : 9) + (rnd() < 0.002 ? -(8 + rnd() * 14) : 0); d[i] = d[i + 1] = d[i + 2] = Math.max(0, Math.min(255, d[i] + n)); }
+      g.putImageData(id, 0, 0);
+      // 기포(작은 구멍)
+      for (let i = 0; i < W * H / 9000; i++) { const x = rnd() * W, y = rnd() * H, rr = 0.5 + rnd() * 1.2; g.fillStyle = "rgba(0,0,0," + (0.08 + rnd() * 0.12) + ")"; g.beginPath(); g.arc(x, y, rr, 0, 7); g.fill(); g.fillStyle = "rgba(255,255,255,0.25)"; g.beginPath(); g.arc(x + rr * 0.5, y + rr * 0.5, rr * 0.6, 0, 7); g.fill(); }
+      // 줄눈 + 폼타이 구멍
+      for (let y = offY, row = 0; y < H + ph; y += ph, row++) {
+        g.fillStyle = "rgba(0,0,0," + (dk ? 0.3 : 0.07) + ")"; g.fillRect(0, y, W, 1); g.fillStyle = "rgba(255,255,255," + (dk ? 0.05 : 0.35) + ")"; g.fillRect(0, y + 1, W, 1);
+        for (let x = (row % 2 ? -pw / 2 : 0) - pw / 4; x < W + pw; x += pw) {
+          g.fillStyle = "rgba(0,0,0," + (dk ? 0.26 : 0.06) + ")"; g.fillRect(x, y, 1, ph); g.fillStyle = "rgba(255,255,255," + (dk ? 0.04 : 0.3) + ")"; g.fillRect(x + 1, y, 1, ph);
+          for (const fx of [1 / 4, 3 / 4]) for (const fy of [1 / 4, 3 / 4]) {
+            const cx = x + pw * fx, cy = y + ph * fy, R = Math.max(3, pw / 150);
+            const gr = g.createRadialGradient(cx - R * 0.25, cy - R * 0.25, 0, cx, cy, R * 1.6); gr.addColorStop(0, "rgba(0,0,0," + (dk ? 0.45 : 0.22) + ")"); gr.addColorStop(0.55, "rgba(0,0,0," + (dk ? 0.22 : 0.09) + ")"); gr.addColorStop(1, "rgba(0,0,0,0)");
+            g.fillStyle = gr; g.beginPath(); g.arc(cx, cy, R * 1.6, 0, 7); g.fill();
+            g.strokeStyle = "rgba(255,255,255," + (dk ? 0.06 : 0.4) + ")"; g.lineWidth = 1; g.beginPath(); g.arc(cx, cy, R * 1.05, 0.1 * Math.PI, 0.75 * Math.PI); g.stroke(); // 아래쪽 밝은 테
+          }
+        }
+      }
+      // 전체를 바탕색으로 한 겹 덮어 어렴풋하게 — "오, 노출콘크리트 같다" 정도만
+      g.globalAlpha = dk ? 0.4 : 0.55; g.fillStyle = sh(base); g.fillRect(0, 0, W, H); g.globalAlpha = 1;
+      m.style.setProperty("--conc", "url(" + c.toDataURL("image/jpeg", 0.86) + ")");
+    };
+    let tm = 0; const later = () => { clearTimeout(tm); tm = setTimeout(draw, 250); };
+    draw(); addEventListener("resize", later); D.addEventListener("yp:theme", draw);
+  }
+
   // 글자 모듈 모션아트 v3 (2026-11-22 "훨씬 디테일, 더 강렬하고 극적으로")
   //  · 모듈: 더 촘촘하게(짧은 변의 1/46). 가장자리 모듈은 테두리 선, 일부는 4조각으로 나뉘고, 농도가 모듈마다 조금씩 달라요
-  //  · 조립: 카드 밖 사방에서 모듈이 회전하며 날아와 휘어진 길로 박히고(잔상), 다 모이면 번쩍 + 충격파 + 화면 흔들림 + 블록이 툭 솟았다 가라앉아요
+  //  · 조립(2026-11-22 얌전하게): 아래 줄부터 한 켜씩, 제자리 바로 아래에서 조용히 미끄러져 올라와 앉아요. 앉은 모듈은 옅게 솟아 45° 그림자를 드리워요
   //  · 작도: 모눈 점·십자 표시, 글자 상자 작도선과 모듈 간격 눈금자가 그어져요
-  //  · 평소: 3.6초마다 사건이 돌아가요 — 훑기(띠가 지나가며 블록이 솟고 뒤집힘) → 산산조각(흩어졌다 되돌아옴) → 맥동(한 점에서 퍼지는 고리, 반전색) → 낙하(세로줄이 차례로 떨어졌다 튀어오름)
-  //  · 마우스: 강하게 밀려나며 45° 돌고 높이 솟아 옆면이 보여요. 들어온 자리에서 물결
+  //  · 평소: 6.5초마다 빛 띠 하나가 위에서 아래로 천천히 지나가며 모듈을 살짝 들어 올려요. 아주 가끔 한두 개가 천천히 뒤집혀요
+  //  · 마우스: 부드럽게 비켜서며 돌고 조금 솟아 옆면이 보여요. 들어온 자리에서 옅은 물결
   function stArt(card, cv, glyph, delay) {
     const g = cv.getContext("2d");
     let W = 0, H = 0, C = 6, mods = [], dots = [], box = [0, 0, 0, 0], mx = -1e4, my = -1e4, raf = 0, live = true, t0 = performance.now() + delay, sc = 0, rip = null, gone = false;
@@ -1082,9 +1135,9 @@
         x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y);
         const r2 = hash(i * 12.9898 + j * 78.233), ang = r2 * Math.PI * 2, far = Math.max(W, H) * (0.75 + rn * 0.7);
         mods.push({ x, y, i, j, rn, r2,
-          d: Math.hypot(x - W / 2, y - H / 2) / Math.max(W, H) * 0.7 + rn * 0.45, // 바깥 모듈부터? → 가운데부터 차례로 박혀요
-          sx: W / 2 + Math.cos(ang) * far, sy: H / 2 + Math.sin(ang) * far, s0: 1.6 + r2 * 2.4, r0: (r2 - 0.5) * Math.PI * 6, bend: (rn - 0.5) * 0.9,
-          tone: 0.9 + rn * 0.1, quad: r2 < 0.1, ox: 0, oy: 0, r: 0, z: 0, px: x, py: y });
+          d: (1 - j / rows) * 1.1 + rn * 0.25, // 아래 줄부터 한 켜씩 쌓여요
+          sx: x, sy: y + C * 5, s0: 0.6, r0: 0, bend: 0, far, ang,
+          tone: 0.9 + rn * 0.1, quad: r2 < 0.035, ox: 0, oy: 0, r: 0, z: 0, px: x, py: y });
       }
       for (const m of mods) m.edge = !(on.has(m.i - 1 + "," + m.j) && on.has(m.i + 1 + "," + m.j) && on.has(m.i + "," + (m.j - 1)) && on.has(m.i + "," + (m.j + 1)));
       box = [x0 - C * 1.5, y0 - C * 1.5, x1 + C * 1.5, y1 + C * 1.5];
@@ -1095,7 +1148,7 @@
     const ex5 = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
     const back = (x) => { if (x <= 0) return 0; if (x >= 1) return 1; const c1 = 1.7, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
     const bell = (x) => (x <= 0 || x >= 1 ? 0 : Math.sin(x * Math.PI));
-    const ASM = 0.35, FLY = 1.15; // 조립 시작, 모듈 하나가 날아오는 시간
+    const ASM = 0.3, FLY = 1.4; // 조립 시작, 모듈 하나가 날아오는 시간
     let land = 0; // 모든 모듈이 박히는 시각(초)
     const frame = (now) => {
       raf = 0; if (!W) return;
@@ -1104,9 +1157,20 @@
       if (!land && mods.length) land = ASM + Math.max(...mods.map((m) => m.d)) + FLY * 0.8;
       g.clearRect(0, 0, W, H);
       // 착지 충격: 흔들림 + 번쩍
-      const it = t - land, shock = it > 0 && it < 1.2 ? 1 - it / 1.2 : 0;
+      const it = t - land, shock = 0;
       const shx = shock ? Math.sin(it * 70) * C * 0.5 * shock * shock : 0, shy = shock ? Math.cos(it * 55) * C * 0.35 * shock * shock : 0;
       g.save(); g.translate(shx, shy);
+      // 0) 도면 시트: 가는 테두리, 아래 표제란 칸 선, 오른쪽 아래 방위 표시 (글자 없음)
+      { const sa = REDUCED ? 1 : ez(t / 0.9), mg = C * 1.2;
+        if (sa > 0) {
+          g.globalAlpha = 0.5 * sa; g.strokeStyle = mid; g.lineWidth = 0.7;
+          g.strokeRect(mg + 0.5, mg + 0.5, (W - mg * 2) * sa, H - mg * 2);
+          const tb = H - mg - C * 3.2; g.beginPath(); g.moveTo(mg, tb); g.lineTo(mg + (W - mg * 2) * sa, tb);
+          for (const f of [0.5, 0.75]) { g.moveTo(mg + (W - mg * 2) * f, tb); g.lineTo(mg + (W - mg * 2) * f, H - mg); } g.stroke();
+          const nx = W - mg - C * 1.6, ny = tb - C * 2.2, nr = C * 0.9; g.beginPath(); g.arc(nx, ny, nr, 0, 7); g.moveTo(nx, ny + nr); g.lineTo(nx, ny - nr * 1.6); g.stroke();
+          g.fillStyle = mid; g.beginPath(); g.moveTo(nx, ny - nr * 1.6); g.lineTo(nx - nr * 0.35, ny - nr * 0.7); g.lineTo(nx + nr * 0.35, ny - nr * 0.7); g.fill();
+          g.globalAlpha = 1;
+        } }
       // 1) 모눈 점 · 십자 · 작도선 · 눈금자
       const gp = ez(t / 1.0);
       if (gp > 0) {
@@ -1134,7 +1198,7 @@
         g.globalAlpha = shock * 0.25; g.lineWidth = 1; g.beginPath(); g.arc(W / 2, H / 2, R0 * 0.72, 0, Math.PI * 2); g.stroke(); g.globalAlpha = 1;
       }
       // 2) 평소 사건 (착지 1.6초 뒤부터 3.6초마다)
-      const et = t - land - 1.6, ev = REDUCED || et < 0 ? -1 : Math.floor(et / 3.6) % 4, u = et < 0 ? 0 : (et % 3.6) / 1.7; // u: 0→1 사건 진행, 1 넘으면 쉼
+      const et = t - land - 1.2, ev = REDUCED || et < 0 ? -1 : 0, u = et < 0 ? 0 : (et % 6.5) / 3.2; // u: 0→1 사건 진행, 1 넘으면 쉼
       const evx = W * (0.3 + hash(Math.floor(et / 3.6) * 9.1) * 0.4), evy = H * (0.35 + hash(Math.floor(et / 3.6) * 3.7) * 0.3);
       // 3) 모듈
       const R = C * 10, rr = rip ? (now - rip.t) / 1000 * Math.max(W, H) * 1.1 : -1;
@@ -1143,18 +1207,18 @@
       const pass = [];
       for (const m of mods) {
         const raw = REDUCED ? 1 : (t - ASM - m.d) / FLY; if (raw <= 0) continue;
-        const p = Math.min(1, raw), pe = back(p), pp = ex5(p);
+        const p = Math.min(1, raw), pe = ez(p), pp = ex5(p);
         // 마우스 · 물결
         const dx = m.x - mx, dy = m.y - my, dd = Math.hypot(dx, dy) || 1, f = Math.max(0, 1 - dd / R), f2 = f * f;
-        let rz = 0; if (rip && rr > 0) { const k = 1 - Math.min(1, Math.abs(Math.hypot(m.x - rip.x, m.y - rip.y) - rr) / (C * 4)); rz = k * 1.2; }
-        const tx = (dx / dd) * f2 * C * 4, ty = (dy / dd) * f2 * C * 4, tr = f * Math.PI / 4, tz = Math.max(f * 2.2, rz);
-        m.ox += (tx - m.ox) * 0.14; m.oy += (ty - m.oy) * 0.14; m.r += (tr - m.r) * 0.14; m.z += (tz - m.z) * 0.18;
+        let rz = 0; if (rip && rr > 0) { const k = 1 - Math.min(1, Math.abs(Math.hypot(m.x - rip.x, m.y - rip.y) - rr) / (C * 4)); rz = k * 0.5; }
+        const tx = (dx / dd) * f2 * C * 1.6, ty = (dy / dd) * f2 * C * 1.6, tr = f2 * Math.PI / 4, tz = Math.max(f * 1.3, rz);
+        m.ox += (tx - m.ox) * 0.08; m.oy += (ty - m.oy) * 0.08; m.r += (tr - m.r) * 0.08; m.z += (tz - m.z) * 0.1;
         // 사건별 변형
         let ex = 0, ey = 0, er = 0, ez2 = 0, es = 1, inv = 0, flipE = 1;
         if (ev >= 0 && u < 1.3) {
           if (ev === 0) { // 훑기: 위→아래 띠
             const band = u * 1.3 * (H + C * 20) - C * 10, k = Math.max(0, 1 - Math.abs(m.y - band) / (C * 6));
-            ez2 = k * 2.4; ex = k * C * 0.8; flipE = k > 0 ? Math.cos(k * Math.PI) : 1;
+            ez2 = k * k * 0.9;
           } else if (ev === 1) { // 산산조각
             const k = u < 0.45 ? ez(u / 0.45) : 1 - back((u - 0.45) / 0.6), a = Math.atan2(m.y - evy, m.x - evx), dist = (1 - Math.min(1, Math.hypot(m.x - evx, m.y - evy) / Math.max(W, H))) * C * 9 * (0.5 + m.rn);
             ex = Math.cos(a + m.bend) * dist * k; ey = Math.sin(a + m.bend) * dist * k; er = (m.r2 - 0.5) * Math.PI * 2 * k; ez2 = k * 1.5; es = 1 - k * 0.35;
@@ -1169,26 +1233,26 @@
         // 날아오는 길: 출발점 → 휘어진 길 → 제자리
         const bx = m.sx + (m.x - m.sx) * pp, by = m.sy + (m.y - m.sy) * pp, nx = -(m.y - m.sy), ny = m.x - m.sx, bn = Math.sin(pp * Math.PI) * m.bend * 0.35;
         const q = sc ? ez((now - sc) / 520 - m.d * 0.5) : 0;
-        const fx = bx + nx * bn + m.ox + ex + (q ? (m.x - W / 2) * q * 1.6 : 0), fy = by + ny * bn + m.oy + ey - q * H * 0.6;
+        const fx = bx + nx * bn + m.ox + ex + (q ? (m.x - W / 2) * q * 0.3 : 0), fy = by + ny * bn + m.oy + ey - q * H * 0.6;
         const scl = (m.s0 + (1 - m.s0) * pe) * es * (1 - q * 0.6), rot = m.r0 * (1 - pp) + m.r + er + q * m.r0 * 0.3;
-        const land1 = clamp((raw - 1) / 0.35, 0, 1), pop = raw > 1 ? bell(land1) : 0;
-        const E = Math.max(m.z, ez2, pop * 1.4 + shock * 1.2, (1 - pp) * 2.5);
+        const pop = 0;
+        const E = Math.max(m.z, ez2, 0.4 * Math.min(1, raw));
         m.px = fx; m.py = fy;
-        pass.push([m, fx, fy, scl, rot, E, Math.min(1, raw * 2.5) * (1 - q), inv, flipE, p]);
+        pass.push([m, fx, fy, scl, rot, E, ez(Math.min(1, raw * 1.6)) * (1 - q), inv, flipE, p]);
       }
       // 3-a) 잔상(날아오는 중) + 옆면을 먼저, 3-b) 윗면을 나중에 → 블록이 겹쳐도 입체가 맞아요
       g.fillStyle = mid;
       for (const [m, x, y, scl, rot, E, al, , , p] of pass) {
         const sz = (C - 1) * scl, dz = E * C * 0.5;
-        if (p < 1) { // 잔상: 지나온 길 위에 옅은 네모 세 개
+        if (false) { // 잔상(뺐어요): 지나온 길 위에 옅은 네모 세 개
           for (let k = 1; k <= 3; k++) { const pb = ex5(Math.max(0, p - k * 0.05)), xx = m.sx + (m.x - m.sx) * pb, yy = m.sy + (m.y - m.sy) * pb; g.globalAlpha = al * (0.16 - k * 0.04); const s2 = sz * (1 - k * 0.15); g.fillRect(xx - s2 / 2, yy - s2 / 2, s2, s2); }
         }
         if (dz > 0.4) { for (let k = 3; k >= 1; k--) { g.globalAlpha = al * 0.16 * (4 - k) / 3 + al * 0.08; g.save(); g.translate(x + dz * k / 3, y + dz * k / 3); g.rotate(rot); g.fillRect(-sz / 2, -sz / 2, sz, sz); g.restore(); } }
       }
       for (const [m, x, y, scl, rot, E, al, inv, flipE] of pass) {
         const sz = (C - 1) * scl, lift = E * C * 0.22;
-        const wave = REDUCED ? 0 : Math.sin((m.x * sx + m.y) / (C * 11) - t * 1.9);
-        const ft = REDUCED ? 1 : ((t * 0.14 + m.rn * 9.7) % 8) / 0.5, flip = (ft < 1 ? Math.abs(Math.cos(ft * Math.PI)) : 1) * flipE;
+        const wave = REDUCED ? 0 : Math.sin((m.x * sx + m.y) / (C * 14) - t * 0.9);
+        const ft = REDUCED || t < land ? 1 : ((t * 0.05 + m.rn * 29.7) % 60) / 0.9, flip = (ft < 1 ? Math.abs(Math.cos(ft * Math.PI)) : 1) * flipE;
         g.save(); g.translate(x - lift, y - lift); g.rotate(rot); g.scale(Math.abs(flip) < 0.05 ? 0.05 : flip, 1);
         g.globalAlpha = al * m.tone * (0.86 + 0.14 * (wave * 0.5 + 0.5)) * (shock ? 1 - shock * 0.35 * bell(clamp(it / 0.25, 0, 1)) : 1);
         g.fillStyle = inv > 0.5 ? (bgc) : ink;

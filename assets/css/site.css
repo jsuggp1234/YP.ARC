@@ -1960,3 +1960,9 @@ html.cs-grid .cs { cursor: default; }
 
 /* 첫 화면 글자 모듈 캔버스는 카드 높이 전체 — 사방에서 날아오는 모듈이 잘리지 않게 */
 .st-mn .mn-art { top: var(--g4-e); height: calc(100% - 2 * var(--g4-e)); }
+
+/* 첫 화면 바탕: 노출콘크리트 그림(--conc, site.js stConcrete) — 그림이 없으면 메뉴 회색 그대로 */
+.st-mn::before { background: var(--mn-bg) var(--conc, none) center / cover no-repeat; }
+/* 카드는 벽에 붙인 도면 시트처럼 아주 얕은 그림자 */
+.st-mn .mn-card { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 18px 40px -22px rgba(0, 0, 0, 0.35); }
+.st-mn .mn-card.solid { box-shadow: none; }
