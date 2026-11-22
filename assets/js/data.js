@@ -67,7 +67,7 @@ const SITE = {
   ],
   // About 페이지 (v2 8–10단계). draft: true 인 글은 제가 쓴 초안이라 화면에 "Draft"가 붙어요 — 확인 후 draft를 지우면 표시가 사라져요
   about: {
-    image2: "assets/img/timteam-work/night-exterior.jpg", // What I do 옆 사진
+    image2: "", // What I do 옆 사진 (핀 #36으로 뺌)
     doTitle: "What I do",
     approach: {
       draft: true,
@@ -764,7 +764,8 @@ const SITE = {
       [1.05, 0.65, 0.4, 0.4, 0.2, 3.93],
       [1.05, 1.05, 0.4, 0.4, 0.2, 3.93]
     ],
-    cover: "assets/img/timteam-work/cover.jpg",
+    cover: "assets/img/timteam-work/cover-tower.jpg", // 핀 #41
+    thumb: "assets/img/timteam-work/cover.jpg",
     thumb: "assets/img/timteam-work/card-frame.jpg", // 카드·목록에 쓰는 이미지 (상세 페이지 맨 위는 cover)
     coverCaption: "Glass floors over the timber arcade",
     summary:
@@ -1123,11 +1124,13 @@ const SITE = {
     sections: [
       { heading: "The Loop", text: "One frame, 100 years — design, factory, road, crane, live and adapt, renew, take apart, use again.", images: [], widget: "loop", wsrc: "assets/img/modular-o-housing/loop-wheel.jpg" },
       { heading: "Assembly Sequence", text: "Twelve steps on site: piles, base, core, ground, tie plates, levels, open frames, facade, roof, plant and hand over.", images: [], seq: {"kind":"frames","r":0.872,"lite":true,"fade":true,"k":0.7,"steps":[{"src":"assets/img/modular-o-housing/assembly-01.svg","t":"Piles","s":"factory, in parallel","d":"Bored piles and ground beams under every node of the 4.5 m grid"},{"src":"assets/img/modular-o-housing/assembly-02.svg","t":"Base","s":"factory, in parallel","d":"RC plinth, cast-in plates set level on every node: the only wet work"},{"src":"assets/img/modular-o-housing/assembly-03.svg","t":"Core","s":"crane","d":"The braced core stack goes up first and takes the lateral load"},{"src":"assets/img/modular-o-housing/assembly-04.svg","t":"Ground","s":"crane","d":"Arcade frames bolt to the plates; shop modules land on pins"},{"src":"assets/img/modular-o-housing/assembly-05.svg","t":"Tie plates","s":"crane","d":"M24 bolts through the access windows; one plate ties each node"},{"src":"assets/img/modular-o-housing/assembly-06.svg","t":"Level 1","s":"crane","d":"One lift per home cell; the terrace frame comes flat-packed"},{"src":"assets/img/modular-o-housing/assembly-07.svg","t":"Level 2","s":"crane — frames and rods","d":"The stack steps back: open cells become the terraces above"},{"src":"assets/img/modular-o-housing/assembly-08.svg","t":"Open frames","s":"crane — frames and rods","d":"Greenhouse frame on the roof; X rods pinned into the open frames"},{"src":"assets/img/modular-o-housing/assembly-09.svg","t":"Facade","s":"dry trades","d":"Glazed cassettes and louvres clip on from outside, no scaffold"},{"src":"assets/img/modular-o-housing/assembly-10.svg","t":"Roof + PV","s":"dry trades","d":"Roof cassettes close the top modules; PV rows bolt to the frame"},{"src":"assets/img/modular-o-housing/assembly-11.svg","t":"Plant + serve","s":"dry trades","d":"Decks and planter trays lifted in; pods hook up to the core risers"},{"src":"assets/img/modular-o-housing/assembly-12.svg","t":"Hand over","s":"dry trades","d":"Lines sealed, linings closed, gaps fire-stopped: dry from base up"}]} },
-      { heading: "Mass Study", text: "Six moves on one site: maximum volume, entrance axis, four blocks, modular cells, daylight, bridges and arcade.", images: [{src: "assets/img/modular-o-housing/axonometric-render.jpg", caption: "Axonometric view — install, live, take apart", r: 1.778}], seq: {"kind":"frames","r":1.492,"lite":true,"fade":true,"k":0.9,"steps":[{"src":"assets/img/modular-o-housing/mass-1.svg","t":"Maximum volume","s":"the largest mass the site allows"},{"src":"assets/img/modular-o-housing/mass-2.svg","t":"Entrance axis","s":"a long shared plaza opens from the entrance"},{"src":"assets/img/modular-o-housing/mass-3.svg","t":"Four blocks","s":"split for access, with shared yards on two layers"},{"src":"assets/img/modular-o-housing/mass-4.svg","t":"Modular cells","s":"infill system and factory-made frames for a shorter build, grouped in clusters"},{"src":"assets/img/modular-o-housing/mass-5.svg","t":"Daylight","s":"heights stepped so the sun reaches the yards"},{"src":"assets/img/modular-o-housing/mass-6.svg","t":"Bridges + arcade","s":"bridges between blocks, shops in a ground-floor arcade, farm yards between"}]} },
-      { heading: "Kit of Parts", text: "One grid, one node, skeleton and infill, dry and reversible — eight module types that every part obeys.", images: [], pan: {"src":"assets/img/modular-o-housing/kit-strip.svg","r":23.857,"h":"15vh","solid":true,"labels":[[0.088,"V-00","Module frame","the base of every closed cell"],[5.643,"V-01","Studio cell","a whole home in one module"],[11.199,"V-02","Living cell","the wet cell of a joined home"],[16.754,"V-03","Bedroom cell","a dry cell: no pod, no kitchen"],[22.31,"V-04","Children’s room","two beds and a desk"],[27.865,"V-05","End cell","the gable is an outside wall"],[33.421,"V-06","Cluster hall","a living room for one storey"],[38.976,"V-07","Shop / café","ground floor, under the homes"],[44.532,"V-08","Community corner","the farm info centre"],[50.088,"F-00","Open frame","posts + beams, bolted on site"],[55.643,"F-01","Terrace","every home touches one"],[61.199,"F-02","Arcade","market, bikes, the doorstep"],[66.754,"F-03","Bridge","the complex crossed above the street"],[72.31,"F-04","Greenhouse / lounge","shared, in the voids"],[77.865,"F-05","Roof garden","beds rented by the season"],[83.421,"F-06","Smart-farm module","seedlings for the terraces"],[88.976,"C-01","Stair core","two flights a storey"],[94.532,"C-02","Lift core","beside each stair"]],"loop":true,"cap":"Kit of parts — eighteen modules on two frames"} },
+      { big: true, // 핀 #47 크게
+        heading: "Mass Study", text: "Six moves on one site: maximum volume, entrance axis, four blocks, modular cells, daylight, bridges and arcade.", images: [{src: "assets/img/modular-o-housing/axonometric-render.jpg", caption: "Axonometric view — install, live, take apart", r: 1.778}], seq: {"kind":"frames","r":1.492,"lite":true,"fade":true,"k":0.9,"steps":[{"src":"assets/img/modular-o-housing/mass-1.svg","t":"Maximum volume","s":"the largest mass the site allows"},{"src":"assets/img/modular-o-housing/mass-2.svg","t":"Entrance axis","s":"a long shared plaza opens from the entrance"},{"src":"assets/img/modular-o-housing/mass-3.svg","t":"Four blocks","s":"split for access, with shared yards on two layers"},{"src":"assets/img/modular-o-housing/mass-4.svg","t":"Modular cells","s":"infill system and factory-made frames for a shorter build, grouped in clusters"},{"src":"assets/img/modular-o-housing/mass-5.svg","t":"Daylight","s":"heights stepped so the sun reaches the yards"},{"src":"assets/img/modular-o-housing/mass-6.svg","t":"Bridges + arcade","s":"bridges between blocks, shops in a ground-floor arcade, farm yards between"}]} },
+      { v: 1, // 핀 #46 왼쪽으로
+        heading: "Kit of Parts", text: "One grid, one node, skeleton and infill, dry and reversible — eight module types that every part obeys.", images: [], pan: {"src":"assets/img/modular-o-housing/kit-strip.svg","r":23.857,"h":"15vh","solid":true,"labels":[[0.088,"V-00","Module frame","the base of every closed cell"],[5.643,"V-01","Studio cell","a whole home in one module"],[11.199,"V-02","Living cell","the wet cell of a joined home"],[16.754,"V-03","Bedroom cell","a dry cell: no pod, no kitchen"],[22.31,"V-04","Children’s room","two beds and a desk"],[27.865,"V-05","End cell","the gable is an outside wall"],[33.421,"V-06","Cluster hall","a living room for one storey"],[38.976,"V-07","Shop / café","ground floor, under the homes"],[44.532,"V-08","Community corner","the farm info centre"],[50.088,"F-00","Open frame","posts + beams, bolted on site"],[55.643,"F-01","Terrace","every home touches one"],[61.199,"F-02","Arcade","market, bikes, the doorstep"],[66.754,"F-03","Bridge","the complex crossed above the street"],[72.31,"F-04","Greenhouse / lounge","shared, in the voids"],[77.865,"F-05","Roof garden","beds rented by the season"],[83.421,"F-06","Smart-farm module","seedlings for the terraces"],[88.976,"C-01","Stair core","two flights a storey"],[94.532,"C-02","Lift core","beside each stair"]],"loop":true,"cap":"Kit of parts — eighteen modules on two frames"} },
+      { heading: "Plans", text: "Four floors drawn on one frame — scroll to go up the building, one floor at a time — and the four home types the cells combine into.", images: [{src: "assets/img/modular-o-housing/unit-plans.jpg", caption: "Home types — four unit plans built from the same cells", r: 3.093}], seq: {"kind":"frames","below":true,"r":1.48,"lite":true,"fade":true,"k":0.85,"steps":[{"src":"assets/img/modular-o-housing/plan-1.jpg","t":"Ground floor","s":"shops and the arcade","d":"Shops line the street under the west block; the open ground runs from the entrance into the site"},{"src":"assets/img/modular-o-housing/plan-2.jpg","t":"Second floor","s":"the shared deck","d":"The first home clusters sit on the podium deck, each around its own small court"},{"src":"assets/img/modular-o-housing/plan-3.jpg","t":"Third floor","s":"clusters and bridges","d":"Clusters climb on the east blocks and the first bridge links them across the courtyard"},{"src":"assets/img/modular-o-housing/plan-4.jpg","t":"Typical floor","s":"four blocks, one grid","d":"Four blocks of home cells on one 4.5 m grid, tied together by bridges over the courtyard"}]} },
       { heading: "Section and Detail", text: "The section through the courtyard bridges, and one terrace beside a home cell drawn at detail scale — the kit of parts, put together.", images: [{"src":"assets/img/modular-o-housing/section-a.jpg","caption":"Section A–A — looking east, through the courtyard bridges","r":1.614,"notes":[["01","Home cells","One module each, landed on pins at every node"],["02","Terrace cells","Open frames with a planter tray, every few floors"],["03","Bridges","Open frames on rods, at levels 3 and 8"],["04","Roof frames","Pergola and smart farm on top of each block"],["05","Courtyard","18 m between the blocks, open down to the shared rooms"],["06","Podium","Shared rooms on B1, parking on B2, on a raft and piles"]]}, {"src":"assets/img/modular-o-housing/detail-section.jpg","caption":"Detail section — a terrace beside a home cell","r":1.334,"w":"80%","notes":[["01","Terrace","An open cell, planted in a tray on the steel deck"],["02","Stacking node","Pin, tie plate and bolted end plates between cells"],["03","Floor cassette","Insulated, with services in the zone above the ceiling"],["04","Home cell","Kitchen, table and bed in one 4.5 m module"]]}], stack: true },
       { heading: "Scenes", text: "The street, the courtyard under the bridges, the module facade and the shared rooms inside.", images: [{src: "assets/img/modular-o-housing/street.jpg", caption: "Street", r: 1.778}, {src: "assets/img/modular-o-housing/courtyard.jpg", caption: "Courtyard", r: 1.778}, {src: "assets/img/modular-o-housing/module-facade.jpg", caption: "Module facade", r: 1.778}, {src: "assets/img/modular-o-housing/bridge-view.jpg", caption: "From the bridge", r: 1.778}, {src: "assets/img/modular-o-housing/atrium.jpg", caption: "Atrium", r: 1.993}, {src: "assets/img/modular-o-housing/smart-farm.jpg", caption: "Smart farm", r: 1.778}], stack: true, scenes: true },
-      { heading: "Plans", text: "Four floors drawn on one frame — scroll to go up the building, one floor at a time — and the four home types the cells combine into.", images: [{src: "assets/img/modular-o-housing/unit-plans.jpg", caption: "Home types — four unit plans built from the same cells", r: 3.093}], seq: {"kind":"frames","below":true,"r":1.48,"lite":true,"fade":true,"k":0.85,"steps":[{"src":"assets/img/modular-o-housing/plan-1.jpg","t":"Ground floor","s":"shops and the arcade","d":"Shops line the street under the west block; the open ground runs from the entrance into the site"},{"src":"assets/img/modular-o-housing/plan-2.jpg","t":"Second floor","s":"the shared deck","d":"The first home clusters sit on the podium deck, each around its own small court"},{"src":"assets/img/modular-o-housing/plan-3.jpg","t":"Third floor","s":"clusters and bridges","d":"Clusters climb on the east blocks and the first bridge links them across the courtyard"},{"src":"assets/img/modular-o-housing/plan-4.jpg","t":"Typical floor","s":"four blocks, one grid","d":"Four blocks of home cells on one 4.5 m grid, tied together by bridges over the courtyard"}]} },
     ],
   },
   {
@@ -1446,11 +1449,35 @@ const SITE = {
       },
       {
         big: true,
+        heading: "Plans",
+        text: "Three floor plans, from the village on the ground to the tower above.",
+        stack: true,
+        images: [{ src: "assets/img/samgakji-residential/plan-1.jpg", caption: "Plan 1", r: 1.052 }, { src: "assets/img/samgakji-residential/plan-2.jpg", caption: "Plan 2", r: 1.051 }, { src: "assets/img/samgakji-residential/plan-3.jpg", caption: "Plan 3", r: 1.051 }]
+      },
+      {
+        big: true,
+        heading: "Sections and Elevation",
+        text: "Cut through the tower and the village, and the long elevation along the street.",
+        stack: true,
+        images: [{ src: "assets/img/samgakji-residential/section-1.jpg", caption: "Section 1 — through the tower and the village", r: 1.767 }, { src: "assets/img/samgakji-residential/section-2.jpg", caption: "Section 2", r: 1.767 }, { src: "assets/img/samgakji-residential/elevation.jpg", caption: "Elevation", r: 1.414 }]
+      },
+      {
+        big: true,
         heading: "Scenes",
         text: "The green road at night and in snow, the alleys and the commercial street, the guesthouse, the office bridge and the houses.",
         stack: true,
         scenes: true,
         images: [
+          {
+            src: "assets/img/samgakji-residential/residence.jpg",
+            caption: "Residence",
+            r: 1.463
+          },
+          {
+            src: "assets/img/samgakji-residential/residence-2.jpg",
+            caption: "Residence — the village in snow",
+            r: 1.5
+          },
           {
             src: "assets/img/samgakji-residential/alley.jpg",
             caption: "Alley",
@@ -1475,52 +1502,11 @@ const SITE = {
             src: "assets/img/samgakji-residential/office.jpg",
             caption: "Office bridge",
             r: 1.502
-          },
-          {
-            src: "assets/img/samgakji-residential/residence.jpg",
-            caption: "Residence",
-            r: 1.463
-          },
-          {
-            src: "assets/img/samgakji-residential/residence-2.jpg",
-            caption: "Residence — the village in snow",
-            r: 1.5
           }
         ]
       }
     ],
-    drawings: [
-      {
-        src: "assets/img/samgakji-residential/plan-1.jpg",
-        caption: "Plan 1",
-        r: 1.052
-      },
-      {
-        src: "assets/img/samgakji-residential/plan-2.jpg",
-        caption: "Plan 2",
-        r: 1.051
-      },
-      {
-        src: "assets/img/samgakji-residential/plan-3.jpg",
-        caption: "Plan 3",
-        r: 1.051
-      },
-      {
-        src: "assets/img/samgakji-residential/section-1.jpg",
-        caption: "Section 1 — through the tower and the village",
-        r: 1.767
-      },
-      {
-        src: "assets/img/samgakji-residential/section-2.jpg",
-        caption: "Section 2",
-        r: 1.767
-      },
-      {
-        src: "assets/img/samgakji-residential/elevation.jpg",
-        caption: "Elevation",
-        r: 1.414
-      }
-    ]
+    drawings: []
   },
   // 라주니타 (2026-11-22 추가) — 원본: portfolio-source/라주니타. 글은 패널(.ai)의 설명문에서 옮겼어요.
   // 확인 필요: year(원본 파일 날짜 2025.03 기준 추정) · studio · 대지 위치 · 팀 — 사용자에게 받으면 채우기
@@ -2561,18 +2547,6 @@ const SITE = {
       },
       {
         "big": true,
-        "heading": "Cluster Grammar",
-        "text": "Each module hangs on its own tree, so neighbours are set by the forest, not by a grid. The leaves absorb the difference: heights are counted in turns of the flight — level for a bridge or terrace, two thirds of a turn for a ramp, one full turn for a stair.",
-        "images": [
-          {
-            "src": "assets/img/the-tree-house/grammar.jpg",
-            "caption": "Shared terrace · bridge · ramp · stair — the same three modules joined four ways",
-            "r": 3.194
-          }
-        ]
-      },
-      {
-        "big": true,
         "heading": "Growth",
         "text": "One grove by the Soyang, four stages — every module added on its own tree, every join chosen from the grammar.",
         "images": [],
@@ -2610,6 +2584,18 @@ const SITE = {
             }
           ]
         }
+      },
+      {
+        "big": true,
+        "heading": "Cluster Grammar",
+        "text": "Each module hangs on its own tree, so neighbours are set by the forest, not by a grid. The leaves absorb the difference: heights are counted in turns of the flight — level for a bridge or terrace, two thirds of a turn for a ramp, one full turn for a stair.",
+        "images": [
+          {
+            "src": "assets/img/the-tree-house/grammar.jpg",
+            "caption": "Shared terrace · bridge · ramp · stair — the same three modules joined four ways",
+            "r": 3.194
+          }
+        ]
       },
       {
         "big": true,
@@ -2926,7 +2912,7 @@ const SITE = {
 // 각 줄: [기간, 이름, 보조 설명(선택), 자세한 내용(선택)]
 const CV = {
   intro:
-    "건축은 이미지보다 먼저 하나의 해답이라고 믿습니다. 공기와 빛, 그리고 실제로 지어질 수 있는 구조와 접합부에서 그 답을 찾습니다.",
+    "성균관대학교 건축학과에서 2027년 2월 졸업을 앞두고 있습니다. 설계사무소 인턴으로 기획설계, Revit 기반 BIM 전환설계와 마감 상세, 현상설계에 참여했고, 공모전과 설계 스튜디오에서 공공·주거·업무 프로젝트를 이어 왔습니다.", // 예전 철학 문장은 philosophy 페이지에
   languages: ["Korean", "English"],
   education: [
     ["2023.03 – 2027.02", "성균관대학교 건축학과", "", "Sungkyunkwan University, Department of Architecture"],

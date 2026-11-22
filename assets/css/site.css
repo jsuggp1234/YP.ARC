@@ -2042,3 +2042,13 @@ html.hi-on .st-l { opacity: 0; }
 .st-wd { position: fixed; left: 0; z-index: 95; display: flex; align-items: center; transform-origin: 0 50%; transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; color: var(--ink); white-space: nowrap; }
 .st-wd .st-wl { position: relative; left: auto; top: auto; bottom: auto; translate: none; font-size: inherit !important; transition: none; }
 .st-wd .st-wl .st-g0 { display: inline-block; }
+
+/* yeop 페이지: 이름 + 한 줄 소개로 바로 시작 (2026-11-22) */
+.ab3 .ab-st { align-items: end; }
+.ab3 .ab-sub { grid-column: 1 / -1; margin: 18px 0 0; font-size: var(--t-xs); }
+.ab3 .ab-cv { margin-top: clamp(96px, 14vh, 160px); }
+/* 핀 #37: CV 대분류(Education·Experience…) 조금 크게, 굵게 */
+.cv-sec > h2.mono { font-size: var(--t-s); font-weight: 600; color: var(--ink); }
+
+/* 핀 #42: 지도 양옆 글자를 지도 쪽으로 붙여요 */
+@media (min-width: 761px) { .mapp:not(.mapp-wide) .mapp-l { text-align: right; } .mapp:not(.mapp-wide) .mapp-r { text-align: left; } }

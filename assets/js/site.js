@@ -3436,7 +3436,7 @@
           <div class="pj-body cx-body g4">
             <div class="pj-main">
               ${p.sections.map((s, si) => `
-              <section class="pj-sec${s.big || /scene|render|view|interior|exterior/i.test(s.heading) ? " ph" : ""}${s.beside ? " bes" : ""}" id="s${si + 1}" data-toc="${esc(s.heading)}" data-v="${si % 4}">
+              <section class="pj-sec${s.big || /scene|render|view|interior|exterior/i.test(s.heading) ? " ph" : ""}${s.beside ? " bes" : ""}" id="s${si + 1}" data-toc="${esc(s.heading)}" data-v="${s.v != null ? s.v : si % 4}">
                 <div class="hd"><span class="num">${pad(si + 1)}.</span><h2>${esc(s.heading)}</h2></div>
                 <p class="txt" data-reveal>${esc(s.text)}</p>
                 ${s.sim ? simHtml(s.sim) : ""}${s.panel ? mapHtml(s.panel) : ""}${s.widget && s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}${s.seq ? seqHtml(s.seq) : ""}${s.seasons ? ssnHtml(s.seasons) : ""}${s.keyed ? keyedHtml(s.keyed) : ""}${s.pan && !s.pan.after ? panHtml(s.pan) : ""}${s.widget && !s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}
@@ -3520,6 +3520,49 @@
   const draftTag = (x) => (x && x.draft ? ` <span class="dr" title="초안 — data.js에서 draft를 지우면 사라져요">Draft</span>` : "");
 
   render.about = () => {
+    const AB = SITE.about || {}, PL = SITE.pillars || [], steps = (AB.process && AB.process.steps) || [];
+    const list = (rows) => rows.map(([a, b, c, e]) => `<li><span class="mono">${esc(a)}</span><span>${esc(b)}${c ? ` <span class="aw-w">${esc(c)}</span>` : ""}${e ? `<small class="mid">${esc(e)}</small>` : ""}</span></li>`).join("");
+    const sec = (t, rows) => rows && rows.length ? `<section class="cv-sec" data-reveal><h2 class="mono mid">${t}</h2><ul>${list(rows)}</ul></section>` : "";
+    const fig = (k) => `<svg class="pf" viewBox="0 0 400 500" aria-hidden="true">${Drawing.fig(k)}</svg>`;
+    $("#main").innerHTML = `
+      <div class="ab2 ab3">
+        <section class="ab-st g4"><h1 class="ab-big">${esc(SITE.owner)}</h1><p class="ab-sub mid">${esc(SITE.ownerKo || "")} — ${esc(SITE.role)}, ${esc(SITE.based)}. ${esc(SITE.status)}.</p></section>
+
+        <section class="ab-me g4">
+          <div class="ab-pic">${mz(art(SITE.portrait, "portrait", "me", 900, 1200, null, SITE.owner))}</div>
+          <div class="ab-col">
+            <h2 class="ab-lab">About me</h2>
+            <p class="ab-p">${esc(CV.intro)}</p>
+            <h2 class="ab-lab">${esc(AB.toolkitTitle || "Toolkit")}</h2>
+            <p class="ab-p">${CV.skills.map(([t]) => esc(t)).join(", ")}</p>
+          </div>
+        </section>
+
+        <section class="ab-cv g4">
+          <h2 class="ab-lab">${esc(AB.cvTitle || "Profile")}</h2>
+          <div class="txt ab-cvb">
+            <dl class="facts mono">
+              <div><dt>Birth</dt><dd class="num">${esc(SITE.birth)}</dd></div>
+              <div><dt>Based</dt><dd>${esc(SITE.based)}</dd></div>
+              <div><dt>Status</dt><dd>${esc(SITE.status)}</dd></div>
+              <div><dt>Email</dt><dd><a class="lnk" href="mailto:${esc(SITE.email)}">${esc(SITE.email)}</a></dd></div>
+              ${SITE.links.map((l) => `<div><dt>${esc(l.label)}</dt><dd><a class="lnk" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.href.replace(/^https?:\/\/(www\.)?instagram\.com\//, "@"))}</a></dd></div>`).join("")}
+              <div><dt>Language</dt><dd>${esc(CV.languages.join(", "))}</dd></div>
+            </dl>
+            ${sec("Education", CV.education)}
+            ${sec("Experience", CV.experience)}
+            <section class="cv-sec" data-reveal><h2 class="mono mid">Awards</h2><ul>${CV.awards.map(([t, c, prize, w]) => `<li><span class="mono">${esc(t)}</span><span>${esc(c)} <b class="prize">${esc(prize)}</b> <span class="aw-w">${esc(w)}</span></span></li>`).join("")}</ul></section>
+            ${sec("Activities", CV.activities)}
+            ${sec("Certification", CV.certification)}
+            ${sec("Course", CV.courses)}
+            ${sec("Design Studio", CV.studios)}
+            ${sec("Military", CV.military)}
+          </div>
+        </section>
+      </div>`;
+    lineRise($(".ab-big"));
+  };
+  render.aboutV2 = () => {
     const AB = SITE.about || {}, PL = SITE.pillars || [], steps = (AB.process && AB.process.steps) || [];
     const list = (rows) => rows.map(([a, b, c, e]) => `<li><span class="mono">${esc(a)}</span><span>${esc(b)}${c ? ` <span class="aw-w">${esc(c)}</span>` : ""}${e ? `<small class="mid">${esc(e)}</small>` : ""}</span></li>`).join("");
     const sec = (t, rows) => rows && rows.length ? `<section class="cv-sec" data-reveal><h2 class="mono mid">${t}</h2><ul>${list(rows)}</ul></section>` : "";
