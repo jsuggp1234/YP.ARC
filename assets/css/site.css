@@ -2121,3 +2121,8 @@ html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
   .pj-sec .sim > .sim-sec, .pj-sec .sim > .sim-sec:nth-of-type(2) { width: 100% !important; justify-self: stretch; align-self: start; margin-top: 48px; }
   .pj-sec .sim > .sim-ui { position: sticky; bottom: 16px; z-index: 3; background: var(--bg); padding: 10px 0; }
 }
+
+/* 핀 #48 #49: 그림 위 번호 표식(아래 설명과 같은 번호), 층 높이·치수 */
+.media .ftag.pt { width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-size: var(--t-xs); line-height: 1; font-variant-numeric: tabular-nums; }
+.media .ftag.lv { background: var(--bg); padding: 1px 4px; font-variant-numeric: tabular-nums; }
+@media (max-width: 760px) { .media .ftag.pt { width: 14px; height: 14px; font-size: 8px; } .media .ftag.lv { font-size: 8px; } }
