@@ -1689,25 +1689,11 @@ const SITE = {
         ]
       },
       {
-        heading: "One Pixel, Taken Apart",
-        text: "A pixel is three things on one axis: a socket that ties it to the ground, a column that gives light, and a head that senses and talks. Nothing is glued or cast on site; every layer comes off with one spanner, top down.",
-        cols: 2,
-        cw: [
-          0.757,
-          0.503
-        ],
-        images: [
-          {
-            src: "assets/img/smart-pixel/device-exploded.jpg",
-            caption: "SP-01 exploded — ground connection, light, sense and talk",
-            r: 0.757
-          },
-          {
-            src: "assets/img/smart-pixel/device-parts.jpg",
-            caption: "Twenty-one parts, order code, delivery and service life",
-            r: 0.503
-          }
-        ]
+        heading: "One Pixel, Taken Apart", big: true,
+        text: "A pixel is three things on one axis: a socket that ties it to the ground, a column that gives light, and a head that senses and talks. Nothing is glued or cast on site; every layer comes off with one spanner, top down. It travels as four packages — socket 200 kg, column set 33 kg, head unit 12 kg, lintel 13 kg — and only the socket needs a machine.",
+        // 핀 #144: 단면 A(08_detail) + 분해 엑소노(11_device)를 한 장면에, 글자·지시선 없이 — 단계마다 묶음만 진하게, 같은 부품 번호
+        seq: {"kind":"frames","fade":true,"below":true,"r":1.4285,"steps":[{"src":"assets/img/smart-pixel/pixel-0.jpg","t":"One pixel","s":"three things on one axis · 247 kg","d":"Left, the column cut across the street; right, the same pixel taken apart. Scroll to put it together from the ground up — socket, light, head — the order it is built in, and the reverse of the order it leaves.","k":[["Ground connection","202 kg"],["Light","33 kg"],["Sense and talk","12 kg"],["Lintel","13 kg per bay"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"]]},{"src":"assets/img/smart-pixel/pixel-1.jpg","t":"A Ground connection","s":"set once by a mini excavator · stays when the pixel leaves","d":"A precast socket with the sleeve, supply elbow and drain already cast in. The collar is bolted on top and a capped lock pin goes through it into the core; the plug sits behind a hatch.","k":[["01 Socket, precast","600 × 600 base, ø300 shaft · 200 kg"],["02 Sleeve ø114.3 × 3.6","cast in; the core stops at −560"],["03 Supply elbow ø50","cast in, to the feeder duct"],["04 Drain ø20","to the gravel bed"],["05 Plug-in connector","230 V 16 A, 3-pole"],["06 Base collar ø170 × 180","cast aluminium · 1.8 kg"],["07 Lock pin M12 × 110","stainless, capped"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"],[18.7,70.9,"01","c pt"],[86.2,92.6,"01","c pt"],[20.5,67.8,"02","c pt"],[81,78.3,"02","c pt"],[24.9,79,"03","c pt"],[88.4,88.6,"03","c pt"],[22,81.7,"04","c pt"],[83.5,96.8,"04","c pt"],[22,75.7,"05","c pt"],[82.4,69.3,"05","c pt"],[24.1,51.6,"06","c pt"],[83.3,64.4,"06","c pt"],[24.6,54.4,"07","c pt"],[77.1,62.8,"07","c pt"]]},{"src":"assets/img/smart-pixel/pixel-2.jpg","t":"C Light","s":"lifts out as one piece once the head is off","d":"A steel core carries two LED lines; an opal diffuser slides over it, with a black film on the shop side so no light reaches the windows. End rings clip it shut.","k":[["08 Core ø101.6 × 4.0 × 2,796","S275 · 26.9 kg"],["09 Linear LED, 24 V","2700–4000 K, × 2"],["10 Diffuser ø150 × 3 × 2,060","opal PC · 3.4 kg"],["11 Mask, 180° film","on the shop side"],["12 End ring","× 2, seals the gap"],["13 Spigot ø93 × 5","into the core, 2 × M8 grub"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"],[20.6,40.8,"08","c pt"],[82.8,37.3,"08","c pt"],[23.4,31.5,"09","c pt"],[82.2,55.3,"09","c pt"],[23.9,27.6,"10","c pt"],[73.9,48.5,"10","c pt"],[20,29.5,"11","c pt"],[68.8,46.9,"11","c pt"],[73.8,25.6,"12","c pt"],[20.9,24.1,"13","c pt"],[82.7,26.5,"13","c pt"]]},{"src":"assets/img/smart-pixel/pixel-3.jpg","t":"B Sense and talk","s":"the head unit, wired and tested · swapped in 10 minutes","d":"A cast node with four arms holds the radar, the controller and the driver under one cover plate, and takes up to four lintels. The radar sees a pass, not a face.","k":[["14 Head node ø170 × 320","four arms 92 × 152 · 9.9 kg"],["15 Sensor lens","radar and Bluetooth window"],["16 Radar 24 GHz","holds the light 40 s"],["17 Controller, Bluetooth LE 5","check-in within 3 m"],["18 LED driver 30 W, 24 V","column + four lintels"],["19 Gasket","EPDM, under the cover"],["20 Cover plate ø170 × 12","4 × M6 pin-Torx"],["21 Lintel 100 × 160 × 3 × 2,500","sleeved over an arm · 13 kg"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"],[20,11.4,"14","c pt"],[80.5,19.7,"14","c pt"],[24.4,19.5,"15","c pt"],[83.5,20.1,"15","c pt"],[86.7,23.1,"16","c pt"],[83.1,10.6,"17","c pt"],[82.5,13.2,"18","c pt"],[83.3,8.5,"19","c pt"],[83.3,6.4,"20","c pt"],[22.6,14.8,"21","c pt"],[69,11.6,"21","c pt"]]}]},
+        images: []
       },
       {
         heading: "How a Resident Talks to a Pixel",
