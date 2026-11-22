@@ -816,7 +816,7 @@
     const list = PROJECTS.filter((p) => !p.draft);
     const one = list.map((p, i) => `
       <a class="cs-card" href="project.html#${p.slug}" draggable="false" data-i="${i}">
-        <span class="cs-lab"><span class="cs-no num">${i + 1}.</span> ${esc(p.title)}</span>
+        <span class="cs-lab"><span class="cs-no num">${i + 1}.</span> ${esc(p.title)}${p.blurb ? ` <span class="cs-sub">${esc(p.blurb)}</span>` : ""}</span>
         <div class="media">${mz(card(p, 800, 1060))}</div>
       </a>`).join("");
     $("#main").innerHTML = `

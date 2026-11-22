@@ -2258,3 +2258,6 @@ html.cg-open { overflow: hidden; }
 
 /* 핀 #91: nc로 칸 수를 줄이면 설명이 여러 줄로 — 줄 사이 간격 */
 .fnotes { row-gap: 18px; }
+
+/* 핀 #110: 카드 제목 옆 짧은 설명 (회색, 작은 글씨) */
+.cs-lab .cs-sub { font-size: var(--t-xs); color: var(--mid); text-transform: none; letter-spacing: 0; margin-left: 6px; }

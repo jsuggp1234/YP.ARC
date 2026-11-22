@@ -166,7 +166,7 @@ const SITE = {
 // 작품 목록 — 포트폴리오 PDF(2026.11) 기준. draft: true 는 자료를 받기 전이라 이름·연도·수상만 있는 칸이에요.
 /* spread */ const PROJECTS = [
   {
-    slug: "re-tide",
+    slug: "re-tide", blurb: "조수간만의 차를 활용한 공공시설",
     title: "RE:TIDE",
     titleKo: "인천 내항 수변 공공시설",
     subtitle: "A tidal waterfront at the tip of the Incheon Inner Port jetty",
@@ -244,7 +244,7 @@ const SITE = {
     drawings: [], // 2026-11-22 핀: Plans·Sections 섹션으로 옮겼어요
   },
   {
-    slug: "motorism",
+    slug: "motorism", blurb: "성수동 자동차 복합 팝업센터",
     title: "Motorism",
     titleKo: "성수동 DRIVE-THRU 복합문화공간",
     subtitle: "Car complex center / Pop-up center in Seongsu",
@@ -534,7 +534,7 @@ const SITE = {
     drawings: [], // 2026-11-22 핀: Plans·Sections 섹션으로 옮겼어요
   },
   {
-    slug: "timteam-work",
+    slug: "timteam-work", blurb: "판교 고층 목조 복합문화시설",
     title: "Tim(team) Work",
     titleKo: "판교 고층 목조 오피스(복합문화)",
     subtitle: "High-Rise Timber Complex Cultural Facilities in Pangyo",
@@ -780,7 +780,7 @@ const SITE = {
     drawings: [], // 2026-11-22 핀: Plans·Sections 섹션으로 옮겼어요
   },
   {
-    slug: "modular-o-housing",
+    slug: "modular-o-housing", blurb: "조립·해체되는 모듈러 공동주택",
     title: "Modular O′ housing",
     titleKo: "모듈러 주거 단지",
     subtitle: "Modular housing complex, assembled and taken apart on one grid",
@@ -1129,7 +1129,7 @@ const SITE = {
     ],
   },
   {
-    slug: "samgakji-residential",
+    slug: "samgakji-residential", blurb: "삼각지 옛 필지 위 주거마을",
     title: "Samgakji Residential Project",
     titleKo: "불협화음으로 짓는 주거 이야기",
     subtitle: "A housing story composed in dissonance — a village laid on the old parcels of a leftover triangle by Yongsan Station",
@@ -1507,7 +1507,7 @@ const SITE = {
   // 라주니타 (2026-11-22 추가) — 원본: portfolio-source/라주니타. 글은 패널(.ai)의 설명문에서 옮겼어요.
   // 확인 필요: year(원본 파일 날짜 2025.03 기준 추정) · studio · 대지 위치 · 팀 — 사용자에게 받으면 채우기
   {
-    slug: "la-junita",
+    slug: "la-junita", blurb: "강가 경사지의 4인 가족 주택",
     title: "La Junita",
     titleKo: "라주니타 — 강을 향해 경사를 따라 흐르는 집",
     subtitle: "A house for a family of four on a slope above the river — masses that step down the ground, each one turned to the water",
@@ -1534,7 +1534,7 @@ const SITE = {
     ],
   },
   {
-    slug: "smart-pixel",
+    slug: "smart-pixel", blurb: "귀갓길을 밝히는 빛 기둥",
     title: "SMART PIXEL",
     titleKo: "대림2동 귀갓길의 빛 기둥",
     subtitle: "One lit column on a 2.5 m grid — a gate, a colonnade and a pavilion for the walk home in Daerim 2-dong",
@@ -1868,7 +1868,7 @@ const SITE = {
     drawings: []
   },
   {
-    slug: "campus-renovation",
+    slug: "campus-renovation", blurb: "복도로 잇는 공학관 캠퍼스 재생",
     title: "Campus Renovation J′",
     titleKo: "성균관대 자연과학캠퍼스 리노베이션",
     subtitle: "Central park, media corridor, bridge connect — the engineering buildings of SKKU joined through their corridors, and the same places followed through the seasons",
