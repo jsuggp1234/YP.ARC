@@ -57,8 +57,8 @@ const SITE = {
   start: [
     { key: "about", title: "yeop", glyph: "Y", img: "assets/img/profile.jpg", href: "about.html", note: "Profile, process and CV" },
     { key: "philosophy", title: "philosophy", glyph: "P", img: "assets/img/philosophy-poster.svg", href: "philosophy.html", note: "Answer before image — air and light, structure and joints." },
-    { key: "works", title: "studio", glyph: "S", img: "assets/img/re-tide/card-frame.jpg", href: "works.html", note: "Selected works, 2022—2027" },
-    { key: "contact", title: "contact", glyph: "@", img: "assets/img/la-junita/interior-2.jpg", href: "#contact", contact: true, note: "Email · Instagram · Portfolio PDF" },
+    { key: "works", title: "studio", glyph: "S", img: "assets/img/studio-poster.svg", href: "works.html", note: "Selected works, 2022—2027" },
+    { key: "contact", title: "contact", glyph: "@", img: "assets/img/contact-poster.svg", href: "#contact", contact: true, note: "Email · Instagram · Portfolio PDF" },
   ],
   pages: [
     { key: "works", title: "studio", href: "works.html" },

@@ -979,9 +979,9 @@
       Promise.all([grow, spell]).then(() => {
         if (cv && word) ss.set("yp-tx", JSON.stringify({ word, t: Date.now(), bg: !studio, top: studio }));
         if (studio) { ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "photo" })); return go2(); } // studio: 띠 사진이 이미 드러나 있어 바로 이어져요
-        // 막: 바탕색 면이 아래에서 올라와 사진을 덮고 → 다음 페이지에서 위로 걷혀요
-        const v = D.createElement("div"); v.className = "st-veil"; BODY.appendChild(v);
-        v.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)" }], { duration: 650, easing: EASE_IO, fill: "forwards" }).finished.catch(() => {}).then(() => { ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "veil" })); go2(); });
+        // 화면 가득한 그림을 다음 페이지 첫 장면으로 그대로 넘겨요(같은 그림 → 끊김 없음)
+        const im = $(".st-im img", c);
+        ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "img", src: im ? im.getAttribute("src") : "" })); go2();
       });
     }, true);
   };
@@ -1088,11 +1088,20 @@
   function stArrive() {
     let st = null; try { st = JSON.parse(ss.get("yp-st") || "null"); } catch (e) {}
     ss.set("yp-st", ""); if (!st || Date.now() - st.t > 6000 || REDUCED) return;
-    if (st.k === "veil") {
-      const v = D.createElement("div"); v.className = "st-veil"; BODY.appendChild(v);
-      v.animate([{ clipPath: "inset(0 0 0% 0)" }, { clipPath: "inset(0 0 100% 0)" }], { duration: 900, delay: 120, easing: "cubic-bezier(0.7, 0, 0.2, 1)", fill: "forwards" }).finished.catch(() => {}).then(() => v.remove());
+    const FLOW = "cubic-bezier(0.76, 0, 0.24, 1)", SOFT = "cubic-bezier(0.16, 1, 0.3, 1)";
+    let lift = 0;
+    if (st.k === "img" && st.src) {
+      // 앞 페이지 마지막 장면(화면 가득한 그림)으로 시작 → 그림은 위로 걷히고, 그림 속 내용은 반대로 조금 덜 움직여(시차) 물 흐르듯 빠져요
+      const v = D.createElement("div"); v.className = "st-veil st-flow"; v.innerHTML = `<img src="${esc(st.src)}" alt="">`; BODY.appendChild(v);
+      const img = $("img", v); lift = 380;
+      v.animate([{ clipPath: "inset(0 0 0% 0)" }, { clipPath: "inset(0 0 100% 0)" }], { duration: 1250, delay: 220, easing: FLOW, fill: "forwards" }).finished.catch(() => {}).then(() => v.remove());
+      img.animate([{ transform: "translateY(0) scale(1)" }, { transform: "translateY(-22%) scale(1.06)" }], { duration: 1250, delay: 220, easing: FLOW, fill: "forwards" });
     }
-    const main = $("#main"); if (main) main.animate([{ translate: "0 40px", opacity: 0.0 }, { translate: "0 0", opacity: 1 }], { duration: 1100, delay: st.k === "veil" ? 260 : 0, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" });
+    // 본문: 큰 덩어리(섹션·머리글)를 차례로 아래에서 떠오르게 해요
+    const main = $("#main"); if (!main) return;
+    let parts = [...main.children].filter((e) => e.offsetHeight > 0 && e.getBoundingClientRect().top < innerHeight * 1.2);
+    if (parts.length === 1) parts = [...parts[0].children].filter((e) => e.offsetHeight > 0 && e.getBoundingClientRect().top < innerHeight * 1.2);
+    (parts.length ? parts.slice(0, 8) : [main]).forEach((e, i) => e.animate([{ translate: "0 70px", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1300, delay: lift + i * 90, easing: SOFT, fill: "backwards" }));
   }
 
   // ---------- 첫 화면 카드 재질: 고운 회반죽 결 (2026-11-22) ----------

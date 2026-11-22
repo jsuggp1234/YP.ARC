@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <!-- Studio 포스터 (2026-11-22): 작품 열 개를 대지 열 필지처럼 — 칸마다 번호와 가는 선 매스 하나, 첫 필지(RE:TIDE)만 옅게 채움. 무채색 -->
+  <defs>
+    <radialGradient id="glow" cx="0.2" cy="0.1" r="0.7">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#1a1a1a" stroke-width="0.5" opacity="0.35"/>
+    </pattern>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.06"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="800" height="1000" fill="#e6e6e6"/>
+  <rect width="800" height="1000" fill="url(#glow)"/>
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" fill="#1a1a1a">
+    <text x="48" y="78" font-size="15" letter-spacing="0.5">STUDIO</text>
+    <text x="752" y="78" font-size="15" text-anchor="end" letter-spacing="0.5">A-010</text>
+  </g>
+  <!-- 필지 4열 × 3행 (열 번째까지) -->
+  <g stroke="#1a1a1a" stroke-width="1" fill="none">
+    <!-- 행 1 -->
+    <rect x="48" y="150" width="166" height="166" fill="url(#hatch)"/>
+    <rect x="226" y="150" width="166" height="166"/>
+    <rect x="404" y="150" width="166" height="166"/>
+    <rect x="582" y="150" width="166" height="166"/>
+    <!-- 행 2 -->
+    <rect x="48" y="328" width="166" height="166"/>
+    <rect x="226" y="328" width="166" height="166"/>
+    <rect x="404" y="328" width="166" height="166"/>
+    <rect x="582" y="328" width="166" height="166"/>
+    <!-- 행 3 -->
+    <rect x="48" y="506" width="166" height="166"/>
+    <rect x="226" y="506" width="166" height="166"/>
+  </g>
+  <!-- 필지마다 매스 하나 (아주 가는 선) -->
+  <g stroke="#1a1a1a" stroke-width="0.8" fill="none">
+    <path d="M78 270 Q130 210 184 270"/><line x1="78" y1="270" x2="184" y2="270"/>                          <!-- 01 RE:TIDE: 둔덕 -->
+    <circle cx="282" cy="245" r="22"/><circle cx="336" cy="225" r="16"/><circle cx="320" cy="275" r="12"/>    <!-- 02 Motorism: 그릇 -->
+    <rect x="452" y="185" width="70" height="100"/><line x1="452" y1="210" x2="522" y2="210"/><line x1="452" y1="235" x2="522" y2="235"/><line x1="452" y1="260" x2="522" y2="260"/> <!-- 03 Tim(team) Work: 층 -->
+    <rect x="612" y="190" width="34" height="34"/><rect x="646" y="190" width="34" height="34"/><rect x="612" y="224" width="34" height="34"/><rect x="680" y="224" width="34" height="34"/><rect x="646" y="258" width="34" height="34"/> <!-- 04 Modular: 모듈 -->
+    <path d="M78 460 L78 400 L102 378 L126 400 L126 460 Z M136 460 L136 410 L156 392 L176 410 L176 460 Z"/>   <!-- 05 Samgakji: 박공 -->
+    <rect x="250" y="372" width="60" height="34"/><rect x="290" y="406" width="60" height="34"/><rect x="262" y="440" width="70" height="30"/> <!-- 06 La Junita: 경사 매스 -->
+    <g><rect x="434" y="362" width="106" height="106"/><line x1="460.5" y1="362" x2="460.5" y2="468"/><line x1="487" y1="362" x2="487" y2="468"/><line x1="513.5" y1="362" x2="513.5" y2="468"/><line x1="434" y1="388.5" x2="540" y2="388.5"/><line x1="434" y1="415" x2="540" y2="415"/><line x1="434" y1="441.5" x2="540" y2="441.5"/></g> <!-- 07 Smart Pixel: 격자 -->
+    <path d="M612 470 L612 380 L718 380 L718 470 M612 420 L718 420"/>                                          <!-- 08 Campus: 증축 -->
+    <line x1="131" y1="640" x2="131" y2="560"/><circle cx="131" cy="555" r="30"/>                              <!-- 09 Tree House -->
+    <path d="M270 640 L270 580 L309 545 L348 580 L348 640 Z"/><line x1="309" y1="545" x2="309" y2="525"/><line x1="299" y1="533" x2="319" y2="533"/> <!-- 10 Church -->
+  </g>
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" fill="#1a1a1a" font-size="11" letter-spacing="0.4">
+    <text x="56" y="167">01</text><text x="234" y="167">02</text><text x="412" y="167">03</text><text x="590" y="167">04</text>
+    <text x="56" y="345">05</text><text x="234" y="345">06</text><text x="412" y="345">07</text><text x="590" y="345">08</text>
+    <text x="56" y="523">09</text><text x="234" y="523">10</text>
+  </g>
+  <!-- 오른쪽 아래 빈 두 필지 자리: 다음 작품 -->
+  <g stroke="#1a1a1a" stroke-width="0.6" fill="none" opacity="0.35">
+    <rect x="404" y="506" width="166" height="166"/><rect x="582" y="506" width="166" height="166"/>
+  </g>
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" fill="#1a1a1a">
+    <text x="48" y="760" font-size="30" letter-spacing="-0.6">Ten works,</text>
+    <text x="48" y="796" font-size="30" letter-spacing="-0.6">one way of building.</text>
+    <g font-size="11" letter-spacing="0.4">
+      <text x="48" y="860">01 RE:TIDE</text><text x="48" y="878">02 MOTORISM</text><text x="48" y="896">03 TIM(TEAM) WORK</text><text x="48" y="914">04 MODULAR O′ HOUSING</text><text x="48" y="932">05 SAMGAKJI RESIDENTIAL</text>
+      <text x="320" y="860">06 LA JUNITA</text><text x="320" y="878">07 SMART PIXEL</text><text x="320" y="896">08 CAMPUS RENOVATION J′</text><text x="320" y="914">09 THE TREE HOUSE</text><text x="320" y="932">10 MODULEVERSE CHURCH</text>
+      <text x="752" y="932" text-anchor="end">2023—2026</text>
+    </g>
+  </g>
+  <rect width="800" height="1000" filter="url(#grain)"/>
+</svg>

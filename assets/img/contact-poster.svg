@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <!-- Contact 포스터 (2026-11-22): 지도 위 한 점(서울)을 측량 표지처럼 — 동심원·십자선·방위, 그 점에서 빛이 퍼져요. 무채색 -->
+  <defs>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.45">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="11"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.06"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="800" height="1000" fill="#e6e6e6"/>
+  <rect width="800" height="1000" fill="url(#glow)"/>
+  <!-- 아주 옅은 지도 격자(경위선) -->
+  <g stroke="#1a1a1a" stroke-width="0.5" opacity="0.12">
+    <line x1="0" y1="180" x2="800" y2="180"/><line x1="0" y1="300" x2="800" y2="300"/><line x1="0" y1="540" x2="800" y2="540"/><line x1="0" y1="660" x2="800" y2="660"/>
+    <line x1="160" y1="120" x2="160" y2="720"/><line x1="280" y1="120" x2="280" y2="720"/><line x1="520" y1="120" x2="520" y2="720"/><line x1="640" y1="120" x2="640" y2="720"/>
+  </g>
+  <!-- 측량 표지: 동심원 + 십자선 -->
+  <g stroke="#1a1a1a" fill="none">
+    <circle cx="400" cy="420" r="210" stroke-width="0.6" opacity="0.5"/>
+    <circle cx="400" cy="420" r="130" stroke-width="0.8"/>
+    <circle cx="400" cy="420" r="6" stroke-width="1"/>
+    <line x1="400" y1="160" x2="400" y2="680" stroke-width="0.8"/>
+    <line x1="140" y1="420" x2="660" y2="420" stroke-width="0.8"/>
+  </g>
+  <circle cx="400" cy="420" r="2.5" fill="#1a1a1a"/>
+  <!-- 방위: 위쪽 끝 작은 삼각 -->
+  <polygon points="400,148 394,164 406,164" fill="#1a1a1a"/>
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" fill="#1a1a1a">
+    <text x="48" y="78" font-size="15" letter-spacing="0.5">CONTACT</text>
+    <text x="752" y="78" font-size="15" text-anchor="end" letter-spacing="0.5">SEOUL, KR</text>
+    <text x="408" y="140" font-size="11" letter-spacing="0.4">N</text>
+    <text x="414" y="410" font-size="11" letter-spacing="0.4">37.5665° N</text>
+    <text x="414" y="440" font-size="11" letter-spacing="0.4">126.9780° E</text>
+    <text x="48" y="808" font-size="30" letter-spacing="-0.6">Start with</text>
+    <text x="48" y="844" font-size="30" letter-spacing="-0.6">a conversation.</text>
+    <g font-size="11" letter-spacing="0.4">
+      <text x="48" y="932">01 EMAIL</text><text x="170" y="932">02 INSTAGRAM</text><text x="318" y="932">03 PORTFOLIO PDF</text>
+      <text x="752" y="932" text-anchor="end">YP.STUDIO</text>
+    </g>
+  </g>
+  <rect width="800" height="1000" filter="url(#grain)"/>
+</svg>
