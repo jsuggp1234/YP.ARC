@@ -245,7 +245,7 @@ const SITE = {
   },
   {
     slug: "motorism", blurb: "성수동 자동차 복합 팝업센터",
-    title: "Motorism",
+    title: "PRND",
     titleKo: "성수동 DRIVE-THRU 복합문화공간",
     subtitle: "Car complex center / Pop-up center in Seongsu",
     type: "Culture",
@@ -514,7 +514,7 @@ const SITE = {
     coverPos: "28% 50%", // 잘려 보일 때 사진의 어느 부분을 보여줄지 (가로% 세로%) — 작을수록 사진이 오른쪽으로 밀려 왼쪽이 더 보여요
     coverCaption: "Stacked bowls on trumpet columns, from Yeonmujang-gil",
     summary:
-      "Pop-up stores line Yeonmujang-gil in Seongsu and fade out at its east end, where a public car park sits among car centres. Here the car is already part of everyday culture. Motorism turns that car park into a car complex. Two ramps, A up at 11 % and B down at 9 %, wind through stacked bowls of car museum, drive-thru, F&B and a rooftop showroom.",
+      "Pop-up stores line Yeonmujang-gil in Seongsu and fade out at its east end, where a public car park sits among car centres. Here the car is already part of everyday culture. PRND turns that car park into a car complex. Two ramps, A up at 11 % and B down at 9 %, wind through stacked bowls of car museum, drive-thru, F&B and a rooftop showroom.",
     sections: [
       { heading: "District", text: "Yeonmujang-gil, Seongsu: main car-roads, parking around the site, and the point where the pop-up line ends.", images: [], panel: {"src":"assets/img/motorism/district-map.jpg","r":1.506,"w":"62%","left":[],"right":[],"notes":[["250 m","from the site to the main car-roads"],["100 m","to the nearest public parking"],["29","pop-up stores, thinning out east to the site"]],"legend":[["■","Site"],["▨","Parking lot"],["●","Pop-up store"],["⊕","Car destination"]],"cap":"01 District — Yeonmujang-gil, Seongsu. North up; base vectorised from the analysis model, scale from the CAD site plan."} },
       { heading: "Yeonmujang-gil Transect", text: "Yeonmujang-gil is defined by a linear flow of pop-up stores, densest in developed Seoseongsu and fading toward Dongseongsu. The site sits where that flow stops; with parking lots, car centres and the Achasan-ro / Seongsu-iro crossing around it, mobility is already the district's everyday culture — a car-based cultural hub here is both timely and grounded.", images: [{ sim: "transect", src: "", caption: "Transect, west to east — people walk the pop-up line and thin out at the threshold; cars arrive at the site. Scroll to run the strip on", w: "100%", r: 5.6 }] },
@@ -1510,7 +1510,7 @@ const SITE = {
   {
     slug: "la-junita", blurb: "Flowing layers, 아르헨티나 단독주택",
     title: "La Junita",
-    titleKo: "라주니타 — 강을 향해 경사를 따라 흐르는 집",
+    titleKo: "아르헨티나 단독주택",
     subtitle: "A house for a family of four on a slope above the river — masses that step down the ground, each one turned to the water",
     type: "House",
     year: "2025",
