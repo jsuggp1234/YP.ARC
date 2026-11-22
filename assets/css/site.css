@@ -2155,3 +2155,5 @@ html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
 .hdr-m { gap: 10px; }
 .md-sw { font-size: var(--t-xxs); gap: 6px; }
 @media (max-width: 760px) { .dial { width: 22px; height: 22px; } .hdr.g4 > .hdr-t { padding-right: 20px; } }
+/* 첫 화면 글자 캐릭터: 바닥 가운데를 축으로 웅크리고·늘어나고·기울어요 */
+.sl-tr .sl-g { transform-origin: 50% 100%; will-change: transform; }

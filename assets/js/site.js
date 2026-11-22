@@ -965,6 +965,72 @@
       });
     };
 
+    // 캐릭터 (2026-11-22 요청): 글자들이 서 있는 동안 저마다 성격이 있는 것처럼 움직여요.
+    // 점(.)은 장난꾸러기 — 다른 글자 위로 뛰어올라 앉았다 내려와요. Y·P는 제자리에서 뛰거나 몇 걸음 걷고, 커서나 점 쪽으로 몸을 기울여 쳐다봐요.
+    // STUDIO는 무거워서 작게 뛰거나 몸을 떨어요. 점이 날면 다른 글자들이 고개(기울기)로 따라가고, 점이 내려앉은 글자는 살짝 눌려요.
+    const CH = as.map((a) => ({ el: $(".sl-g", a), x: 0, y: 0, base: 0, sx: 1, sy: 1, rot: 0, act: null, q: [], imp: 0, on: -1, look: 0, lookT: 0 }));
+    const DOT = ST.findIndex((pg) => pg.glyph === "."), WORD = ST.findIndex((pg) => (pg.glyph || "").length > 1);
+    let nextAt = 0;
+    const hop = (c, x1, y1, h, dur, t0) => ({ k: "hop", t0, dur, x0: c.x, y0: c.base, x1, y1, h });
+    const later = (c, t, x1, y1, h, dur) => { const last = c.q.length ? c.q[c.q.length - 1] : c.act; const t0 = last ? last.t0 + last.dur + 40 : t; c.q.push(hop({ x: last ? last.x1 : c.x, base: last ? last.y1 : c.base }, x1, y1, h, dur, t0)); };
+    const pick = (t) => {
+      const fs0 = geo[0] ? geo[0].fs : 100, r = Math.random();
+      const who = r < 0.42 ? DOT : r < 0.64 ? 0 : r < 0.86 ? 1 : WORD;
+      const c = CH[who]; if (!c || c.act || c.q.length) return;
+      if (who === DOT) {
+        if (c.on >= 0 && Math.random() < 0.55) { later(c, t, 0, 0, fs0 * 0.45, 820); c.on = -1; return; } // 집으로
+        const tg = [0, 1, WORD].filter((j) => j !== c.on && geo[j])[Math.floor(Math.random() * 2.999)];
+        if (tg == null || !geo[tg] || !geo[DOT]) return;
+        const gt = geo[tg], dx = gt.x0 + (Math.random() - 0.5) * gt.hw * (tg === WORD ? 1.4 : 0.6) - geo[DOT].x0;
+        later(c, t, dx, -gt.fs * 0.73, fs0 * (0.5 + Math.random() * 0.25), 900 + Math.abs(dx) / fs0 * 120); c.on = tg; c.tgt = tg;
+        if (Math.random() < 0.35) later(c, t, dx, -gt.fs * 0.73, fs0 * 0.12, 380); // 올라가서 한 번 더 통통
+        return;
+      }
+      if (CH[DOT] && CH[DOT].on === who) { if (who === WORD) c.shake = t; else c.lookT = t + 1500; return; } // 점이 올라앉아 있으면 뛰지 않고 몸만
+      if (who === WORD) {
+        if (Math.random() < 0.55) later(c, t, 0, 0, fs0 * 0.09, 620); else { c.shake = t; }
+        return;
+      }
+      const m = Math.random();
+      if (m < 0.35) later(c, t, c.x, 0, fs0 * (0.18 + Math.random() * 0.12), 700); // 제자리 뛰기
+      else if (m < 0.7) { // 몇 걸음 걷기 (작은 뜀 2~3번), 집에서 너무 멀어지면 돌아와요
+        const dir = Math.abs(c.x) > fs0 * 0.08 ? -Math.sign(c.x) : Math.random() < 0.5 ? -1 : 1, n = 2 + (Math.random() < 0.5 ? 1 : 0);
+        let x = c.x; for (let i = 0; i < n; i++) { x = Math.max(-fs0 * 0.14, Math.min(fs0 * 0.14, x + dir * fs0 * 0.05)); later(c, t, x, 0, fs0 * 0.05, 300); }
+      } else { c.lookT = t + 1500; } // 쳐다보기
+    };
+    const pose = (c, t) => { // 진행 중인 뜀의 자세: 웅크림 → 날기(늘어남) → 착지(눌림)
+      const a = c.act, p = clamp((t - a.t0) / a.dur);
+      let sx = 1, sy = 1, x = a.x0, y = a.y0;
+      if (p < 0.22) { const w = Math.sin((Math.PI * p) / 0.22); sy = 1 - 0.13 * w; sx = 1 + 0.07 * w; }
+      else if (p < 0.8) { const q = (p - 0.22) / 0.58, w = Math.sin(Math.PI * q); x = a.x0 + (a.x1 - a.x0) * eOut(q); y = a.y0 + (a.y1 - a.y0) * q - a.h * 4 * q * (1 - q); sy = 1 + 0.08 * w; sx = 1 - 0.05 * w; }
+      else { const w = Math.sin((Math.PI * (p - 0.8)) / 0.2); x = a.x1; y = a.y1; sy = 1 - 0.11 * w; sx = 1 + 0.06 * w; }
+      c.x = x; c.y = y; c.sx = sx; c.sy = sy;
+      return p >= 1;
+    };
+    const actors = (t, rest) => {
+      if (REDUCED) return;
+      if (!rest || busy) { CH.forEach((c) => { if (c.act || c.q.length || c.x || c.base || c.y) { c.act = null; c.q = []; c.x = c.y = c.base = 0; c.on = -1; c.el.style.transform = ""; } }); nextAt = t + 1200; return; }
+      if (t > nextAt) { pick(t); nextAt = t + 900 + Math.random() * 1900; }
+      const dotC = CH[DOT], dotG = geo[DOT], dotAir = dotC && dotC.act && dotC.act.t0 <= t;
+      CH.forEach((c, j) => {
+        if (!c.act && c.q.length && c.q[0].t0 <= t) c.act = c.q.shift();
+        if (c.act && c.act.t0 <= t) {
+          if (pose(c, t)) { c.base = c.act.y1; c.x = c.act.x1; c.y = c.base; c.sx = c.sy = 1; if (j === DOT && c.on >= 0 && CH[c.on]) CH[c.on].imp = 1; c.act = null; }
+        } else { c.sx += (1 - c.sx) * 0.2; c.sy += (1 - c.sy) * 0.2; c.y = c.base; }
+        // 쳐다보기: 점이 날고 있으면 점 쪽으로, 아니면 쳐다보기 중일 때 커서 쪽으로 (바닥을 축으로 기울어요)
+        const g = geo[j]; let want = 0;
+        if (g && j !== DOT && dotAir && dotG) want = Math.max(-7, Math.min(7, ((dotG.x0 + dotC.x - g.x0) / g.fs) * 5));
+        else if (g && t < c.lookT && mx > -1e3) want = Math.max(-9, Math.min(9, ((mx - g.x0) / g.fs) * 6));
+        if (c.shake && t - c.shake < 700) want += Math.sin((t - c.shake) / 28) * 1.6 * (1 - (t - c.shake) / 700);
+        if (j === WORD) want *= 0.4; // STUDIO는 넓어서 조금만 기울어요
+        c.rot += (want - c.rot) * 0.08;
+        c.imp *= 0.88; // 점이 앉으면 살짝 눌렸다 펴져요
+        const sy = c.sy * (1 - 0.07 * c.imp), sx = c.sx * (1 + 0.035 * c.imp);
+        const tf = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0) rotate(${c.rot.toFixed(2)}deg) scale(${sx.toFixed(3)}, ${sy.toFixed(3)})`;
+        if (c.el.style.transform !== tf) c.el.style.transform = tf;
+      });
+    };
+
     let prev = 0;
     const tick = (t) => {
       if (busy || !D.body.contains(tr)) return;
@@ -976,6 +1042,7 @@
         const fr = ph - Math.floor(ph);
         draw(fr, Math.floor(ph));
         const rest = fr < 0.002 || fr > 0.998, idle = t - last > 2500;
+        actors(t, rest);
         geo.forEach((g, j) => {
           const cx = g.x0, A = g.fs * 0.16, sg = g.fs * 0.14, dxm = mx - cx, near = Math.exp(-Math.max(0, Math.abs(dxm) - g.hw + g.fs * 0.3) / (g.fs * 0.9)), dir = dxm > 0 ? -1 : 1;
           g.sl.forEach((o, k) => {
@@ -1000,7 +1067,7 @@
       e.preventDefault(); if (busy) return;
       if (a.getAttribute("href") === "works.html") ss.set("yp-hi", "1");
       if (REDUCED) return location.assign(a.href);
-      busy = true; tg = ph = Math.round(ph); draw(0); HTML.classList.add("sl-go"); a.classList.add("on");
+      busy = true; tg = ph = Math.round(ph); draw(0); CH.forEach((c) => { c.act = null; c.q = []; c.x = c.y = c.base = 0; c.on = -1; c.el.style.transform = ""; }); HTML.classList.add("sl-go"); a.classList.add("on");
       geo.forEach((g) => g.sl.forEach((o) => { o.el.style.translate = ""; o.cur = 0; }));
       const A = [];
       as.forEach((o) => { if (o === a) return;
