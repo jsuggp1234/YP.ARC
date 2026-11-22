@@ -2324,7 +2324,7 @@ html.cg-open { overflow: hidden; }
 .media .ftag.i { color: #fff; }
 
 /* 핀 #101: 단계 그림 위 단계별 글자 */
-.media .ftag.seq-ft { opacity: 0; transition: opacity .4s; }
+.media .ftag.seq-ft { opacity: 0; transition: opacity .4s; z-index: 6; }
 .media .ftag.seq-ft.on { opacity: 1; }
 
 /* 핀 #102: keyed 지시선 — 빨간 고리에서 목록 쪽으로 선이 그려져요 */

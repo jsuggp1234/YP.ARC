@@ -1654,15 +1654,11 @@ const SITE = {
         }
       },
       {
-        heading: "One Kit, Four Modes",
-        text: "Each mode is the same columns doing more as more people gather: what is lit, who it needs, when it runs. Every mode keeps the light at residents' windows at or below 10 lx, the limit for residential zones.",
-        images: [
-          {
-            src: "assets/img/smart-pixel/program.jpg",
-            caption: "CPTED, column, wall, space — plan, axonometric, specification, hours and use",
-            r: 1.851
-          }
-        ]
+        heading: "One Kit, Four Modes", big: true,
+        text: "Each mode is the same columns doing more as more people gather — scroll from nobody to a group of four: what is lit, who it needs, when it runs. Every mode keeps the light at residents' windows at or below 10 lx, the limit for residential zones; after 23:00 only CPTED runs.",
+        // 핀 #141: 네 모드 단계 시뮬레이션(원본 05_program.ai, 글자·지시선 없이) — 그림 속 이름표와 사양은 사이트 글자
+        seq: {"kind":"frames","fade":true,"below":true,"r":3.2558,"steps":[{"src":"assets/img/smart-pixel/mode-0.jpg","t":"00 CPTED","s":"default state · nobody gathered","d":"Runs by itself from dusk to dawn: every pixel low, rising to 100 % as you pass. Used for the walk home from the station, a lit and watched corner at 2 am, and SOS — the cluster flashes.","k":[["People","none: runs by itself"],["Pixels lit","all, low"],["Output","20 % → 100 % as you pass"],["Colour","2700 K warm white"],["Sensors","radar in the column head"],["Alarm","flashes on an Ansimi app SOS"],["Runs","dusk to dawn"]],"tags":[[74.5,37.4,"radar in the head\nbrightens on approach","","nl w1"],[84.2,51.1,"20 %\nthe rest of the night","","nl w1"],[42.5,64.2,"100 %\nas you pass","r","nl w1"],[1.5,4,"Plan","","m"],[36,4,"Axonometric","","m"]]},{"src":"assets/img/smart-pixel/mode-1.jpg","t":"01 Column","s":"point · 1 person","d":"One person checks in and the pixel next to them lights up. For waiting for someone, a short phone-free talk, walking the dog.","k":[["People","1, checked in on site"],["Pixels lit","1, next to you"],["Output","100 %"],["Colour","2700–4000 K, user set"],["Check-in","Bluetooth, within 3 m"],["Hold","while you stay, 10 min after"],["Runs","18:00–24:00"]],"tags":[[53.1,37.8,"head: Bluetooth + radar\naluminium, H 160","r","nl w1"],[51.3,68.1,"ø150 diffuser tube\npolycarbonate, LED inside","r","nl w1"],[77.6,91.3,"socket ø300\npower, data, anchor","","nl w1"],[1.5,4,"Plan","","m"],[36,4,"Axonometric","","m"]]},{"src":"assets/img/smart-pixel/mode-2.jpg","t":"02 Wall","s":"line · 2+ people","d":"Two neighbouring pixels pull a mesh screen between them. A neighbourhood film night, kids' drawings on the screen, a quiet backdrop for a stall.","k":[["People","2+, at neighbouring pixels"],["Pixels lit","2 + mesh screen"],["Screen","2.35 × 1.90 m, pulled by hand"],["Image","edge-lit, or projector in head"],["Set-up","unroll, clip to the next column"],["Sound","none"],["Runs","18:00–22:00"]],"tags":[[73.8,34.4,"mesh screen 2.35 × 1.90 m\nrolled inside the column","","nl w1"],[44.6,64.7,"clip\nto the next column","r","nl w1"],[1.5,4,"Plan","","m"],[36,4,"Axonometric","","m"]]},{"src":"assets/img/smart-pixel/mode-3.jpg","t":"03 Space","s":"volume · 4+ people","d":"Four corners of a cell light up under a string-light canopy, with a table and stools from the furniture box. A neighbour dinner, a study circle, the night-market table.","k":[["People","4+, one booking in the app"],["Pixels lit","4 corners of a cell"],["Canopy","2.5 × 2.5 m string lights, H 2.4 m"],["Furniture","box: 1 table, 4 stools"],["Set-up","15 min, by the group"],["Return","pack the box to sign out"],["Runs","18:00–22:00, Fri–Sat to 23:00"]],"tags":[[80.6,16.7,"string-light canopy\n2.5 × 2.5 m, from the heads","","nl w1"],[82,76.1,"furniture box\ntable + 4 stools","","nl w1"],[1.5,4,"Plan","","m"],[36,4,"Axonometric","","m"]]}]},
+        images: []
       },
       {
         heading: "Under the Corridor at 21:00", big: true,
