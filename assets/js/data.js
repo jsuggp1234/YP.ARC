@@ -131,6 +131,10 @@ const SITE = {
       ["metaverse-church","assets/img/metaverse-church/concept-twin-stack.jpg",1.068],
       ["metaverse-church","assets/img/metaverse-church/concept-sync.jpg",1.044],
       ["metaverse-church","assets/img/metaverse-church/module-kit.jpg",1.073],
+      ["la-junita","assets/img/la-junita/aerial.jpg",1.577],
+      ["la-junita","assets/img/la-junita/exterior-2.jpg",1.577],
+      ["la-junita","assets/img/la-junita/plan-lower.jpg",1.391],
+      ["la-junita","assets/img/la-junita/interior-1.jpg",1.502]
     ],
   },
   updated: "2026.11.20",
@@ -1517,6 +1521,34 @@ const SITE = {
         r: 1.414
       }
     ]
+  },
+  // 라주니타 (2026-11-22 추가) — 원본: portfolio-source/라주니타. 글은 패널(.ai)의 설명문에서 옮겼어요.
+  // 확인 필요: year(원본 파일 날짜 2025.03 기준 추정) · studio · 대지 위치 · 팀 — 사용자에게 받으면 채우기
+  {
+    slug: "la-junita",
+    title: "La Junita",
+    titleKo: "라주니타 — 강을 향해 경사를 따라 흐르는 집",
+    subtitle: "A house for a family of four on a slope above the river — masses that step down the ground, each one turned to the water",
+    type: "House",
+    year: "2025",
+    studio: "",
+    award: "",
+    program: "단독주택 (4인 가족 + 손님)",
+    site: "Los Dorados Avenue",
+    area: "",
+    team: "",
+    tools: "",
+    cover: "assets/img/la-junita/aerial.jpg",
+    coverCaption: "Aerial view — the masses stepping down toward the river",
+    summary:
+      "A home is more than a shelter; it is where life unfolds and memories are made. Designed for a family of four while welcoming guests with warmth and privacy, the house steps down a slope toward the river — open to natural light, with seamless passages between indoors and outdoors.",
+    sections: [
+      { heading: "Masses on the Slope", text: "The masses were first laid along an axis that flows down the slope. Those running east to west were shifted south so none overlaps and every room gets daylight, and each mass along the slope opens to a view of the river. The land left over became a courtyard, keeping as many of the existing trees as possible.", images: [{ src: "assets/img/la-junita/site-plan.jpg", caption: "Site plan", r: 1.42 }] },
+      { heading: "Entrance Level", text: "The main entrance sits on the east side, reached by car and on foot. From the door the living room opens to the river, while a corridor leads to two guest rooms with terraces — the guest wing stays apart, so the family keeps its privacy.", images: [{ src: "assets/img/la-junita/plan-upper.jpg", caption: "Entrance level plan", r: 1.391, notes: [["01", "Guest lounge", "Living room at the door, facing the river"], ["02", "Open lounge", "Double-height void over the lower lounge"], ["03", "Guest rooms", "Two rooms with their own terraces"], ["04", "Multiroom · bedrooms", "Children's rooms above the stand"], ["05", "Parking", "Vehicle and pedestrian access from Los Dorados Avenue"]] }] },
+      { heading: "Lower Level", text: "A few steps down, a second living room connects to the two children's rooms and a bathroom. An open void with a stand and stair brings the family together, and a loft above the master bedroom adds variety. The living room has glass on three sides for light and river views; large openings help passive heating, and a partition wall hides the utilities. At the lowest point it is the house's final destination.", images: [{ src: "assets/img/la-junita/plan-lower.jpg", caption: "Lower level plan", r: 1.391, notes: [["01", "Living room", "Glass on three sides toward the river"], ["02", "Music hall", "Beside the open lounge"], ["03", "Master bedroom", "With a loft above"], ["04", "Bedrooms", "Two children's rooms"], ["05", "Infinity pool", "Extending from the living room"], ["06", "Outdoor lounge · garden", "Sunken lounge at the pool–garden junction"]] }] },
+      { heading: "Materials", text: "Stone, brick, steel, glass and wood, balanced between the modern and the natural. Stone and brick ground the house; glass lets in light and the river; steel carries the open spaces; wood brings warmth inside. Outside, the pool extends from the living room toward the river, and a sunken lounge sits where the pool meets the garden.", images: [{ src: "assets/img/la-junita/axo.jpg", caption: "Exploded axonometric", r: 1.159, notes: [["01", "Roof", "Flat roof, gravel, steel edge fascia"], ["02", "Brick", "Dark clay brick, running bond"], ["03", "Glazing", "Floor-to-ceiling low-E glass, slim steel frames"], ["04", "Floors", "Terrazzo in kids and guest zones, oak in the living zone"], ["05", "Pool", "Infinity pool, mosaic tile, stone coping"], ["06", "Garden", "Terraced lawn steps, native planting"]] }] },
+      { heading: "Scenes", text: "The house from the garden and the river side, and the living spaces inside.", images: [{ src: "assets/img/la-junita/exterior-1.jpg", caption: "Exterior", r: 1.577 }, { src: "assets/img/la-junita/exterior-2.jpg", caption: "Pool and garden", r: 1.577 }, { src: "assets/img/la-junita/interior-1.jpg", caption: "Living room", r: 1.502 }, { src: "assets/img/la-junita/interior-2.jpg", caption: "Interior", r: 1.502 }], stack: true, scenes: true },
+    ],
   },
   {
     slug: "smart-pixel",
