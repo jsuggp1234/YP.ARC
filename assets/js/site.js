@@ -3598,6 +3598,13 @@
     });
     addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
   };
+  // 핀 #107: 분해 아이소 — 조각마다 clip-path로 오려 맨 뒤 조각 자리로 모였다가 펼쳐져요
+  const xpHtml = (im) => {
+    const { w, h, base, parts, k = 0.08 } = im.xp, P = (pts) => `polygon(${pts.map(([x, y]) => `${((x / w) * 100).toFixed(2)}% ${((y / h) * 100).toFixed(2)}%`).join(",")})`;
+    const end = parts[parts.length - 1][0], src = esc(im.src);
+    return `<div class="xp" data-xp>${base ? `<img src="${src}" alt="" style="clip-path:${P(base)}" decoding="async">` : ""}${parts.map((pt, i) => `<img src="${src}" alt="" decoding="async" style="clip-path:${P(pt)};z-index:${parts.length - i};--dx:${(((end[0] - pt[0][0]) / w) * 100 * (1 - k)).toFixed(2)}%;--dy:${(((end[1] - pt[0][1]) / h) * 100 * (1 - k)).toFixed(2)}%;--i:${i}">`).join("")}</div>`;
+  };
+  const xpInit = () => $$("[data-xp]").forEach((el) => { const io = new IntersectionObserver(([en]) => el.classList.toggle("on", en.isIntersecting), { threshold: 0.35 }); io.observe(el); });
   // 핀 #106: 전/후 비교 — 끌거나 ←→로 선을 옮기고, 처음 보일 때 한 번 저절로 쓸고 지나가요
   const baInit = () => $$("[data-ba]").forEach((el) => {
     let p = 50, anim = 0;
@@ -3803,7 +3810,7 @@
           + pts.map((p) => `<i class="ld-dot" style="left:${(p.x * m).toFixed(2)}%;top:${p.y}%"></i><span class="ld-lb" style="left:calc(${(m * 100).toFixed(2)}% + 3.6%);top:${p.ly.toFixed(2)}%"><b class="num">${esc(p.t)}</b>${esc(p.nm)}</span>`).join("");
       };
       const figure = (im, seed, w, h) => `
-        <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}>${im.lead ? `<div class="ldw" style="--lw:${im.lead}%">` : ""}<div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.lead ? ";width:calc(100% - var(--lw))" : im.w ? `;width:${im.w}` : ""}"` : ""}>${im.ba ? `<div class="ba" data-ba tabindex="0" role="slider" aria-label="Before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" style="--p:50%"><img src="${esc(im.ba[1])}" alt="After" decoding="async" draggable="false"><div class="ba-b"><img src="${esc(im.ba[0])}" alt="Before" decoding="async" draggable="false"></div><i class="ba-h" aria-hidden="true"></i><span class="ba-t ba-tl">${esc(im.baL ? im.baL[0] : "Before")}</span><span class="ba-t ba-tr">${esc(im.baL ? im.baL[1] : "After")}</span></div>` : im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.flow ? flowSvg(im.flow) : ""}${im.sun ? `<svg class="sun-ov" viewBox="0 0 2000 459" preserveAspectRatio="none" aria-hidden="true"><path class="sun-tr"/><rect class="sun-col" y="40" width="82" height="380"/><line class="sun-h"/><circle class="sun-dot" r="9"/></svg><span class="sun-lb"></span>` : ""}${im.reveal ? Array.from({ length: im.reveal }, (_, j) => `<i class="rv-c" style="--j:${j};--n:${im.reveal}" aria-hidden="true"></i>`).join("") : ""}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}${im.lead && /\bpt\b/.test(`${al} ${k}`) ? " ld-alt" : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>${im.lead ? leadHtml(im) + "</div>" : ""}
+        <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}>${im.lead ? `<div class="ldw" style="--lw:${im.lead}%">` : ""}<div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.lead ? ";width:calc(100% - var(--lw))" : im.w ? `;width:${im.w}` : ""}"` : ""}>${im.xp ? xpHtml(im) : im.ba ? `<div class="ba" data-ba tabindex="0" role="slider" aria-label="Before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" style="--p:50%"><img src="${esc(im.ba[1])}" alt="After" decoding="async" draggable="false"><div class="ba-b"><img src="${esc(im.ba[0])}" alt="Before" decoding="async" draggable="false"></div><i class="ba-h" aria-hidden="true"></i><span class="ba-t ba-tl">${esc(im.baL ? im.baL[0] : "Before")}</span><span class="ba-t ba-tr">${esc(im.baL ? im.baL[1] : "After")}</span></div>` : im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.flow ? flowSvg(im.flow) : ""}${im.sun ? `<svg class="sun-ov" viewBox="0 0 2000 459" preserveAspectRatio="none" aria-hidden="true"><path class="sun-tr"/><rect class="sun-col" y="40" width="82" height="380"/><line class="sun-h"/><circle class="sun-dot" r="9"/></svg><span class="sun-lb"></span>` : ""}${im.reveal ? Array.from({ length: im.reveal }, (_, j) => `<i class="rv-c" style="--j:${j};--n:${im.reveal}" aria-hidden="true"></i>`).join("") : ""}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}${im.lead && /\bpt\b/.test(`${al} ${k}`) ? " ld-alt" : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>${im.lead ? leadHtml(im) + "</div>" : ""}
         ${im.notes ? `<ol class="fnotes${im.ln ? " ld-m" : ""}" style="--n:${im.nc || im.notes.length}${im.w ? `;width:${im.w}` : ""}">${im.notes.map(([n, t, d]) => `<li><b><span class="mid num">${esc(n)}</span> ${esc(t)}</b>${d ? `<span class="mid">${esc(d)}</span>` : ""}</li>`).join("")}</ol>` : ""}
         <figcaption class="figcap mono"><span>${esc(capOf(im))}</span></figcaption></figure>`;
       // 렌더 장면 줄 나누기: 가로(r ≥ 1.3)는 한 줄 한 장, 이어지는 세로·정사각은 두 장씩(남는 셋은 세 장 한 줄)
@@ -3868,7 +3875,7 @@
         </article>`;
 
       simInit(p);
-      baInit(); seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit(); sunInit();
+      baInit(); xpInit(); seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit(); sunInit();
       if (window.TideWidgets) $$("[data-tw]").forEach((w) => TideWidgets.mount(w, w.dataset.tw));
       if (window.MVSims) $$("[data-mv]").forEach((w) => MVSims.mount(w, w.dataset.mv));
       // 목차 + 현재 위치 표시
