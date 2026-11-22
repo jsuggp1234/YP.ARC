@@ -1784,3 +1784,14 @@ html.ct-lock .ct a, html.ct-lock .ct button, html.ct-lock .ct [data-ct-close], h
 }
 /* 핀 #21: Six Joints 다크 모드 — 그림 바탕이 페이지 배경(#0d0d0d)과 똑같이 */
 :root[data-mode="dark"] .kj-it img, :root[data-mode="dark"] .kj-key img { filter: invert(.95) hue-rotate(180deg); }
+/* 핀 #30(2026-11-22, #18 다시): Seasons 글은 사진 완전 아래로 — 사진은 가운데 크게, 아래 줄에 왼쪽 계절·오른쪽 장소 7칸, 지금 장소 설명은 그 아래 한 줄 */
+@media (min-width: 761px) {
+  .ssn-pin { height: calc(100vh - 128px); grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; align-items: center; gap: 20px; }
+  .ssn-stage { width: min(100%, calc((100vh - 310px) * 1.778)); justify-self: center; align-self: center; }
+  .ssn-side { align-self: end; padding-bottom: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.6fr); gap: 0 32px; align-items: start; }
+  .ssn-side .seq-ctr, .ssn-side .ssn-ks, .ssn-side .seq-bar { grid-column: 1; }
+  .ssn-side .ssn-ks { margin-bottom: 10px; }
+  .ssn-side ol { grid-column: 2; grid-row: 1 / span 3; position: relative; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0 10px; padding-bottom: 3.2em; }
+  .ssn-side li { grid-template-columns: 1fr; gap: 2px; padding: 7px 0 0; }
+  .ssn-side li.on p { position: absolute; left: 0; right: 0; bottom: 0; margin: 0; max-width: 60em; }
+}
