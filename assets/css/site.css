@@ -2309,3 +2309,10 @@ html.cg-open { overflow: hidden; }
 
 /* 핀 #121: 섹션 옵션 al(위 그림의 가로/세로 비율) — 위 큰 그림(.figs .media: 폭 min(100%, 84vh×r), 가운데)의 왼쪽 선에 시작점을 맞춰요 */
 .cx-body .pj-sec[style*="--al"] { padding-left: max(0px, calc((100% - 84vh * var(--al)) / 2)); }
+
+/* 핀 #112: 단면을 평면 바로 아래, 평면 가로 폭에 맞춰(그림 오른쪽 6.6%는 수위 눈금 칸이라 그만큼 더 넓게) 같은 세로선에서 시작 → 그 아래 Play tide */
+@media (min-width: 761px) {
+  .pj-sec .sim { --pw: min(100%, calc((100svh - 220px) * 1.462)); grid-template-areas: "v" "s1" "u" "d" "s2"; }
+  .pj-sec .sim > .sim-sec:nth-of-type(1) { width: min(calc(100% - (100% - var(--pw)) / 2), calc(var(--pw) / 0.934)) !important; margin: 10px 0 0 calc((100% - var(--pw)) / 2); justify-self: start; }
+  .pj-sec .sim > .sim-ui, .pj-sec .sim > .sim-d { width: var(--pw); justify-self: center; }
+}
