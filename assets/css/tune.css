@@ -129,6 +129,14 @@ html[data-slug="the-tree-house"] body[data-page="project"] #s6 > div.figs.n1:nth
 html[data-slug="re-tide"] body[data-page="project"] #s6 > div.figs.n1:nth-of-type(2) > figure > div.media {
   width: 100% !important;
 }
+/* works · img “Samgakji Residential Project” */
+body[data-page="works"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(5) > div.media > div.mz > img {
+  scale: 0.89 !important;
+}
+/* works · media */
+body[data-page="works"] #cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(5) > div.media {
+  overflow: hidden !important;
+}
 
 @media (min-width: 761px) {
   /* home · cs-track “RE:TIDE MOTORISM TIM(TEAM) W” */

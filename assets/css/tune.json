@@ -391,5 +391,27 @@
       "width": "100%"
     },
     "label": "project#re-tide · media"
+  },
+  {
+    "id": "bvs0x9n",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(5) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.89"
+    },
+    "label": "works · img “Samgakji Residential Project”"
+  },
+  {
+    "id": "o698q62",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track > div.cs-set:nth-of-type(2) > a.cs-card:nth-of-type(5) > div.media",
+    "props": {
+      "overflow": "hidden"
+    },
+    "label": "works · media"
   }
 ]
