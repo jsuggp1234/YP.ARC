@@ -28,7 +28,7 @@
 ## 구조
 | 경로 | 역할 |
 |---|---|
-| `index.html` | 첫 화면 (핀 #35, A-000): 메뉴창과 같은 모양 — 회색 바탕에 페이지 축소판 카드 yeop(about) · philosophy · studio(works) · contact — 머리글자 Y·P·S로 YP.STUDIO처럼 읽히게(2026-11-22). 페이지 key는 works/about 그대로, 보이는 이름만 studio/yeop (`render.home`, 카드 글은 `SITE.start`, 축소판은 `miniHtml()`). philosophy·contact 카드에는 글자 모듈 모션아트(`stArt()`). 휠·끌기·← →로 이동, 누르면 화면 전체로 커진 뒤 이동, contact는 연락 패널 |
+| `index.html` | 첫 화면 (핀 #35, A-000): 메뉴창과 같은 모양 — 회색 바탕에 페이지 축소판 카드 yeop(about) · philosophy · studio(works) · contact — 머리글자 Y·P·S로 YP.STUDIO처럼 읽히게(2026-11-22). 페이지 key는 works/about 그대로, 보이는 이름만 studio/yeop. 카드엔 네모 모듈 글자(Y·P·S·@, `stArt()`)만 있고 글씨 없음, 흰 바탕 위 반투명 유리 카드. 누르면 모듈이 단어(yeop·philosophy·studio·contact)로 이어지고(`TX.leave`), 다음 페이지에서 흩어져요(`TX.arrive`, sessionStorage `yp-tx`). contact는 철자 → 흩어지며 연락 패널. studio(works) 띠는 초당 40px로 저절로 흐르고(`caseStrip()` DRIFT), 사진에 올리면 멈춤 (`render.home`, 카드 글은 `SITE.start`, 축소판은 `miniHtml()`). philosophy·contact 카드에는 글자 모듈 모션아트(`stArt()`). 휠·끌기·← →로 이동, 누르면 화면 전체로 커진 뒤 이동, contact는 연락 패널 |
 | `works.html` | Works (A-010): 예전 홈 — 작품 카드 가로 무한 띠 + 첫 방문 로딩 인트로 (`render.works`). 메뉴의 works 카드가 여기로 |
 | `philosophy.html` | Philosophy (A-001): YP.STUDIO 모션 아트(`intro()`) → 설계 철학 문장 → 세 키워드 (`render.philosophy`) |
 | `projects.html` | 작품 이름 목록 index (올리면 사진이 커서를 따라옴, A-100) |

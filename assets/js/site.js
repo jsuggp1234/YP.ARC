@@ -179,6 +179,7 @@
     // 캡처 단계에서 먼저 잡아서, 페이지 전환·스크롤 이동보다 앞서 패널을 열어요
     D.addEventListener("click", (e) => {
       const a = e.target.closest && e.target.closest("[data-contact]");
+      if (a && a.closest(".st-mn") && !REDUCED) return; // 첫 화면 contact 카드는 @ → contact 철자 모션이 끝난 뒤 열어요
       if (a) { e.preventDefault(); open(); return; }
       if (e.target.closest && e.target.closest("[data-ct-close]")) { e.preventDefault(); close(); return; }
       const tab = e.target.closest && e.target.closest(".ct-tabs button");
@@ -822,7 +823,6 @@
     place();
     // 들어올 때: 카드가 오른쪽에서 차례로 미끄러져 들어와요 (메뉴 열림과 같은 움직임)
     if (!REDUCED) cards.forEach((c, i) => c.animate([{ translate: "160px 0", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1000, delay: 200 + i * 110, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
-    stBg($(".st-bg", m));
     $$(".mn-art", m).forEach((cv, i) => stArt(cv.closest(".mn-card"), cv, cv.dataset.g, REDUCED ? 0 : 700 + i * 160));
     m.addEventListener("pointerover", (e) => { const c = e.target.closest(".mn-card"); const i = c ? +c.dataset.i : -1; if (i !== hov && !busy) { hov = i; place(); } });
     m.addEventListener("pointerleave", () => { hov = -1; if (!busy) place(); });
@@ -846,15 +846,107 @@
     m.addEventListener("click", (e) => {
       const c = e.target.closest(".mn-card"); if (!c) return;
       if (moved || busy) { e.preventDefault(); e.stopPropagation(); return; }
-      if (c.hasAttribute("data-contact")) return;
+      if (c.hasAttribute("data-contact")) { // @ 조각이 밀리며 contact 철자가 완성되고, 흩어지면서 연락 패널이 열려요
+        const acv = c.querySelector(".mn-art"), w = (ST[+c.dataset.i] || {}).title || "contact";
+        if (REDUCED || !acv || !acv._mods) return;
+        e.preventDefault(); e.stopPropagation(); busy = true;
+        const src = acv._mods(); acv._hide(); m.classList.add("spell"); // 철자가 다른 카드와 겹치지 않게 카드들은 잠시 비켜요
+        TX.leave(w, src, false, ({ L, cvg }) => TX.dissolve(L, false, () => { busy = false; m.classList.remove("spell"); acv._show(); }, cvg));
+        setTimeout(() => { const b = $(".hdr [data-contact]") || $("[data-contact]:not(.mn-card)"); if (b) b.click(); }, 2050);
+        return;
+      }
       e.preventDefault(); e.stopPropagation();
       if (c.getAttribute("href") === "works.html") ss.set("yp-hi", "1");
       const go2 = () => location.assign(c.href);
       if (REDUCED) return go2();
       busy = true; c.style.zIndex = 2; c.classList.add("solid"); // 커지면서 불투명한 흰 종이로 → 다음 페이지와 그대로 이어져요
-      if (c.querySelector(".st-hide")) { c.classList.add("go"); const cv = c.querySelector(".mn-art"); if (cv && cv._scatter) cv._scatter(); } // studio: S → 작품 사진 줄
-      c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath }, FULL], { duration: 900, easing: EASE_IO, fill: "forwards" }).finished.then(go2, go2);
+      const studio = !!c.querySelector(".st-hide"); if (studio) c.classList.add("go"); // studio: 작품 사진 줄이 드러나요
+      const cv = c.querySelector(".mn-art"), word = (ST[+c.dataset.i] || {}).title;
+      const grow = c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath }, FULL], { duration: 900, easing: EASE_IO, fill: "forwards" }).finished.catch(() => {});
+      // 글자 모듈 → 단어: P 조각들이 왼쪽으로 밀리며 philosophy 철자가 이어서 완성돼요. 다음 페이지가 같은 자리에서 이어받아요
+      const spell = cv && cv._mods && word ? new Promise((res) => { const src = cv._mods(); cv._hide(); TX.leave(word, src, studio, res); }) : Promise.resolve();
+      Promise.all([grow, spell]).then(() => { if (cv && word) ss.set("yp-tx", JSON.stringify({ word, t: Date.now(), bg: !studio, top: studio })); go2(); });
     }, true);
+  };
+  // ---------- 카드 → 페이지 넘김 (2026-11-22): 글자 모듈이 단어로 이어지고, 다음 페이지에서 흩어져요 ----------
+  const TX = {
+    FONT: "Helvetica, Arial, sans-serif", // 두 페이지에서 똑같은 모양이 나오게 시스템 글꼴로
+    box(top) {
+      const vw = innerWidth, vh = innerHeight, e = parseFloat(getComputedStyle(HTML).getPropertyValue("--g4-e")) || 16, hd = hdrH();
+      if (top) { const h = Math.min(vh * 0.15, 160); return [e, hd + vh * 0.03, vw - 2 * e, h]; } // studio: 사진 줄 위
+      const h = Math.min(vh * 0.3, vw * 0.2, 300); return [e, (vh - h) / 2, vw - 2 * e, h];
+    },
+    layout(word, top) {
+      const [bx, by, bw, bh] = this.box(top), vw = Math.ceil(innerWidth), vh = Math.ceil(innerHeight);
+      const o = D.createElement("canvas"); o.width = vw; o.height = vh; const og = o.getContext("2d", { willReadFrequently: true });
+      og.font = `700 100px ${this.FONT}`; const m = og.measureText(word);
+      const asc = m.actualBoundingBoxAscent || 74, desc = m.actualBoundingBoxDescent || 22, fs = Math.min((100 * bw) / m.width, (100 * bh) / (asc + desc));
+      og.font = `700 ${fs}px ${this.FONT}`; og.textBaseline = "alphabetic"; og.fillStyle = "#000";
+      og.fillText(word, bx, by + (bh - ((asc + desc) * fs) / 100) / 2 + (asc * fs) / 100);
+      const C = Math.max(4, Math.round(fs / 19)), d = og.getImageData(0, 0, vw, vh).data, out = [];
+      for (let y = by - C * 2; y < by + bh + C * 2; y += C) for (let x = bx; x < bx + bw + C; x += C) {
+        const cx = (x + C / 2) | 0, cy = (y + C / 2) | 0;
+        if (cx >= 0 && cy >= 0 && cx < vw && cy < vh && d[(cy * vw + cx) * 4 + 3] >= 140) out.push({ x: x + C / 2, y: y + C / 2 });
+      }
+      return { mods: out, C };
+    },
+    canvas() {
+      const cv = D.createElement("canvas"), dpr = Math.min(2, devicePixelRatio || 1);
+      cv.className = "tx-cv"; cv.setAttribute("aria-hidden", "true"); BODY.appendChild(cv);
+      cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return [cv, g];
+    },
+    col(v, f) { return getComputedStyle(HTML).getPropertyValue(v).trim() || f; },
+    ez: (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2),
+    // 떠나기: 카드의 글자 모듈(src, 화면 좌표)이 단어 첫 글자 자리로 밀려가고, 나머지 글자가 왼쪽부터 차례로 생겨요
+    leave(word, src, top, done, keep) {
+      const L = this.layout(word, top), T = L.mods.slice().sort((a, b) => a.x - b.x || a.y - b.y), S = src.slice().sort((a, b) => a.x - b.x || a.y - b.y);
+      const n = Math.min(S.length, T.length), x0 = T[0] ? T[0].x : 0, x1 = T.length ? T[T.length - 1].x : 1, xn = T[Math.max(0, n - 1)] ? T[Math.max(0, n - 1)].x : x0;
+      const P = T.map((t, i) => i < n ? { f: S[i], t, d: (i / n) * 0.18, k: 0 } : { f: null, t, d: 0.5 + ((t.x - xn) / Math.max(1, x1 - xn)) * 0.75, k: 1 });
+      const extra = S.slice(n).map((f, i) => ({ f, t: T[(i * 7) % Math.max(1, T.length)] || f, d: 0, k: 2 })); // 남는 조각은 단어 속으로 스며들며 사라져요
+      const all = P.concat(extra), [cv, g] = this.canvas(), ink = this.col("--ink", "#111"), sz = L.C - 1, t0 = performance.now(), END = 1.75;
+      const frame = (now) => {
+        const t = (now - t0) / 1000; g.clearRect(0, 0, innerWidth, innerHeight); g.fillStyle = ink;
+        for (const p of all) {
+          if (p.k === 1) { // 새 글자: 왼쪽 이웃에서 밀려 나오듯 미끄러져 들어와요
+            const q = this.ez((t - p.d) / 0.5); if (q <= 0) continue;
+            const s = sz * (0.4 + 0.6 * q); g.globalAlpha = q; g.fillRect(p.t.x - (1 - q) * L.C * 5 - s / 2, p.t.y - s / 2, s, s); continue;
+          }
+          const q = this.ez((t - p.d) / 0.95), x = p.f.x + (p.t.x - p.f.x) * q, y = p.f.y + (p.t.y - p.f.y) * q, s = p.f.s + (sz - p.f.s) * q, r = (p.f.r || 0) * (1 - q);
+          g.globalAlpha = p.k === 2 ? 1 - q : 1;
+          if (r > 0.01) { g.save(); g.translate(x, y); g.rotate(r); g.fillRect(-s / 2, -s / 2, s, s); g.restore(); } else g.fillRect(x - s / 2, y - s / 2, s, s);
+        }
+        g.globalAlpha = 1;
+        if (t < END) requestAnimationFrame(frame); else { if (!keep) { /* 페이지가 바뀔 때까지 마지막 장면 유지 */ } done({ L, cvg: [cv, g] }); }
+      };
+      requestAnimationFrame(frame);
+    },
+    // 도착: 떠난 페이지의 마지막 장면(흰 바탕 + 단어)을 그대로 그린 뒤, 단어가 왼쪽부터 위로 흩어지며 페이지가 드러나요
+    arrive() {
+      let st = null; try { st = JSON.parse(ss.get("yp-tx") || "null"); } catch (e) {}
+      if (!st) return; ss.del("yp-tx");
+      if (Date.now() - st.t > 6000 || REDUCED || !st.word) return;
+      this.dissolve(this.layout(st.word, st.top), st.bg);
+    },
+    // 흩어지기: 단어 모듈이 왼쪽부터 위로 날아가며 사라져요 (bg면 흰 종이도 함께 걷혀요)
+    dissolve(L, withBg, done, cvg) {
+      const [cv, g] = cvg || this.canvas(), ink = this.col("--ink", "#111"), bg = this.col("--bg", "#fff"), sz = L.C - 1, t0 = performance.now(), st = { bg: withBg };
+      const W = innerWidth, H = innerHeight, x0 = L.mods.length ? Math.min(...L.mods.map((m) => m.x)) : 0, x1 = L.mods.length ? Math.max(...L.mods.map((m) => m.x)) : 1;
+      L.mods.forEach((m) => { const h = Math.sin(m.x * 12.9898 + m.y * 78.233) * 43758.5453; m.d = 0.12 + ((m.x - x0) / Math.max(1, x1 - x0)) * 0.45 + (h - Math.floor(h)) * 0.15; });
+      const frame = (now) => {
+        const t = (now - t0) / 1000; g.clearRect(0, 0, W, H);
+        if (st.bg) { g.globalAlpha = 1 - this.ez((t - 0.35) / 0.7); g.fillStyle = bg; g.fillRect(0, 0, W, H); }
+        g.fillStyle = ink; let live = false;
+        for (const m of L.mods) {
+          const q = this.ez((t - m.d) / 0.75); if (q < 1) live = true; if (q >= 1) continue;
+          const s = sz * (1 - q * 0.6); g.globalAlpha = 1 - q;
+          g.save(); g.translate(m.x, m.y - q * H * 0.22); g.rotate(q * Math.PI / 4); g.fillRect(-s / 2, -s / 2, s, s); g.restore();
+        }
+        g.globalAlpha = 1;
+        if (live || t < 1.1) requestAnimationFrame(frame); else { cv.remove(); if (done) done(); }
+      };
+      requestAnimationFrame(frame);
+    },
   };
   // 첫 화면 배경: 큰 회색 모듈 몇 개가 아주 천천히 떠다녀요. 반투명 카드 너머로 흐릿하게 비쳐 재질이 느껴지게
   function stBg(cv) {
@@ -871,7 +963,7 @@
       }
       if (!REDUCED && !D.hidden) raf = requestAnimationFrame(frame);
     };
-    const paint = () => { const dk = HTML.dataset.mode === "dark"; col = dk ? "#262626" : "#bdbdbd"; hi = dk ? "#141414" : "#ffffff"; // 다크: 밝은 판 대신 아주 옅은 회색 if (!raf) raf = requestAnimationFrame(frame); };
+    const paint = () => { const dk = HTML.dataset.mode === "dark"; col = dk ? "#262626" : "#bdbdbd"; hi = dk ? "#141414" : "#ffffff"; if (!raf) raf = requestAnimationFrame(frame); }; // 다크: 밝은 판 대신 아주 옅은 회색
     addEventListener("resize", size); D.addEventListener("visibilitychange", paint); D.addEventListener("yp:theme", paint);
     size(); paint();
   }
@@ -882,7 +974,7 @@
   //  · 마우스: 가까운 모듈이 비켜서며 45° 돌고, 블록처럼 들려 옆면(그림자)이 보여요. 들어온 자리에서 물결이 퍼져요
   function stArt(card, cv, glyph, delay) {
     const g = cv.getContext("2d");
-    let W = 0, H = 0, C = 6, mods = [], dots = [], box = [0, 0, 0, 0], mx = -1e4, my = -1e4, raf = 0, live = true, t0 = performance.now() + delay, sc = 0, rip = null;
+    let W = 0, H = 0, C = 6, mods = [], dots = [], box = [0, 0, 0, 0], mx = -1e4, my = -1e4, raf = 0, live = true, t0 = performance.now() + delay, sc = 0, rip = null, gone = false;
     let ink = "#111", line = "#ddd", mid = "#888";
     const build = () => {
       const dpr = Math.min(2, devicePixelRatio || 1);
@@ -910,6 +1002,7 @@
     const back = (x) => { if (x <= 0) return 0; if (x >= 1) return 1; const c1 = 1.4, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }; // 살짝 넘쳤다 앉기
     const frame = (now) => {
       raf = 0; if (!W) return;
+      if (gone) { g.clearRect(0, 0, W, H); return; } // 넘김 캔버스가 모듈을 이어받았어요
       const t = (now - t0) / 1000; let busy = live && !REDUCED; // 화면에 보이는 동안은 빛·뒤집기가 계속 돌아요
       g.clearRect(0, 0, W, H);
       // 1) 모눈 점 + 작도선
@@ -965,6 +1058,11 @@
     card.addEventListener("pointerenter", (e) => { const [x, y] = pos(e); rip = { x, y, t: performance.now() }; kick(); });
     card.addEventListener("pointerleave", () => { mx = my = -1e4; kick(); });
     cv._scatter = () => { sc = performance.now(); kick(); };
+    // 넘김용: 지금 보이는 모듈의 화면 좌표(카드 축소까지 계산)와 크기
+    cv._mods = () => { const b = cv.getBoundingClientRect(), k = b.width / (W || 1), t = (performance.now() - t0) / 1000;
+      return mods.filter((m) => t - m.d > 0.3).map((m) => ({ x: b.left + (m.x + m.ox) * k, y: b.top + (m.y + m.oy) * k, s: (C - 1) * k, r: m.r })); };
+    cv._hide = () => { gone = true; kick(); };
+    cv._show = () => { gone = false; t0 = performance.now(); kick(); }; // 다시 조립돼요
     new IntersectionObserver(([e]) => { live = e.isIntersecting && !D.hidden; kick(); }).observe(cv);
     D.addEventListener("visibilitychange", () => { live = !D.hidden; kick(); });
     D.addEventListener("yp:theme", paint);
@@ -1022,13 +1120,19 @@
   function caseStrip() {
     const sec = $(".cs"), track = $(".cs-track", sec), sets = $$(".cs-set", track);
     let W = 1, x = 0, tx = 0, px = 0, sc = 1, raf = 0, live = true, items = [];
+    // 저절로 흐르기 (2026-11-22 요청): 초당 DRIFT px, dir = 마지막으로 굴린 방향, hov = 사진 위에 있으면 멈춤
+    const DRIFT = 40; let spd = 0, dir = 1, hov = false, last = 0;
+    const still = () => REDUCED || hov || down || $("#menu.open") || HTML.classList.contains("hi-on") || HTML.classList.contains("ct-lock");
     const measure = () => {
       W = sets[1].offsetLeft - sets[0].offsetLeft || 1;
       items = $$(".cs-card", track).map((c) => ({ c, img: $(".mz", c), l: c.offsetLeft, w: c.offsetWidth }));
     };
     const wrap = (v) => ((v % W) + W) % W;
-    const frame = () => {
+    const frame = (now) => {
       raf = 0;
+      const dt = last && now ? Math.min(0.05, (now - last) / 1000) : 0; last = now || 0;
+      spd += ((still() ? 0 : DRIFT * dir) - spd) * Math.min(1, dt * 2.5); // 부드럽게 출발·정지
+      if (Math.abs(spd) > 0.01) tx += spd * dt;
       x += REDUCED ? tx - x : (tx - x) * 0.09;
       const v = x - px; px = x;
       const goal = REDUCED ? 1 : 1 - Math.min(Math.abs(v) / 30, 1) * 0.1;
@@ -1044,7 +1148,7 @@
           it.img.style.transform = `translate3d(${(((cx - vw / 2) / vw) * -6).toFixed(2)}%,0,0) scale(1.15)`;
         }
       }
-      if (live && (Math.abs(tx - x) > 0.1 || Math.abs(sc - 1) > 0.001)) raf = requestAnimationFrame(frame);
+      if (live && (!REDUCED || Math.abs(tx - x) > 0.1 || Math.abs(sc - 1) > 0.001)) raf = requestAnimationFrame(frame); else last = 0;
     };
     const kick = () => { if (!raf && live) raf = requestAnimationFrame(frame); };
     // 휠: 세로로 굴려도 옆으로 흘러요(이 화면은 세로 스크롤이 없어요)
@@ -1052,11 +1156,14 @@
       if (e.target.closest && e.target.closest(".ct, #menu")) return;
       e.preventDefault();
       if ($("#menu.open") || HTML.classList.contains("hi-on") || HTML.classList.contains("ct-lock")) return;
-      tx += (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * (e.deltaMode === 1 ? 32 : 1);
+      const dv = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * (e.deltaMode === 1 ? 32 : 1);
+      tx += dv; if (Math.abs(dv) > 2) dir = Math.sign(dv);
       kick();
     }, { passive: false });
     // 끌기: 5px 넘게 움직였을 때만 끌기로 보고, 그보다 짧으면 카드 링크가 그대로 눌려요
     let down = null, moved = false;
+    sec.addEventListener("pointerover", (e) => { hov = !!(e.target.closest && e.target.closest(".cs-card .media")) && e.pointerType !== "touch"; });
+    sec.addEventListener("pointerleave", () => { hov = false; });
     sec.addEventListener("pointerdown", (e) => { if (e.button || HTML.classList.contains("hi-on")) return; down = { x: e.clientX, tx, id: e.pointerId }; moved = false; });
     sec.addEventListener("pointermove", (e) => {
       if (!down) return;
@@ -1064,7 +1171,7 @@
       if (!moved && Math.abs(dx) > 5) { moved = true; sec.setPointerCapture(down.id); sec.classList.add("drag"); }
       if (moved) { tx = down.tx - dx * 1.4; kick(); }
     });
-    const up = () => { down = null; sec.classList.remove("drag"); };
+    const up = () => { if (down && moved) { const d = tx - down.tx; if (Math.abs(d) > 5) dir = Math.sign(d); } down = null; sec.classList.remove("drag"); };
     sec.addEventListener("pointerup", up); sec.addEventListener("pointercancel", up);
     sec.addEventListener("click", (e) => { if (moved) { e.preventDefault(); moved = false; } }, true);
     // 키보드: ← → 로 한 칸씩
@@ -1074,11 +1181,11 @@
     });
     // 링크에 탭으로 들어가면 그 카드가 보이게
     sec.addEventListener("focusin", (e) => { const c = e.target.closest(".cs-card"); if (!c) return; const it = items.find((q) => q.c === c); if (it) { tx = it.l - sets[1].offsetLeft + W - 16; kick(); } });
-    D.addEventListener("visibilitychange", () => { live = !D.hidden; kick(); });
+    D.addEventListener("visibilitychange", () => { live = !D.hidden; last = 0; kick(); });
     addEventListener("resize", () => { measure(); kick(); });
     measure();
     $$("img", track).forEach((im) => im.complete || im.addEventListener("load", measure, { once: true }));
-    sc = 1; frame();
+    sc = 1; frame(); kick();
   }
 
   render.homeV1 = () => {
@@ -3269,6 +3376,7 @@
   links();
   utils();
   (render[PAGE] || render.home)();
+  TX.arrive(); // 첫 화면 카드에서 넘어왔으면 단어 모듈이 흩어지며 페이지가 드러나요
   chromeScroll();
   if (PAGE !== "project") { reveals(); parallax(); } else reveals($("footer"));
   if (showLoader && PAGE !== "home" && PAGE !== "works") loader(() => ready.fire());
