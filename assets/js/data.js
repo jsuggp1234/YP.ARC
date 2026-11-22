@@ -208,6 +208,7 @@ const SITE = {
       [3.38, 2.175, 0.22, 0.22, 0.18, 0.2]
     ],
     cover: "assets/img/re-tide/cover.jpg",
+    thumb: "assets/img/re-tide/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverCaption: "Twelve mounds, one tissue — pavilion and lookout tower in the rain", // 대표 이미지 아래 캡션
     summary:
       "Twice a day the sea at the Incheon Inner Port rises and falls by up to 9.62 m. As the port declines, the project reads the tip of its jetty as the frontline where the city meets that water. RE:TIDE hands this edge back from human time to the moon's: twelve mounds grow into one walkable tissue that the tide opens and closes again, twice a day and every fifteen days.",
@@ -502,6 +503,7 @@ const SITE = {
       [-0.15, 1.1, 0.28, 0.5, 2.95]
     ],
     cover: "assets/img/motorism/cover.jpg",
+    thumb: "assets/img/motorism/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverR: 2.034,
     coverPos: "28% 50%", // 잘려 보일 때 사진의 어느 부분을 보여줄지 (가로% 세로%) — 작을수록 사진이 오른쪽으로 밀려 왼쪽이 더 보여요
     coverCaption: "Stacked bowls on trumpet columns, from Yeonmujang-gil",
@@ -758,7 +760,7 @@ const SITE = {
       [1.05, 1.05, 0.4, 0.4, 0.2, 3.93]
     ],
     cover: "assets/img/timteam-work/cover.jpg",
-    thumb: "assets/img/timteam-work/card.jpg", // 카드·목록에 쓰는 이미지 (상세 페이지 맨 위는 cover)
+    thumb: "assets/img/timteam-work/card-frame.jpg", // 카드·목록에 쓰는 이미지 (상세 페이지 맨 위는 cover)
     coverCaption: "Glass floors over the timber arcade",
     summary:
       "Pangyo Techno Valley is a district of glass towers on a green edge. Sampyeong-dong 641 sits between the two and asks if an office can be built of timber and climb with the park. A 14-storey timber office: GLT frame and CLT slabs on a 3,500 grid around three cores, with 53 planted terraces rising to a roof garden at +61,000 over a timber arcade.",
@@ -1109,6 +1111,7 @@ const SITE = {
       [2.05, 1, 0.15, 0.25, 0.035, 1.2]
     ],
     cover: "assets/img/modular-o-housing/cover.jpg",
+    thumb: "assets/img/modular-o-housing/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverCaption: "The courtyard under the bridges",
     summary:
       "Most housing is built once and torn down whole. Modular O′ treats the home as a kit: steel frames that serve two lives over 100 years, cassettes and pods changed every 15 to 30. Factory-made modules on one 4,500 grid stack into four blocks around two yards, joined by bridges at 3F and 8F. Every node is pinned and bolted, so any part can be taken apart again.",
@@ -1197,6 +1200,7 @@ const SITE = {
       [2.105, 1.225, 0.173, 0.787, 0.04, 0.12, "box", -45]
     ],
     cover: "assets/img/samgakji-residential/guesthouse.jpg",
+    thumb: "assets/img/samgakji-residential/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverCaption: "Guesthouse on the commercial spine",
     coverR: 1.502, // 표지를 사진 비율 그대로 (핀 #158)
     summary: "A triangular parcel left over where the railway, the main road, the army base and Yongsan Park meet. Instead of the usual apartment complex that wipes the block and turns its back, the design keeps the old parcel lines, lets the surrounding streets run on through the site, and gives each edge the program it already faces — a tower toward the high-rise west, small stacked houses toward the old lanes, and a green road through the middle that everyone may walk.",
@@ -1949,6 +1953,7 @@ const SITE = {
       [2.91, 1.38, 0.035, 0.67, 0.035, 0.85]
     ],
     cover: "assets/img/campus-renovation/eng1-courtyard-winter.jpg",
+    thumb: "assets/img/campus-renovation/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverCaption: "Engineering No.1 Courtyard in winter — the central park under snow",
     coverR: 1.778,
     summary: "On SKKU's natural science campus, buildings that carry the university's history stand beside new ones that will make its future — but they do not meet. The proposal connects them through the corridor spaces between the engineering buildings: the scattered green spaces are gathered into one central park, a media facade turns the neglected streets into places to stop, and a bridge spans between the blocks so students can cross the whole campus on foot.",

@@ -1111,12 +1111,12 @@
   // 좌표는 원본 사진에 대한 비율(0–1). walk: 사람이 걷는 바닥 띠 [y, x0, x1, 사람 키]
   // 핀 #437: 대표사진에 마우스를 올리면 사용자가 만든 대표 영상이 자연스럽게 겹쳐 재생돼요 (원본: portfolio-source/대표사진 영상/)
   const CARD_FX = {
-    "re-tide/cover.jpg": { video: "assets/img/re-tide/card-loop.mp4" },
-    "modular-o-housing/cover.jpg": { video: "assets/img/modular-o-housing/card-loop.mp4" },
-    "campus-renovation/eng1-courtyard-winter.jpg": { video: "assets/img/campus-renovation/card-loop.mp4" },
-    "motorism/cover.jpg": { video: "assets/img/motorism/card-loop.mp4" },
-    "samgakji-residential/guesthouse.jpg": { video: "assets/img/samgakji-residential/card-loop.mp4" },
-    "timteam-work/card.jpg": { video: "assets/img/timteam-work/card-loop.mp4" },
+    "re-tide/card-frame.jpg": { video: "assets/img/re-tide/card-loop.mp4" },
+    "modular-o-housing/card-frame.jpg": { video: "assets/img/modular-o-housing/card-loop.mp4" },
+    "campus-renovation/card-frame.jpg": { video: "assets/img/campus-renovation/card-loop.mp4" },
+    "motorism/card-frame.jpg": { video: "assets/img/motorism/card-loop.mp4" },
+    "samgakji-residential/card-frame.jpg": { video: "assets/img/samgakji-residential/card-loop.mp4" },
+    "timteam-work/card-frame.jpg": { video: "assets/img/timteam-work/card-loop.mp4" },
     "metaverse-church/cover.jpg": { video: "assets/img/metaverse-church/card-loop.mp4" },
   };
   // 프로필: 사진 오른쪽 위 모서리를 원점으로 X·Y 축선이 그려지며 교차해요 (핀 #393)
@@ -1196,10 +1196,10 @@
         Object.assign(v, { muted: true, loop: true, playsInline: true, preload: "none", src: CARD_FX[key].video }); v.className = "cvid"; v.setAttribute("aria-hidden", "true");
         mz.appendChild(v);
         // 핀 #437·#438: 영상은 사진과 같은 비율·같은 장면이라, 사진의 자르기 위치를 그대로 따라가면 겹쳐도 어긋나지 않아요
-        const sync = () => { v.style.objectPosition = getComputedStyle(im).objectPosition; }; // 확대(hover scale)는 CSS가 사진·영상에 똑같이 줘요
+        const sync = () => { const cs = getComputedStyle(im); v.style.objectPosition = cs.objectPosition; v.style.objectFit = cs.objectFit; v.style.scale = cs.scale; v.style.transformOrigin = cs.transformOrigin; }; // 디자인 조정의 확대(scale)까지 사진과 똑같이 // 확대(hover scale)는 CSS가 사진·영상에 똑같이 줘요
         sync(); addEventListener("resize", sync);
-        card.addEventListener("pointerenter", (e) => { if (e.pointerType === "touch") return; v.preload = "auto"; sync(); v.play().then(() => v.classList.add("on")).catch(() => {}); });
-        card.addEventListener("pointerleave", () => { v.classList.remove("on"); setTimeout(() => { if (!v.classList.contains("on")) v.pause(); }, 700); });
+        card.addEventListener("pointerenter", (e) => { if (e.pointerType === "touch") return; v.preload = "auto"; sync(); if (!v.classList.contains("on") && v.paused) try { v.currentTime = 0; } catch (er) {} v.play().then(() => v.classList.add("on")).catch(() => {}); });
+        card.addEventListener("pointerleave", () => { v.classList.remove("on"); setTimeout(() => { if (!v.classList.contains("on")) { v.pause(); try { v.currentTime = 0; } catch (er) {} } }, 700); }); // 다음에 올릴 때도 사진과 같은 첫 장면부터
         return;
       }
       const fx = CARD_FX[key], mz = im.parentElement, cv = document.createElement("canvas");
