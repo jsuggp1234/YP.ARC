@@ -2052,3 +2052,20 @@ html.hi-on .st-l { opacity: 0; }
 
 /* 핀 #42: 지도 양옆 글자를 지도 쪽으로 붙여요 */
 @media (min-width: 761px) { .mapp:not(.mapp-wide) .mapp-l { text-align: right; } .mapp:not(.mapp-wide) .mapp-r { text-align: left; } }
+
+/* 첫 화면: 카드 없이 글자 네 개 (2026-11-22) — 상단바 4칸에 한 글자씩, 위 40%는 비움 */
+html.sl-home, html.sl-home body { background: var(--st-bg); transition: background-color 0.8s ease; }
+html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
+.sl { position: fixed; inset: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 8px; padding: 0 var(--g4-e, 16px) 7vh; align-items: end; }
+.sl-a { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; color: var(--ink); text-decoration: none; outline-offset: 6px; transition: color 0.5s ease, opacity 0.5s ease; }
+.sl-t { font-size: var(--t-s); text-transform: uppercase; letter-spacing: 0.02em; }
+.sl-g { display: block; font-size: calc((100vw - 2 * var(--g4-e, 16px) - 24px) / 4 * 0.86); line-height: 1; }
+.sl .st-gl { position: relative; left: auto; top: auto; bottom: auto; translate: none; font-size: inherit; transition: none; pointer-events: none; }
+.sl .st-gl[data-g="@"] { scale: 0.8; transform-origin: 0 78%; } /* @는 넓어서 조금 작게, 줄은 다른 글자와 같게 */
+.sl .st-gl .st-b > i { transition: none; }
+.sl .st-gl .st-g0 { display: inline-block; }
+.sl:has(.sl-a:hover) .sl-a:not(:hover), .sl:has(.sl-a:focus-visible) .sl-a:not(:focus-visible) { color: color-mix(in srgb, var(--ink) 22%, transparent); }
+@media (max-width: 760px) {
+  .sl { grid-template-columns: 1fr 1fr; row-gap: 5vh; align-content: end; padding-bottom: 6vh; }
+  .sl-g { font-size: calc((100vw - 2 * var(--g4-e, 8px) - 8px) / 2 * 0.62); }
+}

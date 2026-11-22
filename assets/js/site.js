@@ -887,6 +887,71 @@
   // 카드마다 글자 하나가 작은 정사각 모듈로 쪼개져 아래에서 조립돼요(모션 아트). 마우스를 대면 모듈이 비켜서며 45° 돌아요.
   // 카드를 누르면 화면 전체로 커진 다음 그 페이지로 가고, contact는 연락 패널을 열어요.
   render.home = () => {
+    HTML.classList.add("st-home", "sl-home");
+    const ST = SITE.start || [];
+    $("#main").innerHTML = `
+      <h1 class="sr">${esc(SITE.name)} — ${esc(SITE.owner)} Architecture Portfolio</h1>
+      <nav class="sl" aria-label="Start">${ST.map((pg, i) => `<a class="sl-a" href="${esc(pg.href)}"${pg.contact ? " data-contact" : ""} data-i="${i}" aria-label="${esc(pg.title)}"><span class="sl-t" aria-hidden="true">${esc(pg.title)}</span><span class="sl-g"></span></a>`).join("")}</nav>`;
+    const as = $$(".sl-a"), N = 24;
+    as.forEach((a, i) => { const L = stGlyph(ST[i].glyph, N); $(".sl-g", a).appendChild(L); });
+    // 들어올 때: 층이 아래부터 쌓이고, 글자는 왼쪽부터 차례로
+    if (!REDUCED) as.forEach((a, i) => {
+      $$(".st-b", a).forEach((b, k) => b.animate([{ translate: "0 0.14em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1000, delay: 250 + i * 140 + (N - 1 - k) * 26, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
+      $(".sl-t", a).animate([{ opacity: 0, translate: "0 8px" }, { opacity: 1, translate: "0 0" }], { duration: 800, delay: 900 + i * 140, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" });
+    });
+
+    // 물결: 층마다 지금 밀린 양(cur)을 목표(tg)로 부드럽게 따라가요
+    let mx = -1e4, my = -1e4, last = 0, busy = false, geo = [];
+    const measure = () => { geo = as.map((a) => { const g = $(".st-gl", a), rc = g.getBoundingClientRect(), fs = parseFloat(getComputedStyle(g).fontSize);
+      return { cx: rc.left + rc.width / 2, fs, sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; }); };
+    measure(); addEventListener("resize", measure);
+    addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; last = performance.now(); }, { passive: true });
+    D.addEventListener("pointerleave", () => { mx = my = -1e4; });
+    const tick = (t) => {
+      if (busy || !D.body.contains(as[0])) return;
+      if (!D.hidden) {
+        const idle = t - last > 2500;
+        geo.forEach((g, i) => {
+          const A = g.fs * 0.16, sg = g.fs * 0.14, dxm = mx - g.cx, near = Math.exp(-Math.abs(dxm) / (g.fs * 0.9)), dir = dxm > 0 ? -1 : 1;
+          g.sl.forEach((o, k) => {
+            const dy = o.y - my;
+            let tg = dir * A * Math.exp(-(dy * dy) / (2 * sg * sg)) * near; // 커서를 피해 밀려요
+            if (idle) tg += g.fs * 0.018 * Math.sin(t / 900 - k * 0.11 - i * 1.1); // 가만히 있으면 잔물결
+            o.cur += (tg - o.cur) * 0.12;
+            o.el.style.translate = `${o.cur.toFixed(2)}px 0`;
+          });
+        });
+      }
+      requestAnimationFrame(tick);
+    };
+    if (!REDUCED) requestAnimationFrame(tick);
+
+    // 누르기: 다른 글자는 층이 흩어지며 떨어지고, 누른 글자에서 단어가 써진 뒤 사라지고 이동 (contact는 연락 패널)
+    $(".sl").addEventListener("click", (e) => {
+      const a = e.target.closest(".sl-a"); if (!a) return;
+      const isC = a.hasAttribute("data-contact"), pg = ST[+a.dataset.i] || {};
+      if (isC && REDUCED) return;
+      e.preventDefault(); if (busy) return;
+      if (a.getAttribute("href") === "works.html") ss.set("yp-hi", "1");
+      if (REDUCED) return location.assign(a.href);
+      busy = true; HTML.classList.add("sl-go"); a.classList.add("on");
+      geo.forEach((g) => g.sl.forEach((o) => (o.el.style.translate = "")));
+      const A = [];
+      as.forEach((o, i) => { if (o === a) return;
+        $$(".st-b", o).forEach((b) => A.push(b.animate([{ translate: "0 0", rotate: "0deg", opacity: 1 }, { translate: `${(Math.random() - 0.5) * 0.3}em ${0.5 + Math.random() * 0.8}em`, rotate: `${(Math.random() - 0.5) * 14}deg`, opacity: 0 }], { duration: 700 + Math.random() * 300, delay: Math.random() * 220, easing: "cubic-bezier(0.55, 0, 0.75, 0.3)", fill: "forwards" })));
+      });
+      $$(".sl-t").forEach((t) => A.push(t.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" })));
+      setTimeout(() => stSpell(a, pg).then(() => {
+        if (!isC) { ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "blank" })); return location.assign(a.href); }
+        A.forEach((x) => x.cancel()); HTML.classList.remove("sl-go"); a.classList.remove("on"); const g0 = $(".st-gl", a); if (g0) g0.style.visibility = "";
+        const b = $(".hdr [data-contact]") || $("[data-contact]:not(.sl-a)"); if (b) b.click();
+        busy = false; requestAnimationFrame(tick);
+        if (!REDUCED) $$(".st-b", a).forEach((x, k) => x.animate([{ translate: "0 0.14em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 900, delay: 400 + (N - 1 - k) * 20, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
+      }), 380);
+    });
+  };
+  // 예전 카드형 첫 화면 (2026-11-22까지) — 쓰지 않아요
+  render.homeCards = () => {
     HTML.classList.add("st-home");
     const ST = SITE.start || [];
     $("#main").innerHTML = `
@@ -1091,11 +1156,11 @@
     BODY.appendChild(W);
     const ws = Ls.map((L) => L.offsetWidth), at = (i) => { // i번째 글자까지 보일 때 단어 자리: 가운데 정렬, 넘치면 줄여요
       const w = ws.slice(0, i + 1).reduce((a, x) => a + x, 0), k = Math.min(1, (vw - 2 * e) / w);
-      return `translateX(${vw / 2 - (w * k) / 2}px) scale(${k})`;
+      return `translate(${vw / 2 - (w * k) / 2}px, ${innerHeight / 2 - (b.top + b.height / 2)}px) scale(${k})`;
     };
-    W.style.transition = "none"; W.style.transform = at(0); g0.style.visibility = "hidden";
+    W.style.transition = "none"; W.style.transform = `translate(${b.left}px, 0px) scale(1)`; g0.style.visibility = "hidden";
     Ls.forEach((L, i) => { if (i) $$(".st-b", L).forEach((x) => (x.style.opacity = 0)); });
-    void W.offsetWidth; W.style.transition = "";
+    void W.offsetWidth; W.style.transition = ""; W.style.transform = at(0);
     const STEP = 75, SOFT = "cubic-bezier(0.16, 1, 0.3, 1)";
     return new Promise((done) => {
       Ls.forEach((L, i) => { if (!i) return; setTimeout(() => {
