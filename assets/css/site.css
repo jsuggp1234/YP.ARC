@@ -2033,3 +2033,12 @@ html.hi-on .st-l { opacity: 0; }
 .st-flow-g .st-gl { position: fixed; }
 @media (prefers-reduced-motion: reduce) { .st-gl .st-b > i { transition: none; } }
 .st-gl[data-g="@"] { font-size: calc(var(--stw, 30vw) * 0.74); } /* @는 글자 폭이 넓고 아래로 내려와서 조금 작게 */
+
+/* 카드 글자 작게·가운데 (2026-11-22) — 누르면 카드가 커지는 동안 화면 가운데로 */
+.st-gl { left: calc(var(--stw, 30vw) / 2); top: 50%; bottom: auto; translate: -50% -50%; font-size: calc(var(--stw, 30vw) * 0.3); transition: left 0.9s cubic-bezier(0.65, 0, 0.35, 1); }
+.st-gl[data-g="@"] { font-size: calc(var(--stw, 30vw) * 0.26); }
+.mn-card.st-on .st-gl { left: 50%; }
+/* 철자 모션 단어 */
+.st-wd { position: fixed; left: 0; z-index: 95; display: flex; align-items: center; transform-origin: 0 50%; transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; color: var(--ink); white-space: nowrap; }
+.st-wd .st-wl { position: relative; left: auto; top: auto; bottom: auto; translate: none; font-size: inherit !important; transition: none; }
+.st-wd .st-wl .st-g0 { display: inline-block; }

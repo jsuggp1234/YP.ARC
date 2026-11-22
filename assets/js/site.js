@@ -952,33 +952,30 @@
     m.addEventListener("click", (e) => {
       const c = e.target.closest(".mn-card"); if (!c) return;
       if (moved || busy) { e.preventDefault(); e.stopPropagation(); return; }
-      if (c.hasAttribute("data-contact")) { // @ 조각이 밀리며 contact 철자가 완성되고, 흩어지면서 연락 패널이 열려요
-        const acv = c.querySelector(".mn-art"), w = (ST[+c.dataset.i] || {}).title || "contact";
-        if (REDUCED || !acv || !acv._mods) return;
-        e.preventDefault(); e.stopPropagation(); busy = true;
-        const src = acv._mods(); acv._hide(); m.classList.add("spell"); // 철자가 다른 카드와 겹치지 않게 카드들은 잠시 비켜요
-        TX.leave(w, src, false, ({ L, cvg }) => TX.dissolve(L, false, () => { busy = false; m.classList.remove("spell"); acv._show(); }, cvg));
-        setTimeout(() => { const b = $(".hdr [data-contact]") || $("[data-contact]:not(.mn-card)"); if (b) b.click(); }, 2050);
-        return;
-      }
+      const isC = c.hasAttribute("data-contact");
+      if (isC && REDUCED) return; // 움직임 줄이기: 주소 #contact로 패널만 열려요
       e.preventDefault(); e.stopPropagation();
       if (c.getAttribute("href") === "works.html") ss.set("yp-hi", "1");
-      const go2 = () => location.assign(c.href);
+      const A = []; // contact는 패널을 연 뒤 첫 화면을 되돌려야 해서 움직임을 모아 둬요
+      const go2 = isC ? () => {
+        A.forEach((a) => a.cancel()); c.classList.remove("solid", "st-on"); c.style.zIndex = ""; busy = false;
+        const g0 = $(".st-gl", c); if (g0) g0.style.visibility = "";
+        const b = $(".hdr [data-contact]") || $("[data-contact]:not(.mn-card)"); if (b) b.click();
+      } : () => location.assign(c.href);
       if (REDUCED) return go2();
       busy = true; c.style.zIndex = 2; c.classList.add("solid", "st-on"); // 커지면서 불투명한 흰 종이로 → 다음 페이지와 그대로 이어져요
       // 2026-11-22 넘김 모션: 다른 카드와 이름은 차례로 가라앉고, 누른 카드의 사진은 커지는 동안 살짝 확대됐다 제자리로
-      cards.forEach((o, k) => { if (o !== c) o.animate([{ translate: "0 0", opacity: 1 }, { translate: "0 60px", opacity: 0 }], { duration: 650, delay: Math.abs(k - +c.dataset.i) * 50, easing: EASE_IO, fill: "forwards" }); });
-      $$(".st-cap", m).forEach((t) => t.animate([{ opacity: 1 }, { opacity: 0, translate: "0 -10px" }], { duration: 400, easing: "ease-out", fill: "forwards" }));
+      cards.forEach((o, k) => { if (o !== c) A[A.length] = o.animate([{ translate: "0 0", opacity: 1 }, { translate: "0 60px", opacity: 0 }], { duration: 650, delay: Math.abs(k - +c.dataset.i) * 50, easing: EASE_IO, fill: "forwards" }); });
+      $$(".st-cap", m).forEach((t) => A.push(t.animate([{ opacity: 1 }, { opacity: 0, translate: "0 -10px" }], { duration: 400, easing: "ease-out", fill: "forwards" })));
       const studio = false; // 2026-11-22: 네 카드 모두 같은 글자 넘김
       const cv = c.querySelector(".mn-art"), word = (ST[+c.dataset.i] || {}).title;
-      const grow = c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath }, FULL], { duration: 900, easing: EASE_IO, fill: "forwards" }).finished.catch(() => {});
+      const gA = c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath }, FULL], { duration: 900, easing: EASE_IO, fill: "forwards" }); A.push(gA);
+      const grow = gA.finished.catch(() => {});
       // 글자 모듈 → 단어: P 조각들이 왼쪽으로 밀리며 philosophy 철자가 이어서 완성돼요. 다음 페이지가 같은 자리에서 이어받아요
       const spell = cv && cv._mods && word ? new Promise((res) => { const src = cv._mods(); cv._hide(); TX.leave(word, src, studio, res); }) : Promise.resolve();
-      Promise.all([grow, spell]).then(() => {
-        if (cv && word) ss.set("yp-tx", JSON.stringify({ word, t: Date.now(), bg: !studio, top: studio }));
-        // 화면 가득한 글자를 같은 자리·같은 크기로 다음 페이지 첫 장면에 넘겨요(끊김 없음)
-        const gl = $(".st-gl", c), b = gl && gl.getBoundingClientRect();
-        ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "glyph", g: (ST[+c.dataset.i] || {}).glyph || "", x: b ? b.left : 0, y: b ? b.top : 0, fs: gl ? parseFloat(getComputedStyle(gl).fontSize) * (b.height / gl.offsetHeight || 1) : 0 })); go2();
+      Promise.all([grow, spell]).then(() => stSpell(c, ST[+c.dataset.i] || {})).then(() => {
+        if (!isC) ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "blank" })); // 흰 화면으로 끝나요 → 다음 페이지가 흰 막을 걷으며 시작
+        go2();
       });
     }, true);
   };
@@ -1082,6 +1079,36 @@
     size(); paint();
   }
   // ---------- 첫 화면 → 페이지 도착 (2026-11-22): 바탕색 막이 위로 걷히고, 본문이 살짝 아래에서 올라와요 ----------
+  // 카드 글자 → 단어: 가운데 글자 뒤로 한 자씩 써지며 단어 전체가 늘 가운데에 오도록 앞 글자가 왼쪽으로 밀려요. 다 쓰면 층이 들려 사라져요
+  function stSpell(c, pg) {
+    const g0 = $(".st-gl", c); if (!g0 || !pg.glyph) return Promise.resolve();
+    const t = pg.title || "", word = pg.glyph === "@" ? "@" + t : pg.glyph + t.slice(1);
+    const b = g0.getBoundingClientRect(), fsz = parseFloat(getComputedStyle(g0).fontSize), vw = innerWidth;
+    const e = parseFloat(getComputedStyle(HTML).getPropertyValue("--g4-e")) || 16;
+    const W = D.createElement("div"); W.className = "st-wd"; W.setAttribute("aria-hidden", "true");
+    W.style.cssText = `top:${b.top}px;height:${b.height}px;font-size:${fsz}px`;
+    const Ls = [...word].map((ch) => { const L = stGlyph(ch); L.classList.add("st-wl"); W.appendChild(L); return L; });
+    BODY.appendChild(W);
+    const ws = Ls.map((L) => L.offsetWidth), at = (i) => { // i번째 글자까지 보일 때 단어 자리: 가운데 정렬, 넘치면 줄여요
+      const w = ws.slice(0, i + 1).reduce((a, x) => a + x, 0), k = Math.min(1, (vw - 2 * e) / w);
+      return `translateX(${vw / 2 - (w * k) / 2}px) scale(${k})`;
+    };
+    W.style.transition = "none"; W.style.transform = at(0); g0.style.visibility = "hidden";
+    Ls.forEach((L, i) => { if (i) $$(".st-b", L).forEach((x) => (x.style.opacity = 0)); });
+    void W.offsetWidth; W.style.transition = "";
+    const STEP = 75, SOFT = "cubic-bezier(0.16, 1, 0.3, 1)";
+    return new Promise((done) => {
+      Ls.forEach((L, i) => { if (!i) return; setTimeout(() => {
+        W.style.transform = at(i);
+        $$(".st-b", L).forEach((x, k, all) => x.animate([{ translate: "0 0.14em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 620, delay: (all.length - 1 - k) * 8, easing: SOFT, fill: "forwards" }));
+      }, 120 + i * STEP); });
+      const T = 120 + (Ls.length - 1) * STEP + 620 + 260; // 다 쓰고 잠깐 머문 뒤
+      setTimeout(() => {
+        const out = []; Ls.forEach((L, i) => $$(".st-b", L).forEach((x, k) => out.push(x.animate([{ translate: "0 0", opacity: 1 }, { translate: "0 -0.22em", opacity: 0 }], { duration: 640, delay: i * 30 + k * 10, easing: "cubic-bezier(0.76, 0, 0.24, 1)", fill: "forwards" }).finished)));
+        Promise.all(out).catch(() => {}).then(() => { W.remove(); done(); });
+      }, T);
+    });
+  }
   // 글자 하나를 N장의 가로 층으로: 층마다 같은 글자를 겹쳐 놓고 그 높이만 보이게 잘라요(clip-path)
   function stGlyph(g, n = 24) {
     const L = D.createElement("div"); L.className = "st-gl"; L.dataset.g = g; L.setAttribute("aria-hidden", "true");
@@ -1094,7 +1121,10 @@
     ss.set("yp-st", ""); if (!st || Date.now() - st.t > 6000 || REDUCED) return;
     const FLOW = "cubic-bezier(0.76, 0, 0.24, 1)", SOFT = "cubic-bezier(0.16, 1, 0.3, 1)";
     let lift = 0;
-    if (st.k === "glyph" && st.g && st.fs) {
+    if (st.k === "blank") { // 앞 페이지가 흰 화면으로 끝났어요 → 흰 막이 위로 걷히며 본문이 떠올라요
+      const v = D.createElement("div"); v.className = "st-veil st-flow st-flow-g"; BODY.appendChild(v); lift = 160;
+      v.animate([{ clipPath: "inset(0 0 0% 0)" }, { clipPath: "inset(0 0 100% 0)" }], { duration: 950, delay: 60, easing: FLOW, fill: "forwards" }).finished.catch(() => {}).then(() => v.remove());
+    } else if (st.k === "glyph" && st.g && st.fs) {
       const v = D.createElement("div"); v.className = "st-veil st-flow st-flow-g"; const L = stGlyph(st.g);
       L.style.cssText = `left:${st.x}px;top:${st.y}px;bottom:auto;font-size:${st.fs}px`; v.appendChild(L); BODY.appendChild(v); lift = 520;
       $$(".st-b", L).forEach((b, k) => b.animate([{ translate: "0 0", opacity: 1 }, { translate: "0 -0.25em", opacity: 0 }], { duration: 800, delay: 120 + k * 24, easing: FLOW, fill: "forwards" }));
