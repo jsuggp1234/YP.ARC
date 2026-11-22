@@ -1121,7 +1121,7 @@
     const sec = $(".cs"), track = $(".cs-track", sec), sets = $$(".cs-set", track);
     let W = 1, x = 0, tx = 0, px = 0, sc = 1, raf = 0, live = true, items = [];
     // 저절로 흐르기 (2026-11-22 요청): 초당 DRIFT px, dir = 마지막으로 굴린 방향, hov = 사진 위에 있으면 멈춤
-    const DRIFT = 40; let spd = 0, dir = 1, hov = false, last = 0;
+    const DRIFT = 60; let spd = 0, dir = 1, hov = false, last = 0;
     const still = () => REDUCED || hov || down || $("#menu.open") || HTML.classList.contains("hi-on") || HTML.classList.contains("ct-lock");
     const measure = () => {
       W = sets[1].offsetLeft - sets[0].offsetLeft || 1;
