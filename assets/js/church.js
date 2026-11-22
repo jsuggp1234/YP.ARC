@@ -408,11 +408,22 @@
     // 흐름선을 촘촘한 점으로 (x 순서대로)
     const SAMP = PATHS.map((P) => { const o = []; for (let k = 0; k < P.length - 1; k++) { const [a, b] = [P[k], P[k + 1]], n = Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 6); for (let i = 0; i < n; i++) o.push([a[0] + ((b[0] - a[0]) * i) / n, a[1] + ((b[1] - a[1]) * i) / n]); } o.push(P[P.length - 1]); return o; });
     const X0 = 80, X1 = 1150, RUN = 6.2, LOOP = 12.5, POP = 0.7;
+    // 핀 #60: 흐름이 지나가면 그 자리에 나무가 하나씩 '자라나요' — 줄기가 올라오고 수관이 톡 열려요
+    const TREES = []; { let s = 7; const rr = () => ((s = (s * 16807) % 2147483647) / 2147483647); SAMP.forEach((S) => { let acc = 0; for (let i = 1; i < S.length; i++) { acc += Math.hypot(S[i][0] - S[i - 1][0], S[i][1] - S[i - 1][1]); if (acc >= 30 + rr() * 16 && S[i][0] > 100 && S[i][0] < 1110 && S[i][1] > 175) { acc = 0; TREES.push({ x: S[i][0] + (rr() - 0.5) * 10, y: S[i][1] - 6, s: 0.75 + rr() * 0.6, k: rr() < 0.5 }); } } }); }
+    const tree = (g, P, u, tr, a, ink, fill) => {
+      if (a <= 0) return; const [bx, by] = P(tr.x, tr.y), h = 26 * tr.s * u, grow = Math.min(1, a / 0.45), cr = 11 * tr.s * u * pop(Math.max(0, (a - 0.3) / 0.7));
+      g.strokeStyle = ink; g.lineWidth = Math.max(0.8, 1.2 * u); g.beginPath(); g.moveTo(bx, by); g.lineTo(bx, by - h * grow); g.stroke();
+      if (cr <= 0) return; const cy = by - h * 0.95;
+      g.fillStyle = "rgba(0,0,0,.08)"; g.beginPath(); g.ellipse(bx + cr * 0.5, by, cr * 0.9, cr * 0.22, 0, 0, 6.2832); g.fill(); // 발밑 그림자
+      g.fillStyle = fill; g.beginPath(); if (tr.k) { g.arc(bx, cy, cr, 0, 6.2832); } else { g.arc(bx - cr * 0.45, cy + cr * 0.15, cr * 0.75, 0, 6.2832); g.arc(bx + cr * 0.45, cy + cr * 0.1, cr * 0.8, 0, 6.2832); g.arc(bx, cy - cr * 0.4, cr * 0.8, 0, 6.2832); } g.fill(); g.stroke();
+    };
     const off = document.createElement("canvas"), og = off.getContext("2d");
     const ease = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.pow(1 - x, 3));
     const pop = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : 1 + 2.2 * Math.pow(x - 1, 3) + 1.2 * Math.pow(x - 1, 2)); // 살짝 넘쳤다 돌아오는 '심김'
+    let T0 = null; // 처음 화면에 들어온 때부터 흐름이 시작돼요
     stage(el, (g, W, H, t) => {
       if (!(bg.complete && bg.naturalWidth)) return;
+      if (T0 === null) T0 = t; t -= T0;
       const iw = bg.naturalWidth, ih = bg.naturalHeight, sc = Math.min(W / iw, H / ih), dw = iw * sc, dh = ih * sc, ox = (W - dw) / 2, oy = (H - dh) / 2;
       const u = dw / 1210, P = (x, y) => [ox + x * u, oy + y * (dh / (ih * 1210 / iw))];
       const dark = root.dataset.mode === "dark", FULL = dark ? 0.85 : 0.72;
@@ -434,6 +445,9 @@
         g.globalAlpha = FULL * (1 - out); g.drawImage(off, 0, 0, W, H);
       }
       g.restore();
+      // 3-1) 자라나는 나무 (흐름이 끝나고 그림이 다 드러나면 천천히 옅어져 원본 나무에 겹쳐요)
+      { const ink = C.mix(0.8, 0.9 * (1 - out) * (1 - 0.55 * settle)), fill = dark ? "rgba(20,20,20,.75)" : "rgba(255,255,255,.82)"; g.save(); g.globalAlpha = 1 - out;
+        TREES.forEach((tr) => tree(g, P, u, tr, (tt - ((tr.x - X0) / (X1 - X0)) * RUN - 0.15) / 0.9, ink, fill)); g.restore(); }
       // 4) 흐름의 머리: 진한 점과 짧은 꼬리
       if (!reduce && tt < RUN + 0.4) {
         const fade = 1 - ease((tt - RUN) / 0.4);
@@ -441,7 +455,8 @@
           let k = S.findIndex(([x]) => x > head); if (k < 0) k = S.length - 1; if (k === 0) return;
           g.strokeStyle = C.mix(0.9, 0.55 * fade); g.lineWidth = 1.4; g.beginPath();
           for (let i = Math.max(0, k - 14); i <= k; i++) { const [a, b] = P(...S[i]); i === Math.max(0, k - 14) ? g.moveTo(a, b) : g.lineTo(a, b); }
-          g.stroke(); const [a, b] = P(...S[k]); g.fillStyle = C.mix(0.95, fade); g.beginPath(); g.arc(a, b, 3.2, 0, 6.2832); g.fill();
+          g.stroke(); const [a, b] = P(...S[k]), [pa, pb] = P(...S[Math.max(0, k - 3)]), an = Math.atan2(b - pb, a - pa);
+          g.fillStyle = C.mix(0.95, fade); g.save(); g.translate(a, b); g.rotate(an); g.beginPath(); g.moveTo(7, 0); g.lineTo(-5, -5); g.lineTo(-2, 0); g.lineTo(-5, 5); g.closePath(); g.fill(); g.restore(); // 화살촉
           g.strokeStyle = C.mix(0.95, 0.35 * fade); g.lineWidth = 1; g.beginPath(); g.arc(a, b, 7 + 3 * Math.sin(t * 6), 0, 6.2832); g.stroke();
         });
       }
