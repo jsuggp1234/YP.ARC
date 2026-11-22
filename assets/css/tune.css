@@ -129,6 +129,28 @@ body[data-page="works"] #cases > div.cs-track > div.cs-set > a.cs-card:nth-of-ty
 body[data-page="works"] #cases > div.cs-track > div.cs-set > a.cs-card:nth-of-type(5) > div.media {
   overflow: hidden !important;
 }
+/* works · img “La Junita” */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(6) > div.media > div.mz > img {
+  scale: 0.91 !important;
+  object-position: 95% 50% !important;
+}
+/* works · img “Moduleverse Church” */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(10) > div.media > div.mz > img {
+  object-position: 54% 50% !important;
+}
+/* project#timteam-work · img “Tim(team) Work” */
+html[data-slug="timteam-work"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > div.mp > div.mz > img {
+  scale: 1.04 !important;
+  object-position: 50% 100% !important;
+}
+/* project#timteam-work · cx-cv */
+html[data-slug="timteam-work"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv {
+  overflow: hidden !important;
+}
+/* project#modular-o-housing · pan-cell “V-00 Module frame the base o” */
+html[data-slug="modular-o-housing"] body[data-page="project"] #s4 > figure.pan-loop.solid > div.pan-win > div.pan-belt > span.pan-cell:nth-of-type(1) {
+  margin-left: -50% !important;
+}
 
 @media (min-width: 761px) {
   /* works · cs-track “RE:TIDE MOTORISM TIM(TEAM) W” */

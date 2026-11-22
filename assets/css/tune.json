@@ -398,5 +398,62 @@
       "overflow": "hidden"
     },
     "label": "works · media"
+  },
+  {
+    "id": "aranoi8",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(6) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.91",
+      "object-position": "95% 50%"
+    },
+    "label": "works · img “La Junita”"
+  },
+  {
+    "id": "y5iw8r5",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(10) > div.media > div.mz > img",
+    "props": {
+      "object-position": "54% 50%"
+    },
+    "label": "works · img “Moduleverse Church”"
+  },
+  {
+    "id": "v3jvpp0",
+    "page": "project",
+    "slug": "timteam-work",
+    "media": "all",
+    "sel": "#main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > div.mp > div.mz > img",
+    "props": {
+      "scale": "1.04",
+      "object-position": "50% 100%"
+    },
+    "label": "project#timteam-work · img “Tim(team) Work”"
+  },
+  {
+    "id": "f1dbfng",
+    "page": "project",
+    "slug": "timteam-work",
+    "media": "all",
+    "sel": "#main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv",
+    "props": {
+      "overflow": "hidden"
+    },
+    "label": "project#timteam-work · cx-cv"
+  },
+  {
+    "id": "bafsabs",
+    "page": "project",
+    "slug": "modular-o-housing",
+    "media": "all",
+    "sel": "#s4 > figure.pan-loop.solid > div.pan-win > div.pan-belt > span.pan-cell:nth-of-type(1)",
+    "props": {
+      "margin-left": "-50%"
+    },
+    "label": "project#modular-o-housing · pan-cell “V-00 Module frame the base o”"
   }
 ]
