@@ -15,7 +15,8 @@
   const colors = () => {
     const bg = rgb(css("--bg")) || [255, 255, 255], ink = rgb(css("--ink")) || [17, 17, 17];
     const arr = (a) => bg.map((v, i) => Math.round(v + (ink[i] - v) * a));
-    C = { bg: `rgb(${bg})`, mix: (a, o = 1) => `rgba(${arr(a)},${o})`, hex: (a) => (arr(a)[0] << 16) | (arr(a)[1] << 8) | arr(a)[2],
+    const dark = bg[0] + bg[1] + bg[2] < 384;
+    C = { bg: `rgb(${bg})`, red: (o = 1) => (dark ? `rgba(236,86,92,${o})` : `rgba(192,53,58,${o})`), mix: (a, o = 1) => `rgba(${arr(a)},${o})`, hex: (a) => (arr(a)[0] << 16) | (arr(a)[1] << 8) | arr(a)[2],
       xs: parseFloat(css("--t-xs")) || 10, s: parseFloat(css("--t-s")) || 11, m: parseFloat(css("--t-m")) || 12.5,
       font: getComputedStyle(document.body).fontFamily || "Inter, sans-serif" };
   };
@@ -205,7 +206,7 @@
             const [fx, fy, a] = along(c.path, k / (N - 1)), side = k % 2 ? 1 : -1;
             const nx = -Math.sin(a) * side * 0.022, ny = Math.cos(a) * side * 0.022;
             g.save(); g.translate(px + S * (0.04 + 0.92 * (fx + nx)), py + S * (0.04 + 0.92 * (fy + ny))); g.rotate(a);
-            g.fillStyle = C.mix(c.tone, o); g.beginPath(); g.ellipse(0, 0, S * 0.026, S * 0.011, 0, 0, Math.PI * 2); g.fill(); g.restore();
+            g.fillStyle = C.red(Math.max(0.25, o)); g.beginPath(); g.ellipse(0, 0, S * 0.026, S * 0.011, 0, 0, Math.PI * 2); g.fill(); g.restore(); // 핀 #24: 다크 모드에서도 보이게 빨강
           }
           const [lx, ly] = c.path[0]; g.font = font(C.xs, 600); g.fillStyle = C.mix(0.95, Math.max(0.35, o)); g.textAlign = "left";
           g.fillText(c.n, px + S * (0.04 + 0.92 * lx) + 4, py + S * (0.04 + 0.92 * ly) + (ly > 0.5 ? -6 : 12));
