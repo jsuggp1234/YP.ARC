@@ -3849,7 +3849,7 @@
           <div class="pj-body cx-body g4">
             <div class="pj-main">
               ${p.sections.map((s, si) => `
-              <section class="pj-sec${s.big || /scene|render|view|interior|exterior/i.test(s.heading) ? " ph" : ""}${s.beside ? " bes" : ""}" id="s${si + 1}" data-toc="${esc(s.heading)}" data-v="${s.v != null ? s.v : si % 4}">
+              <section class="pj-sec${s.big || /scene|render|view|interior|exterior/i.test(s.heading) ? " ph" : ""}${s.beside ? " bes" : ""}" id="s${si + 1}" data-toc="${esc(s.heading)}" data-v="${s.v != null ? s.v : si % 4}"${s.al ? ` style="--al:${s.al}"` : ""}>
                 <div class="hd"><span class="num">${pad(si + 1)}.</span><h2>${esc(s.heading)}</h2></div>
                 <p class="txt" data-reveal>${esc(s.text)}</p>
                 ${s.sim ? simHtml(s.sim) : ""}${s.panel ? mapHtml(s.panel) : ""}${s.widget && s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}${s.seq ? seqHtml(s.seq) : ""}${s.seasons ? ssnHtml(s.seasons) : ""}${s.keyed ? keyedHtml(s.keyed) : ""}${s.pan && !s.pan.after ? panHtml(s.pan) : ""}${s.widget && !s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}

@@ -2306,3 +2306,6 @@ html.cg-open { overflow: hidden; }
 .cx-play:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .cx-play i { width: 0; height: 0; border-left: 8px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
 .cx-play.on i { width: 8px; height: 10px; border: 0; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
+
+/* 핀 #121: 섹션 옵션 al(위 그림의 가로/세로 비율) — 위 큰 그림(.figs .media: 폭 min(100%, 84vh×r), 가운데)의 왼쪽 선에 시작점을 맞춰요 */
+.cx-body .pj-sec[style*="--al"] { padding-left: max(0px, calc((100% - 84vh * var(--al)) / 2)); }
