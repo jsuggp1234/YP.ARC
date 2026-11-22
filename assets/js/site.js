@@ -3477,7 +3477,7 @@
         const build = el.hasAttribute("data-build"), k = build ? 0.82 : 1, tb = Math.min(1, t / k), z = build ? Math.max(0, (t - k) / (1 - k)) : 0;
         const ez = z * z * (3 - 2 * z), fit = Math.min(1, ww / Math.max(1, iw)), sc = 1 + (fit - 1) * ez;
         // 핀 #93: 짓는 띠는 창이 화면 양끝까지 열려 있어 지나간 부분이 흰 칸에서 잘려 사라지지 않고 화면 밖으로 밀려나요 (시작은 본문 칸에서)
-        let off = 0; if (build) { const L = el.getBoundingClientRect().left, R = innerWidth - el.getBoundingClientRect().right; win.style.marginLeft = -L + "px"; win.style.marginRight = -R + "px"; off = L; }
+        let off = 0; if (build) { const L = el.getBoundingClientRect().left, R = document.documentElement.clientWidth - el.getBoundingClientRect().right; win.style.marginLeft = -L + "px"; win.style.marginRight = -R + "px"; off = L; }
         const ww2 = win.clientWidth, xp = build ? off + tb * Math.min(0, ww2 - iw - off) : -tb * Math.max(0, iw - ww);
         const x = xp * (1 - ez) + (ww2 - iw * sc) / 2 * ez * (fit < 1 ? 0 : 1);
         img.style.transformOrigin = "0 50%"; img._sc = sc;
