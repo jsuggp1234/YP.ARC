@@ -3395,7 +3395,7 @@
     const stage = q.kind === "lead" ? lead() : q.kind === "wipe"
       ? `<img class="seq-base" src="${esc(q.src)}" alt="" decoding="async"><img class="seq-top" src="${esc(q.src)}" alt="${esc(q.steps[0].t)}" decoding="async">`
       : q.steps.map((f, i) => `<img src="${esc(f.src)}" alt="${esc(f.t)}" decoding="async"${i ? "" : ' class="on"'}${f.x ? ` style="translate:${esc(f.x)} 0"` : ""}>`).join("");
-    return `<div class="seq seq-${q.kind}${q.lite ? " seq-lite" : ""}${q.fade ? " seq-fade" : ""}${q.below ? " seq-below" : ""}" data-seq style="--n:${q.n || N};--k:${q.k || 1}${q.cols ? `;--c:${q.cols}` : ""}">
+    return `<div class="seq seq-${q.kind}${q.lite ? " seq-lite" : ""}${q.fade ? " seq-fade" : ""}${q.below ? " seq-below" : ""}" data-seq style="--n:${q.n || N};--k:${q.k || 1}${q.cols ? `;--c:${q.cols}` : ""}${q.len ? `;--len:${q.len}` : ""}">
       <div class="seq-pin">
         <div class="seq-stage media" style="aspect-ratio:${q.r};--r:${q.r}">${stage}${q.tag ? `<p class="ssn-tag seq-tag"><b>${esc(q.steps[0].t)}</b><span>${esc(q.steps[0].s || "")}</span></p>` : ""}</div>
         <div class="seq-side">
@@ -3476,7 +3476,10 @@
         // 핀 #5(2026-11-22): 짓는 띠(build)는 앞 82%에서 왼쪽부터 지어지며 흐르고, 남은 18%에서 전체가 줄어들며 한 화면에 다 보여요
         const build = el.hasAttribute("data-build"), k = build ? 0.82 : 1, tb = Math.min(1, t / k), z = build ? Math.max(0, (t - k) / (1 - k)) : 0;
         const ez = z * z * (3 - 2 * z), fit = Math.min(1, ww / Math.max(1, iw)), sc = 1 + (fit - 1) * ez;
-        const x = -tb * Math.max(0, iw - ww) * (1 - ez) + (ww - iw * sc) / 2 * ez * (fit < 1 ? 0 : 1);
+        // 핀 #93: 짓는 띠는 창이 화면 양끝까지 열려 있어 지나간 부분이 흰 칸에서 잘려 사라지지 않고 화면 밖으로 밀려나요 (시작은 본문 칸에서)
+        let off = 0; if (build) { const L = el.getBoundingClientRect().left, R = innerWidth - el.getBoundingClientRect().right; win.style.marginLeft = -L + "px"; win.style.marginRight = -R + "px"; off = L; }
+        const ww2 = win.clientWidth, xp = build ? off + tb * Math.min(0, ww2 - iw - off) : -tb * Math.max(0, iw - ww);
+        const x = xp * (1 - ez) + (ww2 - iw * sc) / 2 * ez * (fit < 1 ? 0 : 1);
         img.style.transformOrigin = "0 50%"; img._sc = sc;
         img.style.transform = `translate3d(${x.toFixed(1)}px,0,0) scale(${sc.toFixed(4)})`; bar.style.transform = `scaleX(${t})`;
         // 알고리즘 생성 (핀 #245): 스크롤에 따라 왼쪽부터 컴포넌트가 하나씩 놓이고, 양 끝이 놓이면 선이 이어져요

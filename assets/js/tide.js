@@ -17,11 +17,11 @@
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // 스크롤(휠)·드래그·키보드를 하나의 '목표값'으로 모아서 부드럽게 따라가게 해요
-  const driver = (box, { get, set, min = -Infinity, max = Infinity, perWheel, perPx, onFrame }) => {
+  const driver = (box, { get, set, min = -Infinity, max = Infinity, perWheel, perPx, onFrame, ease = 0.14 }) => {
     let tv = get(), cv = tv, raf = 0;
     const clamp = (v) => Math.min(max, Math.max(min, v));
     const loop = () => {
-      cv += (tv - cv) * (reduce ? 1 : 0.14);
+      cv += (tv - cv) * (reduce ? 1 : ease);
       if (Math.abs(tv - cv) < 1e-4) cv = tv;
       set(cv); onFrame && onFrame(cv);
       raf = cv !== tv ? requestAnimationFrame(loop) : 0;
@@ -535,7 +535,7 @@
       list.forEach((g, i) => g.classList.toggle("on", i === k));
       zs.textContent = ST[k][0]; rr.textContent = ["A up 11 % · B down 9 %", "one hub, two loops", "start at the centre", "booths on the outer curves"][k]; rp.textContent = ST[k][1];
     };
-    driver(box, { get: () => 0, set, min: 0, max: 3.999, perWheel: 0.22, perPx: (b) => 4 / b.getBoundingClientRect().width });
+    driver(box, { get: () => 0, set, min: 0, max: 3.999, perWheel: 0.11, ease: 0.07, perPx: (b) => 2 / b.getBoundingClientRect().width }); // 핀 #89: 천천히
     set(0);
   };
 
