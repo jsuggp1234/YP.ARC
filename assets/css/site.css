@@ -1880,3 +1880,16 @@ html.st-home .ftr, html.st-home .hud { display: none; }
 .mn-card.go .mn-strip.st-hide .mn-c:nth-child(6) { transition-delay: 0.51s; }
 .mn-card.go .mn-strip.st-hide .mn-c:nth-child(7) { transition-delay: 0.57s; }
 .mn-card.go .mn-note.mn-ph { opacity: 0; transition: opacity .3s var(--ease); }
+
+/* 첫 화면 카드: 반투명 서리 유리 재질 (2026-11-22 요청). 뒤의 떠다니는 회색 모듈이 흐릿하게 비쳐요.
+   누르면 .solid로 불투명한 흰 종이가 되며 커져서 다음 페이지와 끊김 없이 이어져요 */
+.st-bg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+.st-mn .mn-card {
+  background: rgba(255, 255, 255, 0.58);
+  -webkit-backdrop-filter: blur(28px) saturate(1.1); backdrop-filter: blur(28px) saturate(1.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7), 0 30px 80px -40px rgba(0, 0, 0, 0.25);
+  transition: transform 0.7s var(--ease), clip-path 0.7s var(--ease), background-color 0.6s var(--ease);
+}
+:root[data-mode="dark"] .st-mn .mn-card { background: rgba(18, 18, 18, 0.55); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 30px 80px -40px rgba(0, 0, 0, 0.6); }
+.st-mn .mn-card.solid { background: var(--bg); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .st-mn .mn-card { background: rgba(255, 255, 255, 0.86); } :root[data-mode="dark"] .st-mn .mn-card { background: rgba(18, 18, 18, 0.86); } }
