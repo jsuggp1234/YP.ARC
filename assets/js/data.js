@@ -56,7 +56,7 @@ const SITE = {
   // 첫 화면 카드 머리글자가 Y · P · S 로 이어져 YP.STUDIO처럼 읽혀요 (2026-11-22 요청). key는 페이지 종류라 그대로, 보이는 이름만 바꿔요
   start: [
     { key: "about", title: "yeop", glyph: "Y", img: "assets/img/profile.jpg", href: "about.html", note: "Profile, process and CV" },
-    { key: "philosophy", title: "philosophy", glyph: "P", img: "assets/img/re-tide/scene-2.jpg", href: "philosophy.html", note: "Answer before image — air and light, structure and joints." },
+    { key: "philosophy", title: "philosophy", glyph: "P", img: "assets/img/philosophy-poster.svg", href: "philosophy.html", note: "Answer before image — air and light, structure and joints." },
     { key: "works", title: "studio", glyph: "S", img: "assets/img/re-tide/card-frame.jpg", href: "works.html", note: "Selected works, 2022—2027" },
     { key: "contact", title: "contact", glyph: "@", img: "assets/img/la-junita/interior-2.jpg", href: "#contact", contact: true, note: "Email · Instagram · Portfolio PDF" },
   ],

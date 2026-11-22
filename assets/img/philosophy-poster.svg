@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <!-- Philosophy 포스터 (2026-11-22, 핀 #40): 빛이 기둥·보 사이 틈으로 들어오고, 이음 하나가 구조를 붙잡아요. 무채색만 -->
+  <defs>
+    <linearGradient id="beam" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.16" r="0.6">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.06"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="800" height="1000" fill="#e6e6e6"/>
+  <rect width="800" height="1000" fill="url(#glow)"/>
+  <!-- 빛줄기: 위 오른쪽 틈에서 아래 왼쪽 바닥으로 -->
+  <polygon points="560,0 640,0 300,760 120,760" fill="url(#beam)" opacity="0.8"/>
+  <!-- 바닥선 -->
+  <line x1="0" y1="760" x2="800" y2="760" stroke="#1a1a1a" stroke-width="1"/>
+  <!-- 기둥 두 개 + 보 (얇은 선 구조) -->
+  <g stroke="#1a1a1a" stroke-width="1" fill="none">
+    <rect x="150" y="300" width="14" height="460"/>
+    <rect x="520" y="300" width="14" height="460"/>
+    <rect x="130" y="286" width="424" height="14"/>
+  </g>
+  <!-- 이음: 보와 오른쪽 기둥이 만나는 곳 -->
+  <g stroke="#1a1a1a" stroke-width="0.8" fill="none">
+    <circle cx="527" cy="293" r="46"/>
+    <line x1="573" y1="293" x2="660" y2="293"/>
+  </g>
+  <g fill="#1a1a1a">
+    <circle cx="521" cy="289" r="2.2"/><circle cx="533" cy="289" r="2.2"/><circle cx="521" cy="297" r="2.2"/><circle cx="533" cy="297" r="2.2"/>
+  </g>
+  <!-- 공기: 기둥 사이 아주 옅은 가로선 몇 줄 -->
+  <g stroke="#1a1a1a" stroke-width="0.5" opacity="0.18">
+    <line x1="178" y1="420" x2="506" y2="420"/>
+    <line x1="178" y1="480" x2="506" y2="480"/>
+    <line x1="178" y1="540" x2="506" y2="540"/>
+  </g>
+  <!-- 글 -->
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" fill="#1a1a1a">
+    <text x="48" y="78" font-size="15" letter-spacing="0.5">PHILOSOPHY</text>
+    <text x="752" y="78" font-size="15" text-anchor="end" letter-spacing="0.5">A-001</text>
+    <text x="672" y="298" font-size="12" letter-spacing="0.4">JOINT</text>
+    <text x="48" y="828" font-size="30" letter-spacing="-0.6">An answer</text>
+    <text x="48" y="864" font-size="30" letter-spacing="-0.6">before an image.</text>
+    <text x="48" y="944" font-size="12" letter-spacing="0.5">01 AIR</text>
+    <text x="178" y="944" font-size="12" letter-spacing="0.5">02 LIGHT</text>
+    <text x="318" y="944" font-size="12" letter-spacing="0.5">03 STRUCTURE</text>
+    <text x="498" y="944" font-size="12" letter-spacing="0.5">04 JOINT</text>
+    <text x="752" y="944" font-size="12" text-anchor="end" letter-spacing="0.5">YP.STUDIO</text>
+  </g>
+  <rect width="800" height="1000" filter="url(#grain)"/>
+</svg>
