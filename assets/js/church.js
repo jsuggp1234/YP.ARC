@@ -776,6 +776,84 @@
     k = kick;
   };
 
-  const KIND = { mounds, tideplan, louver, clock, plan, steps, plant, transect, stops, grow, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
+  // ── SMART PIXEL 네 가지 쓰임 (핀 #172): 다섯 기둥 길이 지금 모드대로 켜지고, 아래 그래프에 지금 시각 막대가 지나가요 ──
+  const pixel = (el) => {
+    const N = 5, warm = (a) => `rgba(240,196,84,${a})`;
+    const hold = (inst, t, last, keep, fall) => (inst > 0.2 ? inst : t - last < keep ? null : Math.max(0.2, 1 - (t - last - keep) / fall));
+    // 모드마다: 길이(T), 단위, 눈금, 사람 위치 x(t)(기둥 번호 단위), 기둥별 밝기 L(i, t), 그래프로 볼 기둥, 상태 글
+    const M = [
+      { n: "walk past", T: 90, u: "s", ticks: [0, 30, 60, 90], f: 2, note: "",
+        x: (t) => (t < 10 ? -1 : t > 22 ? 5 : -1 + ((t - 10) / 12) * 6),
+        L: (i, t) => { // 지난 40 s 안에 사람 곁이었으면 그때 밝기(옆 100 %, 하나 건너 60 %)를 지키고, 그 뒤 6 s에 20 %로
+          let best = 0.2;
+          for (let q = Math.max(0, t - 46); q <= t; q += 0.2) { const x = M[0].x(q); if (x <= -1 || x >= 5) continue; const d = Math.abs(i - x), v = d < 0.5 ? 1 : d < 1.5 ? 0.6 : 0; if (!v) continue; const age = t - q, f = age <= 40 ? 1 : Math.max(0, 1 - (age - 40) / 6); best = Math.max(best, 0.2 + (v - 0.2) * f); }
+          return best; },
+        say: (t) => (t < 10 ? "nobody — every pixel glows at 20 %, warm 2700 K" : t < 23 ? "someone passes — the pixel beside them goes to 100 %, the next ones to 60 %" : t < 62 ? "the lane stays lit 40 s after the last pass" : "back to 20 %") },
+      { n: "check in", T: 40, u: "min", ticks: [0, 10, 20, 30, 40], f: 2, note: "",
+        x: (t) => (t < 2 ? -1 + t * 1.5 : t < 26 ? 2 + 0.25 * Math.sin(t * 0.8) : t < 30 ? 2 + (t - 26) * 0.9 : 6),
+        L: (i, t) => (i !== 2 ? 0.2 : t < 3 ? 0.2 : t < 3.3 ? 0.2 + (t - 3) / 0.3 * 0.8 : t < 36 ? 1 : Math.max(0.2, 1 - (t - 36) / 2)),
+        say: (t) => (t < 3 ? "a slow walk with the dog — one tap in the app, within 3 m" : t < 26 ? "Stay lit: only the pixel next to you, 100 %" : t < 36 ? "walked off — it holds 10 min after the phone leaves 3 m" : "back to 20 %") },
+      { n: "gather", T: 5.5, t0: 18, u: "h", ticks: [18, 19, 20, 21, 22, 23], f: 3, note: "", wall: [0, 1], room: [3, 4],
+        x: () => null,
+        L: (i, h) => { if (h >= 18.4 && h < 19 && i <= 1) return 1; if (h >= 19 && h < 22 && i >= 3) return 1; if (h >= 22 && h < 22.05 && i >= 3) return 1 - (h - 22) / 0.05 * 0.8; return 0.2; },
+        say: (h) => (h < 18.4 ? "18:00 — two neighbours check in" : h < 19 ? "two checked in side by side: the wall between them lights" : h < 22 ? "a booking for four: the cell's four corners and the canopy light, the box opens" : h < 23 ? "the box is packed — the room signs out" : "23:00 quiet hours — only the walk-past light runs") },
+      { n: "call for help", T: 15, u: "min", ticks: [0, 5, 10, 15], f: 4, note: "flash shown slowed",
+        x: (t) => (t < 1 ? 2 + t * 1.8 : t < 10.2 ? 3.8 : 3.8 - (t - 10.2) * 0.4),
+        L: (i, t) => (t < 1 || t >= 10.7 ? 0.2 : t >= 10 || i !== 4 ? 1 : Math.floor(t * 3) % 2 ? 0.2 : 1),
+        say: (t) => (t < 1 ? "a press on the gate sign" : t < 3 ? "the gate flashes; the whole lane line goes to 100 %; 112 and the police box are called" : t < 10 ? "the flash runs until the police box clears it on site" : "cleared — back to 20 %") },
+    ];
+    el.insertAdjacentHTML("beforeend", `<div class="mv-ui">${M.map((m, i) => `<button type="button" data-m="${i}">${String(i + 1).padStart(2, "0")} ${m.n}</button>`).join("")}<span class="sep"></span><button type="button" data-auto class="on">auto</button></div>`);
+    const bts = [...el.querySelectorAll("[data-m]")], au = el.querySelector("[data-auto]");
+    let mode = 0, auto = true, start = null, ph = 0;
+    const mark = () => { bts.forEach((b, i) => b.classList.toggle("on", i === mode)); au.classList.toggle("on", auto); };
+    bts.forEach((b, i) => b.addEventListener("click", () => { mode = i; auto = false; start = null; mark(); st.kick(); }));
+    au.addEventListener("click", () => { auto = !auto; start = null; mark(); st.kick(); });
+    mark();
+    const RUN = 11, REST = 1.6; // 한 모드 11초 + 쉼 1.6초
+    const person = (g, x, y, s, c) => { g.strokeStyle = c; g.lineWidth = 1.2; g.beginPath(); g.arc(x, y - s * 0.92, s * 0.1, 0, 7); g.moveTo(x, y - s * 0.8); g.lineTo(x, y - s * 0.42); g.moveTo(x - s * 0.13, y - s * 0.68); g.lineTo(x, y - s * 0.75); g.lineTo(x + s * 0.13, y - s * 0.6); g.moveTo(x - s * 0.12, y); g.lineTo(x, y - s * 0.42); g.lineTo(x + s * 0.12, y); g.stroke(); };
+    const st = stage(el, (g, W, H, tt) => {
+      if (start === null) start = tt;
+      let e = tt - start;
+      if (auto && e > RUN + REST) { mode = (mode + 1) % M.length; start = tt; e = 0; mark(); }
+      const m = M[mode], k = reduce ? 0.55 : Math.min(1, e / RUN), t0 = m.t0 || 0, t = t0 + k * m.T;
+      // 길(위 58 %) · 그래프(아래)
+      const top = C.s * 3.2, gy = H * 0.62, padL = W * 0.03, padR = W * 0.03, laneW = W - padL - padR;
+      const xs = (i) => padL + laneW * (0.08 + (i / (N - 1)) * 0.84), ground = gy - C.xs * 4.2, head = top + C.xs * 2.4, colH = ground - head, s = colH * 0.62;
+      const px = m.x(t), Ls = [...Array(N)].map((_, i) => m.L(i, t, px));
+      // 빛 원뿔 → 기둥 → 보 → 땅
+      Ls.forEach((L, i) => { const x = xs(i), w = laneW * 0.1; g.fillStyle = warm(0.06 + 0.34 * (L - 0.2) / 0.8 + 0.04); g.beginPath(); g.moveTo(x, head + 4); g.lineTo(x - w, ground); g.lineTo(x + w, ground); g.closePath(); g.fill(); });
+      if (m.wall) { const [a, b] = m.wall, on = Ls[a] > 0.9 && Ls[b] > 0.9; g.fillStyle = warm(on ? 0.35 : 0); g.fillRect(xs(a) + 4, head + colH * 0.12, xs(b) - xs(a) - 8, colH * 0.8); if (on) { g.strokeStyle = C.mix(0.25); g.lineWidth = 0.6; for (let q = xs(a) + 12; q < xs(b) - 6; q += 8) { g.beginPath(); g.moveTo(q, head + colH * 0.12); g.lineTo(q, head + colH * 0.92); g.stroke(); } } }
+      if (m.room) { const [a, b] = m.room, on = Ls[a] > 0.9; if (on) { g.strokeStyle = C.mix(0.5); g.lineWidth = 0.8; g.beginPath(); g.moveTo(xs(a), head + 6); g.quadraticCurveTo((xs(a) + xs(b)) / 2, head + colH * 0.22, xs(b), head + 6); g.stroke(); for (let q = 1; q < 8; q++) { const u = q / 8, bx = xs(a) + (xs(b) - xs(a)) * u, by = head + 6 + (colH * 0.16) * 4 * u * (1 - u); g.fillStyle = warm(0.95); g.beginPath(); g.arc(bx, by + 2, 2, 0, 7); g.fill(); } const mx = (xs(a) + xs(b)) / 2; g.strokeStyle = C.mix(0.7); g.lineWidth = 1; g.strokeRect(mx - s * 0.22, ground - s * 0.3, s * 0.44, s * 0.04); [-0.3, -0.12, 0.12, 0.3].forEach((d, j) => person(g, mx + d * s * 1.25, ground, s * (j % 2 ? 0.66 : 0.7), C.mix(0.85))); } }
+      g.strokeStyle = C.mix(0.85); g.lineWidth = 1;
+      g.beginPath(); g.moveTo(xs(0) - 4, head); g.lineTo(xs(N - 1) + 4, head); g.stroke();
+      Ls.forEach((L, i) => { const x = xs(i); g.fillStyle = warm(0.12 + 0.85 * (L - 0.2) / 0.8 + 0.05); g.fillRect(x - 3, head, 6, colH); g.strokeRect(x - 3, head, 6, colH);
+        g.font = font(C.xs, L > 0.95 ? 600 : 400); g.fillStyle = C.mix(L > 0.95 ? 0.95 : 0.5); g.textAlign = "center"; g.textBaseline = "bottom"; g.fillText(`${Math.round(L * 100)} %`, x, head - 5); });
+      if (mode === 3 && Ls[4] > 0.9 && t > 1 && t < 10) { const x = xs(4); g.strokeStyle = warm(1); g.lineWidth = 1.5; [-0.9, -0.5, 0, 0.5, 0.9].forEach((a) => { g.beginPath(); g.moveTo(x + Math.sin(a) * 14, head - C.xs * 1.9 - Math.cos(a) * 4); g.lineTo(x + Math.sin(a) * 24, head - C.xs * 1.9 - Math.cos(a) * 14); g.stroke(); }); }
+      g.strokeStyle = C.mix(0.55); g.lineWidth = 1; g.beginPath(); g.moveTo(padL, ground); g.lineTo(W - padR, ground); g.stroke();
+      if (mode === 2 && t < 19 && t >= 18.4) [0.35, 0.65].forEach((u) => person(g, xs(0) + (xs(1) - xs(0)) * u, ground, s * 0.7, C.mix(0.85)));
+      if (px !== null && px > -1 && px < 5) { const x = xs(0) + (xs(1) - xs(0)) * px; person(g, x, ground, s * 0.72, C.mix(0.9)); if (mode === 1) { g.fillStyle = C.mix(0.55); g.beginPath(); g.arc(x - s * 0.5, ground - s * 0.08, s * 0.07, 0, 7); g.fill(); g.strokeStyle = C.mix(0.55); g.beginPath(); g.moveTo(x - s * 0.12, ground - s * 0.6); g.lineTo(x - s * 0.46, ground - s * 0.1); g.stroke(); } }
+      // 상태 글
+      g.font = font(C.xs); g.textAlign = "left"; g.textBaseline = "alphabetic"; g.fillStyle = C.mix(0.85);
+      const hh = (h) => `${String(Math.floor(h)).padStart(2, "0")}:${String(Math.floor((h % 1) * 60)).padStart(2, "0")}`;
+      const clock = m.u === "h" ? hh(t) : `${m.u === "min" ? t.toFixed(1) : Math.round(t)} ${m.u}`;
+      g.font = font(C.xs, 600); g.fillText(clock, padL, ground + C.xs * 2.4); const cw = g.measureText(clock).width;
+      g.font = font(C.xs); g.fillStyle = C.mix(0.6); g.fillText(m.say(t), padL + cw + 14, ground + C.xs * 2.4);
+      // 그래프: 보는 기둥의 밝기
+      const gx0 = padL + C.xs * 3.4, gx1 = W - padR, gtop = gy + C.xs * 2.6, gbot = H - C.xs * 2.4, X = (v) => gx0 + ((v - t0) / m.T) * (gx1 - gx0), Y = (L) => gbot - L * (gbot - gtop);
+      g.font = font(C.xs, 600); g.fillStyle = C.mix(0.85); g.fillText(`Light at pixel ${m.f + 1}`, padL, gy + C.xs * 1.2);
+      if (m.note) { g.font = font(C.xs); g.fillStyle = C.mix(0.5); g.textAlign = "right"; g.fillText(m.note, gx1, gy + C.xs * 1.2); g.textAlign = "left"; }
+      const S = 360, curve = (i, dash) => { g.beginPath(); for (let q = 0; q <= S; q++) { const v = t0 + (q / S) * m.T, L = m.L(i, v, m.x(v)), x = X(v), y = Y(L); q ? g.lineTo(x, y) : g.moveTo(x, y); } if (dash) { g.setLineDash([3, 3]); g.stroke(); g.setLineDash([]); } return g; };
+      curve(m.f); g.lineTo(X(t0 + m.T), gbot); g.lineTo(X(t0), gbot); g.closePath(); g.fillStyle = warm(0.22); g.fill();
+      g.strokeStyle = C.mix(0.8); g.lineWidth = 1; curve(m.f).stroke(); 
+      g.strokeStyle = C.mix(0.25); g.lineWidth = 0.6; g.beginPath(); g.moveTo(gx0, gbot); g.lineTo(gx1, gbot); g.stroke();
+      g.font = font(C.xs); g.fillStyle = C.mix(0.5); g.textAlign = "right"; g.textBaseline = "middle";
+      [[1, "100 %"], [0.6, "60 %"], [0.2, "20 %"]].forEach(([L, s]) => { g.fillText(s, gx0 - 6, Y(L)); g.strokeStyle = C.mix(0.1); g.beginPath(); g.moveTo(gx0, Y(L)); g.lineTo(gx1, Y(L)); g.stroke(); });
+      g.textAlign = "center"; g.textBaseline = "top"; m.ticks.forEach((v) => g.fillText(m.u === "h" ? `${v}:00` : `${v}${v === m.ticks[m.ticks.length - 1] ? " " + m.u : ""}`, X(v), gbot + 5));
+      const L = m.L(m.f, t, px), hx = X(t); g.strokeStyle = C.mix(0.9); g.lineWidth = 1; g.beginPath(); g.moveTo(hx, gtop - 4); g.lineTo(hx, gbot); g.stroke();
+      g.fillStyle = C.mix(0.95); g.beginPath(); g.arc(hx, Y(L), 3, 0, 7); g.fill();
+    });
+  };
+
+  const KIND = { mounds, tideplan, louver, clock, plan, steps, plant, transect, stops, grow, pixel, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
   window.MVSims = { mount: (el, kind) => { if (el.dataset.on) return; el.dataset.on = 1; colors(); (KIND[kind] || (() => {}))(el); } };
 })();
