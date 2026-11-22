@@ -3544,6 +3544,52 @@
   };
   // 핀 #8(2026-11-22): 여러 칸으로 된 그림을 스크롤에 따라 왼쪽부터 한 칸씩 드러내요 (data.js 그림의 reveal: 칸 수)
   // 핀 #11(2026-11-22): 왼쪽 디테일 줄 + 오른쪽 고정 키. 지금 화면 가운데에 온 디테일의 자리를 키 위에 고리로 표시해요
+  // 핀 #133: 평면 시뮬레이션(fplan) — 스크롤하면 층이 바뀌고(화면 고정), 평면 위 번호와 옆 목록(이름·설명)이 서로 짝지어 강조돼요
+  const fplanHtml = (q) => `<div class="fp" data-fp style="--n:${q.floors.length}"><div class="fp-in">
+    <div class="fp-st"><div class="media fp-m" style="aspect-ratio:${q.r};--r:${q.r}">${q.floors.map((f, i) => `<img class="dg fp-img${i ? "" : " on"}" data-f="${i}" src="${esc(f.src)}" alt="${esc(`${f.t} — ${f.s}`)}" decoding="async"${i ? ' loading="lazy"' : ""}>`).join("")}${q.floors.map((f, i) => (f.lv || []).map(([x, y, t]) => `<span class="fp-lv num${i ? "" : " on"}" data-f="${i}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") + f.items.map(([n, x, y]) => `<button type="button" class="fp-n num${i ? "" : " on"}" data-f="${i}" data-n="${n}" style="left:${x}%;top:${y}%" tabindex="-1" aria-hidden="true">${n}</button>`).join("")).join("")}</div></div>
+    <div class="fp-sd">
+      <div class="fp-tabs" role="tablist">${q.floors.map((f, i) => `<button type="button" role="tab" class="fp-tb${i ? "" : " on"}" data-f="${i}" aria-selected="${i ? "false" : "true"}"><b>${esc(f.t)}</b> <span class="mid num">${esc(f.s)}</span></button>`).join("")}</div>
+      ${q.floors.map((f, i) => `<ol class="fp-lg${i ? "" : " on"}" data-f="${i}">${f.items.map(([n, , , t, d]) => `<li data-n="${n}" tabindex="0"><span class="num">${n}</span><b>${esc(t)}</b><span class="mid">${esc(d)}</span></li>`).join("")}</ol>`).join("")}
+    </div></div></div>`;
+  const fpInit = () => $$("[data-fp]").forEach((el) => {
+    const N = +getComputedStyle(el).getPropertyValue("--n") || 1, tabs = $$(".fp-tb", el);
+    let cur = 0, hot = null;
+    const show = (i) => {
+      if (i === cur) return; cur = i;
+      $$("[data-f]", el).forEach((e) => e.classList.toggle("on", +e.dataset.f === i));
+      tabs.forEach((t, j) => t.setAttribute("aria-selected", j === i ? "true" : "false"));
+      mark(null);
+    };
+    const mark = (n) => {
+      hot = n; el.classList.toggle("fp-hot", n != null);
+      $$(`.fp-n[data-f="${cur}"], .fp-lg[data-f="${cur}"] li`, el).forEach((e) => e.classList.toggle("fp-on", n != null && e.dataset.n === String(n)));
+    };
+    // 화면 고정 구간에서 스크롤 위치 → 층 (모바일·움직임 줄이기는 탭으로만)
+    const sticky = () => getComputedStyle($(".fp-in", el)).position === "sticky";
+    const upd = () => {
+      if (!sticky()) return;
+      const r = el.getBoundingClientRect(), span = r.height - innerHeight;
+      const t = span > 0 ? Math.min(0.999, Math.max(0, -r.top / span)) : 0;
+      show(Math.floor(t * N));
+    };
+    addEventListener("scroll", upd, { passive: true }); upd();
+    tabs.forEach((b, i) => b.addEventListener("click", () => {
+      if (!sticky()) return show(i);
+      const top = el.getBoundingClientRect().top + scrollY, span = el.offsetHeight - innerHeight, y = top + span * ((i + 0.5) / N);
+      if (lenis) lenis.scrollTo(y, { duration: 0.9 }); else scrollTo({ top: y, behavior: REDUCED ? "auto" : "smooth" });
+      show(i);
+    }));
+    $$(".fp-lg li", el).forEach((li) => {
+      const n = +li.dataset.n;
+      li.addEventListener("pointerenter", () => mark(n)); li.addEventListener("focus", () => mark(n));
+      li.addEventListener("pointerleave", () => mark(null)); li.addEventListener("blur", () => mark(null));
+    });
+    $$(".fp-n", el).forEach((b) => {
+      const n = +b.dataset.n;
+      b.addEventListener("pointerenter", () => mark(n)); b.addEventListener("pointerleave", () => mark(null));
+      b.addEventListener("click", () => { const li = $(`.fp-lg[data-f="${cur}"] li[data-n="${n}"]`, el); if (li) li.focus({ preventScroll: true }); });
+    });
+  });
   const keyedHtml = (q) => `<div class="kj" data-kj><div class="kj-list">${q.items.map((it, i) => `<figure class="kj-it" data-i="${i}"><div class="media" style="aspect-ratio:${it.r}"><img class="dg" src="${esc(it.src)}" alt="${esc(it.t)}" loading="lazy" decoding="async"></div>${it.notes ? `<figcaption class="kj-nt"><b><span class="num mid">J${i + 1}</span> ${esc(it.t)}</b>${it.d ? `<p class="kj-d">${esc(it.d)}</p>` : ""}<ol>${it.notes.map(([n, t]) => `<li><span class="num">${esc(n)}</span>${esc(t)}</li>`).join("")}</ol></figcaption>` : ""}</figure>`).join("")}</div><div class="kj-key"><figure><div class="media" style="aspect-ratio:${q.key.r}"><img class="dg" src="${esc(q.key.src)}" alt="${esc(q.key.caption || "")}" decoding="async">${q.items.map((it, i) => `<span class="kj-ring" data-i="${i}" style="left:${it.x}%;top:${it.y}%"><b>${i + 1}</b></span>`).join("")}<svg class="kj-ld" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1"/></svg></div><figcaption class="mid"><span class="kj-n">01</span> ${esc(q.items[0].t)} <span class="kj-c">— ${esc(q.key.caption || "")}</span></figcaption></figure></div></div>`;
   const keyedInit = () => $$("[data-kj]").forEach((el) => {
     const its = $$(".kj-it", el), rings = $$(".kj-ring", el), n = $(".kj-n", el), cap = $(".kj-key figcaption", el), names = its.map((f) => $("img", f).alt);
@@ -3858,7 +3904,7 @@
               <section class="pj-sec${s.big || /scene|render|view|interior|exterior/i.test(s.heading) ? " ph" : ""}${s.beside ? " bes" : ""}" id="s${si + 1}" data-toc="${esc(s.heading)}" data-v="${s.v != null ? s.v : si % 4}"${s.al ? ` style="--al:${s.al}"` : ""}>
                 <div class="hd"><span class="num">${pad(si + 1)}.</span><h2>${esc(s.heading)}</h2></div>
                 <p class="txt" data-reveal>${esc(s.text)}</p>
-                ${s.sim ? simHtml(s.sim) : ""}${s.panel ? mapHtml(s.panel) : ""}${s.widget && s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}${s.seq ? seqHtml(s.seq) : ""}${s.seasons ? ssnHtml(s.seasons) : ""}${s.keyed ? keyedHtml(s.keyed) : ""}${s.pan && !s.pan.after ? panHtml(s.pan) : ""}${s.widget && !s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}
+                ${s.sim ? simHtml(s.sim) : ""}${s.panel ? mapHtml(s.panel) : ""}${s.widget && s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}${s.seq ? seqHtml(s.seq) : ""}${s.seasons ? ssnHtml(s.seasons) : ""}${s.keyed ? keyedHtml(s.keyed) : ""}${s.fplan ? fplanHtml(s.fplan) : ""}${s.pan && !s.pan.after ? panHtml(s.pan) : ""}${s.widget && !s.seq ? `<div class="tw tw-${s.widget}" data-tw="${s.widget}"${s.wsrc ? ` data-src="${esc(s.wsrc)}"` : ""} data-lenis-prevent data-reveal></div>` : ""}
                 ${s.scenes ? scenesHtml(s, si) : s.images.length ? `<div class="figs ${s.cols ? "gc" : s.stack ? "n1 stk" : `n${Math.min(3, s.images.length)}`}"${s.cols ? ` style="--c:${s.cols}${s.cw ? `;grid-template-columns:${s.cw.map((x) => x + "fr").join(" ")}` : ""}${s.gap ? `;column-gap:${s.gap}` : ""}"` : ""}>${s.images.map((im, ii) => {
                   const big = s.stack || s.images.length === 1 || (s.images.length === 3 && ii === 0);
                   return figure(im, `${p.slug}-${si}-${ii}`, big ? 1600 : 1200, s.images.length === 1 ? 1000 : 900);
@@ -3888,7 +3934,7 @@
         else { v.pause(); b.setAttribute("aria-label", "Play film"); $("span", b).textContent = "Play film"; }
         b.classList.toggle("on", !v.paused);
       }));
-      baInit(); xpInit(); seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit(); sunInit();
+      baInit(); xpInit(); seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit(); fpInit(); sunInit();
       if (window.TideWidgets) $$("[data-tw]").forEach((w) => TideWidgets.mount(w, w.dataset.tw));
       if (window.MVSims) $$("[data-mv]").forEach((w) => MVSims.mount(w, w.dataset.mv));
       // 목차 + 현재 위치 표시
