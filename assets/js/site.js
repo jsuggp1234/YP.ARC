@@ -889,7 +889,7 @@
   render.home = () => {
     HTML.classList.add("st-home", "sl-home");
     const ST = SITE.start || [], N = 24, SETS = 1;
-    const item = (pg, i, k) => `<a class="sl-a" href="${esc(pg.href)}"${pg.contact ? " data-contact" : ""} data-i="${i}"${k ? ' aria-hidden="true" tabindex="-1"' : ` aria-label="${esc(pg.title)}"`}><span class="sl-t" aria-hidden="true">${esc(pg.title)}</span><span class="sl-g"></span></a>`;
+    const item = (pg, i, k) => `<a class="sl-a" draggable="false" href="${esc(pg.href)}"${pg.contact ? " data-contact" : ""} data-i="${i}"${k ? ' aria-hidden="true" tabindex="-1"' : ` aria-label="${esc(pg.title)}"`}><span class="sl-t" aria-hidden="true">${esc(pg.title)}</span><span class="sl-g"></span></a>`;
     $("#main").innerHTML = `
       <h1 class="sr">${esc(SITE.name)} — ${esc(SITE.owner)} Architecture Portfolio</h1>
       <nav class="sl" aria-label="Start"><div class="sl-tr">${[...Array(SETS)].map((_, k) => ST.map((pg, i) => item(pg, i, k)).join("")).join("")}</div></nav>`;
@@ -917,20 +917,26 @@
     };
     measure(); addEventListener("resize", measure);
     addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; last = performance.now(); }, { passive: true });
-    D.addEventListener("pointerleave", () => { mx = my = -1e4; });
+    D.addEventListener("pointerleave", () => { if (!nav.classList.contains("holding")) mx = my = -1e4; });
     nav.addEventListener("pointerover", (e) => { hovering = !!e.target.closest(".sl-a"); });
     nav.addEventListener("pointerleave", () => { hovering = false; });
     const push = (d) => { if (busy || REDUCED || !d) return; lastIn = performance.now(); }; // 스크롤·끌기·키 = 글자들이 흥분해요
     nav.addEventListener("wheel", (e) => { e.preventDefault(); push((Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) / (innerHeight * 4)); }, { passive: false });
     let down = null, moved = false;
-    nav.addEventListener("pointerdown", (e) => { if (!e.button) { down = { x: e.clientX, y: e.clientY, id: e.pointerId }; moved = false; } });
+    nav.addEventListener("pointerdown", (e) => { if (!e.button) { const a = e.target.closest(".sl-a"); down = { x: e.clientX, y: e.clientY, id: e.pointerId, j: a && !REDUCED ? as.indexOf(a) : -1 }; moved = false; } });
     nav.addEventListener("pointermove", (e) => {
       if (!down || busy) return; const dx = e.clientX - down.x, dy = e.clientY - down.y, d = Math.abs(dx) > Math.abs(dy) ? dx : dy;
-      if (!moved && Math.abs(d) > 5) { moved = true; nav.setPointerCapture(down.id); nav.classList.add("drag"); }
+      if (!moved && Math.abs(d) > 5) { moved = true; nav.setPointerCapture(down.id); nav.classList.add("drag"); if (down.j >= 0) { mx = e.clientX; my = e.clientY; grab(down.j, down.x, down.y); down.held = true; } }
+      if (down.held) { mx = e.clientX; my = e.clientY; return; } // 잡는 동안엔 커서 위치를 여기서 직접 (포인터 캡처 중 바깥 이벤트가 위치를 지워서)
       if (moved) { push(-d / (innerHeight * 2.4)); down.x = e.clientX; down.y = e.clientY; }
     });
-    const up = () => { down = null; nav.classList.remove("drag"); setTimeout(() => (moved = false), 0); };
+    const up = () => { if (down && down.held) letGo(down.j); down = null; nav.classList.remove("drag"); setTimeout(() => (moved = false), 0); };
     nav.addEventListener("pointerup", up); nav.addEventListener("pointercancel", up);
+    nav.addEventListener("dragstart", (e) => e.preventDefault());
+    const dropAll = () => { CH.forEach((c, j) => { if (c.mode === "held") letGo(j); }); if (down && down.held) { down = null; nav.classList.remove("drag"); setTimeout(() => (moved = false), 0); } };
+    nav.addEventListener("lostpointercapture", dropAll);
+    addEventListener("pointerup", dropAll); addEventListener("blur", dropAll);
+    addEventListener("pointermove", (e) => { if (!e.buttons && CH.some((c) => c.mode === "held")) dropAll(); }, { passive: true }); // 버튼이 이미 떼어져 있으면 바로 놓아요 // 링크 기본 끌기를 막아야 글자를 잡을 수 있어요
     addEventListener("keydown", (e) => { if (!busy && /^(Arrow(Left|Right|Up|Down)|PageDown|PageUp| )$/.test(e.key) && $("#menu").hidden) { e.preventDefault(); push(1); } });
 
     // 글자 j의 층 k: 떠날 때(0~0.5)와 다시 설 때(0.5~1) 진행률
@@ -1014,23 +1020,65 @@
       c.x = x; c.y = y; c.sx = sx; c.sy = sy;
       return p >= 1;
     };
-    // 도망칠 곳: 화면 안 임의의 점 네 개 중 커서에서 가장 먼 곳 (한 번에 화면 폭의 45%까지만)
-    const fleeTo = (c, g) => {
-      const vw = innerWidth, vh = innerHeight, hd = 90, m = 16; let best = null, bd = -1;
-      for (let i = 0; i < 4; i++) {
-        const sx = m + g.hw + Math.random() * Math.max(1, vw - 2 * (m + g.hw)), sy = hd + g.fs + Math.random() * Math.max(1, vh - hd - g.fs - m * 3);
-        let tx = sx - g.x0, ty = sy - g.by; const lim = vw * 0.45, dx = tx - c.x;
-        if (Math.abs(dx) > lim) tx = c.x + Math.sign(dx) * lim;
-        const cx = g.x0 + tx, cy = g.by + ty - g.fs * 0.4, d = mx > -1e3 ? Math.hypot(cx - mx, cy - my) : Math.random();
-        if (d > bd) { bd = d; best = [tx, ty]; }
+    // 잡기 (2026-11-22 요청): 누른 자리가 축이 되어 커서에 매달려요. 커서가 움직이면 그 가속도로 흔들리고, 아래쪽을 잡으면 뒤집혀 매달려요
+    const GV = 2600;
+    const grab = (j, px0, py0) => {
+      const c = CH[j]; if (!c) return;
+      const el = c.el, pt = el.style.transform; el.style.transform = "none"; const r = el.getBoundingClientRect(); el.style.transform = pt;
+      const w = r.width, h = r.height, px = Math.max(0, Math.min(w, px0 - (r.left + c.x))), py = Math.max(0, Math.min(h, py0 - (r.top + c.y)));
+      const rx = w / 2 - px, ry = h * 0.55 - py;
+      c.act = null; c.q = []; c.on = -1; c.mode = "held";
+      c.hold = { px, py, L: r.left, T: r.top, rx, ry, I: rx * rx + ry * ry + (w * w + h * h) / 12, mx: px0, my: py0, vx: 0, vy: 0, ax: 0, ay: 0 };
+      c.th = (c.rot * Math.PI) / 180; c.w = 0; c.rot = 0; c.sx = c.sy = 1;
+      el.style.transformOrigin = px.toFixed(1) + "px " + py.toFixed(1) + "px";
+      nav.classList.add("holding");
+      CH.forEach((o, k) => { if (k !== j && o.on === j) { o.on = -1; o.mode = "back"; o.tx = 0; o.ty = 0; } }); // 위에 앉아 있던 점은 떨어져 나가요
+    };
+    const letGo = (j) => {
+      const c = CH[j]; if (!c || c.mode !== "held") return;
+      c.mode = "drop"; c.vx = Math.max(-1500, Math.min(1500, c.hold.vx)); c.vy = Math.max(-1500, Math.min(1500, c.hold.vy)); c.bn = 0;
+      nav.classList.remove("holding");
+    };
+    const physics = (c, j, dt) => {
+      const P = c.hold, g = geo[j];
+      if (c.mode === "held") {
+        const vx = (mx - P.mx) / Math.max(dt, 0.008), vy = (my - P.my) / Math.max(dt, 0.008);
+        P.ax += (Math.max(-9000, Math.min(9000, (vx - P.vx) / Math.max(dt, 0.008))) - P.ax) * 0.35;
+        P.ay += (Math.max(-9000, Math.min(9000, (vy - P.vy) / Math.max(dt, 0.008))) - P.ay) * 0.35;
+        P.vx = vx; P.vy = vy; P.mx = mx; P.my = my;
+        c.x = mx - (P.L + P.px); c.y = c.base = my - (P.T + P.py);
+        const cs = Math.cos(c.th), sn = Math.sin(c.th), rxr = P.rx * cs - P.ry * sn, ryr = P.rx * sn + P.ry * cs;
+        c.w += ((rxr * (GV - P.ay) + ryr * P.ax) / P.I) * dt; // 중력과 커서 가속도가 만드는 돌림힘
+        c.w *= Math.exp(-1.3 * dt); c.w = Math.max(-25, Math.min(25, c.w)); c.th += c.w * dt;
+        return;
       }
-      c.tx = best[0]; c.ty = best[1];
+      // 떨어지기: 던진 속도 그대로 + 중력, 몸은 바로 서려 하고, 바닥(원래 줄)에 닿으면 통통
+      c.vy += GV * dt; c.vx *= Math.exp(-0.6 * dt);
+      c.x += c.vx * dt; c.y += c.vy * dt;
+      if (g) { const lo = -g.x0 + g.hw + 8, hi = innerWidth - g.x0 - g.hw - 8; if (c.x < lo) { c.x = lo; c.vx = Math.abs(c.vx) * 0.5; } if (c.x > hi) { c.x = hi; c.vx = -Math.abs(c.vx) * 0.5; } }
+      c.w += (-c.th * 40 - c.w * 7) * dt; c.th += c.w * dt;
+      if (c.y >= 0 && c.vy > 0) {
+        c.y = 0; c.imp = 1; c.bn++;
+        if (c.bn < 3 && c.vy > 260) { c.vy = -c.vy * 0.32; c.vx *= 0.6; }
+        else { c.th = 0; c.w = 0; c.base = 0; c.el.style.transformOrigin = ""; c.mode = "back"; c.tx = 0; c.ty = 0; c.wait = performance.now() + 450; c.dirx = 0; }
+      }
+      c.base = c.y;
+    };
+
+    // 도망칠 곳: 화면 안 임의의 점 네 개 중 커서에서 가장 먼 곳 (한 번에 화면 폭의 45%까지만)
+    const fleeTo = (c, g) => { // 수평선 위에서만: 커서 반대쪽으로 화면 폭의 15–40% 달려가요. 벽에 막히면 돌아서요
+      const vw = innerWidth, m = 16, cx = g.x0 + c.x, lo = -g.x0 + g.hw + m, hi = vw - g.x0 - g.hw - m;
+      let dir = mx > -1e3 ? (cx >= mx ? 1 : -1) : Math.random() < 0.5 ? -1 : 1;
+      let tx = c.x + dir * vw * (0.15 + Math.random() * 0.25);
+      if (tx < lo || tx > hi) { tx = Math.max(lo, Math.min(hi, tx)); if (Math.abs(tx - c.x) < vw * 0.08) tx = Math.max(lo, Math.min(hi, c.x - dir * vw * (0.15 + Math.random() * 0.2))); }
+      c.tx = tx; c.ty = 0;
     };
     const actors = (t, dt, calm) => {
       if (REDUCED) return true;
-      if (busy) { CH.forEach((c) => { if (c.act || c.q.length || c.x || c.base || c.y) { c.act = null; c.q = []; c.x = c.y = c.base = 0; c.on = -1; c.mode = "home"; c.el.style.transform = ""; } }); nextAt = t + 1200; return true; }
+      if (busy) { CH.forEach((c) => { if (c.act || c.q.length || c.x || c.base || c.y) { c.act = null; c.q = []; c.x = c.y = c.base = 0; c.on = -1; c.mode = "home"; c.el.style.transform = ""; c.el.style.transformOrigin = ""; } }); nextAt = t + 1200; return true; }
       // 흥분: 입력이 들어오면 모두 도망, 1.1초 조용하면 진정하고 집으로
       CH.forEach((c, j) => {
+        if (c.mode === "held" || c.mode === "drop") return;
         if (!calm && c.mode !== "run" && geo[j]) { c.mode = "run"; c.act = null; c.q = []; c.on = -1; c.lookT = 0; fleeTo(c, geo[j]); c.gp = Math.random() * 6; c.wait = t + Math.random() * 260; }
         else if (calm && c.mode === "run") { c.mode = "back"; c.tx = 0; c.ty = 0; c.wait = t + Math.random() * 400; }
       });
@@ -1038,38 +1086,57 @@
       CH.forEach((c, j) => {
         const g = geo[j]; if (!g || c.mode === "home") return;
         if (c.mode !== "wander") rest = false;
-        if (t < (c.wait || 0)) { c.gp += dt * 20; return; } // 출발 전 제자리에서 동동
-        const dx = c.tx - c.x, dy = c.ty - c.base, dist = Math.hypot(dx, dy);
-        const run = c.mode === "run", spd = run ? (j === WORD ? 105 : 150) : c.mode === "back" ? 210 : 60;
-        if (dist < 2) {
-          c.x = c.tx; c.base = c.ty;
+        if (c.mode === "held" || c.mode === "drop") { physics(c, j, dt); return; }
+        const run = c.mode === "run", vmax = run ? (j === WORD ? 260 : 340) : c.mode === "back" ? 300 : 120, acc = run ? 950 : 650;
+        if (t < (c.wait || 0)) { c.crouch = Math.min(1, (c.crouch || 0) + dt * 6); c.vx = 0; c.ax = 0; c.tdir = Math.sign(c.tx - c.x); return; } // 출발 전: 반대쪽으로 웅크려요
+        c.crouch = Math.max(0, (c.crouch || 0) - dt * 7);
+        { // 늘 바닥(수평선)으로 — 다른 글자와 겹치려 하면 그 위로 뛰어넘어요
+          let lift = 0; const cx = g.x0 + c.x; if (j !== WORD) // STUDIO는 무거워서 뛰어넘지 않고, 작은 글자들이 STUDIO 위로 올라타 넘어가요
+          CH.forEach((o, k) => { const go = geo[k]; if (k === j || !go || o.mode === "held" || o.mode === "drop") return;
+            const d = Math.abs(cx - (go.x0 + o.x)), span = g.hw + go.hw; if (d >= span) return;
+            const hgt = (k === DOT ? 0.2 : 0.78) * go.fs; lift = Math.max(lift, hgt * Math.min(1, ((span - d) / (span * 0.35)))); });
+          c.base += (-lift - c.base) * Math.min(1, dt * (lift > -c.base ? 14 : 9));
+        }
+        const dx = c.tx - c.x, dist = Math.abs(dx);
+        if (dist < 1.5 && Math.abs(c.vx || 0) < 25) {
+          c.x = c.tx; c.vx = 0; c.ax = 0; c.base = 0;
           if (run) { fleeTo(c, g); c.wait = t + 150 + Math.random() * 500; } // 아직 흥분 중이면 잠깐 두리번 → 다른 곳으로
           else { if (c.mode === "wander") c.lookT = t + 1200; c.mode = "home"; if (!c.tx && !c.ty) c.x = c.base = 0; }
           return;
         }
-        const st = Math.min(dist, spd * dt);
-        c.x += (dx / dist) * st; c.base += (dy / dist) * st;
-        c.dirx = dx / dist;
-        c.gp += dt * (run ? 14 : c.mode === "back" ? 11 : 7); // 걸음 빠르기: 도망칠 땐 종종걸음
+        const vt = Math.sign(dx) * Math.min(vmax, Math.sqrt(2 * acc * 0.9 * dist)); // 목표 속도: 가까워질수록 줄어요(제동)
+        const v0 = c.vx || 0, dv = Math.max(-acc * dt, Math.min(acc * dt, vt - v0));
+        c.vx = v0 + dv; c.ax += (dv / Math.max(dt, 0.008) - (c.ax || 0)) * 0.25;
+        c.x += c.vx * dt;
+        if ((c.tx - c.x) * dx < 0) { c.x = c.tx; c.vx = 0; } // 지나치지 않게
+        c.dirx = c.vx / 340;
+        c.gp += (Math.abs(c.vx) * dt) / (g.fs * (run ? 0.1 : 0.13)); // 보폭: 빨리 달릴수록 걸음이 빨라져요
       });
       if (calm && t > nextAt) { pick(t); nextAt = t + 900 + Math.random() * 1900; }
       const dotC = CH[DOT], dotG = geo[DOT], dotAir = dotC && dotC.act && dotC.act.t0 <= t;
+      const HJ = CH.findIndex((c) => c.mode === "held");
       CH.forEach((c, j) => {
+        if (c.mode === "held" || c.mode === "drop") {
+          c.imp *= 0.88; const sq = c.mode === "drop" ? 1 - 0.1 * c.imp : 1;
+          c.el.style.transform = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0) rotate(${c.th.toFixed(4)}rad) scale(${(2 - sq).toFixed(3)}, ${sq.toFixed(3)})`;
+          return;
+        }
         if (!c.act && c.q.length && c.q[0].t0 <= t) c.act = c.q.shift();
         if (c.act && c.act.t0 <= t) {
           if (pose(c, t)) { c.base = c.act.y1; c.x = c.act.x1; c.y = c.base; c.sx = c.sy = 1; if (j === DOT && c.on >= 0 && CH[c.on]) CH[c.on].imp = 1; c.act = null; }
         } else if (c.mode !== "home") { // 종종걸음: 발을 디딜 때마다 살짝 눌리고, 가는 쪽으로 몸을 기울이며 좌우로 흔들려요
-          const ab = Math.abs(Math.sin(c.gp)), run = c.mode === "run";
-          c.y = c.base - ab * g0(j).fs * (run ? 0.07 : 0.04); c.sy = 1 - 0.07 * (1 - ab); c.sx = 1 + 0.04 * (1 - ab);
+          const ab = Math.abs(Math.sin(c.gp)), sp = Math.min(1, Math.abs(c.vx || 0) / 300), cr = c.crouch || 0;
+          c.y = c.base - ab * g0(j).fs * 0.065 * sp; c.sy = 1 - 0.07 * (1 - ab) * sp - 0.12 * cr; c.sx = 1 + 0.04 * (1 - ab) * sp + 0.07 * cr;
         } else { c.sx += (1 - c.sx) * 0.2; c.sy += (1 - c.sy) * 0.2; c.y = c.base; }
         // 쳐다보기: 점이 날고 있으면 점 쪽으로, 아니면 쳐다보기 중일 때 커서 쪽으로 (바닥을 축으로 기울어요)
         const g = geo[j]; let want = 0;
         if (g && j !== DOT && dotAir && dotG) want = Math.max(-7, Math.min(7, ((dotG.x0 + dotC.x - g.x0) / g.fs) * 5));
         else if (g && t < c.lookT && mx > -1e3) want = Math.max(-9, Math.min(9, ((mx - g.x0) / g.fs) * 6));
-        if (c.mode !== "home") want = c.dirx * (c.mode === "run" ? 9 : 5) + Math.sin(c.gp) * (c.mode === "run" ? 6 : 3);
+        if (HJ >= 0 && j !== HJ && g && geo[HJ]) want = Math.max(-8, Math.min(8, ((geo[HJ].x0 + CH[HJ].x - g.x0) / g.fs) * 5));
+        if (c.mode !== "home") want = Math.max(-16, Math.min(16, ((c.vx || 0) / 340) * 9 + ((c.ax || 0) / 950) * 6 + Math.sin(c.gp * 2) * 1.5 * Math.min(1, Math.abs(c.vx || 0) / 300) - (c.crouch || 0) * (c.tdir || 0) * 5));
         if (c.shake && t - c.shake < 700) want += Math.sin((t - c.shake) / 28) * 1.6 * (1 - (t - c.shake) / 700);
         if (j === WORD) want *= 0.4; // STUDIO는 넓어서 조금만 기울어요
-        c.rot += (want - c.rot) * 0.08;
+        c.rot += (want - c.rot) * (c.mode !== "home" ? 0.18 : 0.08);
         c.imp *= 0.88; // 점이 앉으면 살짝 눌렸다 펴져요
         const sy = c.sy * (1 - 0.07 * c.imp), sx = c.sx * (1 + 0.035 * c.imp);
         const tf = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0) rotate(${c.rot.toFixed(2)}deg) scale(${sx.toFixed(3)}, ${sy.toFixed(3)})`;
