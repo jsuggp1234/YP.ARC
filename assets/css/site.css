@@ -2296,3 +2296,13 @@ html.cg-open { overflow: hidden; }
 @keyframes seq-jd { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .seq-side li.on .seq-jd { animation: none; } }
 :root[data-mode="dark"] .seq-jd img { filter: invert(1) hue-rotate(180deg); background: #000; }
+
+/* 핀 #114: 대표 영상 재생 버튼 — 처음엔 사진, 누르면 영상이 사진 위로 */
+.cx-cv .media { position: relative; }
+.cx-cv video.cx-vid { position: absolute; inset: 0; opacity: 0; transition: opacity .6s; background: var(--bg); }
+.cx-cv .vid-on video.cx-vid { opacity: 1; }
+.cx-play { position: absolute; left: 16px; bottom: 16px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px 8px 10px; border: 0; border-radius: 999px; background: rgba(255,255,255,.88); color: #111; font: inherit; font-size: var(--t-xs); cursor: pointer; backdrop-filter: blur(6px); transition: background .3s, transform .3s; }
+.cx-play:hover { background: #fff; transform: translateY(-1px); }
+.cx-play:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.cx-play i { width: 0; height: 0; border-left: 8px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+.cx-play.on i { width: 8px; height: 10px; border: 0; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }

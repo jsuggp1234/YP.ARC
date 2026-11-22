@@ -1111,6 +1111,7 @@ const SITE = {
       [2.05, 1, 0.15, 0.25, 0.035, 1.2]
     ],
     cover: "assets/img/modular-o-housing/cover.jpg",
+    coverVideo: "assets/img/modular-o-housing/cover-hq.mp4", // 핀 #120 (원본 portfolio-source/대표사진 영상/lh영상.mp4, 1920px)
     coverR: 1.778, // 대표사진 가로/세로 (머리 배치용)
     thumb: "assets/img/modular-o-housing/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverCaption: "The courtyard under the bridges",
