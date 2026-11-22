@@ -2919,7 +2919,7 @@ const CV = {
     ["2025.12 – 2026.01", "건축 BIM 전문가 2급", "필기 교육 수료"],
     ["2024.07 – 2024.08", "FEAU 동아시아 5개국 건축대학 워크숍", "수료"],
   ],
-  military: [["2020.07 – 2022.01", "육군 제3보병사단", "만기전역"]],
+  military: [], // 핀 #123: 사용자 요청으로 뺌 (예전: [["2020.07 – 2022.01", "육군 제3보병사단", "만기전역"]])
   studios: [
     ["Design Studio 7", "Tidal Range Public Facility", "A+"],
     ["Design Studio 6", "Samgakji Residential Project", "A+"],
