@@ -2351,3 +2351,9 @@ html.cg-open { overflow: hidden; }
 /* 핀 #113: 물에 잠긴 마운드 이름표 */
 .media .ftag.sub { opacity: .35; }
 .media:has(.mv-tideplan) .ftag { transition: opacity .5s; }
+
+/* 핀 #125: 나란히 놓인 다이얼과 사인 곡선의 그림 높이를 맞춤 — 다이얼 지름 = 사인 그림 높이(칸 폭 ÷ 1010/290) */
+@media (min-width: 761px) {
+  .cx-body .pj-pair > .pj-sec { container-type: inline-size; }
+  .cx-body .pj-pair .tw-dial .tw-box { max-width: none; width: calc(100cqw * 290 / 1010); }
+}
