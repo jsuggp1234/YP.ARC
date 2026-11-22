@@ -24,7 +24,7 @@ const SITE = {
     ["timteam-work", "assets/img/timteam-work/cover.jpg", 2.01],
     ["modular-o-housing", "assets/img/modular-o-housing/cover.jpg", 1.778],
     ["samgakji-residential", "assets/img/samgakji-residential/guesthouse.jpg", 1.502],
-    ["smart-pixel", "assets/img/smart-pixel/cover.jpg", 1.683],
+    ["smart-pixel", "assets/img/smart-pixel/cover-lane.jpg", 0.914],
     ["campus-renovation", "assets/img/campus-renovation/eng1-courtyard-winter.jpg", 1.778],
     ["re-tide", "assets/img/re-tide/scene-2.jpg", 0.973],
     ["motorism", "assets/img/motorism/interior-museum.jpg", 1.778],
@@ -116,7 +116,7 @@ const SITE = {
       ["samgakji-residential","assets/img/samgakji-residential/macro-1.jpg",1.415],
       ["samgakji-residential","assets/img/samgakji-residential/macro-2.jpg",1.415],
       ["samgakji-residential","assets/img/samgakji-residential/macro-3.jpg",1.415],
-      ["smart-pixel","assets/img/smart-pixel/cover.jpg",1.683],
+      ["smart-pixel","assets/img/smart-pixel/cover-lane.jpg",0.914],
       ["smart-pixel","assets/img/smart-pixel/site-1-location.jpg",0.83],
       ["smart-pixel","assets/img/smart-pixel/site-2-fabric.jpg",0.83],
       ["smart-pixel","assets/img/smart-pixel/site-3-walk-home.jpg",0.83],
@@ -1577,8 +1577,8 @@ const SITE = {
       [0.78, 1.34, 0.07, 0.07, 0.69, 0, "cyl"],
       [0.3, 1.33, 0.54, 0.09, 0.03, 0.66]
     ],
-    cover: "assets/img/smart-pixel/cover.jpg",
-    coverR: 1.683, // 대표사진 가로/세로 (머리 배치용)
+    cover: "assets/img/smart-pixel/cover-lane.jpg",
+    coverR: 0.914, // 대표사진 가로/세로 (머리 배치용)
     coverCaption: "Eleven gates, seven lit lanes, one corridor, three rooms — one walk home from Daerim station",
     summary: "Daerim 2-dong has deep lanes that open straight into the dark, a market street edged by patchwork awnings, and corners that are left over. SMART PIXEL does not add lamps to them. It adds three of the oldest pieces of architecture, rebuilt from one lit column on a 2.5 m grid: a gate you pass through, a colonnade you walk along, a pavilion you stay in. Light is switched on only by the people who are there, and every piece bolts on and lifts out again.",
     sections: [
