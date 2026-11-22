@@ -650,6 +650,61 @@
     });
   };
 
-  const KIND = { clock, plan, steps, plant, transect, stops, grow, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
+  // ── 가변 투과 루버 (Campus J′, 핀 #108): 해가 움직이면 위 판의 루버는 햇빛 방향으로 열려 빛이 바닥까지 들어오고,
+  // 아래 판의 루버는 햇빛에 맞서 닫혀 빛을 밖으로 되돌려요. 두 판이 같은 해를 같이 봐요. (평면, 위가 실내)
+  const louver = (el) => {
+    const N = 5, SUN = (o) => `rgba(240,196,60,${o})`;
+    stage(el, (g, W, H, t) => {
+      const dark = root.dataset.mode === "dark", a = ((reduce ? 38 : 38 + 16 * Math.sin(t * 0.45)) * Math.PI) / 180;
+      const dx = -Math.cos(a), dy = -Math.sin(a); // 햇빛 방향 (오른쪽 아래 → 왼쪽 위)
+      const ph = H / 2, X0 = W * 0.05, X1 = W * 0.95, bay = (X1 - X0) / N, ink = C.mix(0.85), soft = C.mix(0.45), faint = C.mix(0.14);
+      [0, 1].forEach((k) => {
+        const top = k * ph + ph * 0.08, F = k * ph + ph * 0.56, LY = F + ph * 0.1, L = bay * 0.42;
+        // 방 바닥 격자
+        g.fillStyle = dark ? "rgba(255,255,255,.03)" : "rgba(0,0,0,.025)"; g.fillRect(X0, top, X1 - X0, F - top);
+        g.strokeStyle = faint; g.lineWidth = 1; g.beginPath();
+        for (let x = X0; x <= X1 + 1; x += bay / 4) { g.moveTo(x, top); g.lineTo(x, F); }
+        for (let y = top; y <= F + 1; y += bay / 4) { g.moveTo(X0, y); g.lineTo(X1, y); }
+        g.stroke(); g.strokeStyle = soft; g.strokeRect(X0, top, X1 - X0, F - top);
+        // 들어온 빛 (열린 판만): 창마다 햇빛 방향으로 방 안쪽까지 평행사변형
+        if (k === 0) {
+          g.save(); g.beginPath(); g.rect(X0, top, X1 - X0, F - top); g.clip(); g.fillStyle = SUN(dark ? 0.22 : 0.3);
+          for (let i = 0; i < N; i++) { const o0 = X0 + bay * i + bay * 0.3, o1 = o0 + bay * 0.4, kk = (F - top) / -dy; g.beginPath(); g.moveTo(o0, F); g.lineTo(o1, F); g.lineTo(o1 + dx * kk, F + dy * kk); g.lineTo(o0 + dx * kk, F + dy * kk); g.closePath(); g.fill(); }
+          g.restore();
+        } else { g.fillStyle = dark ? "rgba(0,0,0,.25)" : "rgba(0,0,0,.05)"; g.fillRect(X0, top, X1 - X0, F - top); }
+        // 벽과 창
+        for (let i = 0; i < N; i++) { const x = X0 + bay * i; g.fillStyle = C.mix(0.6); g.fillRect(x, F - 3, bay * 0.3, 6); g.fillRect(x + bay * 0.7, F - 3, bay * 0.3, 6); g.fillStyle = C.mix(0.2); g.fillRect(x + bay * 0.3, F - 1, bay * 0.4, 2); }
+        // 루버와 햇빛
+        for (let i = 0; i < N; i++) {
+          const cx = X0 + bay * (i + 0.5), cy = LY, ang = k === 0 ? Math.atan2(dy, dx) : Math.atan2(dy, dx) + Math.PI / 2 + 0.45;
+          const ux = Math.cos(ang) * L / 2, uy = Math.sin(ang) * L / 2;
+          // 들어오는 햇빛 (실선)
+          const sx = cx - dx * ph * 0.3, sy = cy - dy * ph * 0.3;
+          g.strokeStyle = ink; g.lineWidth = 1; g.beginPath(); g.moveTo(sx, sy); g.lineTo(cx - dx * 6, cy - dy * 6); g.stroke();
+          if (k === 0) { // 열림: 루버 사이로 지나가 실내로 (점선 화살표)
+            g.setLineDash([4, 4]); g.strokeStyle = soft; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + dx * ph * 0.34, cy + dy * ph * 0.34); g.stroke(); g.setLineDash([]);
+          } else { // 닫힘: 루버 면에 반사되어 밖으로
+            const nx = Math.cos(ang + Math.PI / 2), ny = Math.sin(ang + Math.PI / 2), dot = dx * nx + dy * ny, rx = dx - 2 * dot * nx, ry = dy - 2 * dot * ny;
+            const ex = cx + rx * ph * 0.26, ey = cy + ry * ph * 0.26;
+            g.setLineDash([4, 4]); g.strokeStyle = soft; g.beginPath(); g.moveTo(cx, cy); g.lineTo(ex, ey); g.stroke(); g.setLineDash([]);
+            const ah = Math.atan2(ry, rx); g.fillStyle = soft; g.beginPath(); g.moveTo(ex, ey); g.lineTo(ex - 7 * Math.cos(ah - 0.4), ey - 7 * Math.sin(ah - 0.4)); g.lineTo(ex - 7 * Math.cos(ah + 0.4), ey - 7 * Math.sin(ah + 0.4)); g.fill();
+          }
+          g.strokeStyle = ink; g.lineWidth = 3; g.lineCap = "round"; g.beginPath(); g.moveTo(cx - ux, cy - uy); g.lineTo(cx + ux, cy + uy); g.stroke(); g.lineCap = "butt"; g.lineWidth = 1;
+        }
+        // 해
+        const sr = Math.max(8, ph * 0.04), sx = Math.min(X1 - sr, X0 + bay * (N - 0.5) - dx * ph * 0.34), sy = Math.min(k * ph + ph - sr, LY - dy * ph * 0.34);
+        const gr = g.createRadialGradient(sx, sy, 0, sx, sy, sr * 2.2); gr.addColorStop(0, SUN(0.95)); gr.addColorStop(0.45, SUN(0.6)); gr.addColorStop(1, SUN(0)); g.fillStyle = gr; g.beginPath(); g.arc(sx, sy, sr * 2.2, 0, 6.2832); g.fill();
+        // 이름
+        g.fillStyle = ink; g.font = font(C.xs, 600); g.textBaseline = "top"; g.textAlign = "left";
+        g.fillText(k === 0 ? "OPEN — the louvers follow the sun" : "FLAT — the louvers face the sun", X0, k * ph + ph * 0.01);
+        g.fillStyle = soft; g.font = font(C.xs); g.textAlign = "right";
+        g.fillText(k === 0 ? "low sun reaches deep into the room" : "the light is thrown back out, the room stays shaded", X1, k * ph + ph * 0.01);
+      });
+      g.fillStyle = soft; g.textAlign = "left"; g.textBaseline = "bottom"; g.font = font(C.xs);
+      g.fillText(`sun ${Math.round((a * 180) / Math.PI)}° to the facade`, X0, H - 2);
+    });
+  };
+
+  const KIND = { louver, clock, plan, steps, plant, transect, stops, grow, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
   window.MVSims = { mount: (el, kind) => { if (el.dataset.on) return; el.dataset.on = 1; colors(); (KIND[kind] || (() => {}))(el); } };
 })();
