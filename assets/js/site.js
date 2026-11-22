@@ -3359,7 +3359,7 @@
   // 물 차오르는 평면 시뮬레이션: 여섯 장의 평면을 수위에 따라 겹쳐 보여요
   const simHtml = (sim) => `
     <div class="sim" data-sim>
-      <div class="media sim-view" style="aspect-ratio:${sim.r}" data-lenis-prevent tabindex="0" aria-label="Scroll over the plan to raise and lower the water">${sim.frames.map((f, i) => `<img src="${esc(f.src)}" alt="Plan at +${f.level} m" style="opacity:${i ? 0 : 1}" decoding="async">`).join("")}
+      <div class="media sim-view" style="aspect-ratio:${sim.r}" data-lenis-prevent tabindex="0" aria-label="Scroll over the plan to raise and lower the water">${sim.frames.map((f, i) => `<img src="${esc(f.src)}"${f.dry ? ` data-dry="${esc(f.dry)}"` : ""} alt="Plan at +${f.level} m" style="opacity:${i ? 0 : 1}" decoding="async">`).join("")}${sim.flood ? `<canvas class="sim-fl" aria-hidden="true"></canvas>` : ""}
         <span class="sim-lv num">+${sim.frames[0].level.toFixed(2)} m</span></div>
       <div class="sim-ui">
         <button type="button" class="sim-play lnk" aria-pressed="false">Play tide</button>
@@ -3671,8 +3671,37 @@
         ckS.textContent = `${lab} · LW + ${Math.floor(e / 60)} h ${String(e % 60).padStart(2, "0")}`;
       };
       const ease = (x) => x * x * (3 - 2 * x);
+      // 핀 #83: 물이 차오르는 순서 지도(flood)가 있으면 물을 캔버스로 직접 그려, 물가가 실제로 번져 나가요. 평면은 물 없는 판(dry)끼리 겹쳐요
+      const fl = sim.flood && $(".sim-fl", el); let FT = null, FG = null, fctx = null, fimg = null, fw = 0, fh = 0, lastFv = -1;
+      const TINT = sim.tint || [198, 208, 218], EDGE = sim.edge || [70, 86, 98];
+      const flDraw = (v) => {
+        if (!FT || Math.abs(v - lastFv) < 0.002) return; lastFv = v;
+        const d = fimg.data, tv = v * 48 + 1, n = fw * fh;
+        for (let i = 0, o = 0; i < n; i++, o += 4) {
+          const t = FT[i]; let a, e;
+          if (t <= 0) { a = 1; e = 0; } else if (t >= 255) { a = 0; e = 0; } else { const g = FG[i], z = (tv - t) / g; a = z > 1 ? 1 : z < -1 ? 0 : (z + 1) / 2; e = z > 1.6 || z < -1.6 ? 0 : 1 - Math.abs(z) / 1.6; }
+          const r = 255 - (255 - TINT[0]) * a, gg = 255 - (255 - TINT[1]) * a, b = 255 - (255 - TINT[2]) * a;
+          d[o] = r + (EDGE[0] - r) * e; d[o + 1] = gg + (EDGE[1] - gg) * e; d[o + 2] = b + (EDGE[2] - b) * e; d[o + 3] = 255;
+        }
+        fctx.putImageData(fimg, 0, 0);
+      };
+      if (fl) {
+        const im = new Image(); im.src = sim.flood;
+        im.decode().then(() => {
+          fw = im.naturalWidth; fh = im.naturalHeight; fl.width = fw; fl.height = fh;
+          fctx = fl.getContext("2d"); fctx.drawImage(im, 0, 0); const raw = fctx.getImageData(0, 0, fw, fh).data, n = fw * fh;
+          FT = new Float32Array(n); for (let i = 0; i < n; i++) FT[i] = raw[i * 4];
+          // 계단 없애기: 단계 값끼리만 살짝 흐리고, 물가 폭(픽셀 1.3칸)이 어디서나 같게 기울기를 구해요
+          const T2 = new Float32Array(FT); for (let p = 0; p < 2; p++) for (let y = 1; y < fh - 1; y++) for (let x = 1; x < fw - 1; x++) { const i = y * fw + x; if (FT[i] <= 0 || FT[i] >= 255) continue; let s2 = 0, c = 0; for (const j of [i - 1, i + 1, i - fw, i + fw, i]) if (FT[j] > 0 && FT[j] < 255) { s2 += T2[j]; c++; } T2[i] = s2 / c; }
+          FG = new Float32Array(n); for (let y = 0; y < fh; y++) for (let x = 0; x < fw; x++) { const i = y * fw + x, tx = (T2[Math.min(i + 1, n - 1)] - T2[Math.max(i - 1, 0)]) / 2, ty = (T2[Math.min(i + fw, n - 1)] - T2[Math.max(i - fw, 0)]) / 2; FG[i] = Math.max(0.35, Math.min(8, Math.hypot(tx, ty))) * 1.3; }
+          FT = T2; fimg = fctx.createImageData(fw, fh);
+          imgs.forEach((x) => { if (x.dataset.dry) x.src = x.dataset.dry; });
+          el.classList.add("fl-on"); lastFv = -1; set(cv);
+        }).catch(() => {});
+      }
       const set = (v) => {
         const i = Math.min(F.length - 2, Math.floor(v)), f = v - i, g = ease(f);
+        flDraw(v);
         imgs.forEach((im, j) => { im.style.opacity = j === i ? 1 : j === i + 1 ? g : 0; });
         const L = F[i].level + (F[i + 1].level - F[i].level) * f;
         lv.textContent = "+" + L.toFixed(2) + " m";

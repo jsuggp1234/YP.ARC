@@ -2231,3 +2231,8 @@ html.cg-open { overflow: hidden; }
   .cx-body .pj-pair .tw-sine .tw-box { width: 100%; }
   .cx-body .pj-pair .tw-dial .tw-box { max-width: 440px; }
 }
+
+/* 핀 #83: 물이 번져 나가는 캔버스 — 물 없는 평면 위에 곱하기로 겹쳐요 */
+.sim-fl { position: absolute; inset: 0; width: 100%; height: 100%; mix-blend-mode: multiply; pointer-events: none; opacity: 0; }
+.sim.fl-on .sim-fl { opacity: 1; }
+.sim-view .sim-lv { z-index: 1; }
