@@ -81,6 +81,7 @@
 - `keyed`(키 그림 + 스크롤로 바뀌는 상세들, `keyedHtml`/`keyedInit`): 항목의 `notes: [[번호, 글], …]`는 그림 아래 번호 목록(`.kj-nt`).
 - Tree House `sim: "stops"`: 정지 자리 버튼·자동 순환·드릴 rpm 슬라이더(`.mv-ui`), 남은 시간 표시.
 - RE:TIDE 수위 그림 `water-a..f.jpg`: 시뮬 프레임에 원본 상세 평면 `도면/2_2.jpg`를 곱하기로 겹친 것(원본 프레임 백업은 scratchpad `water-bak`).
+- 도시 미니게임 Air & Light(핀 #75, `assets/js/citygame.js`, philosophy.html만 불러요): 모션 아트 아래 "Play — build a block" 버튼(`.yi-play`) → 화면 전체 `.cg`. 9×9 대지에 층(최대 6층, 36층까지)·공원(6곳)을 놓아 120명을 살게 하면서 아침·정오·오후 햇빛 70% 이상 지키기. 그림자는 해 위치로 계산, Sun 슬라이더로 시각을 돌려 볼 수 있고, 사람이 공원·빈 땅을 걸어요. 오른쪽 클릭·Erase로 빼기, Esc·Close로 닫기, 성공하면 철학 문장 카드. 무채색·다크 모드 따라감.
 - Illustrator COM 작업은 한 번에 하나씩(여러 개를 동시에 걸면 큰 파일에서 1시간 넘게 멈춤).
 
 ## 확인 방법

@@ -1747,6 +1747,7 @@
             <p class="yi-tr mid num"><span class="yi-xy">X 000.0 · Y 000.0</span></p>
             <p class="yi-bl mid">${esc(SITE.owner)} — Architecture Portfolio</p>
             <button type="button" class="yi-go mid">Scroll <span aria-hidden="true">↓</span></button>
+            ${window.CityGame ? `<button type="button" class="yi-play">Play — build a block</button>` : ""}
           </div>
         </div>
       </section>
@@ -1759,6 +1760,7 @@
       </section>`;
     intro();
     lineRise($(".phl-s"));
+    { const pb = $(".yi-play"); if (pb) pb.addEventListener("click", () => window.CityGame.open()); } // 핀 #75: 도시 미니게임
   };
 
   // ---------- v2 Archive (계획 6단계): 홈과 같은 가로 무한 띠(caseStrip)를 써요. 이미지는 높이가 같고 폭은 사진 비율대로 ----------

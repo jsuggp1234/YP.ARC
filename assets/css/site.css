@@ -2161,3 +2161,39 @@ html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
 .sl-tr .sl-a { cursor: grab; }
 .sl.holding, .sl.holding * { cursor: grabbing !important; }
 .sl-tr .sl-a { -webkit-user-drag: none; user-select: none; touch-action: none; }
+
+/* ---------- 도시 미니게임 Air & Light (핀 #75, assets/js/citygame.js) ---------- */
+.yi-play { position: absolute; left: 50%; bottom: 56px; transform: translateX(-50%); pointer-events: auto; font: inherit; font-size: var(--t-xs); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; transition: border-color .3s, background .3s; }
+.yi-play:hover, .yi-play:focus-visible { border-color: var(--ink); }
+.cg { position: fixed; inset: 0; z-index: 90; background: var(--bg); color: var(--ink); font-size: var(--t-xs); opacity: 0; visibility: hidden; transform: translateY(16px); transition: opacity .45s, transform .6s cubic-bezier(.2,.7,.2,1), visibility 0s .6s; }
+.cg.on { opacity: 1; visibility: visible; transform: none; transition: opacity .45s, transform .6s cubic-bezier(.2,.7,.2,1), visibility 0s; }
+html.cg-open { overflow: hidden; }
+.cg-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: pointer; touch-action: none; }
+.cg p, .cg dl, .cg dd { margin: 0; }
+.cg-hd { position: absolute; left: var(--e, 16px); top: 24px; max-width: 360px; pointer-events: none; }
+.cg-t { font-size: var(--t-s); margin-bottom: 8px; }
+.cg-r { line-height: 1.55; }
+.cg-x { position: absolute; right: var(--e, 16px); top: 24px; font: inherit; color: var(--ink); background: none; border: 0; padding: 4px 0; cursor: pointer; }
+.cg-st { position: absolute; right: var(--e, 16px); top: 64px; display: grid; gap: 10px; text-align: right; pointer-events: none; }
+.cg-st dt { color: var(--mid); }
+.cg-st b { font-size: var(--t-xl); font-weight: 500; font-variant-numeric: tabular-nums; transition: color .3s; }
+.cg-st .bad b { color: var(--mid); text-decoration: line-through; text-decoration-thickness: 1px; }
+.cg-st .ok dt::after { content: " ✓"; color: var(--ink); }
+.cg-left { margin-top: 4px; }
+.cg-left.shake { animation: cg-shake .35s; }
+@keyframes cg-shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.cg-ft { position: absolute; left: var(--e, 16px); right: var(--e, 16px); bottom: 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.cg-tl { display: flex; gap: 4px; }
+.cg-tl button { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.cg-tl button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.cg-sun { display: flex; align-items: center; gap: 8px; }
+.cg-sun input { width: 160px; accent-color: var(--ink); }
+.cg-win { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -40%); width: min(440px, calc(100% - 32px)); background: var(--bg); border: 1px solid var(--ink); padding: 24px; text-align: center; opacity: 0; visibility: hidden; transition: opacity .5s, transform .6s, visibility 0s .6s; }
+.cg.won:not(.more) .cg-win { opacity: 1; visibility: visible; transform: translate(-50%, -50%); transition: opacity .5s .3s, transform .6s .3s, visibility 0s; }
+.cg-q { font-size: var(--t-m); line-height: 1.5; margin: 12px 0 16px !important; }
+.cg-more { font: inherit; background: none; border: 0; color: var(--ink); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 760px) {
+  .cg-hd { right: 80px; } .cg-st { top: auto; bottom: 110px; } .cg-st b { font-size: var(--t-l); }
+  .cg-sun input { width: 110px; } .yi-play { bottom: 96px; }
+}
+@media (prefers-reduced-motion: reduce) { .cg, .cg.on, .cg-win { transition: none; } }
