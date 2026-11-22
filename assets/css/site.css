@@ -1929,3 +1929,31 @@ html.st-home .ftr, html.st-home .hud { display: none; }
   .md-sw { gap: 5px; font-size: var(--t-xs); }
   .md-sw button { padding: 2px 0; }
 }
+
+/* studio 카드 이름 앞 번호 (1. RE:TIDE …) */
+.cs-no { margin-right: 0.15em; }
+/* 보기 전환 아이콘: 상단바 둘째 칸 (모바일은 상단바 바로 아래 왼쪽) */
+.cs-vw { position: fixed; z-index: 61; mix-blend-mode: difference; color: #fff; top: calc(env(safe-area-inset-top, 0px) + var(--hdr) / 2); transform: translateY(-50%); left: calc(var(--g4-e) + var(--g4-col) + var(--g4-gap)); display: flex; gap: 10px; }
+.cs-vw button { width: 22px; height: 16px; padding: 0; display: grid; place-items: center; color: inherit; opacity: .3; cursor: pointer; transition: opacity .3s var(--ease); }
+.cs-vw button:hover, .cs-vw button[aria-pressed="true"] { opacity: 1; }
+.cs-vw button:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
+.cs-vw svg { width: 18px; height: 12px; display: block; }
+.cs-vw rect { fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.cs-vw button[aria-pressed="true"] rect { fill: currentColor; }
+html.hi-on .cs-vw { opacity: 0; }
+@media (max-width: 760px) { .cs-vw { left: var(--g4-e); top: calc(env(safe-area-inset-top, 0px) + var(--hdr) + 14px); transform: none; } }
+/* 그리드 보기: 띠는 숨기고, 3열(모바일 2열) 그리드가 세로로 스크롤돼요 */
+.cs-gd { position: fixed; inset: 0; z-index: 1; overflow-y: auto; overscroll-behavior: contain; padding: calc(var(--hdr) + 48px) var(--g4-e) 64px; background: var(--bg); cursor: default; touch-action: pan-y; }
+.cs-gd[hidden] { display: none; }
+.cs-gd-in { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px var(--g4-gap, 8px); }
+.cs-gd .cs-card { width: auto !important; transform: none !important; display: flex; flex-direction: column; gap: 8px; }
+.cs-gd .cs-card .media { height: auto !important; aspect-ratio: 4 / 3; overflow: hidden; }
+.cs-gd .cs-card .media img { transition: transform .9s var(--ease); }
+.cs-gd .cs-card:hover .media img { transform: scale(1.04); }
+html.cs-grid .cs-track { opacity: 0; pointer-events: none; }
+html.cs-grid .cs { cursor: default; }
+.cs-tiles { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 2; pointer-events: none; }
+@media (max-width: 760px) { .cs-gd { padding-top: calc(var(--hdr) + 44px); } .cs-gd-in { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 8px; } }
+/* 첫 화면 색 = 메뉴창 색 (2026-11-22 요청): 바탕은 메뉴 회색(--mn-bg), 카드는 메뉴 카드처럼 페이지 색(--bg) 그대로 — 유리 효과 없음 */
+.st-mn::before { background: var(--mn-bg); }
+.st-mn .mn-card, :root[data-mode="dark"] .st-mn .mn-card { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }

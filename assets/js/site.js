@@ -732,18 +732,101 @@
   // ---------- v2 홈 (docs/redesign-plan.md 2단계): 가로로 끝없이 도는 작품 카드 띠 ----------
   // 휠·끌기·화살표 키로 옆으로 흘러요. 움직이는 동안 카드가 0.9배까지 작아지며(그래서 간격이 벌어져 보여요)
   // 멈추면 돌아와요. 카드 안 사진은 1.15배로 키워 두고 화면 위치에 따라 살짝 반대로 밀려요(사진 속 시차).
+  // ---------- studio 보기 전환 (2026-11-22): 슬라이드 ↔ 그리드(3열) ----------
+  // 그리드로 바꾸면 띠에 보이던 사진들이 제자리에서 그리드 칸으로 날아가 앉고, 나머지는 아래에서 차례로 떠올라요(사진은 네모 조각으로 열려요).
+  // 슬라이드로 돌아가면 반대로 그리드 사진이 띠 자리로 돌아가요. 고른 보기는 기억해요(이 브라우저에서만).
+  function csView() {
+    const sec = $(".cs"), gd = $(".cs-gd", sec), btns = $$(".cs-vw button", sec);
+    if (!sec || !gd) return;
+    { const vw = $(".cs-vw", sec); if (vw) D.body.appendChild(vw); } // 섹션 바깥(맨 위 층)에 둬야 상단바에 가리지 않아요
+    let busy = false;
+    const visibleStrip = () => { const m = new Map(); $$(".cs-track .cs-card", sec).forEach((c) => { const b = c.getBoundingClientRect(); if (b.right > 0 && b.left < innerWidth && !m.has(c.dataset.i)) m.set(c.dataset.i, b); }); return m; };
+    const mediaOf = (c) => $(".media", c);
+    const press = (v) => btns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.vw === v)));
+    function toGrid(anim) {
+      if (HTML.classList.contains("cs-grid") || busy) return;
+      const src = visibleStrip();
+      // 띠 카드 미디어 위치(사진만)
+      const srcM = new Map(); $$(".cs-track .cs-card", sec).forEach((c) => { const m = mediaOf(c).getBoundingClientRect(); if (m.right > 0 && m.left < innerWidth && !srcM.has(c.dataset.i)) srcM.set(c.dataset.i, m); });
+      gd.hidden = false; gd.scrollTop = 0; HTML.classList.add("cs-grid"); press("grid"); try { ls.set("yp-vw", "grid"); } catch (e) {}
+      if (!anim || REDUCED) return;
+      busy = true;
+      const cards = $$(".cs-gc", gd); let last = null;
+      cards.forEach((c, k) => {
+        const m = mediaOf(c), to = m.getBoundingClientRect(), from = srcM.get(c.dataset.i);
+        const lab = $(".cs-lab", c);
+        if (from && to.top < innerHeight) {
+          const dx = from.left - to.left, dy = from.top - to.top, sx = from.width / to.width, sy = from.height / to.height;
+          last = m.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, transformOrigin: "0 0" }, { transform: "none", transformOrigin: "0 0" }], { duration: 1000, delay: k * 45, easing: EASE_IO, fill: "backwards" });
+        } else {
+          // 새로 나타나는 칸: 아래에서 떠오르며 네모 조각(계단식 clip)으로 열려요
+          const d = 250 + k * 70;
+          last = m.animate([{ transform: "translateY(60px)", opacity: 0, clipPath: "inset(100% 0 0 0)" }, { transform: "translateY(0)", opacity: 1, clipPath: "inset(0% 0 0 0)" }], { duration: 900, delay: d, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" });
+        }
+        if (lab) lab.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 600, delay: 500 + k * 45, easing: "ease-out", fill: "backwards" });
+      });
+      // 바탕 모눈 조각이 한 번 스치고 사라져요
+      tiles();
+      (last ? last.finished : Promise.resolve()).catch(() => {}).then(() => (busy = false));
+    }
+    function toSlide(anim) {
+      if (!HTML.classList.contains("cs-grid") || busy) return;
+      const done = () => { gd.hidden = true; HTML.classList.remove("cs-grid"); press("slide"); try { ls.set("yp-vw", "slide"); } catch (e) {} busy = false; };
+      if (!anim || REDUCED) return done();
+      busy = true;
+      // 그리드 칸 위치 → 띠의 같은 작품 자리로
+      gd.style.visibility = "hidden"; HTML.classList.remove("cs-grid"); const dst = new Map(); $$(".cs-track .cs-card", sec).forEach((c) => { const m = mediaOf(c).getBoundingClientRect(); if (m.right > 0 && m.left < innerWidth && !dst.has(c.dataset.i)) dst.set(c.dataset.i, m); }); HTML.classList.add("cs-grid"); gd.style.visibility = "";
+      const strip = $(".cs-track", sec); let last = null;
+      $$(".cs-gc", gd).forEach((c, k) => {
+        const m = mediaOf(c), from = m.getBoundingClientRect(), to = dst.get(c.dataset.i);
+        if (from.bottom < 0 || from.top > innerHeight) return;
+        const kf = to ? [{ transform: "none", transformOrigin: "0 0" }, { transform: `translate(${to.left - from.left}px, ${to.top - from.top}px) scale(${to.width / from.width}, ${to.height / from.height})`, transformOrigin: "0 0" }]
+          : [{ opacity: 1 }, { opacity: 0, transform: "translateY(40px)" }];
+        last = m.animate(kf, { duration: 850, delay: k * 30, easing: EASE_IO, fill: "forwards" });
+      });
+      $$(".cs-gc .cs-lab", gd).forEach((l) => l.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 250, fill: "forwards" }));
+      (last ? last.finished : Promise.resolve()).catch(() => {}).then(() => { done(); $$(".cs-gc .media, .cs-gc .cs-lab", gd).forEach((m) => m.getAnimations().forEach((a) => a.cancel())); if (strip) strip.animate([{ opacity: 0.6 }, { opacity: 1 }], { duration: 300 }); });
+    }
+    // 바탕 모듈: 정사각 조각들이 대각선으로 한 번 반짝이며 지나가요
+    function tiles() {
+      const cv = D.createElement("canvas"), dpr = Math.min(2, devicePixelRatio || 1), W = innerWidth, H = innerHeight;
+      cv.className = "cs-tiles"; cv.width = W * dpr; cv.height = H * dpr; sec.appendChild(cv);
+      const g = cv.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const C = Math.max(14, Math.round(W / 64)), ink = getComputedStyle(HTML).getPropertyValue("--line").trim() || "#ddd", t0 = performance.now();
+      const frame = (now) => {
+        const t = (now - t0) / 1000; g.clearRect(0, 0, W, H); g.fillStyle = ink;
+        for (let y = 0; y < H; y += C) for (let x = 0; x < W; x += C) {
+          const d = (x / W) * 0.6 + (y / H) * 0.4, q = (t - d * 0.7) / 0.45; if (q <= 0 || q >= 1) continue;
+          const a = Math.sin(q * Math.PI); g.globalAlpha = a * 0.55; const sz = (C - 2) * a; g.fillRect(x + (C - sz) / 2, y + (C - sz) / 2, sz, sz);
+        }
+        if (t < 1.4) requestAnimationFrame(frame); else cv.remove();
+      };
+      requestAnimationFrame(frame);
+    }
+    btns.forEach((b) => b.addEventListener("click", () => (b.dataset.vw === "grid" ? toGrid(true) : toSlide(true))));
+    addEventListener("keydown", (e) => { if (e.key === "Escape" && HTML.classList.contains("cs-grid") && !HTML.classList.contains("ct-lock") && !$("#menu.open")) toSlide(true); });
+    let saved = null; try { saved = ls.get("yp-vw"); } catch (e) {}
+    if (saved === "grid") toGrid(false);
+    cardFx();
+  }
+
   render.works = () => {
     HTML.classList.add("v2-home");
     const list = PROJECTS.filter((p) => !p.draft);
     const one = list.map((p, i) => `
       <a class="cs-card" href="project.html#${p.slug}" draggable="false" data-i="${i}">
-        <span class="cs-lab">${esc(p.title)}</span>
+        <span class="cs-lab"><span class="cs-no num">${i + 1}.</span> ${esc(p.title)}</span>
         <div class="media">${mz(card(p, 800, 1060))}</div>
       </a>`).join("");
     $("#main").innerHTML = `
       <section class="cs" id="cases" data-ind="Cases" aria-label="Studio">
         <h1 class="sr">${esc(SITE.name)} — Selected works</h1>
         <a class="cs-ix lnk" href="projects.html">${esc((SITE.index || {}).link || "Index")} <span class="num">(${pad(list.length)})</span></a>
+        <div class="cs-vw" role="group" aria-label="View">
+          <button type="button" data-vw="slide" aria-pressed="true" aria-label="Slide view" title="Slide"><svg viewBox="0 0 18 12" aria-hidden="true"><rect x="0.5" y="0.5" width="4.5" height="11"/><rect x="6.75" y="0.5" width="4.5" height="11"/><rect x="13" y="0.5" width="4.5" height="11"/></svg></button>
+          <button type="button" data-vw="grid" aria-pressed="false" aria-label="Grid view" title="Grid"><svg viewBox="0 0 18 12" aria-hidden="true"><rect x="0.5" y="0.5" width="4.5" height="4.5"/><rect x="6.75" y="0.5" width="4.5" height="4.5"/><rect x="13" y="0.5" width="4.5" height="4.5"/><rect x="0.5" y="7" width="4.5" height="4.5"/><rect x="6.75" y="7" width="4.5" height="4.5"/><rect x="13" y="7" width="4.5" height="4.5"/></svg></button>
+        </div>
+        <div class="cs-gd" data-lenis-prevent hidden><div class="cs-gd-in">${one.replace(/class="cs-card"/g, 'class="cs-card cs-gc"')}</div></div>
         <div class="cs-track">${[0, 1, 2].map((k) => k === 1 ? `<div class="cs-set">${one}</div>` : `<div class="cs-set" aria-hidden="true">${one.replace(/<a /g, '<a tabindex="-1" ')}</div>`).join("")}</div>
       </section>`;
     // 인트로는 탭(세션)마다 홈에 처음 왔을 때 한 번만. 움직임 줄이기 설정이면 건너뛰어요
@@ -751,6 +834,7 @@
     if (playIntro) HTML.classList.add("hi-on");
     caseStrip();
     cardFx();
+    csView();
     if (playIntro) { ss.set("yp-hi", "1"); homeIntro(list); }
   };
 
@@ -1122,7 +1206,7 @@
     let W = 1, x = 0, tx = 0, px = 0, sc = 1, raf = 0, live = true, items = [];
     // 저절로 흐르기 (2026-11-22 요청): 초당 DRIFT px, dir = 마지막으로 굴린 방향, hov = 사진 위에 있으면 멈춤
     const DRIFT = 60; let spd = 0, dir = 1, hov = false, last = 0;
-    const still = () => REDUCED || hov || down || $("#menu.open") || HTML.classList.contains("hi-on") || HTML.classList.contains("ct-lock");
+    const still = () => REDUCED || hov || down || HTML.classList.contains("cs-grid") || $("#menu.open") || HTML.classList.contains("hi-on") || HTML.classList.contains("ct-lock");
     const measure = () => {
       W = sets[1].offsetLeft - sets[0].offsetLeft || 1;
       items = $$(".cs-card", track).map((c) => ({ c, img: $(".mz", c), l: c.offsetLeft, w: c.offsetWidth }));
@@ -1154,6 +1238,7 @@
     // 휠: 세로로 굴려도 옆으로 흘러요(이 화면은 세로 스크롤이 없어요)
     addEventListener("wheel", (e) => {
       if (e.target.closest && e.target.closest(".ct, #menu")) return;
+      if (HTML.classList.contains("cs-grid")) return; // 그리드 보기: 세로 스크롤
       e.preventDefault();
       if ($("#menu.open") || HTML.classList.contains("hi-on") || HTML.classList.contains("ct-lock")) return;
       const dv = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * (e.deltaMode === 1 ? 32 : 1);
@@ -1376,6 +1461,7 @@
   function cardFx() {
     if (REDUCED) return;
     $$(".wcard .media img, .cs-card .media img").forEach((im) => {
+      if (im.dataset.fx) return; im.dataset.fx = "1";
       const key = Object.keys(CARD_FX).find((k) => (im.getAttribute("src") || "").includes(k));
       if (!key) return;
       // 실제 영상이 있으면(같은 폴더의 cover-loop.mp4 등, CARD_FX의 video) 마우스를 올렸을 때 영상을 재생해요
