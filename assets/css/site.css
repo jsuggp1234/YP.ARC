@@ -2255,3 +2255,6 @@ html.cg-open { overflow: hidden; }
 /* 핀 #90: 지시선 그림의 번호 목록은 휴대폰에서만 (데스크톱은 오른쪽 이름표) */
 .fnotes.ld-m { display: none; }
 @media (max-width: 760px) { .fnotes.ld-m { display: grid; } }
+
+/* 핀 #91: nc로 칸 수를 줄이면 설명이 여러 줄로 — 줄 사이 간격 */
+.fnotes { row-gap: 18px; }
