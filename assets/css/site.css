@@ -2139,3 +2139,9 @@ html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
 .mv-ui .mv-rg { display: inline-flex; align-items: center; gap: 8px; }
 .mv-ui .mv-rg input { width: 110px; accent-color: var(--ink); }
 .mv-ui .mv-rg b { font-weight: 600; font-variant-numeric: tabular-nums; min-width: 5em; }
+
+/* 첫 화면 스크롤 모션 아트 (2026-11-22): 띠 대신 한 벌을 화면 가운데에. 스크롤로 왼쪽으로 밀려 사라지고 오른쪽에서 다시 서요 (site.js render.home) */
+.sl-tr { left: 50%; padding-left: 0; transform: translate3d(-50%, -50%, 0); will-change: auto; }
+.sl-tr .sl-a[href="works.html"] { margin-right: 0; }
+.sl-tr .st-b { will-change: transform; }
+.sl { touch-action: none; }

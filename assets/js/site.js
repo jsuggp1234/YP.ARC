@@ -889,7 +889,7 @@
   // 카드를 누르면 화면 전체로 커진 다음 그 페이지로 가고, contact는 연락 패널을 열어요.
   render.home = () => {
     HTML.classList.add("st-home", "sl-home");
-    const ST = SITE.start || [], N = 24, SETS = 3;
+    const ST = SITE.start || [], N = 24, SETS = 1;
     const item = (pg, i, k) => `<a class="sl-a" href="${esc(pg.href)}"${pg.contact ? " data-contact" : ""} data-i="${i}"${k ? ' aria-hidden="true" tabindex="-1"' : ` aria-label="${esc(pg.title)}"`}><span class="sl-t" aria-hidden="true">${esc(pg.title)}</span><span class="sl-g"></span></a>`;
     $("#main").innerHTML = `
       <h1 class="sr">${esc(SITE.name)} — ${esc(SITE.owner)} Architecture Portfolio</h1>
@@ -902,48 +902,88 @@
       $(".sl-t", a).animate([{ opacity: 0, translate: "0 8px" }, { opacity: 1, translate: "0 0" }], { duration: 800, delay: 800 + j * 90, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" });
     });
 
-    // 띠: 한 벌 폭(setW)마다 되감아 끝없이. 저절로 초당 DRIFT px, 글자에 올리면 멈춤, 휠·끌기·← →로 이동
-    const DRIFT = 50;
-    let setW = 1, off = 0, vel = 0, hovering = false, busy = false, mx = -1e4, my = -1e4, last = 0, prev = 0;
+    // 스크롤 모션 아트 (2026-11-22 요청): 글자는 가운데에 서 있고, 스크롤하면 왼쪽 글자부터 한 자씩 왼쪽으로 밀리며 옅어져요.
+    // 글자의 가로 층 24장은 위층일수록 더 멀리 밀려 층이 어긋나며 흩어지고, 다 사라지면 새 글자가 오른쪽에서 아래층부터 쌓이며 다시 서요.
+    // 위상 ph: 정수 = 글자가 서 있는 상태, 0.5 = 빈 화면. 손을 떼면 가까운 정수로 맞춰요(절반을 넘겼으면 새 글자, 아니면 원래 글자). 거꾸로 스크롤하면 되감겨요.
+    let ph = 0, tg = 0, dir = 1, hovering = false, busy = false, mx = -1e4, my = -1e4, last = 0, lastIn = 0;
     let geo = [];
+    const clamp = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+    const eIn = (v) => v * v * v, eOut = (v) => 1 - Math.pow(1 - v, 3);
     const measure = () => {
-      setW = as[ST.length].offsetLeft - as[0].offsetLeft || 1;
+      tr.style.fontSize = ""; const e = parseFloat(getComputedStyle(HTML).getPropertyValue("--g4-e")) || 16;
+      const fit = Math.min(1, (innerWidth - 2 * e) / (tr.scrollWidth || 1)); // 한 화면 폭 안에 들어오게
+      if (fit < 1) tr.style.fontSize = parseFloat(getComputedStyle(tr).fontSize) * fit + "px";
       geo = as.map((a) => { const g = $(".st-gl", a), fs = parseFloat(getComputedStyle(g).fontSize), rc = g.getBoundingClientRect();
-        return { a, g, fs, hw: g.offsetWidth / 2, x0: a.offsetLeft + g.offsetLeft + g.offsetWidth / 2, sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; });
+        return { a, g, fs, hw: rc.width / 2, x0: rc.left + rc.width / 2 - (parseFloat(a.style.translate) || 0), bs: $$(".st-b", a), sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; });
     };
     measure(); addEventListener("resize", measure);
     addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; last = performance.now(); }, { passive: true });
     D.addEventListener("pointerleave", () => { mx = my = -1e4; });
     nav.addEventListener("pointerover", (e) => { hovering = !!e.target.closest(".sl-a"); });
     nav.addEventListener("pointerleave", () => { hovering = false; });
-    nav.addEventListener("wheel", (e) => { e.preventDefault(); if (!busy) vel -= (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * 0.12; }, { passive: false });
+    const push = (d) => { if (busy || REDUCED || !d) return; tg += d; dir = d > 0 ? 1 : -1; lastIn = performance.now(); };
+    nav.addEventListener("wheel", (e) => { e.preventDefault(); push((Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) / (innerHeight * 4)); }, { passive: false });
     let down = null, moved = false;
-    nav.addEventListener("pointerdown", (e) => { if (!e.button) { down = { x: e.clientX, o: off, id: e.pointerId }; moved = false; } });
+    nav.addEventListener("pointerdown", (e) => { if (!e.button) { down = { x: e.clientX, y: e.clientY, id: e.pointerId }; moved = false; } });
     nav.addEventListener("pointermove", (e) => {
-      if (!down || busy) return; const dx = e.clientX - down.x;
-      if (!moved && Math.abs(dx) > 5) { moved = true; nav.setPointerCapture(down.id); nav.classList.add("drag"); }
-      if (moved) { off = down.o + dx; vel = 0; }
+      if (!down || busy) return; const dx = e.clientX - down.x, dy = e.clientY - down.y, d = Math.abs(dx) > Math.abs(dy) ? dx : dy;
+      if (!moved && Math.abs(d) > 5) { moved = true; nav.setPointerCapture(down.id); nav.classList.add("drag"); }
+      if (moved) { push(-d / (innerHeight * 2.4)); down.x = e.clientX; down.y = e.clientY; }
     });
     const up = () => { down = null; nav.classList.remove("drag"); setTimeout(() => (moved = false), 0); };
     nav.addEventListener("pointerup", up); nav.addEventListener("pointercancel", up);
-    addEventListener("keydown", (e) => { if (!busy && /^Arrow(Left|Right)$/.test(e.key) && $("#menu").hidden) vel += e.key === "ArrowLeft" ? 14 : -14; });
+    addEventListener("keydown", (e) => { if (!busy && /^(Arrow(Left|Right|Up|Down)|PageDown|PageUp| )$/.test(e.key) && $("#menu").hidden) { e.preventDefault(); push(/Right|Down|PageDown| /.test(e.key) ? 1 : -1); tg = Math.round(tg); } });
 
+    // 글자 j의 층 k: 떠날 때(0~0.5)와 다시 설 때(0.5~1) 진행률
+    const n = as.length, LW = 0.22, LS = n > 1 ? (0.5 - LW - 0.04) / (n - 1) : 0;
+    // 바퀴 c, 글자 j마다 정해진 무작위 경로: 떠날 때는 왼쪽 위·아래로 휘어 가고, 돌아올 때는 오른쪽 위·아래에서 휘어 들어와요
+    const rnd = (c, j, q) => { const x = Math.sin(c * 127.1 + j * 311.7 + q * 74.7) * 43758.5453; return x - Math.floor(x); };
+    const path = (c, j, out) => {
+      const th = (out ? Math.PI : 0) + (rnd(c, j, out ? 1 : 5) - 0.5) * 2.0; // 왼쪽(또는 오른쪽) ±57°
+      return { th, D: 0.55 + rnd(c, j, out ? 2 : 6) * 0.45, bend: (rnd(c, j, out ? 3 : 7) - 0.5) * 0.5, rot: (rnd(c, j, out ? 4 : 8) - 0.5) * 50 };
+    };
+    const draw = (f, c = 0) => {
+      const vw = innerWidth, vh = innerHeight, R = Math.hypot(vw, vh) * 0.5;
+      geo.forEach((g, j) => {
+        let op = 1;
+        if (f > 0.0005 && f < 0.9995) {
+          const out = f < 0.5, P = path(out ? c : c + 0, j, out);
+          const o = out ? clamp((f - j * LS) / LW) : clamp((f - 0.5 - j * LS) / LW);
+          op = out ? 1 - clamp(o * 1.05) : clamp(o * 1.1);
+          const cs = Math.cos(P.th), sn = Math.sin(P.th), nx = -sn, ny = cs; // 진행 방향과 그 수직
+          g.bs.forEach((b, k) => {
+            const kk = k / (N - 1) - 0.5; // 위층 -0.5 … 아래층 +0.5
+            // 떠날 때는 위층부터, 돌아올 때는 아래층부터
+            const u = out ? eIn(clamp((o - (k / N) * 0.3) / 0.7)) : 1 - eOut(clamp((o - ((N - 1 - k) / N) * 0.3) / 0.7));
+            const d = u * P.D * R * (1 + kk * 0.35);               // 층마다 조금씩 다른 거리
+            const sw = Math.sin(u * Math.PI) * P.bend * R + u * kk * g.fs * 1.4; // 곡선으로 휘고, 층이 부채처럼 벌어져요
+            const x = cs * d + nx * sw, y = sn * d + ny * sw;
+            b.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${(u * P.rot * (0.6 + kk)).toFixed(2)}deg)`;
+          });
+        } else g.bs.forEach((b) => { if (b.style.transform) b.style.transform = ""; });
+        g.a.style.opacity = op < 0.999 ? op.toFixed(3) : "";
+        g.a.style.pointerEvents = op < 0.5 ? "none" : "";
+      });
+    };
+
+    let prev = 0;
     const tick = (t) => {
       if (busy || !D.body.contains(tr)) return;
       const dt = Math.min(0.05, (t - (prev || t)) / 1000); prev = t;
       if (!D.hidden) {
-        if (!down) { off += vel; vel *= 0.92; if (!hovering && !REDUCED) off -= DRIFT * dt; }
-        off = ((off % setW) - setW) % setW; // 늘 -setW ~ 0 사이
-        tr.style.transform = `translate3d(${off.toFixed(2)}px, -50%, 0)`;
-        const idle = t - last > 2500;
+        if (!down && t - lastIn > 160 && tg !== Math.round(tg)) { const fl = Math.floor(tg), fr0 = tg - fl; tg = dir > 0 ? (fr0 > 0.05 ? fl + 1 : fl) : (fr0 < 0.95 ? fl : fl + 1); } // 손을 떼면 민 방향으로 5% 넘게 갔으면 끝까지, 아니면 제자리로
+        { const gap = tg - ph, v = Math.sign(gap) * Math.min(Math.abs(gap) * (1 - Math.exp(-dt * 2.6)), dt * 0.45); ph += v; } // 한 바퀴에 최소 2.2초
+        if (Math.abs(tg - ph) < 0.0005) ph = tg;
+        const fr = ph - Math.floor(ph);
+        draw(fr, Math.floor(ph));
+        const rest = fr < 0.002 || fr > 0.998, idle = t - last > 2500;
         geo.forEach((g, j) => {
-          const cx = g.x0 + off, A = g.fs * 0.16, sg = g.fs * 0.14, dxm = mx - cx, near = Math.exp(-Math.max(0, Math.abs(dxm) - g.hw + g.fs * 0.3) / (g.fs * 0.9)), dir = dxm > 0 ? -1 : 1;
-          if (cx < -g.fs * 2 || cx > innerWidth + g.fs * 2) return; // 화면 밖은 건너뛰어요
+          const cx = g.x0, A = g.fs * 0.16, sg = g.fs * 0.14, dxm = mx - cx, near = Math.exp(-Math.max(0, Math.abs(dxm) - g.hw + g.fs * 0.3) / (g.fs * 0.9)), dir = dxm > 0 ? -1 : 1;
           g.sl.forEach((o, k) => {
             const dy = o.y - my;
-            let tg = REDUCED ? 0 : dir * A * Math.exp(-(dy * dy) / (2 * sg * sg)) * near; // 커서를 피해 밀려요
-            if (idle && !REDUCED) tg += g.fs * 0.018 * Math.sin(t / 900 - k * 0.11 - j * 1.1); // 가만히 있으면 잔물결
-            o.cur += (tg - o.cur) * 0.12;
+            let to = REDUCED || !rest ? 0 : dir * A * Math.exp(-(dy * dy) / (2 * sg * sg)) * near; // 서 있을 때만 커서를 피해 밀려요
+            if (idle && rest && !REDUCED) to += g.fs * 0.018 * Math.sin(t / 900 - k * 0.11 - j * 1.1); // 가만히 있으면 잔물결
+            o.cur += (to - o.cur) * 0.12;
             o.el.style.translate = `${o.cur.toFixed(2)}px 0`;
           });
         });
@@ -961,7 +1001,7 @@
       e.preventDefault(); if (busy) return;
       if (a.getAttribute("href") === "works.html") ss.set("yp-hi", "1");
       if (REDUCED) return location.assign(a.href);
-      busy = true; HTML.classList.add("sl-go"); a.classList.add("on");
+      busy = true; tg = ph = Math.round(ph); draw(0); HTML.classList.add("sl-go"); a.classList.add("on");
       geo.forEach((g) => g.sl.forEach((o) => { o.el.style.translate = ""; o.cur = 0; }));
       const A = [];
       as.forEach((o) => { if (o === a) return;
