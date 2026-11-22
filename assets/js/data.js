@@ -1667,7 +1667,8 @@ const SITE = {
           {
             src: "assets/img/smart-pixel/section-aa.jpg",
             caption: "Section A–A — Digital-ro 37na-gil at 21:00, perspective beyond the cut",
-            r: 1.291
+            r: 1.291,
+            w: "100%" // 핀 #149: 화면 높이에 맞춰 줄지 않고 섹션 폭 전체로
           }
         ]
       },
@@ -1779,7 +1780,9 @@ const SITE = {
             }
           ]
         }
-      }
+      },
+      // 핀 #150·#151: 밤 장면 뒤 렌더 두 장
+      { heading: "Scenes", text: "Two nights in the rain: a gate on Digital-ro 54-gil held lit from a phone, and the room at the crossroads in its gathering mode.", images: [{src: "assets/img/smart-pixel/render-gate-app.jpg", caption: "Gate, Digital-ro 54-gil — stay lit from the app", r: 0.914}, {src: "assets/img/smart-pixel/render-room.jpg", caption: "Room at the crossroads — tables below, the lantern above", r: 0.788}], stack: true, scenes: true }
     ],
     drawings: []
   },
