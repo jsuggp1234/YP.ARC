@@ -810,7 +810,10 @@
     au.addEventListener("click", () => { auto = !auto; start = null; mark(); st.kick(); });
     mark();
     const RUN = 11, REST = 1.6; // 한 모드 11초 + 쉼 1.6초
-    const person = (g, x, y, s, c) => { g.strokeStyle = c; g.lineWidth = 1.2; g.beginPath(); g.arc(x, y - s * 0.92, s * 0.1, 0, 7); g.moveTo(x, y - s * 0.8); g.lineTo(x, y - s * 0.42); g.moveTo(x - s * 0.13, y - s * 0.68); g.lineTo(x, y - s * 0.75); g.lineTo(x + s * 0.13, y - s * 0.6); g.moveTo(x - s * 0.12, y); g.lineTo(x, y - s * 0.42); g.lineTo(x + s * 0.12, y); g.stroke(); };
+    // 사람은 원본 장면(12_app.ai)에서 오린 그림: h = 기둥 높이 대비, a = 가로/세로
+    const PP = { walk: [0.682, 0.449], dog: [0.712, 1.354], phone: [0.674, 0.574], wall: [0.712, 0.875], table: [0.555, 1.455], sos: [0.682, 1.072] }, IM = {};
+    Object.keys(PP).forEach((k) => { const im = new Image(); im.onload = () => st && st.kick(); im.src = `assets/img/smart-pixel/ppl-${k}.png`; IM[k] = im; });
+    const sprite = (g, k, cx, ground, colH, flip) => { const im = IM[k]; if (!im.complete || !im.naturalWidth) return; const h = PP[k][0] * colH, w = h * PP[k][1]; g.save(); if (flip) { g.translate(cx, 0); g.scale(-1, 1); cx = 0; } g.drawImage(im, cx - w / 2, ground - h, w, h); g.restore(); };
     const st = stage(el, (g, W, H, tt) => {
       if (start === null) start = tt;
       let e = tt - start;
@@ -823,15 +826,16 @@
       // 빛 원뿔 → 기둥 → 보 → 땅
       Ls.forEach((L, i) => { const x = xs(i), w = laneW * 0.1; g.fillStyle = warm(0.06 + 0.34 * (L - 0.2) / 0.8 + 0.04); g.beginPath(); g.moveTo(x, head + 4); g.lineTo(x - w, ground); g.lineTo(x + w, ground); g.closePath(); g.fill(); });
       if (m.wall) { const [a, b] = m.wall, on = Ls[a] > 0.9 && Ls[b] > 0.9; g.fillStyle = warm(on ? 0.35 : 0); g.fillRect(xs(a) + 4, head + colH * 0.12, xs(b) - xs(a) - 8, colH * 0.8); if (on) { g.strokeStyle = C.mix(0.25); g.lineWidth = 0.6; for (let q = xs(a) + 12; q < xs(b) - 6; q += 8) { g.beginPath(); g.moveTo(q, head + colH * 0.12); g.lineTo(q, head + colH * 0.92); g.stroke(); } } }
-      if (m.room) { const [a, b] = m.room, on = Ls[a] > 0.9; if (on) { g.strokeStyle = C.mix(0.5); g.lineWidth = 0.8; g.beginPath(); g.moveTo(xs(a), head + 6); g.quadraticCurveTo((xs(a) + xs(b)) / 2, head + colH * 0.22, xs(b), head + 6); g.stroke(); for (let q = 1; q < 8; q++) { const u = q / 8, bx = xs(a) + (xs(b) - xs(a)) * u, by = head + 6 + (colH * 0.16) * 4 * u * (1 - u); g.fillStyle = warm(0.95); g.beginPath(); g.arc(bx, by + 2, 2, 0, 7); g.fill(); } const mx = (xs(a) + xs(b)) / 2; g.strokeStyle = C.mix(0.7); g.lineWidth = 1; g.strokeRect(mx - s * 0.22, ground - s * 0.3, s * 0.44, s * 0.04); [-0.3, -0.12, 0.12, 0.3].forEach((d, j) => person(g, mx + d * s * 1.25, ground, s * (j % 2 ? 0.66 : 0.7), C.mix(0.85))); } }
+      if (m.room) { const [a, b] = m.room, on = Ls[a] > 0.9; if (on) { g.strokeStyle = C.mix(0.5); g.lineWidth = 0.8; g.beginPath(); g.moveTo(xs(a), head + 6); g.quadraticCurveTo((xs(a) + xs(b)) / 2, head + colH * 0.22, xs(b), head + 6); g.stroke(); for (let q = 1; q < 8; q++) { const u = q / 8, bx = xs(a) + (xs(b) - xs(a)) * u, by = head + 6 + (colH * 0.16) * 4 * u * (1 - u); g.fillStyle = warm(0.95); g.beginPath(); g.arc(bx, by + 2, 2, 0, 7); g.fill(); } sprite(g, "table", (xs(a) + xs(b)) / 2, ground + 2, colH); } }
       g.strokeStyle = C.mix(0.85); g.lineWidth = 1;
       g.beginPath(); g.moveTo(xs(0) - 4, head); g.lineTo(xs(N - 1) + 4, head); g.stroke();
       Ls.forEach((L, i) => { const x = xs(i); g.fillStyle = warm(0.12 + 0.85 * (L - 0.2) / 0.8 + 0.05); g.fillRect(x - 3, head, 6, colH); g.strokeRect(x - 3, head, 6, colH);
         g.font = font(C.xs, L > 0.95 ? 600 : 400); g.fillStyle = C.mix(L > 0.95 ? 0.95 : 0.5); g.textAlign = "center"; g.textBaseline = "bottom"; g.fillText(`${Math.round(L * 100)} %`, x, head - 5); });
       if (mode === 3 && Ls[4] > 0.9 && t > 1 && t < 10) { const x = xs(4); g.strokeStyle = warm(1); g.lineWidth = 1.5; [-0.9, -0.5, 0, 0.5, 0.9].forEach((a) => { g.beginPath(); g.moveTo(x + Math.sin(a) * 14, head - C.xs * 1.9 - Math.cos(a) * 4); g.lineTo(x + Math.sin(a) * 24, head - C.xs * 1.9 - Math.cos(a) * 14); g.stroke(); }); }
       g.strokeStyle = C.mix(0.55); g.lineWidth = 1; g.beginPath(); g.moveTo(padL, ground); g.lineTo(W - padR, ground); g.stroke();
-      if (mode === 2 && t < 19 && t >= 18.4) [0.35, 0.65].forEach((u) => person(g, xs(0) + (xs(1) - xs(0)) * u, ground, s * 0.7, C.mix(0.85)));
-      if (px !== null && px > -1 && px < 5) { const x = xs(0) + (xs(1) - xs(0)) * px; person(g, x, ground, s * 0.72, C.mix(0.9)); if (mode === 1) { g.fillStyle = C.mix(0.55); g.beginPath(); g.arc(x - s * 0.5, ground - s * 0.08, s * 0.07, 0, 7); g.fill(); g.strokeStyle = C.mix(0.55); g.beginPath(); g.moveTo(x - s * 0.12, ground - s * 0.6); g.lineTo(x - s * 0.46, ground - s * 0.1); g.stroke(); } }
+      if (mode === 2 && t < 19 && t >= 18.4) sprite(g, "wall", (xs(0) + xs(1)) / 2, ground + 2, colH);
+      if (px !== null && px > -1 && px < 5) { const x = xs(0) + (xs(1) - xs(0)) * px; sprite(g, ["walk", "phone", "walk", "sos"][mode], x, ground + 2, colH); }
+      if (mode === 1) { const dx = xs(0) + (xs(1) - xs(0)) * (-1.2 + (t / m.T) * 7.4); sprite(g, "dog", dx, ground + 2, colH); }
       // 상태 글
       g.font = font(C.xs); g.textAlign = "left"; g.textBaseline = "alphabetic"; g.fillStyle = C.mix(0.85);
       const hh = (h) => `${String(Math.floor(h)).padStart(2, "0")}:${String(Math.floor((h % 1) * 60)).padStart(2, "0")}`;
