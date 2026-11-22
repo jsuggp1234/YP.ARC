@@ -113,3 +113,12 @@
 - 이미지: 사용자가 사이트 위에 이미지를 끌어다 놓으면 그 자리에 핀이 생기고(기존 핀 위면 그 핀에 추가), 파일은 `.feedback/uploads/`에 임시 저장돼요. 핀의 `images`에 경로가 들어 있어요. Claude는 이 파일을 `assets/img/<작품 slug>/`로 알맞은 영어 이름으로 옮기고(복사 후 원본 삭제) `data.js`의 `cover`/`src`에 연결해요. 25MB 이하 jpg·png·webp·gif·avif만 받아요.
 - 모션 아트 → Works 넘기기(2026-11-21 채팅 요청): `site.js`의 `worksHandoff()`. 같은 날 이미지 띠 화면(#reel)이 사이에 들어오면서 호출을 꺼 뒀어요(모듈이 사진 위로 날아감). 핀 #440에서 넘기기를 다시 정해요. 스크롤 후반에 도시 모듈(윗면 정사각형)들이 떠올라 첫 카드 세 장의 자리를 9칸 타일로 채우고, 내려앉으면 카드 사진이 드러나요. 스크롤에 묶여 되감기도 돼요. 화면 고정 캔버스 `.hand-cv`.
 - 작품 카드 hover 영상: `assets/img/<slug>/card-loop.mp4`(원본 `portfolio-source/대표사진 영상/`), `CARD_FX`에 연결. 영상은 사진과 같은 비율·같은 첫 장면이라 사진의 object-position을 따라가요.
+
+## 2026-11-23 추가분
+- 작품 상세 왼쪽 가장자리를 잡고 오른쪽으로 끌면 studio(works.html)로 돌아가요(`site.js`의 `swipeBack()`, CSS `.sb-*`). 상단바 Contact 링크는 숨김(`hidden`, 코드에서 클릭은 계속 씀).
+- `fplan`(섹션 옵션, `fplanHtml`/`fpInit`): 층별 평면 sticky 보기 — 스크롤로 층이 바뀌고, 번호·목록에 올리면 서로 강조(`.fp-on`).
+- 그림 `lead: N, ln: true`: 그림 위 번호 점(`tags`의 `"c pt"`) + 오른쪽 이름 목록 + 지시선, `notes: [[번호, 이름, 설명]]`.
+- seq `frames`의 단계 `tags`(그림 위 글자)는 `z-index: 6`으로 fade 그림 위에 와요. `below: true`면 단계 목록이 그림 아래.
+- Illustrator 원본에서 글자 없이 뽑기: scratchpad `ai-clean.ps1`(글자·지시선·번호 동그라미·글자 흰 테두리 윤곽선·긴 칸 나눔 선 숨김, 상자별 imageCapture, 지시선 끝점 좌표 JSON). imageCapture 뒤에는 Illustrator가 다음 호출에서 RPC 오류를 내므로 매번 껐다 켜요.
+- 무채색 + 조명색만: ffmpeg `geq`로 채도(최대−최소) 22 이하는 회색으로, 그 위만 색을 남겨요(SMART PIXEL 밤 장면).
+- `git checkout`으로 data.js를 되돌리면 CRLF가 돼서 `\n` 기준 수정 스크립트가 실패해요 → `sed -i 's/\r$//'`로 되돌린 뒤 실행.
