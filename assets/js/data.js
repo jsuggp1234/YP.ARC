@@ -53,16 +53,17 @@ const SITE = {
   },
   // Menu 카드 세 장 (v2 5단계)
   // 첫 화면 카드 네 장 (핀 #35). glyph = 카드 안 모션 아트 글자
+  // 첫 화면 카드 머리글자가 Y · P · S 로 이어져 YP.STUDIO처럼 읽혀요 (2026-11-22 요청). key는 페이지 종류라 그대로, 보이는 이름만 바꿔요
   start: [
+    { key: "about", title: "yeop", glyph: "Y", href: "about.html", note: "Profile, process and CV" },
     { key: "philosophy", title: "philosophy", glyph: "P", href: "philosophy.html", note: "Answer before image — air and light, structure and joints." },
-    { key: "works", title: "works", glyph: "W", href: "works.html", note: "Selected works, 2022—2027" },
-    { key: "about", title: "about", glyph: "A", href: "about.html", note: "Profile, process and CV" },
+    { key: "works", title: "studio", glyph: "S", href: "works.html", note: "Selected works, 2022—2027" },
     { key: "contact", title: "contact", glyph: "@", href: "#contact", contact: true, note: "Email · Instagram · Portfolio PDF" },
   ],
   pages: [
-    { key: "works", title: "works", href: "works.html" },
+    { key: "works", title: "studio", href: "works.html" },
     { key: "archive", title: "archive", href: "archive.html" },
-    { key: "about", title: "about", href: "about.html" },
+    { key: "about", title: "yeop", href: "about.html" },
   ],
   // About 페이지 (v2 8–10단계). draft: true 인 글은 제가 쓴 초안이라 화면에 "Draft"가 붙어요 — 확인 후 draft를 지우면 표시가 사라져요
   about: {

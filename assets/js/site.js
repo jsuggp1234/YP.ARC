@@ -47,7 +47,7 @@
     if (/projects\.html$/.test(path)) return ["A-100", "Index of Works"];
     if (/about\.html$/.test(path)) return ["A-900", "Profile"];
     if (/archive\.html$/.test(path)) return ["A-200", "Archive"];
-    if (/works\.html$/.test(path)) return ["A-010", "Works"];
+    if (/works\.html$/.test(path)) return ["A-010", "Studio"];
     if (/philosophy\.html$/.test(path)) return ["A-001", "Philosophy"];
     if (/project\.html$/.test(path)) {
       const slug = decodeURIComponent((url.hash || "").slice(1));
@@ -735,7 +735,7 @@
         <div class="media">${mz(card(p, 800, 1060))}</div>
       </a>`).join("");
     $("#main").innerHTML = `
-      <section class="cs" id="cases" data-ind="Cases" aria-label="Works">
+      <section class="cs" id="cases" data-ind="Cases" aria-label="Studio">
         <h1 class="sr">${esc(SITE.name)} — Selected works</h1>
         <a class="cs-ix lnk" href="projects.html">${esc((SITE.index || {}).link || "Index")} <span class="num">(${pad(list.length)})</span></a>
         <div class="cs-track">${[0, 1, 2].map((k) => k === 1 ? `<div class="cs-set">${one}</div>` : `<div class="cs-set" aria-hidden="true">${one.replace(/<a /g, '<a tabindex="-1" ')}</div>`).join("")}</div>
