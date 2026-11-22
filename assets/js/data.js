@@ -1602,25 +1602,8 @@ const SITE = {
         ]
       },
       {
-        heading: "One Frame, Three Gestures",
-        text: "The light column becomes architecture when it is joined. A lintel on two heads makes a gate; a row of gates under roof panels makes a corridor; a second tier on four cells makes a room. Same parts, same 2.5 m grid, all bolted, all removable — ten part types, about 2,300 pieces, nothing made for one place only.",
-        cols: 2,
-        cw: [
-          1.052,
-          0.924
-        ],
-        images: [
-          {
-            src: "assets/img/smart-pixel/frame-kit.jpg",
-            caption: "The Pixel Frame — parts of one 2.5 m cell, exploded in assembly order",
-            r: 1.052
-          },
-          {
-            src: "assets/img/smart-pixel/frame-parts.jpg",
-            caption: "Ten parts, the hardware and the assembly order",
-            r: 0.924
-          }
-        ]
+        // 핀 #102: 엑소노를 키 그림으로 크게 고정, 상세 렌즈 a·b·c가 차례로 올라오고 빨간 지시선이 이어져요 (원본 03_frame.ai, 글자·번호 원·지시선 없이)
+        "heading":"One Frame, Three Gestures","text":"The light column becomes architecture when it is joined. A lintel on two heads makes a gate; a row of gates under roof panels makes a corridor; a second tier on four cells makes a room. Same parts, same 2.5 m grid, all bolted, all removable — ten part types, about 2,300 pieces, nothing made for one place only.","images":[{"src":"assets/img/smart-pixel/frame-parts.jpg","caption":"Ten parts, the hardware and the assembly order","r":0.924}],"keyed":{"key":{"src":"assets/img/smart-pixel/frame-key.jpg","r":0.683,"caption":"The Pixel Frame — one 2.5 m cell, exploded in assembly order"},"items":[{"src":"assets/img/smart-pixel/lens-a.jpg","r":1,"t":"Head node and lintel joint","d":"Lintels slide over the arms, 2 × M12 each end; driver, board and cover lift out of the top.","x":83.3,"y":48.1,"notes":[["1","2 × M12 × 40"],["2","Lintel 100 × 160, LED + opal lens"],["3","Cover ø170, 4 × M6 pin-Torx"],["4","Gasket, EPDM"],["5","Controller + Bluetooth LE 5"],["6","Driver 30 W, 24 V"],["7","Arm 92 × 152, M12 bosses"],["8","Radar 24 GHz"]]},{"src":"assets/img/smart-pixel/lens-b.jpg","r":1,"t":"Light column","d":"Core, two LED lines, opal diffuser and mask; the diffuser slides off once the head is off.","x":64.8,"y":72.2,"notes":[["1","Mask, 180°"],["2","End ring"],["3","Spigot ø93, 2 × M8"],["4","Core ø101.6 × 4"],["5","Diffuser ø150, PC opal"],["6","LED 24 V, two lines"]]},{"src":"assets/img/smart-pixel/lens-c.jpg","r":1,"t":"Ground connection","d":"Plug, collar and lock pin on the cast-in sleeve; the socket stays when the pixel leaves.","x":64.8,"y":86.5,"notes":[["1","Lock pin M12 × 110"],["2","Collar ø170, hatch, QR"],["3","Plug IP68, 3-pole"],["4","Paving 200 × 100"],["5","Sleeve ø114.3"],["6","Socket shaft ø300"]]}]}
       },
       {
         heading: "Point, Line, Volume",
