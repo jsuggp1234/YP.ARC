@@ -780,7 +780,7 @@ const SITE = {
     drawings: [], // 2026-11-22 핀: Plans·Sections 섹션으로 옮겼어요
   },
   {
-    slug: "modular-o-housing", blurb: "조립·해체되는 모듈러 공동주택",
+    slug: "modular-o-housing", blurb: "모듈러 공동주택",
     title: "Modular O′ housing",
     titleKo: "모듈러 주거 단지",
     subtitle: "Modular housing complex, assembled and taken apart on one grid",
@@ -1130,7 +1130,7 @@ const SITE = {
     ],
   },
   {
-    slug: "samgakji-residential", blurb: "삼각지 옛 필지 위 주거마을",
+    slug: "samgakji-residential", blurb: "용산 삼각지 타운하우스",
     title: "Samgakji Residential Project",
     titleKo: "불협화음으로 짓는 주거 이야기",
     subtitle: "A housing story composed in dissonance — a village laid on the old parcels of a leftover triangle by Yongsan Station",
@@ -1508,7 +1508,7 @@ const SITE = {
   // 라주니타 (2026-11-22 추가) — 원본: portfolio-source/라주니타. 글은 패널(.ai)의 설명문에서 옮겼어요.
   // 확인 필요: year(원본 파일 날짜 2025.03 기준 추정) · studio · 대지 위치 · 팀 — 사용자에게 받으면 채우기
   {
-    slug: "la-junita", blurb: "강가 경사지의 4인 가족 주택",
+    slug: "la-junita", blurb: "Flowing layers, 아르헨티나 단독주택",
     title: "La Junita",
     titleKo: "라주니타 — 강을 향해 경사를 따라 흐르는 집",
     subtitle: "A house for a family of four on a slope above the river — masses that step down the ground, each one turned to the water",
@@ -2159,7 +2159,7 @@ const SITE = {
   },
   // ---- 자료 준비 중 (CV의 수상·스튜디오 기록만 있어요. 자료를 받으면 채워요) ----
   {
-    "slug": "the-tree-house",
+    "slug": "the-tree-house", "blurb": "Blooming - the tree house",
     "title": "The Tree House",
     "titleKo": "블루밍 — 자작나무 숲의 트리하우스 키트",
     "subtitle": "Blooming — a tree house kit that hangs on a living birch and opens like a flower",
@@ -2637,7 +2637,7 @@ const SITE = {
     "drawings": []
   },
   {
-    "slug": "metaverse-church",
+    "slug": "metaverse-church", "blurb": "디지털 트윈 건축",
     "title": "Moduleverse Church",
     "titleKo": "메타버스 시스템의 교회공간",
     "subtitle": "One church built twice — a cross of 15,137 one-person modules over the water, and its digital twin in the metaverse",
