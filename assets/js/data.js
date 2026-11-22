@@ -1672,25 +1672,10 @@ const SITE = {
         ]
       },
       {
-        heading: "Plugged In, Bolted On, Lifted Out",
+        heading: "Plugged In, Bolted On, Lifted Out", big: true,
         text: "Nothing is cast on site: the socket is precast. A column drops into it and is pinned; a node on top takes up to four lintels and a roof panel. Every joint opens with one spanner, so a gate can leave a lane as easily as it came.",
-        cols: 2,
-        cw: [
-          0.663,
-          0.758
-        ],
-        images: [
-          {
-            src: "assets/img/smart-pixel/detail-column.jpg",
-            caption: "A Vertical section through column and socket, 1:10",
-            r: 0.663
-          },
-          {
-            src: "assets/img/smart-pixel/detail-joints.jpg",
-            caption: "1–5 Head node, lintel, socket, roof edge, power and control",
-            r: 0.758
-          }
-        ]
+        // 핀 #143: 원본 08_detail.ai 상세 1–5, 글자·지시선 없이 — 번호 점·이름·치수는 사이트 글자
+        images: [{"src":"assets/img/smart-pixel/detail-d1.jpg","caption":"1 Head node and lintels — 1:5, along the street through the column axis","r":1.528,"lead":26,"ln":true,"tags":[[85.6,20.3,"01","c pt"],[88.2,27.4,"02","c pt"],[64.5,34.4,"03","c pt"],[56.9,34.7,"04","c pt"],[92.4,35.5,"05","c pt"],[79.7,42.9,"06","c pt"],[91.5,53.5,"07","c pt"],[54.3,58.4,"08","c pt"],[55.7,72.7,"09","c pt"],[56.5,84.3,"10","c pt"],[58.2,89.4,"11","c pt"],[51.8,97,"ø170","c","m"],[36.5,8.5,"upper column, gates only","c","m"]],"notes":[["01","Hammer-head bolt M10","in the lintel T-slot (see 2)"],["02","Panel frame 50 × 100 × 3","sits on the lintels"],["03","2 × M12 per arm","bolted from above"],["04","Cover plate, 4 × M6","opens the driver bay"],["05","Lintel 100 × 160 × 3","sleeved over the arm"],["06","Arm 92 × 152","cast with the node"],["07","LED strip + opal lens","on the lintel underside"],["08","LED driver 24 V, 30 W","in a sealed bay"],["09","Spigot ø93","2 × M8 grub screws"],["10","Column LED, 2 × 2.5 W",""],["11","Diffuser ø150","opal polycarbonate"]]},{"src":"assets/img/smart-pixel/detail-d2.jpg","caption":"2 Lintel extrusion — 1:2, cross-section","r":0.79,"lead":26,"ln":true,"tags":[[59.9,13.7,"01","c pt"],[77,15,"02","c pt"],[70.1,20.2,"03","c pt"],[79.2,29.8,"04","c pt"],[83.9,36.7,"05","c pt"],[63.8,42,"06","c pt"],[77,55,"07","c pt"],[64.9,60.5,"08","c pt"],[74.5,82.9,"09","c pt"],[67.1,84.6,"10","c pt"],[57,3.5,"100","c","m"],[3.8,50.7,"160","c","m"],[17,20.6,"22","c","m"],[17,41.6,"74","c","m"],[17,71.6,"64","c","m"],[44,95,"34°","c","m"],[70,95,"34°","c","m"]],"notes":[["01","Hammer-head bolt M10","to the panel frame"],["02","EPDM pad 4",""],["03","T-slot, 16 mm mouth","runs the full length"],["04","Screw boss","for the end cap"],["05","Wall 3","aluminium 6063-T6"],["06","Cable chamber","3 × 1.5 mm²"],["07","Heat-sink web 4","with fins"],["08","LED board","24 V, 2700 K"],["09","Lens clip groove",""],["10","Opal lens","clipped, no screws"]]},{"src":"assets/img/smart-pixel/detail-d3.jpg","caption":"3 Socket at street level — 1:10, plan cut at +100","r":1.05,"lead":26,"ln":true,"tags":[[19.9,14.9,"01","c pt"],[33.2,34.5,"02","c pt"],[59.1,38.9,"03","c pt"],[47.1,39,"04","c pt"],[58,48.3,"05","c pt"],[21,48.3,"06","c pt"],[73.2,52.1,"07","c pt"],[43.2,53.3,"08","c pt"],[55.8,54.3,"09","c pt"],[92.8,77.8,"10","c pt"],[14.5,81.2,"11","c pt"],[33.8,1.5,"65","c","m"],[47.8,1.5,"ø170","c","m"],[61.5,1.5,"65","c","m"],[47,97.5,"600 base, below","c","m"]],"notes":[["01","Block paving 200 × 100 × 80",""],["02","Mortar ring","blocks cut to fit"],["03","Precast collar ø300","C35/45"],["04","Tamper-proof screw",""],["05","Lock pin M12","capped"],["06","Lifting anchor","cast in, two"],["07","Supply elbow PE ø50","cast in"],["08","Core ø101.6","in sleeve ø114.3"],["09","Base collar ø170","aluminium"],["10","Feeder duct","along the colonnade"],["11","Socket base 600 × 600","hidden below"]]},{"src":"assets/img/smart-pixel/detail-d4.jpg","caption":"4 Roof panel, open edge — 1:5, across the street","r":1.241,"lead":26,"ln":true,"tags":[[71.8,25.3,"01","c pt"],[45,27.9,"02","c pt"],[62.9,33.1,"03","c pt"],[52.4,37.8,"04","c pt"],[73.2,37.8,"05","c pt"],[74.7,51.4,"06","c pt"],[79.5,68.9,"07","c pt"],[49.5,1.5,"125","c","m"],[65,1.5,"50","c","m"],[98.5,19,"100","r","m"],[98.5,46.5,"62","r","m"],[4,4.5,"2 % fall to the open edge","","m"]],"notes":[["01","End cap with drip","riveted"],["02","Louvre 70 × 4 at 45°","clipped to the rail"],["03","Edge member 50 × 100 × 3","aluminium"],["04","Side rail beyond",""],["05","Bracket every 600","2 × M6"],["06","Gutter 60 × 60","aluminium 1.5"],["07","Rain chain","to the splash grate"]]},{"src":"assets/img/smart-pixel/detail-d5.jpg","caption":"5 Power and control — one line: how a lane answers a passer-by","r":1.639,"lead":26,"ln":true,"tags":[[46.5,6,"01","c pt"],[73.9,9,"02","c pt"],[6,23.8,"03","c pt"],[49.9,24.8,"04","c pt"],[15.2,45.8,"05","c pt"],[19,36,"60 %","c","m"],[55.6,36,"100 %","c","m"],[92.2,36,"60 %","c","m"],[15.3,69.5,"pass","c","m"],[42.7,71.8,"hold 40 s after the last pass · 31 lx","c","m"],[42.7,80.6,"2 columns either side, 60 %","c","m"],[79.4,83.3,"fade 5 s","","m"],[93,88.6,"20 %, 6 lx","c","m"],[1,75,"100 %","","m"],[1,83.5,"60 %","","m"],[1,92,"20 %","","m"],[15.3,99,"0","c","m"],[29,99,"10","c","m"],[42.7,99,"20","c","m"],[56.4,99,"30","c","m"],[70,99,"40","c","m"],[83.9,99,"50","c","m"],[97.7,99,"60 s","c","m"]],"notes":[["01","BLE mesh","2.5 m hops"],["02","Node","24 V driver, radar 24 GHz, BLE"],["03","Sub-board on the street-lamp feeder","7 × MCB 10 A, RCD 30 mA, astro timer, LTE"],["04","Radar sees a pass",""],["05","Feeder 230 V, 3 × 2.5 mm² in PE ø50","about 58 columns a circuit"]]}]
       },
       {
         heading: "Checks",
