@@ -3154,7 +3154,7 @@
       : q.steps.map((f, i) => `<img src="${esc(f.src)}" alt="${esc(f.t)}" decoding="async"${i ? "" : ' class="on"'}${f.x ? ` style="translate:${esc(f.x)} 0"` : ""}>`).join("");
     return `<div class="seq seq-${q.kind}${q.lite ? " seq-lite" : ""}${q.fade ? " seq-fade" : ""}${q.below ? " seq-below" : ""}" data-seq style="--n:${q.n || N};--k:${q.k || 1}${q.cols ? `;--c:${q.cols}` : ""}">
       <div class="seq-pin">
-        <div class="seq-stage media" style="aspect-ratio:${q.r};--r:${q.r}">${stage}</div>
+        <div class="seq-stage media" style="aspect-ratio:${q.r};--r:${q.r}">${stage}${q.tag ? `<p class="ssn-tag seq-tag"><b>${esc(q.steps[0].t)}</b><span>${esc(q.steps[0].s || "")}</span></p>` : ""}</div>
         <div class="seq-side">
           <p class="seq-ctr num"><b>01</b> / ${pad(N)}</p>
           <ol>${q.steps.map((f, i) => `<li${i ? "" : ' class="on"'}><span class="num mid">${pad(i + 1)}</span><div><b>${esc(f.t)}</b> <span class="mid">${esc(f.s || "")}</span>${f.d ? `<p>${esc(f.d)}</p>` : ""}${f.k ? `<dl>${f.k.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd class="num">${esc(b)}</dd></div>`).join("")}</dl>` : ""}</div></li>`).join("")}</ol>
@@ -3371,6 +3371,7 @@
         if (imgs[prev]) { const w = imgs[prev]; requestAnimationFrame(() => w.classList.add("gone")); }
         if (top) top.style.clipPath = `inset(0 0 ${100 - q.steps[i].y}% 0)`;
         ctr.textContent = pad(i + 1);
+        if (q.tag) { const tg = $(".seq-tag", el); if (tg) { $("b", tg).textContent = q.steps[i].t; $("span", tg).textContent = q.steps[i].s || ""; tg.animate([{ opacity: 0, translate: "0 6px" }, { opacity: 1, translate: "0 0" }], { duration: 450, easing: "cubic-bezier(0.16, 1, 0.3, 1)" }); } }
       };
       const upd = () => {
         const r = el.getBoundingClientRect(), span = r.height - innerHeight;
@@ -3519,7 +3520,7 @@
                 </div>
               </div>
             </div>
-            <figure class="cx-cv"><div class="media">${cover(p, 2400, Math.round(2400 / (p.coverR || 0.8)))}</div></figure>
+            <figure class="cx-cv"><div class="media">${p.coverVideo && !REDUCED ? `<video class="cx-vid" src="${esc(p.coverVideo)}" poster="${esc(p.cover)}" autoplay muted loop playsinline preload="auto" aria-label="${esc(p.title)}"></video>` : cover(p, 2400, Math.round(2400 / (p.coverR || 0.8)))}</div></figure>
             <div class="cx-lead">
               <p class="cx-big">${esc(p.summary)}</p>
               <dl class="pj-facts cx-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>

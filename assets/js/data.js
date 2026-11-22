@@ -1212,6 +1212,7 @@ const SITE = {
       [2.105, 1.225, 0.173, 0.787, 0.04, 0.12, "box", -45]
     ],
     cover: "assets/img/samgakji-residential/guesthouse.jpg",
+    coverVideo: "assets/img/samgakji-residential/cover-hq.mp4", // 핀 #51: 작품 머리에서 바로 재생되는 고화질 영상 (원본 portfolio-source/대표사진 영상)
     thumb: "assets/img/samgakji-residential/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverCaption: "Guesthouse on the commercial spine",
     coverR: 1.502, // 표지를 사진 비율 그대로 (핀 #158)
@@ -1360,7 +1361,7 @@ const SITE = {
         heading: "Zoning and Residence Types",
         text: "Seven quarters face the green road, each with its own identity — a commercial street that extends Yongnidan-gil, a child-friendly village, short stays along the commercial spine, a co-working quarter, an art and culture quarter, and the local shops of the everyday neighbourhood. Then the residences inside them — Type A to D, a rooftop bridge deck, and an office and share-house cluster — each lit in turn.",
         images: [],
-        seq: {
+        seq: { tag: true, 
           below: true,
           cols: 7,
           kind: "frames",
