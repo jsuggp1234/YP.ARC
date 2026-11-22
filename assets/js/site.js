@@ -894,20 +894,33 @@
       <nav class="mn st-mn open" aria-label="Start"><canvas class="st-bg" aria-hidden="true"></canvas>${ST.map((pg, i) => `<a class="mn-card" href="${esc(pg.href)}"${pg.contact ? " data-contact" : ""} data-i="${i}" aria-label="${esc(pg.title)}"><div class="mn-pg">${miniHtml(pg)}</div></a>`).join("")}</nav>`;
     const m = $(".st-mn"), cards = $$(".mn-card", m);
     let off = 0, hov = -1, busy = false;
-    const range = (g) => [Math.min(0, -(cards.length - 1) * g.step + (g.vw - g.x0 - g.W - g.x0 * 0.5)), 0];
+    // 카드 위 이름(대문자, 메뉴와 같은 크기) — 카드와 같은 칸 왼쪽에 붙어 함께 움직여요
+    const caps = cards.map((c, i) => { const t = D.createElement("span"); t.className = "st-cap"; t.setAttribute("aria-hidden", "true"); t.textContent = (ST[i] || {}).title || ""; m.appendChild(t); return t; });
+    // 2026-11-22 벤치마킹 배치: 카드 한 장 = 상단바 한 칸 폭, 칸 시작선에 맞춰 놓고(넷째 장은 화면 밖으로 이어짐), 화면 위 40%쯤은 비워요
+    const stGeo = () => {
+      const vw = innerWidth, vh = innerHeight, mob = vw <= 760, cs = getComputedStyle(HTML);
+      const e = parseFloat(cs.getPropertyValue("--g4-e")) || 16, gap = 8;
+      const W = mob ? vw * 0.62 : vw * 0.28125 - gap, step = W + gap, y = Math.round(vh * (mob ? 0.34 : 0.4)), hgt = vh - y - e, sc = hgt / vh;
+      return { vw, vh, sc, W, step, x0: e, y, R: Math.max(0, vw - W / sc), e };
+    };
+    const range = (g) => [Math.min(0, g.vw - g.e - (g.x0 + (cards.length - 1) * g.step + g.W)), 0];
+    const mnGeo = stGeo; // 아래 끌기·휠·키보드 코드도 같은 배치를 써요
     const place = () => {
-      const g = mnGeo();
+      const g = stGeo();
+      m.style.setProperty("--stw", g.W / g.sc + "px");
       cards.forEach((c, i) => {
-        const x = g.x0 + i * g.step + off, h = i === hov ? 1.025 : 1;
+        const x = g.x0 + i * g.step + off;
         c.style.width = g.vw + "px"; c.style.height = g.vh + "px";
-        c.style.transform = `translate(${x}px, ${g.y}px) scale(${g.sc * h})`;
+        c.style.transform = `translate(${x}px, ${g.y}px) scale(${g.sc})`;
         c.style.clipPath = `inset(0px ${g.R}px 0px 0px)`;
+        caps[i].style.transform = `translate(${x}px, ${g.y}px)`;
       });
     };
     place();
     // 들어올 때: 카드가 오른쪽에서 차례로 미끄러져 들어와요 (메뉴 열림과 같은 움직임)
-    if (!REDUCED) cards.forEach((c, i) => c.animate([{ translate: "160px 0", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1000, delay: 200 + i * 110, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
-    stConcrete(m);
+    if (!REDUCED) [...cards, ...caps].forEach((c, k) => { const i = k % cards.length; c.animate([{ translate: "0 28px", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1100, delay: 150 + i * 90 + (k >= cards.length ? 120 : 0), easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }); });
+    if (false) cards.forEach((c, i) => c.animate([{ translate: "160px 0", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1000, delay: 200 + i * 110, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
+    // 2026-11-22 벤치마킹: 바탕 재질(stConcrete · stPlaster)은 쓰지 않아요 — 평평한 연회색
     // 2026-11-22 "훨씬 심플하게": 네모 모듈 모션아트(stArt)는 쓰지 않아요 — 캔버스를 지우고 가는 글자 하나 + 작은 이름만
     $$(".mn-card", m).forEach((c, i) => {
       const pg = ST[+c.dataset.i] || {}, cv = $(".mn-art", c); if (cv) cv.remove();
@@ -916,7 +929,7 @@
       L.innerHTML = `<svg viewBox="0 0 100 120" preserveAspectRatio="xMidYMid meet"><text class="st-gh" x="50.5" y="101" text-anchor="middle">${esc(pg.glyph)}</text><text class="st-gt" x="50" y="100" text-anchor="middle">${esc(pg.glyph)}</text></svg><span class="st-nm">${esc(pg.title || "")}</span>`;
       c.appendChild(L);
     });
-    stPlaster(m);
+
     m.addEventListener("pointerover", (e) => { const c = e.target.closest(".mn-card"); const i = c ? +c.dataset.i : -1; if (i !== hov && !busy) { hov = i; place(); } });
     m.addEventListener("pointerleave", () => { hov = -1; if (!busy) place(); });
     m.addEventListener("wheel", (e) => { e.preventDefault(); if (busy) return; const [lo, hi] = range(mnGeo()); off = clamp(off - (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY), lo, hi); place(); }, { passive: false });
