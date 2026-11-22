@@ -757,12 +757,12 @@ const SITE = {
       [1.05, 0.65, 0.4, 0.4, 0.2, 3.93],
       [1.05, 1.05, 0.4, 0.4, 0.2, 3.93]
     ],
-    cover: "assets/img/timteam-work/cover-tower.jpg", // 핀 #41
-    coverVideo: "assets/img/timteam-work/cover-hq.mp4", // 핀 #72 (원본 portfolio-source/대표사진 영상/목조 오피스 영상.mp4)
-    coverR: 0.636, // 대표사진 가로/세로 (머리 배치용)
+    cover: "assets/img/timteam-work/exterior-arcade-rain.jpg", // 핀 #99 (예전: cover-tower.jpg 핀 #41)
+    // coverVideo: "assets/img/timteam-work/cover-hq.mp4", // 핀 #72 (원본 portfolio-source/대표사진 영상/목조 오피스 영상.mp4) — 핀 #99로 사진으로 바꿈
+    coverR: 2.01, // 대표사진 가로/세로 (머리 배치용)
     thumb: "assets/img/timteam-work/cover.jpg",
     thumb: "assets/img/timteam-work/card-frame.jpg", // 카드·목록에 쓰는 이미지 (상세 페이지 맨 위는 cover)
-    coverCaption: "Glass floors over the timber arcade",
+    coverCaption: "The timber arcade in the rain",
     summary:
       "Pangyo Techno Valley is a district of glass towers on a green edge. Sampyeong-dong 641 sits between the two and asks if an office can be built of timber and climb with the park. A 14-storey timber office: GLT frame and CLT slabs on a 3,500 grid around three cores, with 53 planted terraces rising to a roof garden at +61,000 over a timber arcade.",
     sections: [
