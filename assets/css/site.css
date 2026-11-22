@@ -1854,3 +1854,9 @@ html.st-home .ftr, html.st-home .hud { display: none; }
 /* Works 대표사진 줄을 화면 아래가 아니라 세로 가운데에 (사용자 요청) — 커질 때도 가운데 기준 */
 #cases.cs { align-items: center; padding-bottom: 0; padding-top: var(--hdr); }
 #cases .cs-card { transform-origin: 50% 50%; }
+/* 메뉴·첫 화면의 works 축소판 = Works 페이지와 똑같은 배치 (작은 대표사진 72%·0.8 비율, 상단바 아래 세로 가운데).
+   카드가 화면 전체로 커지면 그대로 Works 페이지가 되어 사진 크기가 튀지 않아요 */
+.mn-pg .mn-strip { top: 50%; bottom: auto; transform: translateY(calc(-50% + var(--hdr) / 2)); }
+.mn-pg .mn-c { width: calc(var(--ch) / 1.3224 * 0.72); }
+.mn-pg .mn-im { height: calc(var(--ch) / 1.3224 * 0.72 / 0.8); background: var(--line); }
+.mn-pg .mn-im img { transform: scale(1.15); } /* Works 카드 사진의 기본 확대(.cs-card .mz)와 같게 */

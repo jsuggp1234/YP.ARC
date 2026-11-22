@@ -424,7 +424,7 @@
   function miniHtml(pg) {
     const top = `<div class="mn-top">${esc(SITE.name)}</div><h2 class="mn-t">${esc(pg.title)}</h2>`;
     if (pg.key === "works") {
-      const list = PROJECTS.filter((p) => !p.draft).slice(0, 4);
+      const list = PROJECTS.filter((p) => !p.draft).slice(0, 7); // Works 페이지 첫 화면과 같은 장수·배치 (커진 카드 = Works 화면 그대로)
       return top + `<div class="mn-strip">${list.map((p) => `<div class="mn-c"><span>${esc(p.title)}</span><div class="mn-im">${mImg(p.thumb || p.cover)}</div></div>`).join("")}</div>`;
     }
     if (pg.key === "archive") {
