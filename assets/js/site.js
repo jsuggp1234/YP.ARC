@@ -916,7 +916,8 @@
         return { a, g, fs, hw: rc.width / 2, x0: rc.left + rc.width / 2 - (parseFloat(a.style.translate) || 0), by: rc.bottom, bs: $$(".st-b", a), sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; });
     };
     measure(); addEventListener("resize", measure);
-    addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; last = performance.now(); }, { passive: true });
+    let msp = 0, pmT = 0, pmx = 0, pmy = 0; // 커서 빠르기(px/s): 빠르면 놀라고, 느리면 궁금해해요
+    addEventListener("pointermove", (e) => { const n = performance.now(); if (pmT) { const v = (Math.hypot(e.clientX - pmx, e.clientY - pmy) / Math.max(8, n - pmT)) * 1000; msp += (v - msp) * 0.35; } pmx = e.clientX; pmy = e.clientY; pmT = n; mx = e.clientX; my = e.clientY; last = n; }, { passive: true });
     D.addEventListener("pointerleave", () => { if (!nav.classList.contains("holding")) mx = my = -1e4; });
     nav.addEventListener("pointerover", (e) => { hovering = !!e.target.closest(".sl-a"); });
     nav.addEventListener("pointerleave", () => { hovering = false; });
@@ -1029,7 +1030,7 @@
       const rx = w / 2 - px, ry = h * 0.55 - py;
       c.act = null; c.q = []; c.on = -1; c.mode = "held";
       c.hold = { px, py, L: r.left, T: r.top, rx, ry, I: rx * rx + ry * ry + (w * w + h * h) / 12, mx: px0, my: py0, vx: 0, vy: 0, ax: 0, ay: 0 };
-      c.th = (c.rot * Math.PI) / 180; c.w = 0; c.rot = 0; c.sx = c.sy = 1;
+      c.th = (c.rot * Math.PI) / 180; c.w = 0; c.rot = 0; c.sx = c.sy = 1; c.heldT = performance.now(); c.maxW = 0;
       el.style.transformOrigin = px.toFixed(1) + "px " + py.toFixed(1) + "px";
       nav.classList.add("holding");
       CH.forEach((o, k) => { if (k !== j && o.on === j) { o.on = -1; o.mode = "back"; o.tx = 0; o.ty = 0; } }); // 위에 앉아 있던 점은 떨어져 나가요
@@ -1049,7 +1050,8 @@
         c.x = mx - (P.L + P.px); c.y = c.base = my - (P.T + P.py);
         const cs = Math.cos(c.th), sn = Math.sin(c.th), rxr = P.rx * cs - P.ry * sn, ryr = P.rx * sn + P.ry * cs;
         c.w += ((rxr * (GV - P.ay) + ryr * P.ax) / P.I) * dt; // 중력과 커서 가속도가 만드는 돌림힘
-        c.w *= Math.exp(-1.3 * dt); c.w = Math.max(-25, Math.min(25, c.w)); c.th += c.w * dt;
+        const kick = Math.max(0, 1 - (performance.now() - c.heldT) / 1800); c.w += Math.sin(performance.now() / 70) * 9 * kick * dt; // 버둥대다 체념
+        c.w *= Math.exp(-1.3 * dt); c.w = Math.max(-25, Math.min(25, c.w)); c.th += c.w * dt; c.maxW = Math.max(c.maxW || 0, Math.abs(c.w));
         return;
       }
       // 떨어지기: 던진 속도 그대로 + 중력, 몸은 바로 서려 하고, 바닥(원래 줄)에 닿으면 통통
@@ -1060,7 +1062,8 @@
       if (c.y >= 0 && c.vy > 0) {
         c.y = 0; c.imp = 1; c.bn++;
         if (c.bn < 3 && c.vy > 260) { c.vy = -c.vy * 0.32; c.vx *= 0.6; }
-        else { c.th = 0; c.w = 0; c.base = 0; c.el.style.transformOrigin = ""; c.mode = "back"; c.tx = 0; c.ty = 0; c.wait = performance.now() + 450; c.dirx = 0; }
+        else { const n = performance.now(); c.th = 0; c.w = 0; c.base = 0; c.el.style.transformOrigin = ""; c.mode = "back"; c.tx = 0; c.ty = 0; c.dirx = 0;
+          if ((c.maxW || 0) > 6) { c.dizzy = n + 2200; c.wait = n + 2200; } else { c.shake = n + 150; c.wait = n + 900; c.huff = n; } } // 어지러우면 비틀비틀, 아니면 투덜대며 몸을 털고 출발
       }
       c.base = c.y;
     };
@@ -1088,7 +1091,7 @@
         if (c.mode !== "wander") rest = false;
         if (c.mode === "held" || c.mode === "drop") { physics(c, j, dt); return; }
         const run = c.mode === "run", vmax = run ? (j === WORD ? 260 : 340) : c.mode === "back" ? 300 : 120, acc = run ? 950 : 650;
-        if (t < (c.wait || 0)) { c.crouch = Math.min(1, (c.crouch || 0) + dt * 6); c.vx = 0; c.ax = 0; c.tdir = Math.sign(c.tx - c.x); return; } // 출발 전: 반대쪽으로 웅크려요
+        if (t < (c.wait || 0)) { if (c.dizzy > t || c.huff > t - 900) { c.vx = 0; c.ax = 0; return; } c.crouch = Math.min(1, (c.crouch || 0) + dt * 6); c.vx = 0; c.ax = 0; c.tdir = Math.sign(c.tx - c.x); return; } // 출발 전: 반대쪽으로 웅크려요
         c.crouch = Math.max(0, (c.crouch || 0) - dt * 7);
         { // 늘 바닥(수평선)으로 — 다른 글자와 겹치려 하면 그 위로 뛰어넘어요
           let lift = 0; const cx = g.x0 + c.x; if (j !== WORD) // STUDIO는 무거워서 뛰어넘지 않고, 작은 글자들이 STUDIO 위로 올라타 넘어가요
@@ -1101,7 +1104,8 @@
         if (dist < 1.5 && Math.abs(c.vx || 0) < 25) {
           c.x = c.tx; c.vx = 0; c.ax = 0; c.base = 0;
           if (run) { fleeTo(c, g); c.wait = t + 150 + Math.random() * 500; } // 아직 흥분 중이면 잠깐 두리번 → 다른 곳으로
-          else { if (c.mode === "wander") c.lookT = t + 1200; c.mode = "home"; if (!c.tx && !c.ty) c.x = c.base = 0; }
+          else { const wasBack = c.mode === "back"; if (c.mode === "wander") c.lookT = t + 1200; c.mode = "home"; if (!c.tx && !c.ty) c.x = c.base = 0;
+            if (wasBack) { const fz = g.fs; later(c, t + 120, c.x, 0, fz * (j === WORD ? 0.06 : 0.12), 420); later(c, t, c.x, 0, fz * (j === WORD ? 0.04 : 0.08), 340); } } // 집에 오면 기뻐서 통통
           return;
         }
         const vt = Math.sign(dx) * Math.min(vmax, Math.sqrt(2 * acc * 0.9 * dist)); // 목표 속도: 가까워질수록 줄어요(제동)
@@ -1115,9 +1119,14 @@
       if (calm && t > nextAt) { pick(t); nextAt = t + 900 + Math.random() * 1900; }
       const dotC = CH[DOT], dotG = geo[DOT], dotAir = dotC && dotC.act && dotC.act.t0 <= t;
       const HJ = CH.findIndex((c) => c.mode === "held");
+      // 감정: 졸음(9초 넘게 아무 입력 없으면 서서히 꾸벅) → 깨면 깜짝 / 커서가 빠르게 스치면 깜짝 놀라 물러섬 / 천천히 다가오면 궁금해 까치발
+      msp *= Math.exp(-dt * 5);
+      const sleep = clamp((t - Math.max(last, lastIn) - 9000) / 2500);
+      if (slp > 0.5 && sleep < 0.05) CH.forEach((c, j) => { if (c.mode === "home" && !c.act && !c.q.length) { later(c, t + j * 110, c.x, 0, g0(j).fs * 0.17, 520); c.trem = t + j * 110; } });
+      slp = sleep;
       CH.forEach((c, j) => {
         if (c.mode === "held" || c.mode === "drop") {
-          c.imp *= 0.88; const sq = c.mode === "drop" ? 1 - 0.1 * c.imp : 1;
+          c.imp *= 0.88; const kick = c.mode === "held" ? Math.max(0, 1 - (t - (c.heldT || 0)) / 1800) : 0; const sq = (c.mode === "drop" ? 1 - 0.1 * c.imp : 1) + Math.sin(t / 45) * 0.05 * kick;
           c.el.style.transform = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0) rotate(${c.th.toFixed(4)}rad) scale(${(2 - sq).toFixed(3)}, ${sq.toFixed(3)})`;
           return;
         }
@@ -1127,14 +1136,30 @@
         } else if (c.mode !== "home") { // 종종걸음: 발을 디딜 때마다 살짝 눌리고, 가는 쪽으로 몸을 기울이며 좌우로 흔들려요
           const ab = Math.abs(Math.sin(c.gp)), sp = Math.min(1, Math.abs(c.vx || 0) / 300), cr = c.crouch || 0;
           c.y = c.base - ab * g0(j).fs * 0.065 * sp; c.sy = 1 - 0.07 * (1 - ab) * sp - 0.12 * cr; c.sx = 1 + 0.04 * (1 - ab) * sp + 0.07 * cr;
-        } else { c.sx += (1 - c.sx) * 0.2; c.sy += (1 - c.sy) * 0.2; c.y = c.base; }
+        } else {
+          c.sx += (1 - c.sx) * 0.2; c.sy += (1 - c.sy) * 0.2; c.y = c.base;
+          const gq = g0(j), cx = (gq.x0 || 0) + c.x, cy = (gq.by || 0) - gq.fs * 0.4 + c.base, dm = mx > -1e3 ? Math.hypot(mx - cx, my - cy) : 1e9;
+          if (c.mode === "home" && !c.act && !c.q.length && dm < gq.fs * 1.1 && msp > 1300 && t > (c.fearT || 0) + 1400) { // 깜짝: 움찔하며 한 발 물러서요
+            c.fearT = t; c.trem = t; const away = Math.sign(cx - mx) || 1;
+            later(c, t, Math.max(-gq.fs * 0.2, Math.min(gq.fs * 0.2, c.x + away * gq.fs * 0.09)), c.base, gq.fs * 0.1, 360);
+          }
+          const want = c.mode === "home" && dm < gq.fs * 2.4 && msp < 260 && sleep < 0.3 ? 1 : 0; c.cur = (c.cur || 0) + (want - (c.cur || 0)) * 0.06; // 궁금함
+          c.bp = (c.bp || j * 1.7) + dt * ((Math.PI * 2) / (1.25 + j * 0.17)) * (1 - 0.45 * sleep); // 숨: 잠들면 느리고 깊게
+          const br = Math.sin(c.bp), amp = (j === WORD ? 0.007 : 0.013) * (1 + sleep * 1.3);
+          c.sy *= 1 + amp * br + 0.035 * c.cur - 0.035 * sleep; c.sx *= 1 - amp * 0.5 * br - 0.012 * c.cur;
+        }
         // 쳐다보기: 점이 날고 있으면 점 쪽으로, 아니면 쳐다보기 중일 때 커서 쪽으로 (바닥을 축으로 기울어요)
         const g = geo[j]; let want = 0;
         if (g && j !== DOT && dotAir && dotG) want = Math.max(-7, Math.min(7, ((dotG.x0 + dotC.x - g.x0) / g.fs) * 5));
         else if (g && t < c.lookT && mx > -1e3) want = Math.max(-9, Math.min(9, ((mx - g.x0) / g.fs) * 6));
         if (HJ >= 0 && j !== HJ && g && geo[HJ]) want = Math.max(-8, Math.min(8, ((geo[HJ].x0 + CH[HJ].x - g.x0) / g.fs) * 5));
         if (c.mode !== "home") want = Math.max(-16, Math.min(16, ((c.vx || 0) / 340) * 9 + ((c.ax || 0) / 950) * 6 + Math.sin(c.gp * 2) * 1.5 * Math.min(1, Math.abs(c.vx || 0) / 300) - (c.crouch || 0) * (c.tdir || 0) * 5));
-        if (c.shake && t - c.shake < 700) want += Math.sin((t - c.shake) / 28) * 1.6 * (1 - (t - c.shake) / 700);
+        if (c.shake && t - c.shake > 0 && t - c.shake < 700) want += Math.sin((t - c.shake) / 28) * (c.huff && t - c.huff < 1500 ? 3.2 : 1.6) * (1 - (t - c.shake) / 700);
+        if (g && (c.cur || 0) > 0.02 && mx > -1e3) want += Math.max(-11, Math.min(11, ((mx - g.x0 - c.x) / g.fs) * 8)) * c.cur; // 궁금하면 커서 쪽으로 몸을 내밀어요
+        if (c.trem && t - c.trem > 0 && t - c.trem < 900) want += Math.sin((t - c.trem) / 22) * 2.2 * (1 - (t - c.trem) / 900); // 놀라서 부들부들
+        if (c.mode === "home") want += slp * ((j % 2 ? 4 : -3.5) + Math.sin(t / 1700 + j) * 1.5); // 졸면 고개를 꾸벅
+        if (c.dizzy > t) want = Math.sin(t / 150 + j) * 8 * Math.min(1, (c.dizzy - t) / 1200); // 어지러워 비틀비틀
+        if (HJ >= 0 && j !== HJ) want += Math.sin(t / 26 + j * 2) * 0.9; // 친구가 잡혀 있으면 불안해서 떨어요
         if (j === WORD) want *= 0.4; // STUDIO는 넓어서 조금만 기울어요
         c.rot += (want - c.rot) * (c.mode !== "home" ? 0.18 : 0.08);
         c.imp *= 0.88; // 점이 앉으면 살짝 눌렸다 펴져요
@@ -1145,6 +1170,7 @@
       return rest;
     };
     const g0 = (j) => geo[j] || { fs: 100 };
+    let slp = 0;
 
     let prev = 0;
     const tick = (t) => {
