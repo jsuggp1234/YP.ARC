@@ -3395,7 +3395,7 @@
     const stage = q.kind === "lead" ? lead() : q.kind === "wipe"
       ? `<img class="seq-base" src="${esc(q.src)}" alt="" decoding="async"><img class="seq-top" src="${esc(q.src)}" alt="${esc(q.steps[0].t)}" decoding="async">`
       : q.steps.map((f, i) => `<img src="${esc(f.src)}" alt="${esc(f.t)}" decoding="async"${i ? "" : ' class="on"'}${f.x ? ` style="translate:${esc(f.x)} 0"` : ""}>`).join("");
-    return `<div class="seq seq-${q.kind}${q.lite ? " seq-lite" : ""}${q.fade ? " seq-fade" : ""}${q.below ? " seq-below" : ""}" data-seq style="--n:${q.n || N};--k:${q.k || 1}${q.cols ? `;--c:${q.cols}` : ""}${q.len ? `;--len:${q.len}` : ""}">
+    return `<div class="seq seq-${q.kind}${q.lite ? " seq-lite" : ""}${q.fade ? " seq-fade" : ""}${q.below ? " seq-below" : ""}${q.drop ? " seq-drop" : ""}" data-seq style="--n:${q.n || N};--k:${q.k || 1}${q.cols ? `;--c:${q.cols}` : ""}${q.len ? `;--len:${q.len}` : ""}">
       <div class="seq-pin">
         <div class="seq-stage media" style="aspect-ratio:${q.r};--r:${q.r}">${stage}${q.tag ? `<p class="ssn-tag seq-tag"><b>${esc(q.steps[0].t)}</b><span>${esc(q.steps[0].s || "")}</span></p>` : ""}</div>
         <div class="seq-side">

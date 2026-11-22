@@ -2261,3 +2261,8 @@ html.cg-open { overflow: hidden; }
 
 /* 핀 #110: 카드 제목 옆 짧은 설명 (회색, 작은 글씨) */
 .cs-lab .cs-sub { font-size: var(--t-xs); color: var(--mid); text-transform: none; letter-spacing: 0; margin-left: 6px; }
+
+/* 핀 #109: drop — 새 층이 위에서 살짝 떨어져 '탁' 맞아요 */
+.seq-drop .seq-stage img.on { animation: seq-drop .62s cubic-bezier(.2, .9, .25, 1.15) both; }
+@keyframes seq-drop { 0% { opacity: 0; transform: translateY(-7%) scale(1.03); } 70% { opacity: 1; } 100% { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .seq-drop .seq-stage img.on { animation: none; } }

@@ -2128,6 +2128,7 @@ const SITE = {
           }
         ]
       },
+      { heading: "Plans", text: "Four levels on one frame, from the ground up — scroll and each floor drops onto the one below.", big: true, images: [], seq: {"kind":"frames","r":1.871,"fade":true,"drop":true,"tag":true,"below":true,"steps":[{"src":"assets/img/campus-renovation/plan-1.jpg","t":"Ground","s":"Engineering 2 B1F · Engineering 1 1F","d":"Both buildings meet the ground on two levels. The sunken court under Engineering 2 becomes a student shelter.","k":[["1","Student shelter"]]},{"src":"assets/img/campus-renovation/plan-2.jpg","t":"+1","s":"Engineering 2 1F · Engineering 1 2F","d":"The corridors open into an open library that runs between the two buildings around the gardens.","k":[["1","Open library"]]},{"src":"assets/img/campus-renovation/plan-3.jpg","t":"+2","s":"Engineering 2 3F · Engineering 1 4F","d":"The bridge crosses the central park and ties the two corridor rings into one loop.","k":[["1","Bridge"]]},{"src":"assets/img/campus-renovation/plan-4.jpg","t":"Roof","s":"Engineering 2 5F · Engineering 1 6F","d":"On top, the bridge widens into a media terrace beside a community lounge.","k":[["1","Media terrace"],["2","Community lounge"]]}]} },
       {
         heading: "Structure — A Suspension Bridge",
         text: "A suspension bridge reaches a long span in one piece by letting each part do one job. Here the buildings act as the main towers, the slab takes the walkers, cables carry the slab, and a truss replaces the hanging cable — spreading the forces between deck, towers and foundation.",
@@ -2191,26 +2192,6 @@ const SITE = {
       }
     ],
     drawings: [
-      {
-        src: "assets/img/campus-renovation/plan-1.jpg",
-        caption: "Plan 1",
-        r: 1.871
-      },
-      {
-        src: "assets/img/campus-renovation/plan-2.jpg",
-        caption: "Plan 2",
-        r: 1.871
-      },
-      {
-        src: "assets/img/campus-renovation/plan-3.jpg",
-        caption: "Plan 3",
-        r: 1.871
-      },
-      {
-        src: "assets/img/campus-renovation/plan-4.jpg",
-        caption: "Plan 4",
-        r: 1.871
-      },
       {
         src: "assets/img/campus-renovation/detail-plan.jpg",
         caption: "Detail plan — 3rd and 4th floor (Engineering 1), 1/20",
