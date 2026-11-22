@@ -1646,12 +1646,13 @@ const SITE = {
         seq: {
           below: true,
           kind: "frames",
-          r: 1.274,
+          r: 1.38, // 핀 #101: 원본 .ai에서 글자 없이 300ppi로 다시, 조금 작게(k 1.15 → 0.92)
           lite: true,
           fade: true,
-          k: 1.15,
+          k: 0.92,
           steps: [
             {
+              tags: [[13.2, 80.5, "2.5 m", "c", ""]],
               src: "assets/img/smart-pixel/rule-0.jpg",
               t: "00 Default",
               s: "CPTED state · nobody gathered",

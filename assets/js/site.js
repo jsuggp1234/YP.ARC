@@ -3397,7 +3397,7 @@
       : q.steps.map((f, i) => `<img src="${esc(f.src)}" alt="${esc(f.t)}" decoding="async"${i ? "" : ' class="on"'}${f.x ? ` style="translate:${esc(f.x)} 0"` : ""}>`).join("");
     return `<div class="seq seq-${q.kind}${q.lite ? " seq-lite" : ""}${q.fade ? " seq-fade" : ""}${q.below ? " seq-below" : ""}${q.drop ? " seq-drop" : ""}" data-seq style="--n:${q.n || N};--k:${q.k || 1}${q.cols ? `;--c:${q.cols}` : ""}${q.len ? `;--len:${q.len}` : ""}">
       <div class="seq-pin">
-        <div class="seq-stage media" style="aspect-ratio:${q.r};--r:${q.r}">${stage}${q.tag ? `<p class="ssn-tag seq-tag"><b>${esc(q.steps[0].t)}</b><span>${esc(q.steps[0].s || "")}</span></p>` : ""}</div>
+        <div class="seq-stage media" style="aspect-ratio:${q.r};--r:${q.r}">${stage}${q.kind === "frames" ? q.steps.map((f, i) => (f.tags || []).map(([x, y, t, al, k]) => `<span class="ftag seq-ft${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}${i ? "" : " on"}" data-i="${i}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("")).join("") : ""}${q.tag ? `<p class="ssn-tag seq-tag"><b>${esc(q.steps[0].t)}</b><span>${esc(q.steps[0].s || "")}</span></p>` : ""}</div>
         <div class="seq-side">
           <p class="seq-ctr num"><b>01</b> / ${pad(N)}</p>
           <ol>${q.steps.map((f, i) => `<li${i ? "" : ' class="on"'}><span class="num mid">${pad(i + 1)}</span><div><b>${esc(f.t)}</b> <span class="mid">${esc(f.s || "")}</span>${f.d ? `<p>${esc(f.d)}</p>` : ""}${f.j ? `<figure class="seq-jd"><img src="${esc(f.j.src)}" alt="${esc(f.j.t)}" decoding="async" loading="lazy"><figcaption><b>${esc(f.j.t)}</b>${f.j.s ? ` <span class="mid">${esc(f.j.s)}</span>` : ""}</figcaption></figure>` : ""}${f.k ? `<dl>${f.k.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd class="num">${esc(b)}</dd></div>`).join("")}</dl>` : ""}</div></li>`).join("")}</ol>
@@ -3639,6 +3639,7 @@
         if (i === cur) return; const prev = cur; cur = i;
         lis.forEach((li, j) => li.classList.toggle("on", j === i));
         // 이전 단계는 아래에 잠시 남고, 새 단계가 바닥에서부터 자라 올라와요
+        $$(".seq-ft", el).forEach((t) => t.classList.toggle("on", +t.dataset.i === i));
         imgs.forEach((im, j) => { im.classList.remove("was", "gone"); if (j === prev) im.classList.add("was"); im.classList.toggle("on", j === i); });
         if (imgs[prev]) { const w = imgs[prev]; requestAnimationFrame(() => w.classList.add("gone")); }
         if (top) top.style.clipPath = `inset(0 0 ${100 - q.steps[i].y}% 0)`;

@@ -2322,3 +2322,7 @@ html.cg-open { overflow: hidden; }
 .media .ftag.nl { white-space: pre; line-height: 1.25; }
 .media .ftag.w1::first-line { font-weight: 600; }
 .media .ftag.i { color: #fff; }
+
+/* 핀 #101: 단계 그림 위 단계별 글자 */
+.media .ftag.seq-ft { opacity: 0; transition: opacity .4s; }
+.media .ftag.seq-ft.on { opacity: 1; }
