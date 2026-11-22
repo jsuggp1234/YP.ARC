@@ -1732,15 +1732,14 @@ const SITE = {
         ]
       },
       {
-        heading: "A Night in Daerim, 18:40 to 23:00",
+        heading: "A Night in Daerim, 18:40 to 23:00", big: true,
         text: "One walk home on a June weekday, through the pieces of the frame. Each scene is the same 12 × 12 m plot, the same angle, the same scale.",
         images: [],
         seq: {
           kind: "frames",
-          r: 1.176,
+          r: 1.119,
           lite: true,
           fade: true,
-          k: 0.8,
           steps: [
             {
               src: "assets/img/smart-pixel/night-1.jpg",
