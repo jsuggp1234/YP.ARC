@@ -2078,3 +2078,33 @@ html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
 .sl-g { font-size: clamp(96px, 11vw, 200px); }
 @media (max-width: 760px) { .sl-tr { gap: 44px; } .sl-g { font-size: 30vw; } }
 .sl-tr .st-gl[data-g="@"] { margin-right: -0.18em; } /* @를 0.8배로 줄인 만큼 간격 맞춤 */
+
+/* 첫 화면 "YP.STUDIO" (2026-11-22): 한 단어처럼 붙여 쓰고, 한 벌 끝(STUDIO) 뒤에 넓은 간격. 이름표는 올린 글자에만 */
+.sl-tr { gap: 0.02em; font-size: clamp(96px, 11vw, 200px); }
+.sl-tr .sl-g { font-size: 1em; }
+.sl-tr .sl-a { gap: 0; }
+.sl-tr .sl-a[href="works.html"] { margin-right: 1.1em; }
+.sl-tr .sl-t { position: absolute; left: 0; bottom: calc(100% + 10px); white-space: nowrap; font-size: var(--t-s); opacity: 0; transition: opacity 0.3s ease; }
+.sl-tr .sl-a:hover .sl-t, .sl-tr .sl-a:focus-visible .sl-t { opacity: 1; }
+@media (max-width: 760px) { .sl-tr { font-size: 26vw; gap: 0.02em; } }
+
+/* studio 띠: 대표사진 사이 간격 조금 더 (2026-11-22 요청) */
+.cs:not(.ar) .cs-track, .cs:not(.ar) .cs-set { gap: 28px; }
+.cs-gd-in { column-gap: 28px; }
+@media (max-width: 760px) { .cs:not(.ar) .cs-track, .cs:not(.ar) .cs-set { gap: 14px; } .cs-gd-in { column-gap: 14px; } }
+
+/* 작품 머리 대표사진 (2026-11-22): 원래 비율 그대로, 잘림 없이
+   cx-t 세로·정사각 사진: 오른쪽 절반, 화면 높이를 넘지 않게 / cx-w 가로 사진: 맨 위 전체 폭, 제목·설명은 그 아래 */
+.cx-hd .cx-cv .media { height: auto; aspect-ratio: var(--r); background: none; }
+.cx-hd .cx-cv img, .cx-hd .cx-cv svg { object-fit: contain; }
+.cx-t .cx-cv .media { width: min(100%, calc((100svh - var(--hdr) - 12px - var(--g4-e)) * var(--r))); margin-left: auto; }
+.cx-w .cx-cv { grid-column: 1 / -1; grid-row: 1; padding-top: calc(var(--hdr) + 12px); }
+.cx-w .cx-cv .media { width: min(100%, calc((100svh - var(--hdr) - 12px - var(--g4-e)) * var(--r))); margin-left: auto; }
+.cx-w .cx-l { grid-row: 2; padding-top: clamp(48px, 9vh, 96px); align-self: start; }
+.cx-w .cx-tt { position: static; }
+.cx-w .cx-lead { grid-row: 2; padding-top: clamp(48px, 9vh, 96px); }
+@media (max-width: 760px) {
+  .cx-hd .cx-cv .media, .cx-t .cx-cv .media, .cx-w .cx-cv .media { width: 100%; aspect-ratio: var(--r); height: auto; }
+  .cx-w .cx-cv { grid-row: auto; padding-top: 28px; }
+  .cx-w .cx-l, .cx-w .cx-lead { grid-row: auto; }
+}

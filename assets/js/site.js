@@ -102,7 +102,7 @@
         <span class="hud-r"><span class="hud-s num">${sheet}</span><span class="hud-n">${esc(sheetName)}</span><span class="hud-c num" hidden><span class="odo"><span class="odo-col"></span></span><b></b><span class="hud-t"></span></span></span>
       </div>
       <div class="mn" id="menu" hidden role="dialog" aria-modal="true" aria-label="Menu">
-        ${(SITE.pages || []).map((pg, i) => `<a class="mn-card${i === MN_CUR ? " mn-cur" : ""}" href="${esc(pg.href)}" data-i="${i}" aria-label="${esc(pg.title)}"${i === MN_CUR ? ' aria-current="page"' : ""}><div class="mn-pg">${miniHtml(pg)}</div></a>`).join("")}
+        ${(SITE.pages || []).map((pg, i) => `<a class="mn-card${i === MN_CUR ? " mn-cur" : ""}" href="${esc(pg.href)}"${pg.contact ? " data-contact" : ""} data-i="${i}" aria-label="${esc(pg.title)}"${i === MN_CUR ? ' aria-current="page"' : ""}><div class="mn-pg">${miniHtml(pg)}</div></a>`).join("")}
       </div>
       <div class="veil wrap" aria-hidden="true"><span class="mono vl"></span><span class="bar"></span></div>`);
 
@@ -179,7 +179,7 @@
     // 캡처 단계에서 먼저 잡아서, 페이지 전환·스크롤 이동보다 앞서 패널을 열어요
     D.addEventListener("click", (e) => {
       const a = e.target.closest && e.target.closest("[data-contact]");
-      if (a && a.closest(".st-mn") && !REDUCED) return; // 첫 화면 contact 카드는 @ → contact 철자 모션이 끝난 뒤 열어요
+      if (a && a.closest(".st-mn, .sl, #menu") && !REDUCED) return; // 첫 화면 contact 글자·메뉴 카드는 각자 처리 — @ → contact 철자 모션이 끝난 뒤 열어요
       if (a) { e.preventDefault(); open(); return; }
       if (e.target.closest && e.target.closest("[data-ct-close]")) { e.preventDefault(); close(); return; }
       const tab = e.target.closest && e.target.closest(".ct-tabs button");
@@ -428,7 +428,7 @@
   // 카드 하나 = 그 페이지 첫 화면의 축소판(화면 전체 크기로 그린 뒤 75%로 줄이고 왼쪽 일부만 보여요).
   // 열 때: 지금 페이지 카드가 화면 전체 크기에서 카드 크기로 줄어들고, 나머지 카드가 옆에서 들어와요.
   // 카드를 누르면 그 카드가 다시 화면 전체로 커진 다음 그 페이지로 이동해요.
-  const MN_CUR = PAGE === "works" ? 0 : PAGE === "archive" ? 1 : PAGE === "about" ? 2 : -1;
+  const MN_CUR = (SITE.pages || []).findIndex((pg) => pg.key === PAGE);
   const EASE_IO = "cubic-bezier(0.76, 0, 0.24, 1)";
   const mImg = (src) => (typeof src === "string" && src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async">` : "");
   function miniHtml(pg) {
@@ -446,8 +446,8 @@
     }
     // 첫 화면의 yeop 카드는 philosophy처럼 글자 모듈 Y (메뉴창의 yeop 카드는 glyph가 없어 사진 그대로)
     if (pg.key === "about" && pg.glyph) return top + `<p class="mn-note mn-ph">${esc(pg.note || "")}</p><canvas class="mn-art" data-g="${esc(pg.glyph)}" aria-hidden="true"></canvas>`;
-    if (pg.key === "philosophy") return top +`<p class="mn-note mn-ph">${esc(SITE.manifesto.en)}</p><canvas class="mn-art" data-g="${esc(pg.glyph || "P")}" aria-hidden="true"></canvas>`;
-    if (pg.key === "contact") { const CT = SITE.contact || {}; return top + `<p class="mn-note mn-ph">${esc(SITE.email || CT.email || "")}<span>Instagram · Portfolio PDF</span></p><canvas class="mn-art" data-g="${esc(pg.glyph || "@")}" aria-hidden="true"></canvas>`; }
+    if (pg.key === "philosophy") return top + `<p class="mn-note mn-ph">${esc(SITE.manifesto.en)}</p>` + (pg.glyph ? `<canvas class="mn-art" data-g="${esc(pg.glyph)}" aria-hidden="true"></canvas>` : "");
+    if (pg.key === "contact") { const CT = SITE.contact || {}; return top + `<p class="mn-note mn-ph">${esc(SITE.email || CT.email || "")}<span>Instagram · Portfolio PDF</span></p>` + (pg.glyph ? `<canvas class="mn-art" data-g="${esc(pg.glyph)}" aria-hidden="true"></canvas>` : ""); }
     if (pg.key === "philosophy" || pg.key === "contact") return top;
     return top + `<div class="mn-pt">${mImg(SITE.portrait)}</div>`;
   }
@@ -528,6 +528,7 @@
       if (mnBusy || mnMoved) return;
       const i = +c.dataset.i;
       if (i === MN_CUR) return closeMenu();
+      if (c.hasAttribute("data-contact")) { closeMenu(true); setTimeout(() => { const b = $(".hdr [data-contact]"); if (b) b.click(); }, 0); return; }
       mnBusy = true;
       c.style.zIndex = 2;
       if (c.getAttribute("href") === "works.html") ss.set("yp-hi", "1"); // 메뉴로 홈에 가면 로딩 인트로는 건너뛰어요
@@ -908,7 +909,7 @@
     const measure = () => {
       setW = as[ST.length].offsetLeft - as[0].offsetLeft || 1;
       geo = as.map((a) => { const g = $(".st-gl", a), fs = parseFloat(getComputedStyle(g).fontSize), rc = g.getBoundingClientRect();
-        return { a, g, fs, x0: a.offsetLeft + g.offsetLeft + g.offsetWidth / 2, sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; });
+        return { a, g, fs, hw: g.offsetWidth / 2, x0: a.offsetLeft + g.offsetLeft + g.offsetWidth / 2, sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; });
     };
     measure(); addEventListener("resize", measure);
     addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; last = performance.now(); }, { passive: true });
@@ -936,7 +937,7 @@
         tr.style.transform = `translate3d(${off.toFixed(2)}px, -50%, 0)`;
         const idle = t - last > 2500;
         geo.forEach((g, j) => {
-          const cx = g.x0 + off, A = g.fs * 0.16, sg = g.fs * 0.14, dxm = mx - cx, near = Math.exp(-Math.abs(dxm) / (g.fs * 0.9)), dir = dxm > 0 ? -1 : 1;
+          const cx = g.x0 + off, A = g.fs * 0.16, sg = g.fs * 0.14, dxm = mx - cx, near = Math.exp(-Math.max(0, Math.abs(dxm) - g.hw + g.fs * 0.3) / (g.fs * 0.9)), dir = dxm > 0 ? -1 : 1;
           if (cx < -g.fs * 2 || cx > innerWidth + g.fs * 2) return; // 화면 밖은 건너뛰어요
           g.sl.forEach((o, k) => {
             const dy = o.y - my;
@@ -1173,12 +1174,12 @@
   // 카드 글자 → 단어: 가운데 글자 뒤로 한 자씩 써지며 단어 전체가 늘 가운데에 오도록 앞 글자가 왼쪽으로 밀려요. 다 쓰면 층이 들려 사라져요
   function stSpell(c, pg) {
     const g0 = $(".st-gl", c); if (!g0 || !pg.glyph) return Promise.resolve();
-    const t = pg.title || "", word = pg.glyph === "@" ? "@" + t : pg.glyph + t.slice(1);
+    const t = pg.title || "", word = pg.word || (pg.glyph === "@" ? "@" + t : pg.glyph + t.slice(1));
     const b = g0.getBoundingClientRect(), fsz = parseFloat(getComputedStyle(g0).fontSize), vw = innerWidth;
     const e = parseFloat(getComputedStyle(HTML).getPropertyValue("--g4-e")) || 16;
     const W = D.createElement("div"); W.className = "st-wd"; W.setAttribute("aria-hidden", "true");
     W.style.cssText = `top:${b.top}px;height:${b.height}px;font-size:${fsz}px`;
-    const Ls = [...word].map((ch) => { const L = stGlyph(ch); L.classList.add("st-wl"); W.appendChild(L); return L; });
+    const Ls = (word.startsWith(pg.glyph) ? [pg.glyph, ...word.slice(pg.glyph.length)] : [...word]).map((ch) => { const L = stGlyph(ch); L.classList.add("st-wl"); W.appendChild(L); return L; });
     BODY.appendChild(W);
     const ws = Ls.map((L) => L.offsetWidth), at = (i) => { // i번째 글자까지 보일 때 단어 자리: 가운데 정렬, 넘치면 줄여요
       const w = ws.slice(0, i + 1).reduce((a, x) => a + x, 0), k = Math.min(1, (vw - 2 * e) / w);
@@ -3508,7 +3509,7 @@
       const title = words(p.title);
       $("#main").innerHTML = `
         <article class="pg cx">
-          <header class="cx-hd g4">
+          <header class="cx-hd g4 ${(p.coverR || 0.8) >= 1.2 ? "cx-w" : "cx-t"}" style="--r:${p.coverR || 0.8}">
             <div class="cx-l">
               <div class="cx-tt">
                 <h1 class="cx-h">${esc(p.title)}</h1>
@@ -3518,7 +3519,7 @@
                 </div>
               </div>
             </div>
-            <figure class="cx-cv"><div class="media" data-par>${mpar(cover(p, 1600, 2100))}</div></figure>
+            <figure class="cx-cv"><div class="media">${cover(p, 2400, Math.round(2400 / (p.coverR || 0.8)))}</div></figure>
             <div class="cx-lead">
               <p class="cx-big">${esc(p.summary)}</p>
               <dl class="pj-facts cx-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>

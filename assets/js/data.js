@@ -57,13 +57,14 @@ const SITE = {
   start: [
     { key: "about", title: "yeop", glyph: "Y", href: "about.html", note: "Profile, process and CV" },
     { key: "philosophy", title: "philosophy", glyph: "P", href: "philosophy.html", note: "Answer before image — air and light, structure and joints." },
-    { key: "works", title: "studio", glyph: "S", href: "works.html", note: "Selected works, 2022—2027" },
-    { key: "contact", title: "contact", glyph: "@", href: "#contact", contact: true, note: "Email · Instagram · Portfolio PDF" },
+    { key: "contact", title: "contact", glyph: ".", word: ".contact", href: "#contact", contact: true, note: "Email · Instagram · Portfolio PDF" },
+    { key: "works", title: "studio", glyph: "STUDIO", word: "STUDIO", href: "works.html", note: "Selected works, 2022—2027" },
   ],
   pages: [
-    { key: "works", title: "studio", href: "works.html" },
-    { key: "archive", title: "archive", href: "archive.html" },
     { key: "about", title: "yeop", href: "about.html" },
+    { key: "philosophy", title: "philosophy", href: "philosophy.html" },
+    { key: "works", title: "studio", href: "works.html" },
+    { key: "contact", title: "contact", href: "#contact", contact: true },
   ],
   // About 페이지 (v2 8–10단계). draft: true 인 글은 제가 쓴 초안이라 화면에 "Draft"가 붙어요 — 확인 후 draft를 지우면 표시가 사라져요
   about: {
@@ -213,6 +214,7 @@ const SITE = {
       [3.38, 2.175, 0.22, 0.22, 0.18, 0.2]
     ],
     cover: "assets/img/re-tide/cover.jpg",
+    coverR: 0.859, // 대표사진 가로/세로 (머리 배치용)
     thumb: "assets/img/re-tide/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverCaption: "Twelve mounds, one tissue — pavilion and lookout tower in the rain", // 대표 이미지 아래 캡션
     summary:
@@ -765,6 +767,7 @@ const SITE = {
       [1.05, 1.05, 0.4, 0.4, 0.2, 3.93]
     ],
     cover: "assets/img/timteam-work/cover-tower.jpg", // 핀 #41
+    coverR: 0.636, // 대표사진 가로/세로 (머리 배치용)
     thumb: "assets/img/timteam-work/cover.jpg",
     thumb: "assets/img/timteam-work/card-frame.jpg", // 카드·목록에 쓰는 이미지 (상세 페이지 맨 위는 cover)
     coverCaption: "Glass floors over the timber arcade",
@@ -1117,6 +1120,7 @@ const SITE = {
       [2.05, 1, 0.15, 0.25, 0.035, 1.2]
     ],
     cover: "assets/img/modular-o-housing/cover.jpg",
+    coverR: 1.778, // 대표사진 가로/세로 (머리 배치용)
     thumb: "assets/img/modular-o-housing/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverCaption: "The courtyard under the bridges",
     summary:
@@ -1525,6 +1529,7 @@ const SITE = {
     team: "",
     tools: "",
     cover: "assets/img/la-junita/aerial.jpg",
+    coverR: 1.577, // 대표사진 가로/세로 (머리 배치용)
     coverCaption: "Aerial view — the masses stepping down toward the river",
     summary:
       "A home is more than a shelter; it is where life unfolds and memories are made. Designed for a family of four while welcoming guests with warmth and privacy, the house steps down a slope toward the river — open to natural light, with seamless passages between indoors and outdoors.",
@@ -1579,6 +1584,7 @@ const SITE = {
       [0.3, 1.33, 0.54, 0.09, 0.03, 0.66]
     ],
     cover: "assets/img/smart-pixel/cover.jpg",
+    coverR: 1.683, // 대표사진 가로/세로 (머리 배치용)
     coverCaption: "Eleven gates, seven lit lanes, one corridor, three rooms — one walk home from Daerim station",
     summary: "Daerim 2-dong has deep lanes that open straight into the dark, a market street edged by patchwork awnings, and corners that are left over. SMART PIXEL does not add lamps to them. It adds three of the oldest pieces of architecture, rebuilt from one lit column on a 2.5 m grid: a gate you pass through, a colonnade you walk along, a pavilion you stay in. Light is switched on only by the people who are there, and every piece bolts on and lifts out again.",
     sections: [
