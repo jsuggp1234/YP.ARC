@@ -92,7 +92,7 @@
         <div class="hdr-m"><div class="md-sw" role="group" aria-label="화면 밝기"><button type="button" data-m="light" aria-pressed="true">Light</button><button type="button" data-m="dark" aria-pressed="false">Dark</button></div><div class="dial" role="slider" tabindex="0" aria-label="Time travel — 점을 돌리면 시각이 바뀌어요. 누르면 라이트/다크 전환" aria-valuemin="-720" aria-valuemax="720" aria-valuenow="0"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="25.5"/></svg><span class="dial-dot"></span></div></div>
         <nav class="hdr-n" aria-label="Main">
           <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">${roll("Menu")}</button>
-          <a href="#contact" data-contact aria-haspopup="dialog">${roll("Contact")}</a>
+          <a href="#contact" data-contact aria-haspopup="dialog" hidden tabindex="-1">${roll("Contact")}</a>
         </nav>
         <div class="hdr-t"><span class="mid tt-l"><span class="tt-a">Local time</span><button type="button" class="tt-x" aria-label="지금 시각으로 돌아가기" hidden>Time travel <span aria-hidden="true">×</span></button></span><span class="clock num">Seoul --:--</span></div>
         <span class="hdr-line" aria-hidden="true"><i></i></span>
