@@ -2316,3 +2316,9 @@ html.cg-open { overflow: hidden; }
   .pj-sec .sim > .sim-sec:nth-of-type(1) { width: min(calc(100% - (100% - var(--pw)) / 2), calc(var(--pw) / 0.934)) !important; margin: 10px 0 0 calc((100% - var(--pw)) / 2); justify-self: start; }
   .pj-sec .sim > .sim-ui, .pj-sec .sim > .sim-d { width: var(--pw); justify-self: center; }
 }
+
+/* 핀 #100: 그림 위 글자 중 원본에서 굵던 것 (크기는 --t-xs 그대로) */
+.media .ftag.w { font-weight: 600; }
+.media .ftag.nl { white-space: pre; line-height: 1.25; }
+.media .ftag.w1::first-line { font-weight: 600; }
+.media .ftag.i { color: #fff; }
