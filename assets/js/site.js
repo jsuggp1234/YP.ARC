@@ -440,7 +440,9 @@
       const A = SITE.archive || {};
       return top + `<p class="mn-note">${(A.lines || []).map(esc).join("<br>")}<span>${esc(A.years || "")}</span></p><div class="mn-row">${(SITE.reel || []).slice(0, 6).map(([, src, ra]) => `<div class="mn-ar" style="aspect-ratio:${ra || 1}">${mImg(src)}</div>`).join("")}</div>`;
     }
-    if (pg.key === "philosophy") return top + `<p class="mn-note mn-ph">${esc(SITE.manifesto.en)}</p><canvas class="mn-art" data-g="${esc(pg.glyph || "P")}" aria-hidden="true"></canvas>`;
+    // 첫 화면의 yeop 카드는 philosophy처럼 글자 모듈 Y (메뉴창의 yeop 카드는 glyph가 없어 사진 그대로)
+    if (pg.key === "about" && pg.glyph) return top + `<p class="mn-note mn-ph">${esc(pg.note || "")}</p><canvas class="mn-art" data-g="${esc(pg.glyph)}" aria-hidden="true"></canvas>`;
+    if (pg.key === "philosophy") return top +`<p class="mn-note mn-ph">${esc(SITE.manifesto.en)}</p><canvas class="mn-art" data-g="${esc(pg.glyph || "P")}" aria-hidden="true"></canvas>`;
     if (pg.key === "contact") { const CT = SITE.contact || {}; return top + `<p class="mn-note mn-ph">${esc(SITE.email || CT.email || "")}<span>Instagram · Portfolio PDF</span></p><canvas class="mn-art" data-g="${esc(pg.glyph || "@")}" aria-hidden="true"></canvas>`; }
     if (pg.key === "philosophy" || pg.key === "contact") return top;
     return top + `<div class="mn-pt">${mImg(SITE.portrait)}</div>`;
