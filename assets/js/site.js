@@ -3790,7 +3790,7 @@
                   const big = s.stack || s.images.length === 1 || (s.images.length === 3 && ii === 0);
                   return figure(im, `${p.slug}-${si}-${ii}`, big ? 1600 : 1200, s.images.length === 1 ? 1000 : 900);
                 }).join("")}</div>` : ""}${s.pan && s.pan.after ? panHtml(s.pan) : ""}
-              </section>`).join("")}
+              </section>`).map((h, si, all) => p.sections[si].pair ? `<div class="pj-pair">${h}` : si && p.sections[si - 1].pair ? `${h}</div>` : h).join("")}
             </div>
           </div>
           ${p.drawings && p.drawings.length ? `

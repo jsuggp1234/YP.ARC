@@ -2219,3 +2219,15 @@ html.cg-open { overflow: hidden; }
 .ab3 .ab-me .ab-cv > .ab-lab { margin-top: 0; }
 .ab3 .ab-me .ab-col { max-width: none; }
 .ab3 .ab-me .ab-col > .ab-p { max-width: 34em; }
+/* 핀 #78 RE:TIDE 02: 글을 다이어그램 시작선(가운데 58% 칸의 왼쪽)에 맞춰요 */
+@media (min-width: 761px) {
+  .cx-body .pj-sec:has(> .tw-moon) > .hd, .cx-body .pj-sec:has(> .tw-moon) > .txt { margin-left: 21%; }
+  /* 핀 #79 RE:TIDE 03: 다이어그램을 글 시작선으로 */
+  .tw.tw-springneap { margin-left: 0; margin-right: auto; }
+  /* 핀 #80: 두 섹션을 나란히(pair) — 다이어그램이 같은 수평선에서 시작하고 끝나요 */
+  .cx-body .pj-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--g4-gap, 8px); align-items: stretch; }
+  .cx-body .pj-pair > .pj-sec { --bx: 0%; --bw: 100%; display: grid; grid-template-rows: auto minmax(5.6em, auto) 1fr; align-content: start; }
+  .cx-body .pj-pair > .pj-sec > .tw { width: 100%; margin-inline: 0; align-self: center; }
+  .cx-body .pj-pair .tw-sine .tw-box { width: 100%; }
+  .cx-body .pj-pair .tw-dial .tw-box { max-width: 440px; }
+}
