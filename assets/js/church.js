@@ -745,6 +745,37 @@
     k = kick;
   };
 
-  const KIND = { mounds, louver, clock, plan, steps, plant, transect, stops, grow, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
+  // ── 마운드 배치 평면 (RE:TIDE, 핀 #113): 원본 벡터 평면 위로 밀물·썰물. 높이 지도(-h.png, 1 m = 15)는 평면의 등고선 숫자·지점 높이·마운드 꼭대기와
+  // 굵은 윤곽선(땅 경계)으로 만들어서 물가가 평면 선에 딱 맞아요. 물에 잠긴 마운드의 이름표는 옅어져요.
+  const tideplan = (el) => {
+    const src = el.dataset.bg, base = new Image(), hm = new Image();
+    let hd = null, mk = null, mg = null, lastL = -1, k = null;
+    base.onload = hm.onload = () => k && k();
+    base.src = src; hm.src = src.replace(/\.jpg$/, "-h.png");
+    const media = el.closest(".media"), tags = media ? [...media.querySelectorAll(".ftag")].map((t) => { const m = /^M\d\d\n\+([\d.]+)/.exec(t.textContent); return m && { t, top: +m[1] }; }).filter(Boolean) : [];
+    const build = () => { if (hd || !hm.complete || !hm.naturalWidth) return; const c = document.createElement("canvas"); c.width = hm.naturalWidth; c.height = hm.naturalHeight; const x = c.getContext("2d"); x.drawImage(hm, 0, 0); hd = x.getImageData(0, 0, c.width, c.height); mk = document.createElement("canvas"); mk.width = c.width; mk.height = c.height; mg = mk.getContext("2d"); };
+    const water = (lv) => {
+      if (Math.abs(lv - lastL) < 0.02) return; lastL = lv; const o = mg.createImageData(mk.width, mk.height), s = hd.data, d = o.data;
+      for (let i = 0; i < s.length; i += 4) { const dep = lv - s[i] / 15, a = Math.max(0, Math.min(1, dep / 0.25)) * (0.32 + 0.4 * Math.min(1, Math.max(0, dep) / 5)); d[i] = 110; d[i + 1] = 140; d[i + 2] = 160; d[i + 3] = a * 255; }
+      mg.putImageData(o, 0, 0);
+      tags.forEach(({ t, top }) => t.classList.toggle("sub", lv > top));
+    };
+    const { kick } = stage(el, (g, W, H, t) => {
+      build(); if (!base.complete || !base.naturalWidth || !hd) return true;
+      const r = base.naturalWidth / base.naturalHeight, w = Math.min(W, H * r), h = w / r, x0 = (W - w) / 2, y0 = (H - h) / 2;
+      const ph = (t % 18) / 18, L = reduce ? 0.6 : 0.5 - 0.5 * Math.cos(ph * Math.PI * 2), lv = 2.43 + L * (9.24 - 2.43); // 18초에 한 번 간조 +2.43 → 만조 +9.24
+      g.imageSmoothingQuality = "high"; g.drawImage(base, x0, y0, w, h);
+      water(lv); g.save(); g.globalCompositeOperation = "multiply"; g.drawImage(mk, x0, y0, w, h); g.restore();
+      const under = tags.filter((q) => lv > q.top).length;
+      g.font = font(C.xs, 600); g.fillStyle = C.mix(0.85); g.textBaseline = "bottom"; g.textAlign = "left";
+      const lab = `Sea +${lv.toFixed(2)} m`, bx = x0 + w * 0.035, by = y0 + h - 8;
+      g.fillText(lab, bx, by);
+      g.font = font(C.xs); g.fillStyle = C.mix(0.5);
+      g.fillText(lv < 4 ? "ebb — the flats are dry, every path is open" : under ? `flood — ${under} of 12 mounds under water, their programs close` : "the flats fill, the mounds stay connected", bx + g.measureText(lab).width * 1.15 + 14, by);
+    });
+    k = kick;
+  };
+
+  const KIND = { mounds, tideplan, louver, clock, plan, steps, plant, transect, stops, grow, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
   window.MVSims = { mount: (el, kind) => { if (el.dataset.on) return; el.dataset.on = 1; colors(); (KIND[kind] || (() => {}))(el); } };
 })();

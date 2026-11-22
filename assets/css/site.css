@@ -2347,3 +2347,7 @@ html.cg-open { overflow: hidden; }
 .seq-tl .tl-h { display: flex; justify-content: space-between; margin-top: 4px; color: var(--mid); font-variant-numeric: tabular-nums; }
 .seq-tl .tl-h b { font-weight: 400; }
 @media (max-width: 760px) { .seq-tl { gap: 10px; } }
+
+/* 핀 #113: 물에 잠긴 마운드 이름표 */
+.media .ftag.sub { opacity: .35; }
+.media:has(.mv-tideplan) .ftag { transition: opacity .5s; }
