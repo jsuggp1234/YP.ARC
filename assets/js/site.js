@@ -3598,6 +3598,25 @@
     });
     addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
   };
+  // 핀 #106: 전/후 비교 — 끌거나 ←→로 선을 옮기고, 처음 보일 때 한 번 저절로 쓸고 지나가요
+  const baInit = () => $$("[data-ba]").forEach((el) => {
+    let p = 50, anim = 0;
+    const set = (v) => { p = Math.max(0, Math.min(100, v)); el.style.setProperty("--p", p + "%"); el.setAttribute("aria-valuenow", Math.round(p)); };
+    const at = (e) => { const r = el.getBoundingClientRect(); set(((e.clientX - r.left) / r.width) * 100); };
+    el.addEventListener("pointerdown", (e) => { cancelAnimationFrame(anim); el.setPointerCapture(e.pointerId); at(e); el.classList.add("drag"); });
+    el.addEventListener("pointermove", (e) => { if (el.classList.contains("drag")) at(e); });
+    el.addEventListener("pointerup", () => el.classList.remove("drag"));
+    el.addEventListener("pointercancel", () => el.classList.remove("drag"));
+    el.addEventListener("keydown", (e) => { if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); cancelAnimationFrame(anim); set(p + (e.key === "ArrowLeft" ? -5 : 5)); } });
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(([en]) => {
+      if (!en.isIntersecting) return; io.disconnect();
+      const t0 = performance.now(), K = [[0, 50], [0.35, 96], [0.75, 4], [1, 50]];
+      const step = (now) => { const t = Math.min(1, (now - t0) / 3200); let k = 1; while (K[k][0] < t) k++; const [a, va] = K[k - 1], [b, vb] = K[k], u = (t - a) / (b - a), e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; set(va + (vb - va) * e); if (t < 1) anim = requestAnimationFrame(step); };
+      anim = requestAnimationFrame(step);
+    }, { threshold: 0.6 });
+    io.observe(el);
+  });
   const seqInit = (p) => {
     const qs = p.sections.filter((x) => x.seq).map((x) => x.seq);
     $$("[data-seq]").forEach((el, k) => {
@@ -3784,7 +3803,7 @@
           + pts.map((p) => `<i class="ld-dot" style="left:${(p.x * m).toFixed(2)}%;top:${p.y}%"></i><span class="ld-lb" style="left:calc(${(m * 100).toFixed(2)}% + 3.6%);top:${p.ly.toFixed(2)}%"><b class="num">${esc(p.t)}</b>${esc(p.nm)}</span>`).join("");
       };
       const figure = (im, seed, w, h) => `
-        <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}>${im.lead ? `<div class="ldw" style="--lw:${im.lead}%">` : ""}<div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.lead ? ";width:calc(100% - var(--lw))" : im.w ? `;width:${im.w}` : ""}"` : ""}>${im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.flow ? flowSvg(im.flow) : ""}${im.sun ? `<svg class="sun-ov" viewBox="0 0 2000 459" preserveAspectRatio="none" aria-hidden="true"><path class="sun-tr"/><rect class="sun-col" y="40" width="82" height="380"/><line class="sun-h"/><circle class="sun-dot" r="9"/></svg><span class="sun-lb"></span>` : ""}${im.reveal ? Array.from({ length: im.reveal }, (_, j) => `<i class="rv-c" style="--j:${j};--n:${im.reveal}" aria-hidden="true"></i>`).join("") : ""}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}${im.lead && /\bpt\b/.test(`${al} ${k}`) ? " ld-alt" : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>${im.lead ? leadHtml(im) + "</div>" : ""}
+        <figure data-reveal="wipe"${im.span ? " style=\"grid-column:1/-1\"" : ""}>${im.lead ? `<div class="ldw" style="--lw:${im.lead}%">` : ""}<div class="media${im.lite ? " lite" : ""}${im.tall ? " tall" : ""}"${im.r ? ` style="--r:${im.r};aspect-ratio:${im.r}${im.lead ? ";width:calc(100% - var(--lw))" : im.w ? `;width:${im.w}` : ""}"` : ""}>${im.ba ? `<div class="ba" data-ba tabindex="0" role="slider" aria-label="Before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" style="--p:50%"><img src="${esc(im.ba[1])}" alt="After" decoding="async" draggable="false"><div class="ba-b"><img src="${esc(im.ba[0])}" alt="Before" decoding="async" draggable="false"></div><i class="ba-h" aria-hidden="true"></i><span class="ba-t ba-tl">${esc(im.baL ? im.baL[0] : "Before")}</span><span class="ba-t ba-tr">${esc(im.baL ? im.baL[1] : "After")}</span></div>` : im.sim ? `<div class="mz"><div class="mv-sim mv-${im.sim}" data-mv="${im.sim}" data-bg="${esc(im.src || "")}" data-lenis-prevent></div></div>` : mz(art(im.src, im.kind || "axon", seed, w, h, p.mass, im.caption))}${im.flow ? flowSvg(im.flow) : ""}${im.sun ? `<svg class="sun-ov" viewBox="0 0 2000 459" preserveAspectRatio="none" aria-hidden="true"><path class="sun-tr"/><rect class="sun-col" y="40" width="82" height="380"/><line class="sun-h"/><circle class="sun-dot" r="9"/></svg><span class="sun-lb"></span>` : ""}${im.reveal ? Array.from({ length: im.reveal }, (_, j) => `<i class="rv-c" style="--j:${j};--n:${im.reveal}" aria-hidden="true"></i>`).join("") : ""}${im.tags ? im.tags.map(([x, y, t, al, k]) => `<span class="ftag${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}${im.lead && /\bpt\b/.test(`${al} ${k}`) ? " ld-alt" : ""}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") : ""}</div>${im.lead ? leadHtml(im) + "</div>" : ""}
         ${im.notes ? `<ol class="fnotes${im.ln ? " ld-m" : ""}" style="--n:${im.nc || im.notes.length}${im.w ? `;width:${im.w}` : ""}">${im.notes.map(([n, t, d]) => `<li><b><span class="mid num">${esc(n)}</span> ${esc(t)}</b>${d ? `<span class="mid">${esc(d)}</span>` : ""}</li>`).join("")}</ol>` : ""}
         <figcaption class="figcap mono"><span>${esc(capOf(im))}</span></figcaption></figure>`;
       // 렌더 장면 줄 나누기: 가로(r ≥ 1.3)는 한 줄 한 장, 이어지는 세로·정사각은 두 장씩(남는 셋은 세 장 한 줄)
@@ -3849,7 +3868,7 @@
         </article>`;
 
       simInit(p);
-      seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit(); sunInit();
+      baInit(); seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit(); sunInit();
       if (window.TideWidgets) $$("[data-tw]").forEach((w) => TideWidgets.mount(w, w.dataset.tw));
       if (window.MVSims) $$("[data-mv]").forEach((w) => MVSims.mount(w, w.dataset.mv));
       // 목차 + 현재 위치 표시

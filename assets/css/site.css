@@ -2266,3 +2266,14 @@ html.cg-open { overflow: hidden; }
 .seq-drop .seq-stage img.on { animation: seq-drop .62s cubic-bezier(.2, .9, .25, 1.15) both; }
 @keyframes seq-drop { 0% { opacity: 0; transform: translateY(-7%) scale(1.03); } 70% { opacity: 1; } 100% { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .seq-drop .seq-stage img.on { animation: none; } }
+
+/* 핀 #106: 전/후 비교 슬라이더 (그림 옵션 ba) */
+.ba { position: absolute; inset: 0; cursor: ew-resize; touch-action: pan-y; user-select: none; outline: none; }
+.ba img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.ba-b { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--p)) 0 0); }
+.ba-h { position: absolute; top: 0; bottom: 0; left: var(--p); width: 1px; background: var(--ink); transform: translateX(-.5px); }
+.ba-h::after { content: ""; position: absolute; top: 50%; left: 50%; width: 22px; height: 22px; border: 1px solid var(--ink); border-radius: 50%; background: var(--bg); transform: translate(-50%, -50%); }
+.ba:focus-visible .ba-h::after { box-shadow: 0 0 0 3px var(--line); }
+.ba-t { position: absolute; bottom: 8px; font-size: var(--t-xs); color: var(--ink); background: var(--bg); padding: 2px 6px; }
+.ba-tl { left: 8px; }
+.ba-tr { right: 8px; }
