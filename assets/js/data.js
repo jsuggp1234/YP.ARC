@@ -52,8 +52,15 @@ const SITE = {
     pdfNote: "PDF는 준비 중이에요. 메일로 요청하시면 보내 드려요.",
   },
   // Menu 카드 세 장 (v2 5단계)
+  // 첫 화면 카드 네 장 (핀 #35). glyph = 카드 안 모션 아트 글자
+  start: [
+    { title: "philosophy", glyph: "P", href: "philosophy.html", note: "Answer before image — air and light, structure and joints." },
+    { title: "works", glyph: "W", href: "works.html", note: "Selected works, 2022—2027" },
+    { title: "about", glyph: "A", href: "about.html", note: "Profile, process and CV" },
+    { title: "contact", glyph: "@", href: "#contact", contact: true, note: "Email · Instagram · Portfolio PDF" },
+  ],
   pages: [
-    { key: "works", title: "works", href: "index.html" },
+    { key: "works", title: "works", href: "works.html" },
     { key: "archive", title: "archive", href: "archive.html" },
     { key: "about", title: "about", href: "about.html" },
   ],

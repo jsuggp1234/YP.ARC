@@ -1818,3 +1818,38 @@ html.ct-lock .ct a, html.ct-lock .ct button, html.ct-lock .ct [data-ct-close], h
 @media (min-width: 761px) { .cx-body .pj-sec:has(.mv-plan) { --bx: 0%; --bw: 100%; } }
 /* 핀 #23: Four Stops · Room to Grow 시뮬레이션은 본문 전체 폭에 둘 나란히 */
 @media (min-width: 761px) { .cx-body .pj-sec:has([data-mv=stops]) { --bx: 0%; --bw: 100%; } }
+
+/* ---------- 첫 화면 (핀 #35): 메뉴 카드 네 장 ---------- */
+html.st-home, html.st-home body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+html.st-home body { background: var(--mn-bg); }
+html.st-home .ftr, html.st-home .hud { display: none; }
+.st { position: fixed; inset: 0; display: flex; align-items: center; padding: calc(var(--hdr) + 32px) 16px 40px; }
+.st-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; width: 100%; height: min(100%, calc((100vw - 56px) / 4 * 1.3224)); }
+.st-c { position: relative; display: block; overflow: hidden; background: var(--bg); color: var(--ink); text-decoration: none; transform-origin: 50% 60%; transition: transform .7s var(--ease); animation: st-in 1.1s var(--ease) both; animation-delay: calc(0.15s + var(--i) * 0.11s); }
+.st-c:hover { transform: scale(1.02); }
+.st-c:focus-visible { outline: 3px solid var(--ink); outline-offset: -3px; }
+@keyframes st-in { from { transform: translateY(60px); opacity: 0; } to { transform: none; opacity: 1; } }
+.st-top { position: absolute; left: 14px; right: 14px; top: 12px; display: flex; justify-content: space-between; font-size: var(--t-xs); letter-spacing: .06em; text-transform: uppercase; }
+.st-top b { font-weight: 600; }
+.st-t { position: absolute; left: 14px; top: 40px; margin: 0; font-size: var(--t-xxl); font-weight: 400; letter-spacing: -0.04em; line-height: 1; }
+.st-cv { position: absolute; left: 0; top: 30%; width: 100%; height: 56%; display: block; }
+.st-d { position: absolute; left: 14px; right: 14px; bottom: 12px; font-size: var(--t-xs); color: var(--mid); }
+.st-ghost { position: fixed; inset: 0; z-index: 90; background: var(--bg); pointer-events: none; }
+@media (max-width: 760px) {
+  .st { padding: calc(var(--hdr) + 20px) 0 28px; }
+  .st-row { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 72vw; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 14vw; height: min(100%, calc(72vw * 1.3224)); scrollbar-width: none; }
+  .st-row::-webkit-scrollbar { display: none; }
+  .st-c { scroll-snap-align: center; }
+}
+@media (prefers-reduced-motion: reduce) { .st-c { animation: none; transition: none; } }
+
+/* ---------- Philosophy 페이지 (핀 #35) ---------- */
+.phl { padding: 18svh var(--g4-e) 22svh; row-gap: 40px; align-items: start; }
+.phl-k { grid-column: 1; margin: 0; font-size: var(--t-xs); }
+.phl-s { grid-column: 2 / -1; margin: 0; font-size: var(--t-xl); font-weight: 400; line-height: 1.18; letter-spacing: -0.02em; max-width: 30em; }
+.phl-ko { grid-column: 2 / -1; margin: 0; font-size: var(--t-s); max-width: 40em; }
+.phl-p { grid-column: 2 / -1; list-style: none; margin: 8vh 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.phl-p li { display: grid; gap: 6px; padding-top: 10px; border-top: 1px solid var(--line); font-size: var(--t-xs); }
+.phl-p b { font-size: var(--t-m); font-weight: 500; }
+.phl-nx { grid-column: 2 / -1; display: flex; gap: 24px; margin: 6vh 0 0; font-size: var(--t-s); }
+@media (max-width: 760px) { .phl-k, .phl-s, .phl-ko, .phl-p, .phl-nx { grid-column: 1 / -1; } .phl-p { grid-template-columns: 1fr; } }

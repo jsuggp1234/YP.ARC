@@ -47,6 +47,8 @@
     if (/projects\.html$/.test(path)) return ["A-100", "Index of Works"];
     if (/about\.html$/.test(path)) return ["A-900", "Profile"];
     if (/archive\.html$/.test(path)) return ["A-200", "Archive"];
+    if (/works\.html$/.test(path)) return ["A-010", "Works"];
+    if (/philosophy\.html$/.test(path)) return ["A-001", "Philosophy"];
     if (/project\.html$/.test(path)) {
       const slug = decodeURIComponent((url.hash || "").slice(1));
       const i = Math.max(0, PROJECTS.findIndex((p) => p.slug === slug));
@@ -198,7 +200,7 @@
       }
     }, true);
     // 다른 페이지에서 ...#contact 로 들어오면 바로 열어요
-    if (location.hash === "#contact") setTimeout(open, PAGE === "home" ? 3200 : 600);
+    if (location.hash === "#contact") setTimeout(open, PAGE === "works" ? 3200 : PAGE === "home" ? 1400 : 600);
   }
 
   // ---------- 라이트/다크 ----------
@@ -416,7 +418,7 @@
   // 카드 하나 = 그 페이지 첫 화면의 축소판(화면 전체 크기로 그린 뒤 75%로 줄이고 왼쪽 일부만 보여요).
   // 열 때: 지금 페이지 카드가 화면 전체 크기에서 카드 크기로 줄어들고, 나머지 카드가 옆에서 들어와요.
   // 카드를 누르면 그 카드가 다시 화면 전체로 커진 다음 그 페이지로 이동해요.
-  const MN_CUR = PAGE === "home" ? 0 : PAGE === "archive" ? 1 : PAGE === "about" ? 2 : -1;
+  const MN_CUR = PAGE === "works" ? 0 : PAGE === "archive" ? 1 : PAGE === "about" ? 2 : -1;
   const EASE_IO = "cubic-bezier(0.76, 0, 0.24, 1)";
   const mImg = (src) => (typeof src === "string" && src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async">` : "");
   function miniHtml(pg) {
@@ -510,7 +512,7 @@
       if (i === MN_CUR) return closeMenu();
       mnBusy = true;
       c.style.zIndex = 2;
-      if (c.getAttribute("href") === "index.html") ss.set("yp-hi", "1"); // 메뉴로 홈에 가면 로딩 인트로는 건너뛰어요
+      if (c.getAttribute("href") === "works.html") ss.set("yp-hi", "1"); // 메뉴로 홈에 가면 로딩 인트로는 건너뛰어요
       const go2 = () => location.assign(c.href);
       if (REDUCED) return go2();
       c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath }, FULL], { duration: 900, easing: EASE_IO, fill: "forwards" }).finished.then(go2, go2);
@@ -712,7 +714,7 @@
   // ---------- v2 홈 (docs/redesign-plan.md 2단계): 가로로 끝없이 도는 작품 카드 띠 ----------
   // 휠·끌기·화살표 키로 옆으로 흘러요. 움직이는 동안 카드가 0.9배까지 작아지며(그래서 간격이 벌어져 보여요)
   // 멈추면 돌아와요. 카드 안 사진은 1.15배로 키워 두고 화면 위치에 따라 살짝 반대로 밀려요(사진 속 시차).
-  render.home = () => {
+  render.works = () => {
     HTML.classList.add("v2-home");
     const list = PROJECTS.filter((p) => !p.draft);
     const one = list.map((p, i) => `
@@ -777,6 +779,113 @@
         });
     };
   }
+
+
+  // ---------- 첫 화면 (핀 #35): 메뉴 카드 네 장 — philosophy · works · about · contact ----------
+  // 카드마다 글자 하나가 작은 정사각 모듈로 쪼개져 아래에서 조립돼요(모션 아트). 마우스를 대면 모듈이 비켜서며 45° 돌아요.
+  // 카드를 누르면 화면 전체로 커진 다음 그 페이지로 가고, contact는 연락 패널을 열어요.
+  render.home = () => {
+    HTML.classList.add("st-home");
+    const ST = SITE.start || [];
+    $("#main").innerHTML = `
+      <section class="st" aria-label="${esc(SITE.name)}">
+        <h1 class="sr">${esc(SITE.name)} — ${esc(SITE.owner)} Architecture Portfolio</h1>
+        <nav class="st-row" aria-label="Start">${ST.map((c, i) => `
+          <a class="st-c" href="${esc(c.href)}"${c.contact ? " data-contact" : ""} style="--i:${i}" data-g="${esc(c.glyph)}">
+            <span class="st-top"><b>${esc(SITE.name)}</b><span class="num">${pad(i + 1)}</span></span>
+            <h2 class="st-t">${esc(c.title)}</h2>
+            <canvas class="st-cv" aria-hidden="true"></canvas>
+            <span class="st-d">${esc(c.note)}</span>
+          </a>`).join("")}</nav>
+      </section>`;
+    $$(".st-c").forEach((c, i) => stArt(c, $(".st-cv", c), c.dataset.g, REDUCED ? 0 : 450 + i * 140));
+    // 카드 누르기: 화면 전체로 커진 다음 이동 (contact는 패널이 열려요)
+    $(".st-row").addEventListener("click", (e) => {
+      const c = e.target.closest(".st-c"); if (!c || c.hasAttribute("data-contact") || REDUCED) return;
+      e.preventDefault(); e.stopPropagation();
+      if (c.getAttribute("href") === "works.html") ss.set("yp-hi", "1");
+      const b = c.getBoundingClientRect(), go2 = () => location.assign(c.href);
+      const ghost = D.createElement("div"); ghost.className = "st-ghost"; BODY.appendChild(ghost);
+      ghost.animate([{ clipPath: `inset(${b.top}px ${innerWidth - b.right}px ${innerHeight - b.bottom}px ${b.left}px)` }, { clipPath: "inset(0px 0px 0px 0px)" }], { duration: 800, easing: EASE_IO, fill: "forwards" }).finished.then(go2, go2);
+    }, true);
+  };
+  function stArt(card, cv, glyph, delay) {
+    const g = cv.getContext("2d");
+    let W = 0, H = 0, C = 6, mods = [], mx = -1e4, my = -1e4, raf = 0, live = true, t0 = performance.now() + delay, ink = "#111";
+    const build = () => {
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      W = cv.clientWidth; H = cv.clientHeight; if (!W || !H) return;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      C = Math.max(4, Math.round(Math.min(W, H) / 30));
+      const o = D.createElement("canvas"); o.width = W; o.height = H; const og = o.getContext("2d"), fam = getComputedStyle(BODY).fontFamily;
+      og.font = `700 100px ${fam}`; const m = og.measureText(glyph), fs = Math.min((100 * W * 0.78) / m.width, H * 1.18);
+      og.font = `700 ${fs}px ${fam}`; og.textAlign = "center"; og.textBaseline = "alphabetic"; og.fillStyle = "#000";
+      og.fillText(glyph, W / 2, H / 2 + fs * 0.36);
+      const d = og.getImageData(0, 0, W, H).data, cols = Math.floor(W / C), rows = Math.floor(H / C), ox = (W - cols * C) / 2, oy = (H - rows * C) / 2;
+      mods = [];
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+        const x = ox + (i + 0.5) * C, y = oy + (j + 0.5) * C;
+        if (d[((y | 0) * W + (x | 0)) * 4 + 3] < 140) continue;
+        const h = Math.sin(i * 127.1 + j * 311.7) * 43758.5453;
+        mods.push({ x, y, d: (1 - j / rows) * 0.55 + (h - Math.floor(h)) * 0.35, ox: 0, oy: 0, r: 0 });
+      }
+      kick();
+    };
+    const ez = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : 1 - Math.pow(1 - x, 3));
+    const frame = (now) => {
+      raf = 0; if (!W) return;
+      const t = (now - t0) / 1000; let busy = t < 1.6;
+      g.clearRect(0, 0, W, H); g.fillStyle = ink;
+      const R = C * 7;
+      for (const m of mods) {
+        const p = REDUCED ? 1 : ez((t - m.d) / 0.9);
+        const dx = m.x - mx, dy = m.y - my, dd = Math.hypot(dx, dy) || 1, f = Math.max(0, 1 - dd / R);
+        const tx = (dx / dd) * f * C * 1.8, ty = (dy / dd) * f * C * 1.8, tr = f * Math.PI / 4;
+        m.ox += (tx - m.ox) * 0.18; m.oy += (ty - m.oy) * 0.18; m.r += (tr - m.r) * 0.18;
+        if (Math.abs(tx - m.ox) + Math.abs(ty - m.oy) + Math.abs(tr - m.r) > 0.02) busy = true;
+        if (p <= 0) continue;
+        const y = m.y + (1 - p) * H * 0.9, sz = (C - 1) * (0.55 + 0.45 * p);
+        g.globalAlpha = p;
+        if (m.r > 0.01) { g.save(); g.translate(m.x + m.ox, y + m.oy); g.rotate(m.r); g.fillRect(-sz / 2, -sz / 2, sz, sz); g.restore(); }
+        else g.fillRect(m.x + m.ox - sz / 2, y + m.oy - sz / 2, sz, sz);
+      }
+      g.globalAlpha = 1;
+      if (busy && live) kick();
+    };
+    function kick() { if (!raf) raf = requestAnimationFrame(frame); }
+    const paint = () => { ink = getComputedStyle(HTML).getPropertyValue("--ink").trim() || "#111"; kick(); };
+    card.addEventListener("pointermove", (e) => { const b = cv.getBoundingClientRect(); mx = e.clientX - b.left; my = e.clientY - b.top; kick(); });
+    card.addEventListener("pointerleave", () => { mx = my = -1e4; kick(); });
+    D.addEventListener("yp:theme", paint);
+    new ResizeObserver(build).observe(cv);
+    paint();
+  }
+
+  // ---------- Philosophy (핀 #35): YP.STUDIO 모션 아트 → 설계 철학 문장 → 세 가지 키워드 ----------
+  render.philosophy = () => {
+    const M = SITE.manifesto, PL = SITE.pillars || [];
+    $("#main").innerHTML = `
+      <section class="yi" id="intro" data-ind="YP.STUDIO" aria-label="YP.STUDIO">
+        <div class="yi-stick">
+          <canvas class="yi-cv" aria-hidden="true"></canvas>
+          <div class="yi-ui">
+            <p class="yi-tl">A-001 <span class="mid">Philosophy</span></p>
+            <p class="yi-tr mid num"><span class="yi-xy">X 000.0 · Y 000.0</span></p>
+            <p class="yi-bl mid">${esc(SITE.owner)} — Architecture Portfolio</p>
+            <button type="button" class="yi-go mid">Scroll <span aria-hidden="true">↓</span></button>
+          </div>
+        </div>
+      </section>
+      <section class="phl g4" data-ind="Philosophy">
+        <p class="phl-k mid">Philosophy</p>
+        <h1 class="phl-s">${esc(M.en)}</h1>
+        <p class="phl-ko mid">${esc(M.ko)}</p>
+        <ol class="phl-p">${PL.map((p, i) => `<li data-reveal><span class="num mid">${pad(i + 1)}</span><b>${esc(p.k)}</b><span>${esc(p.en)}</span></li>`).join("")}</ol>
+        <p class="phl-nx"><a class="lnk" href="works.html">Works →</a><a class="lnk" href="about.html">About →</a></p>
+      </section>`;
+    intro();
+    lineRise($(".phl-s"));
+  };
 
   // ---------- v2 Archive (계획 6단계): 홈과 같은 가로 무한 띠(caseStrip)를 써요. 이미지는 높이가 같고 폭은 사진 비율대로 ----------
   render.archive = () => {
@@ -2109,7 +2218,7 @@
     };
     addEventListener("scroll", pinHero, { passive: true }); addEventListener("resize", pinHero); pinHero();
     const go = $(".yi-go", sec);
-    go && go.addEventListener("click", () => { const el = $("#works"); if (lenis) lenis.scrollTo(el); else el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth" }); });
+    go && go.addEventListener("click", () => { const el = $("#works") || sec.nextElementSibling; if (lenis) lenis.scrollTo(el); else el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth" }); });
     if ("IntersectionObserver" in window) new IntersectionObserver(([e]) => { live = e.isIntersecting; kick(); }).observe(sec);
     kick();
   }
@@ -3050,7 +3159,7 @@
   (render[PAGE] || render.home)();
   chromeScroll();
   if (PAGE !== "project") { reveals(); parallax(); } else reveals($("footer"));
-  if (showLoader && PAGE !== "home") loader(() => ready.fire());
+  if (showLoader && PAGE !== "home" && PAGE !== "works") loader(() => ready.fire());
   else {
     if (fromVeil) { ss.del("yp-veil"); $(".vl", veil).textContent = fromVeil; veilOut(); }
     setTimeout(() => ready.fire(), fromVeil ? 300 : 0);
