@@ -1363,6 +1363,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .tt-l { display: inline-flex; }
 .tt-x { font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; gap: 8px; }
 .tt-x[hidden], .tt-a[hidden] { display: none; }
+.tt-a:empty { display: none; } /* 핀 #159: Local time 글자 뺌 */
 html.tt-on .hdr-t .mid { opacity: 1; }
 body { transition: background-color 0.25s linear; }
 .hdr-n { grid-column: 3; display: flex; flex-direction: column; align-items: flex-start; }

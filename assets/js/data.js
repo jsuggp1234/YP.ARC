@@ -244,7 +244,7 @@ const SITE = {
     drawings: [], // 2026-11-22 핀: Plans·Sections 섹션으로 옮겼어요
   },
   {
-    slug: "motorism", blurb: "성수동 자동차 복합 팝업센터",
+    slug: "motorism", blurb: "성수 Drive-thru 팝업스토어",
     title: "PRND",
     titleKo: "성수동 DRIVE-THRU 복합문화공간",
     subtitle: "Car complex center / Pop-up center in Seongsu",
@@ -1131,7 +1131,7 @@ const SITE = {
   },
   {
     slug: "samgakji-residential", blurb: "용산 삼각지 타운하우스",
-    title: "Samgakji Residential Project",
+    title: "Share ho'US'e",
     titleKo: "불협화음으로 짓는 주거 이야기",
     subtitle: "A housing story composed in dissonance — a village laid on the old parcels of a leftover triangle by Yongsan Station",
     type: "Housing",
@@ -1509,8 +1509,8 @@ const SITE = {
   // 라주니타 (2026-11-22 추가) — 원본: portfolio-source/라주니타. 글은 패널(.ai)의 설명문에서 옮겼어요.
   // 확인 필요: year(원본 파일 날짜 2025.03 기준 추정) · studio · 대지 위치 · 팀 — 사용자에게 받으면 채우기
   {
-    slug: "la-junita", blurb: "Flowing layers, 아르헨티나 단독주택",
-    title: "La Junita",
+    slug: "la-junita", blurb: "la junita, 아르헨티나 단독주택",
+    title: "Flowing layers",
     titleKo: "아르헨티나 단독주택",
     subtitle: "A house for a family of four on a slope above the river — masses that step down the ground, each one turned to the water",
     type: "House",
@@ -1741,7 +1741,7 @@ const SITE = {
     drawings: []
   },
   {
-    slug: "campus-renovation", blurb: "복도로 잇는 공학관 캠퍼스 재생",
+    slug: "campus-renovation", blurb: "OLED 물결로 잇는 4계절 캠퍼스재생",
     title: "Campus Renovation J′",
     titleKo: "성균관대 자연과학캠퍼스 리노베이션",
     subtitle: "Central park, media corridor, bridge connect — the engineering buildings of SKKU joined through their corridors, and the same places followed through the seasons",
@@ -2062,8 +2062,8 @@ const SITE = {
   },
   // ---- 자료 준비 중 (CV의 수상·스튜디오 기록만 있어요. 자료를 받으면 채워요) ----
   {
-    "slug": "the-tree-house", "blurb": "Blooming - the tree house",
-    "title": "The Tree House",
+    "slug": "the-tree-house", "blurb": "강원도 인제군 The tree house",
+    "title": "Blooming",
     "titleKo": "블루밍 — 자작나무 숲의 트리하우스 키트",
     "subtitle": "Blooming — a tree house kit that hangs on a living birch and opens like a flower",
     "type": "Pavilion",
@@ -2540,7 +2540,7 @@ const SITE = {
     "drawings": []
   },
   {
-    "slug": "metaverse-church", "blurb": "디지털 트윈 건축",
+    "slug": "metaverse-church", "blurb": "디지털 트윈 건축 (메타버스)",
     "title": "Moduleverse Church",
     "titleKo": "메타버스 시스템의 교회공간",
     "subtitle": "One church built twice — a cross of 15,137 one-person modules over the water, and its digital twin in the metaverse",
