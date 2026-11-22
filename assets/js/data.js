@@ -1712,7 +1712,7 @@ const SITE = {
         ]
       },
       {
-        heading: "Under the Corridor at 21:00",
+        heading: "Under the Corridor at 21:00", big: true,
         text: "Section A–A cuts the market street through a column pair. Shops keep their stalls under the roof, homes above keep their dark windows, and nothing under the street moves: the sockets stop at −0.88, above every service.",
         images: [
           {
