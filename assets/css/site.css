@@ -27,6 +27,7 @@
   --mono: var(--sans);
   --fg: rgba(17, 17, 17, 0.07); /* 화면 뒤 그리드 선 */
 
+  --t-xxs: 9px; /* 상단바 Light/Dark 전용 (2026-11-22) */
   --t-xs: 10px;
   --t-s: 11px;
   --t-m: 12.5px;
@@ -2145,3 +2146,12 @@ html.sl-home.sl-go, html.sl-home.sl-go body { background: var(--bg); }
 .sl-tr .sl-a[href="works.html"] { margin-right: 0; }
 .sl-tr .st-b { will-change: transform; }
 .sl { touch-action: none; }
+
+/* 상단바 오른쪽 작게 (2026-11-22 요청): 시각·다이얼·Light/Dark 한 단계 작게. studio의 Index of works 링크는 뺐어요 */
+.hdr.g4 .hdr-t, .hdr.g4 .hdr-t * { font-size: var(--t-xs); }
+.hdr.g4 > .hdr-t { padding-right: 44px; }
+.dial { width: 34px; height: 34px; }
+.dial-dot::after { top: 3px; width: 5px; height: 5px; margin-left: -2.5px; }
+.hdr-m { gap: 10px; }
+.md-sw { font-size: var(--t-xxs); gap: 6px; }
+@media (max-width: 760px) { .dial { width: 22px; height: 22px; } .hdr.g4 > .hdr-t { padding-right: 20px; } }

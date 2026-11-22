@@ -822,7 +822,6 @@
     $("#main").innerHTML = `
       <section class="cs" id="cases" data-ind="Cases" aria-label="Studio">
         <h1 class="sr">${esc(SITE.name)} — Selected works</h1>
-        <a class="cs-ix lnk" href="projects.html">${esc((SITE.index || {}).link || "Index")} <span class="num">(${pad(list.length)})</span></a>
         <div class="cs-vw" role="group" aria-label="View">
           <button type="button" data-vw="slide" aria-pressed="true" aria-label="Slide view" title="Slide"><svg viewBox="0 0 18 12" aria-hidden="true"><rect x="0.5" y="0.5" width="4.5" height="11"/><rect x="6.75" y="0.5" width="4.5" height="11"/><rect x="13" y="0.5" width="4.5" height="11"/></svg></button>
           <button type="button" data-vw="grid" aria-pressed="false" aria-label="Grid view" title="Grid"><svg viewBox="0 0 18 12" aria-hidden="true"><rect x="0.5" y="0.5" width="4.5" height="4.5"/><rect x="6.75" y="0.5" width="4.5" height="4.5"/><rect x="13" y="0.5" width="4.5" height="4.5"/><rect x="0.5" y="7" width="4.5" height="4.5"/><rect x="6.75" y="7" width="4.5" height="4.5"/><rect x="13" y="7" width="4.5" height="4.5"/></svg></button>
