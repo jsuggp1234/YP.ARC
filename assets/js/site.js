@@ -924,9 +924,10 @@
     // 2026-11-22 "훨씬 심플하게": 네모 모듈 모션아트(stArt)는 쓰지 않아요 — 캔버스를 지우고 가는 글자 하나 + 작은 이름만
     $$(".mn-card", m).forEach((c, i) => {
       const pg = ST[+c.dataset.i] || {}, cv = $(".mn-art", c); if (cv) cv.remove();
-      if (!pg.glyph) return;
-      const L = D.createElement("div"); L.className = "st-l" + (i % 2 ? " st-lf" : ""); L.setAttribute("aria-hidden", "true");
-      L.innerHTML = `<svg viewBox="0 0 100 120" preserveAspectRatio="xMidYMid meet"><text class="st-gh" x="50.5" y="101" text-anchor="middle">${esc(pg.glyph)}</text><text class="st-gt" x="50" y="100" text-anchor="middle">${esc(pg.glyph)}</text></svg><span class="st-nm">${esc(pg.title || "")}</span>`;
+      // 2026-11-22: 카드 속 글자는 빼고 사진 한 장(SITE.start의 img)
+      if (!pg.img) return;
+      const L = D.createElement("div"); L.className = "st-im"; L.setAttribute("aria-hidden", "true");
+      L.innerHTML = `<img src="${esc(pg.img)}" alt="" decoding="async" draggable="false">`;
       c.appendChild(L);
     });
 
@@ -965,13 +966,23 @@
       if (c.getAttribute("href") === "works.html") ss.set("yp-hi", "1");
       const go2 = () => location.assign(c.href);
       if (REDUCED) return go2();
-      busy = true; c.style.zIndex = 2; c.classList.add("solid"); // 커지면서 불투명한 흰 종이로 → 다음 페이지와 그대로 이어져요
+      busy = true; c.style.zIndex = 2; c.classList.add("solid", "st-on"); // 커지면서 불투명한 흰 종이로 → 다음 페이지와 그대로 이어져요
+      // 2026-11-22 넘김 모션: 다른 카드와 이름은 차례로 가라앉고, 누른 카드의 사진은 커지는 동안 살짝 확대됐다 제자리로
+      cards.forEach((o, k) => { if (o !== c) o.animate([{ translate: "0 0", opacity: 1 }, { translate: "0 60px", opacity: 0 }], { duration: 650, delay: Math.abs(k - +c.dataset.i) * 50, easing: EASE_IO, fill: "forwards" }); });
+      $$(".st-cap", m).forEach((t) => t.animate([{ opacity: 1 }, { opacity: 0, translate: "0 -10px" }], { duration: 400, easing: "ease-out", fill: "forwards" }));
+      { const im = $(".st-im img", c); if (im) im.animate([{ scale: 1.12 }, { scale: 1 }], { duration: 1300, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" }); }
       const studio = !!c.querySelector(".st-hide"); if (studio) c.classList.add("go"); // studio: 작품 사진 줄이 드러나요
       const cv = c.querySelector(".mn-art"), word = (ST[+c.dataset.i] || {}).title;
       const grow = c.animate([{ transform: c.style.transform, clipPath: c.style.clipPath }, FULL], { duration: 900, easing: EASE_IO, fill: "forwards" }).finished.catch(() => {});
       // 글자 모듈 → 단어: P 조각들이 왼쪽으로 밀리며 philosophy 철자가 이어서 완성돼요. 다음 페이지가 같은 자리에서 이어받아요
       const spell = cv && cv._mods && word ? new Promise((res) => { const src = cv._mods(); cv._hide(); TX.leave(word, src, studio, res); }) : Promise.resolve();
-      Promise.all([grow, spell]).then(() => { if (cv && word) ss.set("yp-tx", JSON.stringify({ word, t: Date.now(), bg: !studio, top: studio })); go2(); });
+      Promise.all([grow, spell]).then(() => {
+        if (cv && word) ss.set("yp-tx", JSON.stringify({ word, t: Date.now(), bg: !studio, top: studio }));
+        if (studio) { ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "photo" })); return go2(); } // studio: 띠 사진이 이미 드러나 있어 바로 이어져요
+        // 막: 바탕색 면이 아래에서 올라와 사진을 덮고 → 다음 페이지에서 위로 걷혀요
+        const v = D.createElement("div"); v.className = "st-veil"; BODY.appendChild(v);
+        v.animate([{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)" }], { duration: 650, easing: EASE_IO, fill: "forwards" }).finished.catch(() => {}).then(() => { ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "veil" })); go2(); });
+      });
     }, true);
   };
   // ---------- 카드 → 페이지 넘김 (2026-11-22): 글자 모듈이 단어로 이어지고, 다음 페이지에서 흩어져요 ----------
@@ -1073,6 +1084,17 @@
     addEventListener("resize", size); D.addEventListener("visibilitychange", paint); D.addEventListener("yp:theme", paint);
     size(); paint();
   }
+  // ---------- 첫 화면 → 페이지 도착 (2026-11-22): 바탕색 막이 위로 걷히고, 본문이 살짝 아래에서 올라와요 ----------
+  function stArrive() {
+    let st = null; try { st = JSON.parse(ss.get("yp-st") || "null"); } catch (e) {}
+    ss.set("yp-st", ""); if (!st || Date.now() - st.t > 6000 || REDUCED) return;
+    if (st.k === "veil") {
+      const v = D.createElement("div"); v.className = "st-veil"; BODY.appendChild(v);
+      v.animate([{ clipPath: "inset(0 0 0% 0)" }, { clipPath: "inset(0 0 100% 0)" }], { duration: 900, delay: 120, easing: "cubic-bezier(0.7, 0, 0.2, 1)", fill: "forwards" }).finished.catch(() => {}).then(() => v.remove());
+    }
+    const main = $("#main"); if (main) main.animate([{ translate: "0 40px", opacity: 0.0 }, { translate: "0 0", opacity: 1 }], { duration: 1100, delay: st.k === "veil" ? 260 : 0, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" });
+  }
+
   // ---------- 첫 화면 카드 재질: 고운 회반죽 결 (2026-11-22) ----------
   // 작은 타일(256px)에 아주 옅은 입자와 결을 그려 카드 바탕에 반복해 깔아요(--plas). 무채색만
   function stPlaster(m) {
@@ -3640,6 +3662,7 @@
   utils();
   (render[PAGE] || render.home)();
   TX.arrive(); // 첫 화면 카드에서 넘어왔으면 단어 모듈이 흩어지며 페이지가 드러나요
+  stArrive();
   chromeScroll();
   if (PAGE !== "project") { reveals(); parallax(); } else reveals($("footer"));
   if (showLoader && PAGE !== "home" && PAGE !== "works") loader(() => ready.fire());

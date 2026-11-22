@@ -2006,3 +2006,13 @@ html.hi-on .st-l { opacity: 0; }
 .st-gt { stroke-opacity: 0.32; }
 .st-mn .mn-card:hover .st-gt, .st-mn .mn-card:focus-visible .st-gt { fill-opacity: 0.04; stroke-opacity: 0.8; }
 .st-mn:has(.mn-card.solid) .st-cap { opacity: 0; transition: opacity 0.3s; }
+
+/* 첫 화면 카드 사진 (2026-11-22): 글자 대신 사진 한 장, 카드 보이는 칸에 꽉 차게. 올리면 아주 천천히 살짝 확대 */
+.st-im { position: absolute; left: 0; top: 0; width: var(--stw, 100%); height: 100%; overflow: hidden; pointer-events: none; transition: opacity 0.5s var(--ease); }
+.st-im img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.st-mn .mn-card:hover .st-im img, .st-mn .mn-card:focus-visible .st-im img { transform: scale(1.04); }
+.st-mn .mn-card.solid .st-im { opacity: 1; }
+/* 커질 때는 카드 칸이 아니라 화면 전체를 덮어요 */
+.st-mn .mn-card.st-on .st-im { width: 100%; transition: width 0.9s var(--ease); }
+.st-mn .mn-card.go .st-im { opacity: 0; transition: opacity 0.6s var(--ease) 0.2s; } /* studio: 사진이 걷히며 작품 띠가 드러나요 */
+.st-veil { position: fixed; inset: 0; z-index: 90; background: var(--bg); pointer-events: none; }
