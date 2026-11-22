@@ -10,7 +10,7 @@
 ## 이미 정한 것 (바꾸기 전에 먼저 물어보기)
 - 배경은 순수 흰색 `#ffffff`, 회색은 모두 무채색. 베이지나 따뜻한 톤은 쓰지 않아요.
 - 레이아웃과 모션은 santalarch를 최대한 따라가되(2026-11-21 결정), **글자는 작게 유지, 배경은 계속 흰색(검은 구간 없음)**.
-- 글꼴은 Helvetica 계열 한 가지(맥 Helvetica Neue / 윈도우 Inter / 한글 Pretendard). Mono 라벨은 쓰지 않아요. 상단바만 참고 사이트와 같은 순서(Helvetica Now Variable → Helvetica Neue → Helvetica → Arial, 핀 #17). Helvetica Now는 유료라 파일은 넣지 않아요. Menu·Contact는 셋째 칸에 나란히.
+- 글꼴(2026-11-22, brandonyasin.com 참고 요청): Neue Haas Unica Pro → Helvetica Neue → Inter → Pretendard 순서(`--sans`). Unica·Helvetica Now는 유료라 파일 없이 `local()`만 연결, 라이선스 woff2를 `assets/fonts/`에 넣으면 site.css 맨 위 @font-face에 url()을 붙여요. 예전: Helvetica 계열 한 가지(맥 Helvetica Neue / 윈도우 Inter / 한글 Pretendard). Mono 라벨은 쓰지 않아요. 상단바만 참고 사이트와 같은 순서(Helvetica Now Variable → Helvetica Neue → Helvetica → Arial, 핀 #17). Helvetica Now는 유료라 파일은 넣지 않아요. Menu·Contact는 셋째 칸에 나란히.
 - 글자는 작게. 크기는 `assets/css/site.css`의 `--t-xs`부터 `--t-xxl`까지 토큰으로만 조절해요.
 - 글자 위계(2026-11-21, 모든 작품 공통): 작품 제목 `--t-xxl` · 섹션 제목 `--t-l` · 본문 `--t-m` · 그림 제목·단계 번호 `--t-s`(굵게) · 설명·캡션·목록 `--t-xs` · 도면(위젯 SVG) 안 글자 `--t-xs`, 강조 수치만 `--t-s`. 위젯 SVG는 `tide.js`의 `fitText`가 `--fs`를 넣어 그림 크기와 상관없이 화면에서 같은 크기로 보여요. site.css 맨 끝 "글자 위계 통일" 블록.
 - 건폐율·용적률 검토기 같은 계산 도구는 넣지 않아요.

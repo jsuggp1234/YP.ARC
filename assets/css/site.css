@@ -1,3 +1,9 @@
+/* 글꼴 (brandonyasin.com과 같은 구성). 둘 다 Monotype 유료라 파일은 넣지 않아요.
+   지금은 컴퓨터에 설치돼 있을 때만 보여요(local). 라이선스 웹폰트 파일을 assets/fonts/에 넣으면 url()을 이어 붙여 모두에게 보이게 해요(파일이 없을 때 404가 나지 않게 비워 둠). */
+@font-face { font-family: "Neue Haas Unica Pro"; src: local("Neue Haas Unica Pro"), local("NeueHaasUnicaPro-Regular"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Neue Haas Unica Pro"; src: local("Neue Haas Unica Pro Light"), local("NeueHaasUnicaPro-Light"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "Helvetica Now Variable"; src: local("Helvetica Now Variable"), local("HelveticaNowVar"); font-weight: 100 900; font-style: normal; font-display: swap; }
+
 /* ============================================================
    YP.STUDIO — site.css
    Layout: a quiet studio site on a 12-column grid. Small type and hairlines everywhere,
@@ -17,7 +23,7 @@
   --model-hi: #e2e2e2;
 
   /* santalarch처럼 Helvetica 계열 한 가지 글꼴. 맥은 Helvetica Neue, 윈도우는 Inter, 한글은 Pretendard */
-  --sans: "Helvetica Neue", Helvetica, Inter, "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+  --sans: "Neue Haas Unica Pro", "Neue Haas Unica", "Helvetica Neue", Helvetica, Inter, "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif; /* 참고: brandonyasin.com (2026-11-22 요청) — 본문·제목 Neue Haas Unica Pro, 작은 글자 Helvetica Now Variable */
   --mono: var(--sans);
   --fg: rgba(17, 17, 17, 0.07); /* 화면 뒤 그리드 선 */
 
