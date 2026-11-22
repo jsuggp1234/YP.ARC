@@ -1084,9 +1084,9 @@
   // ---------- 첫 화면 → 페이지 도착 (2026-11-22): 바탕색 막이 위로 걷히고, 본문이 살짝 아래에서 올라와요 ----------
   // 글자 하나를 N장의 가로 층으로: 층마다 같은 글자를 겹쳐 놓고 그 높이만 보이게 잘라요(clip-path)
   function stGlyph(g, n = 24) {
-    const L = D.createElement("div"); L.className = "st-gl"; L.setAttribute("aria-hidden", "true");
+    const L = D.createElement("div"); L.className = "st-gl"; L.dataset.g = g; L.setAttribute("aria-hidden", "true");
     let h = `<span class="st-g0">${esc(g)}</span>`;
-    for (let k = 0; k < n; k++) h += `<span class="st-b" style="--k:${k};clip-path:inset(${Math.max(0, (k * 100) / n - 0.25)}% -60% ${Math.max(0, 100 - ((k + 1) * 100) / n - 0.25)}% -60%)"><i>${esc(g)}</i></span>`;
+    for (let k = 0; k < n; k++) h += `<span class="st-b" style="--k:${k};clip-path:inset(${k ? (k * 100) / n - 0.25 : -30}% -60% ${k < n - 1 ? 100 - ((k + 1) * 100) / n - 0.25 : -30}% -60%)"><i>${esc(g)}</i></span>`;
     L.innerHTML = h; return L;
   }
   function stArrive() {

@@ -2032,3 +2032,4 @@ html.hi-on .st-l { opacity: 0; }
 .st-flow-g { background: var(--bg); }
 .st-flow-g .st-gl { position: fixed; }
 @media (prefers-reduced-motion: reduce) { .st-gl .st-b > i { transition: none; } }
+.st-gl[data-g="@"] { font-size: calc(var(--stw, 30vw) * 0.74); } /* @는 글자 폭이 넓고 아래로 내려와서 조금 작게 */
