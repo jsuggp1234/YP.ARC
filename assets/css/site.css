@@ -2334,3 +2334,16 @@ html.cg-open { overflow: hidden; }
 .kj-d { margin: 0 0 8px; color: var(--mid); line-height: 1.5; }
 @media (max-width: 760px) { .kj-ld { display: none; } }
 @media (prefers-reduced-motion: reduce) { .kj-ld path { transition: none; } }
+
+/* 핀 #104: 단계 그림 위 시간표 */
+.seq-tl { display: flex; gap: 24px; margin: 0 0 14px; font-size: var(--t-xs); }
+.seq-tl .tl-b { min-width: 0; }
+.seq-tl .tl-n { display: block; color: var(--mid); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seq-tl .tl-r { position: relative; height: 18px; background: var(--line, #e6e6e6); }
+.seq-tl .tl-s { position: absolute; top: 0; bottom: 0; background: var(--bg); border: 1px solid var(--ink); box-sizing: border-box; transition: background .4s, color .4s; display: grid; place-items: center; overflow: hidden; }
+.seq-tl .tl-s em { font-style: normal; font-size: 9px; letter-spacing: 1px; line-height: 1; }
+.seq-tl .tl-s.done { background: var(--ink); color: var(--bg); }
+.seq-tl .tl-s.on { background: #f2c94c; color: #111; border-color: #111; }
+.seq-tl .tl-h { display: flex; justify-content: space-between; margin-top: 4px; color: var(--mid); font-variant-numeric: tabular-nums; }
+.seq-tl .tl-h b { font-weight: 400; }
+@media (max-width: 760px) { .seq-tl { gap: 10px; } }

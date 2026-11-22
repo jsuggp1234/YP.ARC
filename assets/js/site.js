@@ -3389,6 +3389,7 @@
     </figure>`;
   };
   // 스크롤로 넘기는 단계 그림 (frames: 한 장씩 / wipe: 한 장 위에 지시선·글자가 띠로 드러남)
+  const hmTl = (v) => `${String(Math.floor(v / 60) % 24).padStart(2, "0")}:${String(v % 60).padStart(2, "0")}`;
   const seqHtml = (q) => {
     const N = q.steps.length;
     const lead = () => `<img src="${esc(q.src)}" alt="${esc(q.steps[0].t)}" decoding="async">${q.L.map(([sd, y, x]) => { const a = sd === "l" ? 23.5 : x, w = Math.abs((sd === "l" ? x : 76.5) - (sd === "l" ? 23.5 : x)); return `<i class="seq-ln ${sd}" style="top:${y}%;left:${a}%;width:${w.toFixed(2)}%"></i>`; }).join("")}${q.L.map(([sd, y, x]) => `<i class="seq-dt" style="left:${x}%;top:${y}%"></i>`).join("")}${q.L.map(([sd, y, , t, , pg]) => `<span class="seq-lb ${sd}${pg ? " pgm" : ""}" style="top:${y}%">${esc(t)}</span>`).join("")}`;
@@ -3397,6 +3398,7 @@
       : q.steps.map((f, i) => `<img src="${esc(f.src)}" alt="${esc(f.t)}" decoding="async"${i ? "" : ' class="on"'}${f.x ? ` style="translate:${esc(f.x)} 0"` : ""}>`).join("");
     return `<div class="seq seq-${q.kind}${q.lite ? " seq-lite" : ""}${q.fade ? " seq-fade" : ""}${q.below ? " seq-below" : ""}${q.drop ? " seq-drop" : ""}" data-seq style="--n:${q.n || N};--k:${q.k || 1}${q.cols ? `;--c:${q.cols}` : ""}${q.len ? `;--len:${q.len}` : ""}">
       <div class="seq-pin">
+        ${q.tl ? `<div class="seq-tl" aria-hidden="true">${q.tl.bands.map(([nm, a, b], bi) => `<div class="tl-b" style="flex:${b - a}"><span class="tl-n">${esc(nm)}</span><div class="tl-r">${q.steps.map((f, i) => f.tm && f.tm[0] === bi ? `<i class="tl-s${i ? "" : " on"}" data-i="${i}" style="left:${((f.tm[1] - a) / (b - a)) * 100}%;width:${((f.tm[2] - f.tm[1]) / (b - a)) * 100}%"><em>${"•".repeat(f.tm[3])}</em></i>` : "").join("")}</div><span class="tl-h"><b>${hmTl(a)}</b><b>${hmTl(b)}</b></span></div>`).join("")}</div>` : ""}
         <div class="seq-stage media" style="aspect-ratio:${q.r};--r:${q.r}">${stage}${q.kind === "frames" ? q.steps.map((f, i) => (f.tags || []).map(([x, y, t, al, k]) => `<span class="ftag seq-ft${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}${i ? "" : " on"}" data-i="${i}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("")).join("") : ""}${q.tag ? `<p class="ssn-tag seq-tag"><b>${esc(q.steps[0].t)}</b><span>${esc(q.steps[0].s || "")}</span></p>` : ""}</div>
         <div class="seq-side">
           <p class="seq-ctr num"><b>01</b> / ${pad(N)}</p>
@@ -3642,6 +3644,7 @@
         lis.forEach((li, j) => li.classList.toggle("on", j === i));
         // 이전 단계는 아래에 잠시 남고, 새 단계가 바닥에서부터 자라 올라와요
         $$(".seq-ft", el).forEach((t) => t.classList.toggle("on", +t.dataset.i === i));
+        $$(".tl-s", el).forEach((t) => { const k = +t.dataset.i; t.classList.toggle("on", k === i); t.classList.toggle("done", k < i); });
         imgs.forEach((im, j) => { im.classList.remove("was", "gone"); if (j === prev) im.classList.add("was"); im.classList.toggle("on", j === i); });
         if (imgs[prev]) { const w = imgs[prev]; requestAnimationFrame(() => w.classList.add("gone")); }
         if (top) top.style.clipPath = `inset(0 0 ${100 - q.steps[i].y}% 0)`;
