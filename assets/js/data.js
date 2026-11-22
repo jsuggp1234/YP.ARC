@@ -2143,19 +2143,8 @@ const SITE = {
         ]
       },
       {
-        heading: "Structure — Joints",
-        text: "The mega beam, the truss beam and the precast columns are welded and bolted so the joints stay seamless; expansion joints and heat-resistant materials take the movement of the steel through the seasons.",
-        images: [
-          {
-            src: "assets/img/campus-renovation/structure-joints.jpg",
-            caption: "Truss beam · Mega structure · Precast concrete",
-            r: 2.816
-          }
-        ]
-      },
-      {
-        heading: "System",
-        text: "The bridge in three layers.",
+        heading: "Structure and System",
+        text: "The bridge in three layers, and the joint that holds each one. The mega beam, the truss beam and the precast columns are welded and bolted so the joints stay seamless; expansion joints and heat-resistant materials take the movement of the steel through the seasons.",
         images: [],
         seq: {
           kind: "frames",
@@ -2164,19 +2153,19 @@ const SITE = {
           k: 0.9,
           steps: [
             {
-              src: "assets/img/campus-renovation/system-1.jpg",
+              src: "assets/img/campus-renovation/system-1.jpg", j: { src: "assets/img/campus-renovation/joint-truss.jpg", t: "Truss beam", s: "curved steel trusses, bolted at every node" },
               t: "The lower truss beam",
               s: "four main beams",
               d: "Carried by a single steel frame and made of four main beams; like a stadium roof, it is curved for both structure and form."
             },
             {
-              src: "assets/img/campus-renovation/system-2.jpg",
+              src: "assets/img/campus-renovation/system-2.jpg", j: { src: "assets/img/campus-renovation/joint-mega.jpg", t: "Mega structure", s: "beams meet in welded and bolted plates" },
               t: "The bridge story",
               s: "two levels",
               d: "The inside has two levels. The upper level is not fully enclosed but left as a half-void, so the two floors talk to each other."
             },
             {
-              src: "assets/img/campus-renovation/system-3.jpg",
+              src: "assets/img/campus-renovation/system-3.jpg", j: { src: "assets/img/campus-renovation/joint-precast.jpg", t: "Pre-cast concrete", s: "precast columns plated to the steel frame" },
               t: "The upper truss + PV",
               s: "held by cables",
               d: "Hung from the upper level through cables and built as a truss like the lower one, to take the tension."

@@ -3400,7 +3400,7 @@
         <div class="seq-stage media" style="aspect-ratio:${q.r};--r:${q.r}">${stage}${q.tag ? `<p class="ssn-tag seq-tag"><b>${esc(q.steps[0].t)}</b><span>${esc(q.steps[0].s || "")}</span></p>` : ""}</div>
         <div class="seq-side">
           <p class="seq-ctr num"><b>01</b> / ${pad(N)}</p>
-          <ol>${q.steps.map((f, i) => `<li${i ? "" : ' class="on"'}><span class="num mid">${pad(i + 1)}</span><div><b>${esc(f.t)}</b> <span class="mid">${esc(f.s || "")}</span>${f.d ? `<p>${esc(f.d)}</p>` : ""}${f.k ? `<dl>${f.k.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd class="num">${esc(b)}</dd></div>`).join("")}</dl>` : ""}</div></li>`).join("")}</ol>
+          <ol>${q.steps.map((f, i) => `<li${i ? "" : ' class="on"'}><span class="num mid">${pad(i + 1)}</span><div><b>${esc(f.t)}</b> <span class="mid">${esc(f.s || "")}</span>${f.d ? `<p>${esc(f.d)}</p>` : ""}${f.j ? `<figure class="seq-jd"><img src="${esc(f.j.src)}" alt="${esc(f.j.t)}" decoding="async" loading="lazy"><figcaption><b>${esc(f.j.t)}</b>${f.j.s ? ` <span class="mid">${esc(f.j.s)}</span>` : ""}</figcaption></figure>` : ""}${f.k ? `<dl>${f.k.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd class="num">${esc(b)}</dd></div>`).join("")}</dl>` : ""}</div></li>`).join("")}</ol>
           <div class="seq-bar"><i></i></div>
         </div>
       </div>
