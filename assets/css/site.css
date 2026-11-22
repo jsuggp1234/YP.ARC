@@ -1816,3 +1816,5 @@ html.ct-lock .ct a, html.ct-lock .ct button, html.ct-lock .ct [data-ct-close], h
 .mv-prog .mv-lb span i { display: block; }
 /* 핀 #27: 세계지도 판 평면 시뮬레이션은 본문 전체 폭 */
 @media (min-width: 761px) { .cx-body .pj-sec:has(.mv-plan) { --bx: 0%; --bw: 100%; } }
+/* 핀 #23: Four Stops · Room to Grow 시뮬레이션은 본문 전체 폭에 둘 나란히 */
+@media (min-width: 761px) { .cx-body .pj-sec:has([data-mv=stops]) { --bx: 0%; --bw: 100%; } }

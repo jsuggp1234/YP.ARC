@@ -2618,13 +2618,20 @@ const SITE = {
         }
       },
       {
-        "heading": "Climb Drive and Room to Grow",
-        "text": "A cordless drill lifts 5.3 t of house through a planetary gear, a self-locking worm and a slewing nut. The sleeve leaves the trunk 100 mm all round; every autumn the jacks are backed off as the birch thickens, and after about twenty years the kit moves on and the tree heals.",
+        "heading": "Four Stops and Room to Grow",
+        "text": "Flights 340 mm apart let the room stop at four heights, and a lock pin finds one every third of a turn. The sleeve leaves the trunk 100 mm all round; every autumn the jacks are backed off as the birch thickens, and after about twenty years the kit moves on and the tree heals.",
         "images": [
           {
-            "src": "assets/img/the-tree-house/climb-drive.jpg",
-            "caption": "Climb drive · four stops · room to grow",
-            "r": 4.076
+            "sim": "stops",
+            "src": "",
+            "caption": "Four stops — elevation 1:200, the room steps down 340 mm at a time",
+            "r": 0.95
+          },
+          {
+            "sim": "grow",
+            "src": "",
+            "caption": "Room to grow — plan 1:20, twenty years of the birch in fourteen seconds",
+            "r": 0.95
           }
         ]
       },

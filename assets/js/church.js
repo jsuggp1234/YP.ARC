@@ -528,6 +528,107 @@
     });
   };
 
-  const KIND = { clock, plan, steps, plant, transect, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
+
+  // ── 핀 #23 Four Stops: 방이 줄기를 따라 340 mm씩 네 자리에 멈추고, 멈출 때마다 고정 핀이 들어가요 (입면 1:200)
+  const stops = (el) => {
+    const ST = [[0, "±0", "home · FL +5.00"], [-340, "−340", ""], [-680, "−680", "ramp neighbour"], [-1020, "−1,020", "build · storm park · FL +3.98"]];
+    const HOLD = 1.6, MOVE = 1.8, SEQ = [0, 1, 2, 3, 2, 1];
+    stage(el, (g, W, H, t) => {
+      const ez = (x) => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+      const per = HOLD + MOVE, n = SEQ.length, k = Math.floor(t / per) % n, f = (t % per) - HOLD, a = SEQ[k], b = SEQ[(k + 1) % n];
+      const e = f < 0 ? 0 : ez(Math.min(1, f / MOVE)), lv = ST[a][0] + (ST[b][0] - ST[a][0]) * e, moving = f > 0 && f < MOVE;
+      // 높이(m) → 화면: 땅 0 ~ 나무 끝 10.4 m
+      const top = H * 0.05, bot = H * 0.9, Y = (m) => bot - ((bot - top) * m) / 10.4, u = (bot - top) / 10.4, cx = W * 0.36;
+      g.lineCap = "butt";
+      // 땅
+      g.strokeStyle = C.mix(0.8); g.lineWidth = 1.2; g.beginPath(); g.moveTo(cx - u * 2.6, Y(0)); g.lineTo(cx + u * 2.6, Y(0)); g.stroke();
+      // 줄기 (위로 갈수록 가늘게) + 나이테 결
+      const tw = (m) => u * (0.26 - 0.012 * m);
+      g.fillStyle = C.mix(0.06); g.strokeStyle = C.mix(0.55); g.lineWidth = 0.8;
+      g.beginPath(); g.moveTo(cx - tw(0), Y(0)); g.lineTo(cx - tw(10.2), Y(10.2)); g.lineTo(cx + tw(10.2), Y(10.2)); g.lineTo(cx + tw(0), Y(0)); g.closePath(); g.fill(); g.stroke();
+      // 슬리브 +3.30 ~ +8.80, 나사 날개(flight) 사선
+      const sw = u * 0.34;
+      g.fillStyle = C.mix(0.12); g.fillRect(cx - sw, Y(8.8), sw * 2, Y(3.3) - Y(8.8)); g.strokeStyle = C.mix(0.7); g.lineWidth = 0.9; g.strokeRect(cx - sw, Y(8.8), sw * 2, Y(3.3) - Y(8.8));
+      g.save(); g.beginPath(); g.rect(cx - sw, Y(8.8), sw * 2, Y(3.3) - Y(8.8)); g.clip(); g.strokeStyle = C.mix(0.35); g.lineWidth = 0.6;
+      const rot = (lv / 340) * 3 * 0.34 * u; // 한 자리 = 1/3바퀴 → 날개 무늬가 흘러요
+      for (let y = Y(8.8) - u + (rot % (u * 0.34)); y < Y(3.3) + u; y += u * 0.34) { g.beginPath(); g.moveTo(cx - sw, y); g.lineTo(cx + sw, y - u * 0.18); g.stroke(); }
+      g.restore();
+      // 정지 자리 표시 (오른쪽 눈금)
+      const tx = cx + u * 2.2;
+      ST.forEach(([mm, lab, note], i) => {
+        const y = Y(5 + mm / 1000), ly = Y(6.3) + i * C.s * 3.6, on = !moving && i === a;
+        g.strokeStyle = on ? C.red(0.9) : C.mix(0.3); g.lineWidth = on ? 1.2 : 0.7; g.setLineDash(on ? [] : [2, 3]); g.beginPath(); g.moveTo(cx + sw + 4, y); g.lineTo(tx - u * 0.5, y); g.lineTo(tx - 6, ly); g.stroke(); g.setLineDash([]);
+        g.textAlign = "left"; g.textBaseline = "middle"; g.font = font(C.s, 600); g.fillStyle = on ? C.red() : C.mix(0.9); g.fillText(lab, tx, ly);
+        if (note) { g.font = font(C.xs); g.fillStyle = C.mix(0.55); g.fillText(note, tx, ly + C.s * 1.2); }
+      });
+      // 방 (바닥 보 + 벽 + 지붕) — 바닥 위치 = 5.00 + lv
+      const fl = 5 + lv / 1000, rw = u * 1.45, rh = u * 2.3;
+      g.fillStyle = C.bg; g.fillRect(cx - rw, Y(fl) - rh, rw * 2, rh);
+      g.strokeStyle = C.mix(0.85); g.lineWidth = 1; g.strokeRect(cx - rw, Y(fl) - rh, rw * 2, rh);
+      g.fillStyle = C.mix(0.95); g.fillRect(cx - rw, Y(fl) - u * 0.1, rw * 2, u * 0.12); g.fillRect(cx - rw, Y(fl) - rh, rw * 2, u * 0.12);
+      g.fillStyle = C.mix(0.12); g.fillRect(cx - tw(fl + 1), Y(fl) - rh + u * 0.12, tw(fl + 1) * 2, rh - u * 0.22); // 방을 뚫고 지나는 줄기
+      // 슬루잉 너트 (바닥 아래)
+      g.fillStyle = C.mix(0.85); g.fillRect(cx - sw * 1.25, Y(fl), sw * 2.5, u * 0.16);
+      // 고정 핀: 멈추면 빨간 핀이 쏙 들어가요
+      const pin = moving ? 0 : Math.min(1, (t % per) / 0.35);
+      g.fillStyle = C.red(0.25 + 0.75 * pin); g.fillRect(cx + sw * 1.25 - u * 0.45 * pin, Y(fl) + u * 0.02, u * 0.45, u * 0.1);
+      // 드릴 회전 표시 (움직이는 동안 원이 돌아요)
+      const dx = cx - rw - u * 0.55, dy = Y(fl) - u * 0.5, ang = lv / 340 * Math.PI * 2 * 200;
+      g.strokeStyle = moving ? C.red(0.9) : C.mix(0.4); g.lineWidth = 1; g.beginPath(); g.arc(dx, dy, u * 0.22, 0, Math.PI * 2); g.stroke();
+      g.beginPath(); g.moveTo(dx, dy); g.lineTo(dx + Math.cos(ang) * u * 0.22, dy + Math.sin(ang) * u * 0.22); g.stroke();
+      // 아래 읽기
+      const turns = Math.round(Math.abs(lv) / 340 * 200);
+      g.textAlign = "left"; g.textBaseline = "alphabetic"; g.font = font(C.xs); g.fillStyle = C.mix(0.55);
+      g.fillText("drill turns", W * 0.02, H * 0.97); g.font = font(C.xs, 600); g.fillStyle = C.mix(0.95); g.fillText(`${turns} / 600`, W * 0.02 + C.xs * 6, H * 0.97);
+      g.font = font(C.xs); g.fillStyle = C.mix(0.55); g.fillText(moving ? "moving · worm self-locks if the drill stops" : "held · lock pin in", W * 0.02 + C.xs * 13, H * 0.97);
+    });
+  };
+
+  // ── 핀 #23 Room to Grow: 20년 동안 자작나무가 굵어지고, 해마다 가을이면 잭 8개가 2 mm씩 물러나요 (평면 1:20)
+  const grow = (el) => {
+    const Y0 = 2026, YRS = 20, SPAN = 14, END = 3;
+    stage(el, (g, W, H, t) => {
+      const tt = t % (SPAN + END), yr = Math.min(YRS, (tt / SPAN) * YRS), year = Y0 + yr, out = sm((tt - SPAN) / 1.2);
+      const cx = W * 0.42, cy = H * 0.5, R = Math.min(W * 0.36, H * 0.42), mm = R / 420; // 슬리브 바깥 날개 Ø820 → R
+      const trunk = (440 + 4 * yr) / 2 * mm, sleeve = 330 * mm, flight = 410 * mm;
+      // 날개 끝 원 (점선) · 슬리브
+      g.globalAlpha = 1 - out;
+      g.setLineDash([2, 4]); g.strokeStyle = C.mix(0.35); g.lineWidth = 0.7; g.beginPath(); g.arc(cx, cy, flight, 0, Math.PI * 2); g.stroke(); g.setLineDash([]);
+      g.strokeStyle = C.mix(0.95); g.lineWidth = Math.max(2, mm * 14); g.beginPath(); g.arc(cx, cy, sleeve, 0, Math.PI * 2); g.stroke();
+      g.globalAlpha = 1;
+      // 2036 · 2046 한계 원
+      [[480, "2036", 0.25], [520, "2046 limit", 0.75]].forEach(([d, lab, q]) => { g.setLineDash([3, 3]); g.strokeStyle = C.mix(0.3); g.lineWidth = 0.7; g.beginPath(); g.arc(cx, cy, (d / 2) * mm, 0, Math.PI * 2); g.stroke(); g.setLineDash([]);
+        g.font = font(C.xs); g.fillStyle = C.mix(0.5); g.textAlign = "left"; g.textBaseline = "middle"; const ay = (d / 2) * mm * Math.sin(q), ax = (d / 2) * mm * Math.cos(q); g.fillText(lab, cx + R * 1.06, cy + ay + (q > 0.5 ? C.s : 0)); g.strokeStyle = C.mix(0.25); g.beginPath(); g.moveTo(cx + ax, cy + ay); g.lineTo(cx + R * 1.04, cy + ay + (q > 0.5 ? C.s : 0)); g.stroke(); });
+      // 줄기: 나이테가 한 해에 한 줄씩
+      g.fillStyle = C.mix(0.1); g.beginPath(); g.arc(cx, cy, trunk, 0, Math.PI * 2); g.fill();
+      g.strokeStyle = C.mix(0.22); g.lineWidth = 0.5; for (let k = 1; k <= Math.floor(yr); k++) { g.beginPath(); g.arc(cx, cy, (440 + 4 * k) / 2 * mm - 2 * mm, 0, Math.PI * 2); g.stroke(); }
+      for (let r0 = 40; r0 < 220; r0 += 22) { g.beginPath(); g.arc(cx, cy, r0 * mm, 0, Math.PI * 2); g.stroke(); }
+      g.strokeStyle = C.mix(0.8); g.lineWidth = 1; g.beginPath(); g.arc(cx, cy, trunk, 0, Math.PI * 2); g.stroke();
+      // 가을마다 잭 8개가 물러나요: 해 바뀔 때 빨갛게
+      const fall = 1 - Math.min(1, (yr % 1) / 0.12), flash = yr > 0.2 && yr < YRS ? fall : 0;
+      g.globalAlpha = 1 - out;
+      for (let j = 0; j < 8; j++) {
+        const a = (j / 8) * Math.PI * 2 + Math.PI / 8, c = Math.cos(a), sn = Math.sin(a), r1 = trunk + 3 * mm + (1 - fall) * 2 * mm;
+        g.strokeStyle = flash > 0.05 ? C.red(0.4 + 0.6 * flash) : C.mix(0.85); g.lineWidth = Math.max(2, mm * 16);
+        g.beginPath(); g.moveTo(cx + c * r1, cy + sn * r1); g.lineTo(cx + c * (sleeve - mm * 8), cy + sn * (sleeve - mm * 8)); g.stroke();
+        g.fillStyle = C.mix(0.5); g.beginPath(); g.arc(cx + c * r1, cy + sn * r1, Math.max(1.5, mm * 9), 0, Math.PI * 2); g.fill(); // 고무 패드
+      }
+      g.globalAlpha = 1;
+      // 남은 틈 (빨간 치수)
+      const gap = Math.max(0, 330 - (440 + 4 * yr) / 2 - 0);
+      g.strokeStyle = C.red(0.9); g.lineWidth = 1; g.beginPath(); g.moveTo(cx - trunk, cy); g.lineTo(cx - sleeve, cy); g.stroke();
+      [cx - trunk, cx - sleeve].forEach((x) => { g.beginPath(); g.moveTo(x, cy - 4); g.lineTo(x, cy + 4); g.stroke(); });
+      g.font = font(C.s, 600); g.fillStyle = C.red(); g.textAlign = "center"; g.textBaseline = "bottom"; g.fillText(`${Math.round(gap)}`, cx - (trunk + sleeve) / 2, cy - 5);
+      // 가운데: 연도 · 지름
+      g.textBaseline = "middle"; g.font = font(C.s, 600); g.fillStyle = C.mix(0.95); g.fillText(String(Math.floor(year)), cx + trunk * 0.15, cy - C.s * 0.7);
+      g.font = font(C.xs); g.fillStyle = C.mix(0.6); g.fillText(`Ø${Math.round(440 + 4 * yr)}`, cx + trunk * 0.15, cy + C.s * 0.7);
+      // 아래 읽기
+      g.textAlign = "left"; g.textBaseline = "alphabetic"; g.font = font(C.xs); g.fillStyle = C.mix(0.55);
+      g.fillText(out > 0.02 ? "after about twenty years the kit moves on — three Ø38 holes, walled off by new wood" : "every autumn the eight jacks back off 2 mm", W * 0.02, H * 0.97);
+      if (out > 0.02) { g.textAlign = "center"; g.font = font(C.xs, 600); g.fillStyle = C.mix(0.95, out); g.fillText("the kit moves on", cx, cy + R * 0.92); }
+    });
+  };
+
+  const KIND = { clock, plan, steps, plant, transect, stops, grow, cross: (el) => three(el, "cross"), prog: (el) => three(el, "prog"), layers: (el) => three(el, "layers") };
   window.MVSims = { mount: (el, kind) => { if (el.dataset.on) return; el.dataset.on = 1; colors(); (KIND[kind] || (() => {}))(el); } };
 })();
