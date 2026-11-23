@@ -151,7 +151,7 @@
             <p class="ct-note">${(C.note || [SITE.status]).map(esc).join("<br>")}</p>
           </div>
           <div class="ct-body">
-            <p class="ct-lead">${esc(C.lead || "")}</p>
+            ${C.lead ? `<p class="ct-lead">${esc(C.lead)}</p>` : ""}
             <ol class="ct-rows">${rows.map(([k, t, html], i) => `<li class="ct-row${i ? "" : " on"}" data-k="${k}"><span class="ct-n num">${pad(i + 1)}.</span><span class="ct-t">${esc(t)}</span><div class="ct-v">${html}</div></li>`).join("")}</ol>
           </div>
         </div>

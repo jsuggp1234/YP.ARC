@@ -47,8 +47,8 @@ const SITE = {
   contact: {
     title: "Open to work",
     note: ["2027년 2월 졸업 · 설계사무소 지원", "Based in Seoul, KR"],
-    lead: "인턴·신입 설계직을 찾고 있어요. 편하게 연락 주세요.",
-    pdf: "", // 예: "assets/portfolio.pdf" — 원본 PDF를 assets로 옮기면 채워요
+    lead: "", // 핀 #180 문구 삭제
+    pdf: "assets/portfolio.pdf", // 핀 #181: portfolio-source/프로필의 20장 PDF
     pdfNote: "PDF는 준비 중이에요. 메일로 요청하시면 보내 드려요.",
   },
   // Menu 카드 세 장 (v2 5단계)
@@ -2053,7 +2053,7 @@ const SITE = {
     "program": "트리하우스 모듈 키트 · 일곱 방의 숲속 마을",
     "site": "강원 인제, 소양호 옆 자작나무 숲",
     "area": "모듈 3.6 × 2.4 m · 방 6.2 m² + 잎 데크",
-    "team": "3인 팀 · 팀장",
+    "team": "3인 공동작품", // 핀 #182
     "tools": "",
     // 핀 #178·#179: 대표사진(상세 머리) = 호숫가 새벽 렌더, studio 카드 = 숲속 아이들 렌더 (예전 대표: village-section.jpg)
     "cover": "assets/img/the-tree-house/cover.jpg",
