@@ -2407,3 +2407,8 @@ html.sb-on body { background: var(--mn-bg); }
 html.sb-on #main, html.sb-on .ftr { translate: var(--sb, 0px) 0; box-shadow: -1px 0 0 var(--line); background: var(--bg); }
 html.sb-on { overflow-x: hidden; }
 @media (max-width: 760px) { .sb-edge { width: 16px; } }
+
+/* 핀 #194: 그림 위 치수선 */
+.media .dims { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; overflow: visible; }
+.media .dims line { stroke: var(--ink); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.media .ftag.dim-t.dv { transform: translate(-50%, -50%) rotate(-90deg); }
