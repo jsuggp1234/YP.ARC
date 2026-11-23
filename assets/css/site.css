@@ -2479,3 +2479,10 @@ html.sb-on { overflow-x: hidden; }
   .figs.gc { grid-template-columns: 1fr !important; row-gap: 32px; }
   .figs.gc > * { grid-column: auto !important; }
 }
+/* 핀 #224: 지시선 그림에 설명이 있으면 데스크톱에서도 그림 아래 번호·이름·설명 목록(3칸) */
+@media (min-width: 761px) {
+  .fnotes.ld-m.ld-all { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 24px; margin-top: 20px; }
+  .fnotes.ld-all li { text-align: left; gap: 2px; padding-inline: 0; border-top: 1px solid var(--line); padding-top: 6px; }
+  .fnotes.ld-all b { font-size: var(--t-xs); font-weight: 500; }
+  .fnotes.ld-all li > span { color: var(--mid); }
+}
