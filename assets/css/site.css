@@ -2468,3 +2468,6 @@ html.sb-on { overflow-x: hidden; }
   .hdr.g4 > .hdr-n { grid-column: 4; grid-row: 1; justify-self: end; margin-right: 112px; }
   .hdr.g4 > .hdr-t { grid-column: 4; grid-row: 1; position: absolute; right: var(--g4-e); top: calc(env(safe-area-inset-top, 0px) + 16px + 34px + 6px); padding-right: 0; align-items: flex-end; text-align: right; }
 }
+.cx-full .cx-cv video.cx-vid { object-fit: cover; } /* 핀 #219: 화면 꽉 채운 대표에서는 영상도 사진처럼 꽉 */
+.media:has(img[src*="re-tide/twelve-mounds"]) .ftag.lv { background: none; padding: 0; } /* 핀 #220: 열두 언덕 배치 그림 글자 밑 흰 바탕 없앰 */
+.cx-full .cx-play { bottom: 64px; } /* 화면 꽉 찬 대표에서는 아래 고정 표시(시각)와 겹치지 않게 */

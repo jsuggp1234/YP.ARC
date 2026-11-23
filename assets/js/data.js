@@ -214,7 +214,7 @@ const SITE = {
       [3.38, 2.175, 0.22, 0.22, 0.18, 0.2]
     ],
     cover: "assets/img/re-tide/cover.jpg",
-    coverR: 0.859, // 대표사진 가로/세로 (머리 배치용)
+    coverR: 0.859, coverFull: true, coverVideo: "assets/img/re-tide/cover-hq.mp4", // 핀 #219: 화면 꽉 + 재생 버튼(원본 portfolio-source/대표사진 영상/retide 영상.mp4, 1376×1600) // 대표사진 가로/세로 (머리 배치용)
     thumb: "assets/img/re-tide/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
     coverCaption: "Twelve mounds, one tissue — pavilion and lookout tower in the rain", // 대표 이미지 아래 캡션
     summary:
