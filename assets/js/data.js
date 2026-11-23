@@ -2532,7 +2532,7 @@ const SITE = {
     tools: "",
     cover: "assets/img/natural-palette/render-main.jpg", // 2026-11-24 사용자 요청: 렌더 메인샷을 대표사진으로
     coverR: 1.1019,
-    thumb: "assets/img/natural-palette/render-main.jpg",
+    thumb: "assets/img/natural-palette/render-entrance.jpg", // 2026-11-24 사용자 요청: studio 카드 = 이게찐(입구 홀), 작품 페이지 대표 = 메인샷
     coverCaption: "The kindergarten across the lake, the forest behind",
     summary:
       "A kindergarten on a slope that falls about 14 m from the forest to the lake. The slope is set into two grounds — the lake ground at the level of the road and the forest ground a floor above — and a three-storey building is slid in between, carved by a hall and a light well so that children on every floor see and hear each other. What is left of the slope becomes six play grounds — lake, deck, sand, garden, small forest and forest — climbing one step at a time. Reinforced concrete, wrapped in ipe.",
