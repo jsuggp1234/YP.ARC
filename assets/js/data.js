@@ -1520,7 +1520,7 @@ const SITE = {
     program: "단독주택 (4인 가족 + 손님)",
     site: "Los Dorados Avenue",
     area: "",
-    team: "",
+    team: "3인 공동작품", // 핀 #184
     tools: "",
     cover: "assets/img/la-junita/aerial.jpg",
     coverR: 1.577, // 대표사진 가로/세로 (머리 배치용)
