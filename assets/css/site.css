@@ -2415,3 +2415,15 @@ html.sb-on { overflow-x: hidden; }
 .media .dims line.g { stroke: var(--mid); stroke-width: .6; stroke-dasharray: 10 3 2 3; opacity: .7; } /* 핀 #199: 그리드선(일점쇄선) */
 .media .ftag.dim-t { font-size: var(--t-xs); padding: 0 2px; }
 .kj-it .media { width: min(100%, var(--kjw, 100%)); } /* 핀 #202: keyed.lw로 확대 상세 그림 폭 */
+/* 핀 #203·#204: 모바일 그림 설명 목록 정리 — 설명 달린 그림은 한 줄에 하나, 목록은 왼쪽 정렬 2칸·작은 글자 */
+@media (max-width: 760px) {
+  .figs.gc:has(.fnotes) { grid-template-columns: 1fr !important; row-gap: 40px; }
+  .figs.gc:has(.fnotes) > * { grid-column: auto !important; }
+  .fnotes { gap: 8px 14px; margin-top: 10px; }
+  .fnotes li { text-align: left; gap: 1px; padding-inline: 0; }
+  .fnotes b { font-size: var(--t-xs); }
+  .fnotes li > span { font-size: var(--t-xs); line-height: 1.35; color: var(--mid); }
+  .fnotes.ld-m { gap: 4px 14px; }
+  .fnotes.ld-m li { border-top: 1px solid var(--line); padding-top: 4px; }
+  .fnotes.ld-m b { font-weight: 400; }
+}
