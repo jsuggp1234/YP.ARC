@@ -2412,3 +2412,5 @@ html.sb-on { overflow-x: hidden; }
 .media .dims { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; overflow: visible; }
 .media .dims line { stroke: var(--ink); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .media .ftag.dim-t.dv { transform: translate(-50%, -50%) rotate(-90deg); }
+.media .dims line.g { stroke: var(--mid); stroke-width: .6; stroke-dasharray: 10 3 2 3; opacity: .7; } /* 핀 #199: 그리드선(일점쇄선) */
+.media .ftag.dim-t { font-size: var(--t-xs); padding: 0 2px; }
