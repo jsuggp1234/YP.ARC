@@ -2533,7 +2533,7 @@ const SITE = {
     "program": "교회 · 예배당 · 교육 · 만남 공간 · 디지털 트윈",
     "site": "수공간 위 진입 축",
     "area": "219 × 454 m, EL +297 m · 모듈 15,137개",
-    "team": "",
+    "team": "3인 공동작품", // 핀 #185
     "tools": "",
     "cover": "assets/img/metaverse-church/cover.jpg",
     "coverCaption": "On the axis — the scattered modules close into one cross above the water",
@@ -2741,7 +2741,7 @@ const SITE = {
     program: "유치원 · 신축 (5·6세반, 7세반, 특수학급)",
     site: "호수와 숲 사이 경사지",
     area: "실내 약 1,128 m² · 건축 투영 약 737 m² · 지붕 데크 약 506 m²",
-    team: "개인",
+    team: "단독작품", // 핀 #186
     tools: "",
     cover: "assets/img/natural-palette/section-final.jpg",
     coverR: 2.5211, // 대표: 최종 단면 투시(KG-09C)
