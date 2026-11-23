@@ -1523,7 +1523,7 @@ const SITE = {
     "tools": "",
     // 핀 #178·#179: 대표사진(상세 머리) = 호숫가 새벽 렌더, studio 카드 = 숲속 아이들 렌더 (예전 대표: village-section.jpg)
     "cover": "assets/img/the-tree-house/cover.jpg",
-    "coverVideo": "assets/img/the-tree-house/cover-film.mp4", "coverVideoOnce": true, // 핀 #214: 재생 버튼으로 10초 한 번 — 비·커튼 불규칙 펄럭임·배가 앞으로(scratchpad th_film.py로 사진에서 만듦)
+    "coverFull": true, // 핀 #215: 영상 대신 대표 사진이 첫 화면을 꽉 채워요 (예전 cover-film.mp4는 핀 #215로 뺌)
     "thumb": "assets/img/the-tree-house/card.jpg",
     "coverCaption": "Morning on the Soyang lake — a bloomed room on its birch, curtains open to the water",
     "coverR": 1.2217,

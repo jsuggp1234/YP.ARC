@@ -3921,7 +3921,7 @@
       const title = words(p.title);
       $("#main").innerHTML = `
         <article class="pg cx">
-          <header class="cx-hd g4 ${p.coverWide || (p.coverR || 0.8) >= 1.2 ? "cx-w" : "cx-t"}" style="--r:${p.coverR || 0.8}">
+          <header class="cx-hd g4 ${p.coverWide || (p.coverR || 0.8) >= 1.2 ? "cx-w" : "cx-t"}${p.coverFull ? " cx-full" : ""}" style="--r:${p.coverR || 0.8}">
             <div class="cx-l">
               <div class="cx-tt">
                 <h1 class="cx-h">${esc(p.title)}</h1>

@@ -2456,3 +2456,10 @@ html.sb-on { overflow-x: hidden; }
 .media .ftag.fl::before { content: ""; position: absolute; left: 0; top: calc(50% - 9px); width: 1px; height: 17px; background: var(--ink); }
 .media .ftag.fl::after { content: ""; position: absolute; left: 1px; top: calc(50% - 9px); width: 9px; height: 4px; background: var(--ink); }
 .media .ftag.fl.c { transform: translate(0, -50%); }
+/* 핀 #215: coverFull — 대표 사진이 첫 화면을 가장자리까지 꽉 채움(제목·설명은 그 아래) */
+.cx-full .cx-cv { grid-column: 1 / -1; grid-row: 1; padding-top: 0; margin-inline: calc(-1 * var(--g4-e)); }
+.cx-full .cx-cv .media { width: 100%; height: 100svh; aspect-ratio: auto; margin: 0; }
+.cx-full .cx-cv .media img { width: 100%; height: 100%; object-fit: cover; }
+.cx-full .cx-l, .cx-full .cx-lead { grid-row: 2; }
+@media (max-width: 760px) { .cx-full .cx-cv { padding-top: 0; } .cx-full .cx-cv .media { width: 100%; height: 100svh; aspect-ratio: auto; } .cx-full .cx-l, .cx-full .cx-lead { grid-row: auto; } }
+@media (max-width: 760px) { .cx-full .cx-cv .media img { object-position: 74% 50%; } } /* 모바일: 나무집이 화면 가운데 오도록 */
