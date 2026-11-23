@@ -1506,540 +1506,6 @@ const SITE = {
     ],
     drawings: []
   },
-  // 라주니타 (2026-11-22 추가) — 원본: portfolio-source/라주니타. 글은 패널(.ai)의 설명문에서 옮겼어요.
-  // 확인 필요: year(원본 파일 날짜 2025.03 기준 추정) · studio · 대지 위치 · 팀 — 사용자에게 받으면 채우기
-  {
-    slug: "la-junita", blurb: "la junita, 아르헨티나 단독주택",
-    title: "Flowing layers",
-    titleKo: "아르헨티나 단독주택",
-    subtitle: "A house for a family of four on a slope above the river — masses that step down the ground, each one turned to the water",
-    type: "House",
-    year: "2025",
-    studio: "",
-    award: "",
-    program: "단독주택 (4인 가족 + 손님)",
-    site: "Los Dorados Avenue",
-    area: "",
-    team: "3인 공동작품", // 핀 #184
-    tools: "",
-    cover: "assets/img/la-junita/aerial.jpg",
-    coverR: 1.577, // 대표사진 가로/세로 (머리 배치용)
-    coverCaption: "Aerial view — the masses stepping down toward the river",
-    summary:
-      "A home is more than a shelter; it is where life unfolds and memories are made. Designed for a family of four while welcoming guests with warmth and privacy, the house steps down a slope toward the river — open to natural light, with seamless passages between indoors and outdoors.",
-    sections: [
-      { heading: "Masses on the Slope", text: "The masses were first laid along an axis that flows down the slope. Those running east to west were shifted south so none overlaps and every room gets daylight, and each mass along the slope opens to a view of the river. The land left over became a courtyard, keeping as many of the existing trees as possible.", images: [{ src: "assets/img/la-junita/site-plan.jpg", caption: "Site plan", r: 1.42 }] },
-      // 핀 #137·#138: 두 층 평면을 같은 축척·같은 자리로 겹쳐 스크롤로 넘김 — 그리드 이름·치수(축척 막대로 잰 값, mm)·프로그램 번호는 사이트 글자
-      { heading: "Two Levels on One Grid", big: true, text: "The entrance level and the lower level drawn at the same scale and laid on the same spot — scroll down a level. The grid lines run through both floors; dimensions are in millimetres between grid lines.", images: [], seq: {"kind":"frames","fade":true,"below":true,"r":1.385,"steps":[{"src":"assets/img/la-junita/plan-upper.jpg","t":"Entrance level","s":"by car and on foot from Los Dorados Avenue","d":"The main entrance sits on the east side. From the door the guest lounge opens to the river, while a corridor leads to two guest rooms with terraces — the guest wing stays apart, so the family keeps its privacy.","k":[["01 Guest lounge","living room at the door, facing the river"],["02 Open lounge","double-height void over the lower lounge"],["03 Guest rooms","two rooms with their own terraces"],["04 Multiroom · bedrooms","children's rooms above the stand"],["05 Parking","from Los Dorados Avenue"],["06 Living · dining","the family wing at the top of the slope"]],"tags":[[53.7,17.4,"X3′","","m"],[56.8,17.4,"X4","","m"],[62.6,17.4,"X5","","m"],[68.8,17.4,"X5′","","m"],[71.7,17.4,"X6","","m"],[80.5,17.4,"X7","","m"],[82.8,17.4,"X7′","","m"],[54.9,21,"3,300","c","m"],[59.4,21,"6,000","c","m"],[65.4,21,"6,400","c","m"],[69.9,21,"3,000","c","m"],[75.8,21,"9,200","c","m"],[81.3,21,"2,300","c","m"],[19.9,32,"Y5","","m"],[19.9,48.1,"Y4","","m"],[19.9,57.2,"Y3","","m"],[19.9,68.5,"Y2","","m"],[19.9,80.8,"Y1","","m"],[19.5,41.2,"12,000","","m"],[19.5,53.8,"6,800","","m"],[19.5,64,"8,500","","m"],[19.5,75.9,"9,200","","m"],[78.4,95.3,"0","c","m"],[83.2,95.3,"5","c","m"],[88,95.3,"10","c","m"],[97.7,95.3,"20 m","c","m"],[59.3,75.1,"01","c pt"],[58.8,64.7,"02","c pt"],[66.4,77.2,"03","c pt"],[74.4,40.3,"04","c pt"],[70.9,26.4,"05","c pt"],[74.4,54.9,"06","c pt"]]},{"src":"assets/img/la-junita/plan-lower.jpg","t":"Lower level","s":"a few steps down, the house ends at the river","d":"A second living room connects to the two children's rooms and a bathroom. An open void with a stand and stair brings the family together, and a loft above the master bedroom adds variety. Glass on three sides brings light and the river in; large openings help passive heating, and a partition wall hides the utilities.","k":[["01 Living room","glass on three sides toward the river"],["02 Music hall","beside the open lounge"],["03 Master bedroom","with a loft above"],["04 Bedrooms","two children's rooms"],["05 Infinity pool","extending from the living room"],["06 Outdoor lounge · garden","sunken where the pool meets the garden"]],"tags":[[36,17.4,"X1","","m"],[43.7,17.4,"X2","","m"],[48.1,17.4,"X3","","m"],[56.8,17.4,"X4","","m"],[62.6,17.4,"X5","","m"],[71.6,17.4,"X6","","m"],[39.5,21,"8,000","c","m"],[45.6,21,"4,600","c","m"],[52.1,21,"9,000","c","m"],[59.3,21,"6,000","c","m"],[66.8,21,"9,400","c","m"],[19.9,32,"Y5","","m"],[19.9,48.1,"Y4","","m"],[19.9,57.2,"Y3","","m"],[19.9,68.5,"Y2","","m"],[19.9,80.8,"Y1","","m"],[19.5,41.2,"12,000","","m"],[19.5,53.8,"6,800","","m"],[19.5,64,"8,500","","m"],[19.5,75.9,"9,200","","m"],[78.4,95.3,"0","c","m"],[83.2,95.3,"5","c","m"],[88,95.3,"10","c","m"],[97.7,95.3,"20 m","c","m"],[50.2,54.9,"01","c pt"],[50.2,64.3,"02","c pt"],[58.8,77.2,"03","c pt"],[66.8,76.9,"04","c pt"],[39.2,57.7,"05","c pt"],[54,40.3,"06","c pt"]]}]} },
-      { heading: "Materials", text: "Stone, brick, steel, glass and wood, balanced between the modern and the natural. Stone and brick ground the house; glass lets in light and the river; steel carries the open spaces; wood brings warmth inside. Outside, the pool extends from the living room toward the river, and a sunken lounge sits where the pool meets the garden.", big: true, images: [], seq: {"kind":"lead","src":"assets/img/la-junita/axo.jpg","r":1.159,"n":8,"steps":[{"t":"The house on the slope","s":"three masses stepping down to the river"},{"t":"Roofs lifted","s":"flat roofs drawn off the walls"},{"t":"Entrance level","s":"door, guest lounge and the open void"},{"t":"Brick, glass and steel","s":"the materials that hold the rooms"},{"t":"Pool and garden","s":"the house runs out toward the river"}],"L":[["l",41.7,37,"Flat roof, gravel, steel edge fascia",1],["r",44.6,60.5,"Roof over the family wing",1],["r",58.5,60.5,"Roof over the guest wing, stepped lower",1],["l",60.2,40,"Pedestrian access from the east",2],["l",65.7,24.5,"Vehicular access and parking",2],["r",66.6,54.5,"Guest lounge",2,1],["r",68.9,59,"Open lounge, double-height void",2,1],["l",71.2,31,"Parking court",2,1],["r",73,65,"Floor-to-ceiling low-E glass, slim steel frames",3],["l",75.3,50.5,"Dark clay brick, running bond",3],["r",76.4,62,"Terrazzo and oak floors",3],["l",78.6,46,"Terraced lawn steps, native planting",4],["r",82.2,69,"Infinity pool, mosaic tile, stone coping",4],["l",86.5,57.5,"Sunken lounge where pool meets garden",4,1]]} },
-      { heading: "Scenes", text: "The house from the garden and the river side, and the living spaces inside.", images: [{ src: "assets/img/la-junita/exterior-1.jpg", caption: "Exterior", r: 1.577 }, { src: "assets/img/la-junita/exterior-2.jpg", caption: "Pool and garden", r: 1.577 }, { src: "assets/img/la-junita/interior-1.jpg", caption: "Living room", r: 1.502 }, { src: "assets/img/la-junita/interior-2.jpg", caption: "Interior", r: 1.502 }], stack: true, scenes: true },
-    ],
-  },
-  {
-    slug: "smart-pixel", blurb: "귀갓길을 밝히는 빛 기둥",
-    title: "SMART PIXEL",
-    titleKo: "대림2동 귀갓길의 빛 기둥",
-    subtitle: "One lit column on a 2.5 m grid — a gate, a colonnade and a pavilion for the walk home in Daerim 2-dong",
-    type: "Urban",
-    year: "2023",
-    studio: "Teraviva 국제공모 · Tactical Urbanism",
-    award: "",
-    program: "골목 조명 키트 · 게이트, 회랑, 정자",
-    site: "서울 영등포구 대림2동",
-    area: "",
-    team: "2인 공동작품",
-    tools: "",
-    pos: [-0.28, -1.26],
-    mass: [
-      [-0.01, -0.01, 0.07, 0.07, 0.33, 0, "cyl"],
-      [0.34, -0.01, 0.07, 0.07, 0.33, 0, "cyl"],
-      [0.69, -0.01, 0.07, 0.07, 0.33, 0, "cyl"],
-      [1.04, -0.01, 0.07, 0.07, 0.33, 0, "cyl"],
-      [1.39, -0.01, 0.07, 0.07, 0.33, 0, "cyl"],
-      [-0.01, 0.75, 0.07, 0.07, 0.33, 0, "cyl"],
-      [0.34, 0.75, 0.07, 0.07, 0.33, 0, "cyl"],
-      [0.69, 0.75, 0.07, 0.07, 0.33, 0, "cyl"],
-      [1.04, 0.75, 0.07, 0.07, 0.33, 0, "cyl"],
-      [1.39, 0.75, 0.07, 0.07, 0.33, 0, "cyl"],
-      [0, -0.05, 1.45, 0.2, 0.02, 0.33],
-      [0, 0.66, 1.45, 0.2, 0.02, 0.33],
-      [1.84, -0.01, 0.07, 0.07, 0.69, 0, "cyl"],
-      [2.19, -0.01, 0.07, 0.07, 0.69, 0, "cyl"],
-      [2.54, -0.01, 0.07, 0.07, 0.69, 0, "cyl"],
-      [1.84, 0.34, 0.07, 0.07, 0.69, 0, "cyl"],
-      [2.54, 0.34, 0.07, 0.07, 0.69, 0, "cyl"],
-      [1.84, 0.69, 0.07, 0.07, 0.69, 0, "cyl"],
-      [2.19, 0.69, 0.07, 0.07, 0.69, 0, "cyl"],
-      [2.54, 0.69, 0.07, 0.07, 0.69, 0, "cyl"],
-      [1.85, 0, 0.75, 0.75, 0.02, 0.34],
-      [1.85, 0, 0.75, 0.75, 0.02, 0.69],
-      [0.29, 1.34, 0.07, 0.07, 0.69, 0, "cyl"],
-      [0.78, 1.34, 0.07, 0.07, 0.69, 0, "cyl"],
-      [0.3, 1.33, 0.54, 0.09, 0.03, 0.66]
-    ],
-    cover: "assets/img/smart-pixel/cover-lane.jpg",
-    coverR: 0.914, // 대표사진 가로/세로 (머리 배치용)
-    coverCaption: "Eleven gates, seven lit lanes, one corridor, three rooms — one walk home from Daerim station",
-    summary: "Daerim 2-dong has deep lanes that open straight into the dark, a market street edged by patchwork awnings, and corners that are left over. SMART PIXEL does not add lamps to them. It adds three of the oldest pieces of architecture, rebuilt from one lit column on a 2.5 m grid: a gate you pass through, a colonnade you walk along, a pavilion you stay in. Light is switched on only by the people who are there, and every piece bolts on and lifts out again.",
-    sections: [
-      {
-        heading: "Site — Why Daerim 2-dong",
-        text: "The kit is not spread over the city. It goes where many people walk home through deep, unlit alleys, and where the neighbourhood already lives outdoors at night. Six readings of the same 1 km frame decide where: 45,000 residents, 80 % of 16.6 km of streets are lanes, 177 of 400 walks home share one street, 64 % of street length lies over 40 m from a main road — and 316 of the 400 routes pass the frame.",
-        images: [], seq: {"kind":"frames","below":true,"r":0.83,"k":1.05,"fade":true,"steps":[{"src":"assets/img/smart-pixel/site-1-location.jpg","t":"Location","s":"Korea's most concentrated ethnic enclave"},{"src":"assets/img/smart-pixel/site-2-fabric.jpg","t":"Fabric","s":"80 % of 16.6 km of streets are lanes"},{"src":"assets/img/smart-pixel/site-3-walk-home.jpg","t":"Walk home","s":"177 of 400 routes share one street"},{"src":"assets/img/smart-pixel/site-4-depth.jpg","t":"Depth","s":"64 % of street length is over 40 m deep"},{"src":"assets/img/smart-pixel/site-5-already-there.jpg","t":"Already there","s":"cameras, lamps, two safe routes"},{"src":"assets/img/smart-pixel/site-6-where.jpg","t":"Where the frame goes","s":"316 of 400 routes pass it"}]}
-      },
-      {
-        heading: "Threshold, Colonnade, Pavilion", big: true, // 핀 #100: 그림 위 글자가 읽히게 넓게
-        text: "Each old type is read for what it does to the ground, not for how it looks. The gate (Hongsalmun) marks where a lane begins; the market colonnade (Sijeon haengnang) thickens an edge into a room; the raised pavilion (nu) lifts the ground twice. The frame keeps the act, drops the ornament and the wall, and adds what the type never had after dark: light that answers.",
-        stack: true,
-        images: [
-          {"src":"assets/img/smart-pixel/type-threshold.jpg","caption":"01 Threshold — pass through: ×11 at the mouths of deep lanes, 3.5 m between the piers","r":4.307,"tags":[[35.17,5.36,"5.0","",""],[33.22,10.69,"deep lane","","m"],[80.8,19.07,"lane walls","","m"],[89.88,24.82,"portal 3.5 × 2.5 × 4.96 m\nlit from the head","","nl w1"],[59,23.94,"lane 5.0","",""],[16.03,41.14,"arrow bars\non two beams","","nl w1"],[64.79,48.18,"head lit, cone ±34°;\nupper tier held at 20 %","","nl w1"],[26.55,56.78,"pavement","","m"],[16.03,64.25,"no wall,\nnothing closes","","nl w1"],[58.9,63.12,"3.3 clear","",""],[34.7,70.48,"3.5 c/c","",""],[63.93,73.59,"4.96","",""],[81.21,74.93,"pass through","","w"],[42.28,77.68,"street","","m"],[25.34,91.7,"bench, lane name,\nSOS button","","nl w1"],[38.41,91.7,"threshold 3.5 × 2.5 m,\n100 % while someone passes","","nl w1"]],"notes":[["01","Hongsalmun, red-arrow gate","Two posts and two beams before a shrine, tomb or school. No wall: it closes nothing, it marks where the inside begins."],["02","Plan: a line across the lane mouth","The frame stands on the pavement, 0.75 m in from the walls; its 3.5 × 2.5 m threshold is the brightest spot of the lane."],["03","Elevation from the pavement","The head frames the lane and keeps 3.3 m clear for deliveries and fire access; a seat waits at the door."],["04","A portal you cross, not enter","The lit volume is the doorway the lane never had: two piers, one head, no door."]]},
-          {"src":"assets/img/smart-pixel/type-colonnade.jpg","caption":"02 Colonnade — walk along: 335 m along the market street, two aisles and a nave open to the sky","r":4.695,"tags":[[77.41,7.66,"shopfront","","m"],[25.72,12.32,"shops","","i"],[82.29,20.42,"open to the sky","","w"],[57.87,20.97,"open to the sky","","w"],[47.82,25.12,"1.25","",""],[47.82,32.42,"1.25","",""],[28.76,32.47,"aisle","","m"],[32.64,43.04,"nave, open to the sky","","w"],[47.82,44.82,"3.0","",""],[32.83,47.08,"fire access, deliveries","","m"],[54.44,52.2,"lintel light ±34°\n31 lx on the walk","","nl w1"],[83.73,51.9,"nave","","w"],[47.82,57.25,"1.25","",""],[71.91,57.55,"shopfront","","m"],[41.2,57.59,"aisle","","m"],[60.53,59.9,"roof panel, louvred","","w"],[61,63.49,"2 % fall outwards","","m"],[47.82,64.56,"1.25","",""],[78.52,68.7,"walk along","","w"],[89.24,71.93,"aisle under the roof\n2.5 m, lit from above","","nl w1"],[25.72,78.33,"shops","","i"],[6.42,91.87,"kan","c",""],[9.56,91.87,"kan","c",""],[12.69,91.87,"kan","c",""],[15.83,91.87,"kan","c",""],[50.97,92.97,"shop","",""],[54.67,92.97,"2.5 aisle","",""],[58.92,92.97,"3.0 nave","",""],[63.22,92.97,"2.5 aisle","",""],[67.77,92.97,"shop","",""]],"notes":[["01","Sijeon haengnang, Jongno","From 1412 the state built the market a long row of identical bays (kan); the merchants filled them."],["02","Plan: an edge thickened into aisles","Columns every 2.5 m in two rows; roofs over the stalls and the walkway, 3.0 m left open down the middle."],["03","Cross-section: aisle, nave, aisle","The roofs cover the stalls and the walk; the nave stays open to the sky for fire access and deliveries."],["04","A hall made of a street","Two lit aisles to walk along, one nave to look up from. Ten metres drawn; 335 m built."]]},
-          {"src":"assets/img/smart-pixel/type-pavilion.jpg","caption":"03 Pavilion — stay in: ×3 on public land at route nodes, 2 × 2 cells over two tiers","r":4.317,"tags":[[42.4,7.86,"lane","","m"],[34,25.83,"pocket park","","m"],[90.44,25.98,"lantern 5.0 × 2.5 × 2.4 m","","w"],[64.95,41.98,"1.2 m guard on\nthe open edges","","nl w1"],[69.25,43.2,"house","","m"],[25.82,49.49,"lane","","m"],[56.03,49.9,"lantern: grating floor, lit screen","",""],[18.28,63.13,"a room to\nlook out from","","nl w1"],[88.51,62.4,"shade 5.0 × 5.0 × 2.56 m","","w"],[66,66.85,"2.40","",""],[54.5,68.05,"stair","","m"],[31.31,68.05,"up","","m"],[79.98,74.92,"stay in","","w"],[66,77.55,"2.56","",""],[18.28,79.25,"shade and\na path below","","nl w1"],[36.49,90.05,"lane","","m"],[58.8,93.57,"2.5","c",""],[61.12,93.57,"2.5","c",""]],"notes":[["01","Nu, raised pavilion","A floor lifted on posts, open on every side: shade and a path below, a room to look out from above."],["02","Plan: a roof on a left-over corner","2 × 2 cells where three lanes meet; the lantern upstairs is in view from each of them."],["03","Section: shade below, lantern above","A table under the first tier; upstairs a grating floor, a 1.2 m guard and the lit mesh screen."],["04","A room that is also a lamp","5.0 × 5.0 m of shade under 5.0 × 2.5 m of light, open on every side, closed by nothing."]]},
-          {
-            src: "assets/img/smart-pixel/type-abstraction.jpg",
-            caption: "Keep the act, drop the form — mark, thicken, lift",
-            r: 5.805
-          }
-        ]
-      },
-      {
-        // 핀 #102: 엑소노를 키 그림으로 크게 고정, 상세 렌즈 a·b·c가 차례로 올라오고 빨간 지시선이 이어져요 (원본 03_frame.ai, 글자·번호 원·지시선 없이)
-        "heading":"One Frame, Three Gestures","text":"The light column becomes architecture when it is joined. A lintel on two heads makes a gate; a row of gates under roof panels makes a corridor; a second tier on four cells makes a room. Same parts, same 2.5 m grid, all bolted, all removable — ten part types, about 2,300 pieces, nothing made for one place only.","images":[],"keyed":{"key":{"src":"assets/img/smart-pixel/frame-key.jpg","r":0.683,"caption":"The Pixel Frame — one 2.5 m cell, exploded in assembly order"},"items":[{"src":"assets/img/smart-pixel/lens-a.jpg","r":1,"t":"Head node and lintel joint","d":"Lintels slide over the arms, 2 × M12 each end; driver, board and cover lift out of the top.","x":83.3,"y":48.1,"notes":[["1","2 × M12 × 40"],["2","Lintel 100 × 160, LED + opal lens"],["3","Cover ø170, 4 × M6 pin-Torx"],["4","Gasket, EPDM"],["5","Controller + Bluetooth LE 5"],["6","Driver 30 W, 24 V"],["7","Arm 92 × 152, M12 bosses"],["8","Radar 24 GHz"]]},{"src":"assets/img/smart-pixel/lens-b.jpg","r":1,"t":"Light column","d":"Core, two LED lines, opal diffuser and mask; the diffuser slides off once the head is off.","x":64.8,"y":72.2,"notes":[["1","Mask, 180°"],["2","End ring"],["3","Spigot ø93, 2 × M8"],["4","Core ø101.6 × 4"],["5","Diffuser ø150, PC opal"],["6","LED 24 V, two lines"]]},{"src":"assets/img/smart-pixel/lens-c.jpg","r":1,"t":"Ground connection","d":"Plug, collar and lock pin on the cast-in sleeve; the socket stays when the pixel leaves.","x":64.8,"y":86.5,"notes":[["1","Lock pin M12 × 110"],["2","Collar ø170, hatch, QR"],["3","Plug IP68, 3-pole"],["4","Paving 200 × 100"],["5","Sleeve ø114.3"],["6","Socket shaft ø300"]]}]}
-      },
-      {
-        heading: "Point, Line, Volume", big: true, cols: 3, // 핀 #153: 세 장면을 한 줄에
-        text: "One column becomes a gate frame, a gate, a corridor and a room — scroll through the steps. The same ten standard parts, about 2,300 pieces in all, are counted for the Daerim 2-dong pilot: 620 sockets, 682 columns, 656 lintels, 280 roof panels. Below, the three gestures drawn at the same scale on a 12 × 12 m plot.",
-        // 핀 #140: 다섯 단계 시뮬레이션 + 세 장면을 따로 크게(원본 03_frame.ai, 글자·지시선 없이), 치수·설명은 사이트 글자
-        seq: {"kind":"frames","fade":true,"r":0.9381,"k":0.9,"steps":[{"src":"assets/img/smart-pixel/plv-1.jpg","t":"Column","s":"one pixel","d":"A socket set in the paving, one lit column, a head node on top — the smallest piece of the kit, on a 2.5 m grid.","k":[["In the pilot","682 columns"],["Sockets","620"]],"tags":[[3,5,"Point","","w"]]},{"src":"assets/img/smart-pixel/plv-2.jpg","t":"Gate frame","s":"+ lintel","d":"A lintel slides over two head nodes and two columns become a frame. 3.5 m across a gate, 2.5 m everywhere else.","k":[["Lintels","656"]],"tags":[[3,5,"Line","","w"]]},{"src":"assets/img/smart-pixel/plv-3.jpg","t":"Gate","s":"+ second tier","d":"A second tier stands on the head nodes: a portal 4.96 m high at the mouth of a deep lane.","k":[["Gates","11"],["Each","4 sockets · 8 columns · 6 lintels"]],"tags":[[3,5,"Line","","w"]]},{"src":"assets/img/smart-pixel/plv-4.jpg","t":"Corridor","s":"+ roof panels","d":"Two rows of frames carry roof panels over the stalls: 335 m along the market street. Seven lane lines (662 m) use the same frame without a roof.","k":[["Sockets · columns","270 · 270"],["Lintels · roof panels","268 · 268"]],"tags":[[3,5,"Line","","w"]]},{"src":"assets/img/smart-pixel/plv-5.jpg","t":"Room","s":"2 × 2 cells × 2 tiers","d":"Four cells on two tiers, with a grating floor, a mesh screen and guards: a small temporary building at a route node.","k":[["Rooms","3"],["Each","9 sockets · 15 columns · 19 lintels · 4 roof panels"],["Gratings · mesh · guards","2 · 2 · 4"]],"tags":[[3,5,"Volume","","w"]]}]},
-        images: [{"src":"assets/img/smart-pixel/gesture-gate.jpg","r":1.0787,"tags":[[57.5,70.6,"4.96 m","",""],[36.5,79.3,"3.5 m c/c","",""],[48.3,86.7,"street","","m"]],"notes":[["01","Gate","Two piers on the pavement, 0.75 m in from the lane walls, joined at 4.96 m. Keeps 3.3 m clear for deliveries and fire access; carries the lane name, a bench and an SOS button."]]},{"src":"assets/img/smart-pixel/gesture-corr.jpg","r":1.0787,"tags":[[97.3,78.7,"3.0 m open to the sky","r",""],[15.4,81.6,"2.5 m","",""],[99,83.8,"8.0 m between shopfronts","r",""],[36.5,84.4,"near-side shopfront, cut away","","m"]],"notes":[["02","Corridor","Two colonnades 5.5 m apart replace the patchwork awnings. Panels shade the stalls by day; after closing at 20:30 the lintels light the 8 m street, 3 m of it open to the sky."]]},{"src":"assets/img/smart-pixel/gesture-room.jpg","r":1.0787,"tags":[[61.7,70.3,"4.96 m","",""],[39.2,78,"5.0 m","",""],[44.4,88.2,"pocket park","","m"]],"notes":[["03","Room","2 × 2 cells on two tiers: a table below, a lit lantern above with the mesh screen. A temporary building (max. 3 years, renewable) — the neighbourhood can keep it, move it or return it."]]}]
-      },
-      {
-        heading: "The Gathering Rule", big: true,
-        text: "Light is switched on only by the people who are there. The number of people sets the size of the space — scroll from nobody to a group of four: the plan on the left, the same 16 pixels on the right, and below what is lit, who it needs and when it runs. Every mode keeps the light at residents' windows at or below 10 lx, the limit for residential zones; when everyone leaves, or after 23:00, it falls back to the default.",
-        // 핀 #152: 평면(원본 05_program) + 16기둥 엑소노를 한 장면에, Four Modes 사양 표를 단계마다
-        images: [],
-        seq: {"kind":"frames","fade":true,"below":true,"k":0.86,"r":2.2143,"steps":[{"src":"assets/img/smart-pixel/rule-0.jpg","t":"00 Default","s":"CPTED state · nobody gathered","d":"Runs by itself from dusk to dawn: every pixel low, rising to 100 % as you pass. Used for the walk home from the station, a lit and watched corner at 2 am, and SOS — the cluster flashes.","k":[["People","none: runs by itself"],["Pixels lit","all, low"],["Output","20 % → 100 % as you pass"],["Colour","2700 K warm white"],["Sensors","radar in the column head"],["Alarm","flashes on an Ansimi app SOS"],["Runs","dusk to dawn"]],"tags":[[1.6,4,"Plan","","m"],[38.3,4,"Axonometric — 16 pixels, 2.5 m grid","","m"],[45.9,80.5,"2.5 m","c",""]]},{"src":"assets/img/smart-pixel/rule-1.jpg","t":"01 Column","s":"point · 1 person","d":"One person checks in and the pixel next to them lights up. For waiting for someone, a short phone-free talk, walking the dog.","k":[["People","1, checked in on site"],["Pixels lit","1, next to you"],["Output","100 %"],["Colour","2700–4000 K, user set"],["Check-in","Bluetooth, within 3 m"],["Hold","while you stay, 10 min after"],["Runs","18:00–24:00"]],"tags":[[1.6,4,"Plan","","m"],[38.3,4,"Axonometric — 16 pixels, 2.5 m grid","","m"]]},{"src":"assets/img/smart-pixel/rule-2.jpg","t":"02 Wall","s":"line · 2 people","d":"Two neighbouring pixels pull a mesh screen between them. A neighbourhood film night, kids' drawings on the screen, a quiet backdrop for a stall.","k":[["People","2+, at neighbouring pixels"],["Pixels lit","2 + mesh screen"],["Screen","2.35 × 1.90 m, pulled by hand"],["Image","edge-lit, or projector in head"],["Set-up","unroll, clip to the next column"],["Sound","none"],["Runs","18:00–22:00"]],"tags":[[1.6,4,"Plan","","m"],[38.3,4,"Axonometric — 16 pixels, 2.5 m grid","","m"]]},{"src":"assets/img/smart-pixel/rule-3.jpg","t":"03 Space","s":"volume · 4 people","d":"Four corners of a cell light up under a string-light canopy, with a table and stools from the furniture box. A neighbour dinner, a study circle, the night-market table.","k":[["People","4+, one booking in the app"],["Pixels lit","4 corners of a cell"],["Canopy","2.5 × 2.5 m string lights, H 2.4 m"],["Furniture","box: 1 table, 4 stools"],["Set-up","15 min, by the group"],["Return","pack the box to sign out"],["Runs","18:00–22:00, Fri–Sat to 23:00"]],"tags":[[1.6,4,"Plan","","m"],[38.3,4,"Axonometric — 16 pixels, 2.5 m grid","","m"]]}]}
-      },
-      {
-        heading: "Under the Corridor at 21:00", big: true,
-        text: "Section A–A cuts the market street through a column pair. Shops keep their stalls under the roof, homes above keep their dark windows, and nothing under the street moves: the sockets stop at −0.88, above every service.",
-        images: [
-          {
-            src: "assets/img/smart-pixel/section-aa.jpg",
-            caption: "Section A–A — Digital-ro 37na-gil at 21:00, perspective beyond the cut",
-            r: 1.291,
-            w: "80%" // 핀 #149 전체 폭 → 핀 #158 조금 작게
-          }
-        ]
-      },
-      {
-        heading: "Checks",
-        text: "2.2 lx at the window, 31 / 6 lx on the walkway, 28 MPa in a frame in wind, 3.75 kN uplift on a socket, 21 kWh a night for the whole pilot.",
-        images: [
-          {
-            src: "assets/img/smart-pixel/detail-checks.jpg",
-            caption: "Light, wind, uplift and energy — checked against the limits",
-            r: 9.256
-          }
-        ]
-      },
-      {
-        heading: "One Pixel, Taken Apart", big: true,
-        text: "A pixel is three things on one axis: a socket that ties it to the ground, a column that gives light, and a head that senses and talks. Nothing is glued or cast on site; every layer comes off with one spanner, top down. It travels as four packages — socket 200 kg, column set 33 kg, head unit 12 kg, lintel 13 kg — and only the socket needs a machine.",
-        // 핀 #144: 단면 A(08_detail) + 분해 엑소노(11_device)를 한 장면에, 글자·지시선 없이 — 단계마다 묶음만 진하게, 같은 부품 번호
-        seq: {"kind":"frames","fade":true,"below":true,"r":1.4285,"steps":[{"src":"assets/img/smart-pixel/pixel-0.jpg","t":"One pixel","s":"three things on one axis · 247 kg","d":"Left, the column cut across the street; right, the same pixel taken apart. Scroll to put it together from the ground up — socket, light, head — the order it is built in, and the reverse of the order it leaves.","k":[["Ground connection","202 kg"],["Light","33 kg"],["Sense and talk","12 kg"],["Lintel","13 kg per bay"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"]]},{"src":"assets/img/smart-pixel/pixel-1.jpg","t":"A Ground connection","s":"set once by a mini excavator · stays when the pixel leaves","d":"A precast socket with the sleeve, supply elbow and drain already cast in. The collar is bolted on top and a capped lock pin goes through it into the core; the plug sits behind a hatch.","k":[["01 Socket, precast","600 × 600 base, ø300 shaft · 200 kg"],["02 Sleeve ø114.3 × 3.6","cast in; the core stops at −560"],["03 Supply elbow ø50","cast in, to the feeder duct"],["04 Drain ø20","to the gravel bed"],["05 Plug-in connector","230 V 16 A, 3-pole"],["06 Base collar ø170 × 180","cast aluminium · 1.8 kg"],["07 Lock pin M12 × 110","stainless, capped"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"],[18.7,70.9,"01","c pt"],[86.2,92.6,"01","c pt"],[20.5,67.8,"02","c pt"],[81,78.3,"02","c pt"],[24.9,79,"03","c pt"],[88.4,88.6,"03","c pt"],[22,81.7,"04","c pt"],[83.5,96.8,"04","c pt"],[22,75.7,"05","c pt"],[82.4,69.3,"05","c pt"],[24.1,51.6,"06","c pt"],[83.3,64.4,"06","c pt"],[24.6,54.4,"07","c pt"],[77.1,62.8,"07","c pt"]]},{"src":"assets/img/smart-pixel/pixel-2.jpg","t":"C Light","s":"lifts out as one piece once the head is off","d":"A steel core carries two LED lines; an opal diffuser slides over it, with a black film on the shop side so no light reaches the windows. End rings clip it shut.","k":[["08 Core ø101.6 × 4.0 × 2,796","S275 · 26.9 kg"],["09 Linear LED, 24 V","2700–4000 K, × 2"],["10 Diffuser ø150 × 3 × 2,060","opal PC · 3.4 kg"],["11 Mask, 180° film","on the shop side"],["12 End ring","× 2, seals the gap"],["13 Spigot ø93 × 5","into the core, 2 × M8 grub"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"],[20.6,40.8,"08","c pt"],[82.8,37.3,"08","c pt"],[23.4,31.5,"09","c pt"],[82.2,55.3,"09","c pt"],[23.9,27.6,"10","c pt"],[73.9,48.5,"10","c pt"],[20,29.5,"11","c pt"],[68.8,46.9,"11","c pt"],[73.8,25.6,"12","c pt"],[20.9,24.1,"13","c pt"],[82.7,26.5,"13","c pt"]]},{"src":"assets/img/smart-pixel/pixel-3.jpg","t":"B Sense and talk","s":"the head unit, wired and tested · swapped in 10 minutes","d":"A cast node with four arms holds the radar, the controller and the driver under one cover plate, and takes up to four lintels. The radar sees a pass, not a face.","k":[["14 Head node ø170 × 320","four arms 92 × 152 · 9.9 kg"],["15 Sensor lens","radar and Bluetooth window"],["16 Radar 24 GHz","holds the light 40 s"],["17 Controller, Bluetooth LE 5","check-in within 3 m"],["18 LED driver 30 W, 24 V","column + four lintels"],["19 Gasket","EPDM, under the cover"],["20 Cover plate ø170 × 12","4 × M6 pin-Torx"],["21 Lintel 100 × 160 × 3 × 2,500","sleeved over an arm · 13 kg"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"],[20,11.4,"14","c pt"],[80.5,19.7,"14","c pt"],[24.4,19.5,"15","c pt"],[83.5,20.1,"15","c pt"],[86.7,23.1,"16","c pt"],[83.1,10.6,"17","c pt"],[82.5,13.2,"18","c pt"],[83.3,8.5,"19","c pt"],[83.3,6.4,"20","c pt"],[22.6,14.8,"21","c pt"],[69,11.6,"21","c pt"]]}]},
-        images: []
-      },
-      {
-        heading: "How a Resident Talks to a Pixel", big: true,
-        text: "Four ways in, one phone, no account. Walking past needs nothing; a tap holds the light; a booking opens a room; a press on the gate calls for help. The pixel answers in light, and keeps nothing it does not need. Scroll through the four ways, then run them below.",
-        stack: true,
-        // 핀 #172: 원본 12_app.ai에서 글자 없이 뽑고 글은 모두 사이트 글자로, 네 가지 쓰임은 단계 장면 + 빛 시뮬레이션(church.js pixel)
-        seq: {"kind":"frames","fade":true,"below":true,"r":2.3471,"steps":[{"src":"assets/img/smart-pixel/app-way-1.jpg","t":"Walk past","s":"No phone, no sign-in. The radar sees a pass, not a face.","d":"The radar in each head watches the lane, 6 m each way, ±60°. The pixel you pass goes to 100 %; the next ones each way go to 60 %. The bright patch walks with you, one pixel ahead. 40 s after the last pass it falls back to 20 %, warm 2700 K.","k":[["Trigger","movement in the radar field"],["Holds","40 s after the last pass"],["Hours","dusk to dawn"]],"tags":[[2.38,11.94,"22:10","",""],[4.91,29.36,"22:10","","b"],[8.26,36.74,"Friday","",""],[9.9,55.89,"no app, no alert\nthe phone stays\nin the pocket","c","nl"],[32.59,34.32,"20 %","",""],[47.11,34.32,"60 %","",""],[61.32,34.32,"100 %","",""],[76.16,34.32,"60 %","",""],[90.69,34.32,"20 %","",""],[82.45,57.15,"radar, 6 m","",""]]},{"src":"assets/img/smart-pixel/app-way-2.jpg","t":"Check in","s":"One tap in the app, within 3 m: for a wait, a slow walk, a dog.","d":"Open the app beside a pixel; Bluetooth finds its head within 3 m. Tap Stay lit: the pixel next to you goes to 100 %, only that one. Pick the colour between 2700 and 4000 K, if you like. It holds while the phone stays within 3 m, and 10 min after.","k":[["Trigger","a tap in the app, nothing to sign"],["Holds","while you stay, 10 min after"],["Hours","18:00 – 24:00"]],"tags":[[2.38,11.94,"22:10","",""],[1.58,17.83,"Pixel","","w"],[12.43,18.18,"anonymous","",""],[1.58,28.2,"G1-07 · Digital-ro 54-gil\n2.1 m away, Bluetooth","","nl"],[7.85,52.77,"Stay lit","",""],[1.58,65.25,"Colour","",""],[1.58,73.97,"2700 K","",""],[19.6,73.97,"4000 K","r",""],[1.58,79.5,"Hold","",""],[6.76,79.55,"while I'm here + 10 min","",""],[6.81,85.81,"Check out","",""],[36.55,34.32,"20 %","",""],[61.32,34.32,"100 %","",""],[86.73,34.32,"20 %","",""],[83.63,44.92,"Bluetooth, 3 m","",""]]},{"src":"assets/img/smart-pixel/app-way-3.jpg","t":"Gather","s":"Two checked in side by side open the wall; four with a booking, the room.","d":"Wall: two people checked in at neighbouring pixels pull the 2.35 × 1.90 m screen. Room: one booking for four or more lights the four corners of a cell and the canopy. The group opens the box — 1 table, 4 stools — and sets up in about 15 min. Packing the box signs the room out; from 23:00 only the walk-past light runs.","k":[["Trigger","2 check-ins, or 1 booking"],["Holds","the booking; packing ends it"],["Hours","18:00 – 22:00, Fri–Sat to 23:00"]],"tags":[[2.38,11.94,"19:00","",""],[1.58,17.83,"Book","","w"],[11.04,18.18,"R2 crossroads","",""],[4.51,27.98,"Wall","",""],[12.32,27.98,"Room","",""],[2.43,32.17,"2+ checked in","",""],[11.39,32.17,"4+, booked","",""],[1.58,41.07,"Cell","",""],[10.83,41.07,"B, 2.5 × 2.5 m","",""],[1.58,47.27,"Day","",""],[14.95,47.27,"Friday","",""],[1.58,53.47,"Time","",""],[11.25,53.47,"19:00 – 21:00","",""],[1.58,59.67,"People","",""],[15.37,59.67,"− 4 +","",""],[1.58,65.87,"Box","",""],[10,65.87,"1 table, 4 stools","",""],[1.58,75.1,"18:00 – 22:00, Fri–Sat to 23:00\npack the box to sign out","","nl"],[8.36,85.81,"Book","","i"],[32.36,34.32,"wall","",""],[48.86,34.32,"wall","",""],[64.95,34.32,"room","",""],[81.46,34.32,"room","",""],[86.36,66.94,"box","",""]]},{"src":"assets/img/smart-pixel/app-way-4.jpg","t":"Call for help","s":"One press on the gate sign, or SOS in Seoul's Ansimi app.","d":"Press SOS on the gate sign (under a flap), or hold SOS in the Ansimi app. The gate and its cluster flash once a second; the lane line goes to 100 %. A call goes to 112 and to the Daerim 2-dong police box, with the gate number. The flash stops when the police box clears it on site; then 20 % again.","k":[["Trigger","the sign button, or the Ansimi app"],["Reaches","112 and the police box"],["Hours","day and night; flash after dusk"]],"tags":[[2.38,11.94,"22:40","",""],[1.58,17.83,"Ansimi","","w"],[15.4,18.18,"Seoul","",""],[7.57,39.73,"SOS","","b"],[7.8,56.57,"hold 3 s","",""],[3.7,75.17,"Gate G1 flashing\nLane line at 100 %\nCall to 112\nPolice box alerted\nCall back to this phone","","nl"],[70.14,28.18,"a window opens","",""],[35.48,34.32,"gate","",""],[51.99,34.32,"gate","",""],[72.5,34.32,"lane","",""],[39.93,44.42,"G1 54-GIL","",""]]}]},
-        images: [{"sim":"pixel","w":"76%","caption":"The four ways, live — the lane lights as each one runs; below, the light at one pixel over time. Pick a way, or let it cycle.","r":2.8},{"src":"assets/img/smart-pixel/app-network.jpg","caption":"What talks to what — the phone only asks; the pixel answers in light. No camera, no microphone, no account.","r":4.4057,"w":"100%","tags":[[75.91,6.31,"Seoul Ansimi app","",""],[75.91,10.74,"SOS from anywhere","",""],[10.47,18.85,"Bluetooth LE, 3 m\ntoken, hold, colour","","nl"],[29.66,18.85,"mesh, 2.5 m hops\nlevels, SOS, counts","","nl"],[51.56,18.85,"mesh\ngateway","c","nl"],[91.81,19.84,"112","",""],[66.42,21.19,"position → nearest gate","",""],[88.35,23.03,"112","","w"],[91.81,24.57,"police emergency line","",""],[66.35,30.53,"LTE\nSOS, counts, faults","c","nl"],[82.88,43.44,"call, alert\ngate no., map pin","c","nl"],[91.81,48.11,"police box","",""],[91.81,54.84,"Daerim 2-dong\ncalls back, comes","","nl"],[3.9,57.34,"your phone","",""],[19.45,57.34,"pixel head","",""],[30.73,57.34,"next pixel","",""],[41.88,57.34,"gate pixel","",""],[56.38,57.34,"sub-board","",""],[71.44,57.34,"gu office server","",""],[2.87,62.07,"the app, no account","",""],[21.35,64.06,"radar, Bluetooth,\nmesh node","c","nl"],[30.63,62.07,"passes it on","",""],[41.06,62.07,"sign, SOS button","",""],[58.33,64.06,"on the street-lamp feeder:\nLTE, astro timer, RCD","c","nl"],[74.37,64.06,"Yeongdeungpo-gu:\nbookings, faults, SOS","c","nl"],[39.23,82.66,"230 V feeder under the paving, about 58 columns a circuit","",""],[4.19,94.8,"Bluetooth","",""],[17.44,94.8,"mesh radio","",""],[30.7,94.8,"LTE, mobile network","",""],[43.95,94.8,"power","",""]]},{"src":"assets/img/smart-pixel/app-sos.jpg","caption":"SOS, second by second — from the gate sign; an app SOS joins at the gu server. Design targets for the pilot.","r":3.7069,"w":"100%","tags":[[6.02,8.47,"resident","",""],[20.19,8.47,"gate pixel","",""],[33.5,8.47,"cluster, lane line","",""],[48.88,8.47,"sub-board","",""],[63.46,8.47,"gu server","",""],[78.98,8.47,"112","",""],[92.18,8.47,"police box","",""],[12.97,15.76,"press SOS","",""],[1.12,18.34,"0 s","",""],[1.12,26.88,"0.1 s","",""],[24.47,26.88,"flash, once a second","",""],[23.39,32.83,"mesh: cluster flashes, lane to 100 %","",""],[1.12,35.41,"0.5 s","",""],[22.93,41.36,"mesh: SOS, gate G1","",""],[1.12,43.95,"1 s","",""],[54.74,49.9,"LTE: SOS, G1, 22:40","",""],[1.12,52.48,"2 s","",""],[67.01,58.43,"call with the gate no. and map pin","",""],[1.12,61.02,"3 s","",""],[66.19,66.97,"alert on the duty screen","",""],[1.12,69.55,"3 s","",""],[78.87,75.5,"call back (to the phone, if sent from the app)","",""],[1.12,78.09,"~1 min","",""],[82.29,84.03,"officer clears the SOS on the sign","",""],[1.12,86.62,"on site","",""],[25.59,92.57,"back to 20 % standby","",""],[1.12,95.16,"+40 s","",""]]},{"src":"assets/img/smart-pixel/app-screens.jpg","caption":"The rest of the app — six more screens behind the four above, one tap deep, nothing to sign in to","r":3.1555,"w":"100%","tags":[[2.46,14.45,"21:58","",""],[20,14.45,"22:00","",""],[37.54,14.45,"17:40","",""],[55.07,14.45,"20:50","",""],[72.61,14.45,"22:40","",""],[90.14,14.45,"22:41","",""],[2.03,18.8,"Smart Pixel","","w"],[19.57,18.8,"Nearby","","w"],[37.1,18.8,"Booked","","w"],[72.17,18.8,"Report","","w"],[89.71,18.8,"This phone","","w"],[8.54,19.05,"first open","",""],[26.71,19.05,"G1 lane","",""],[42.29,19.05,"R2 crossroads","",""],[79.69,19.05,"G1-07","",""],[96.1,19.05,"no sign-in","",""],[56.24,26.39,"20:50","","b"],[37.1,24.91,"Friday 19:00 – 21:00","",""],[72.17,24.91,"What is wrong?","",""],[89.71,25.43,"Token","",""],[93.8,25.43,"new every 15 min","",""],[37.1,28.17,"cell B · 4 people · 1 box","",""],[89.71,30,"On the pixel","",""],[95.22,30,"nothing kept","",""],[73.64,30.79,"Dark","",""],[77.72,30.79,"Flickering","",""],[58.3,31.83,"Friday","",""],[89.71,34.57,"Check-ins","",""],[95.24,34.57,"hourly totals","",""],[72.55,37.65,"Lens broken","",""],[78.32,37.65,"Other","",""],[6.59,41.66,"Bluetooth finds the light\nnext to you. No account,\nno name, no location history.","c","nl"],[89.71,39.15,"Bookings","",""],[93.44,39.15,"deleted at 30 days","",""],[44.43,39.79,"B","",""],[14.56,40.03,"allow","",""],[32.13,40.03,"book","",""],[49.59,40.03,"18:45","",""],[67.11,40.03,"menu","",""],[84.65,40.03,"menu","",""],[56.02,40.61,"SMART PIXEL · now","",""],[55,44.15,"R2: 10 minutes left","",""],[89.71,46.46,"Bluetooth check-in","",""],[24.18,46.52,"you · 3 m","",""],[55,48.45,"Pack the box to sign out.\nThe room dims at 21:00.","","nl"],[2.9,52.85,"walking past needs no app\nSOS works without it too\n한국어","","nl"],[73.85,50.61,"add a photo, optional","",""],[89.71,51.49,"Booking reminders","",""],[37.1,51.52,"Box code, live from 18:45","",""],[19.57,53.32,"G1-07","",""],[26.21,53.32,"2.1 m · lit","",""],[4.64,55.87,"·","",""],[5.13,55.72,"中文","",""],[6.29,55.87,"· English","",""],[98.53,56.37,"›","",""],[37.77,56.71,"4","","w"],[40.27,56.71,"1","","w"],[42.59,56.71,"7","","w"],[44.97,56.71,"2","","w"],[72.17,58.84,"The pixel has reported itself\nalready; this tells the gu what\nyou saw. Or call 120, Dasan.","","nl"],[89.71,56.52,"Language:","",""],[92.95,56.36,"한국어","",""],[19.57,57.9,"G1-08","",""],[27.06,57.9,"4.6 m","",""],[56.02,57.99,"SMART PIXEL · 18:45","",""],[55,61.52,"R2 is ready","",""],[3.7,62.09,"Allow while using","","i"],[19.57,62.47,"R2 room","",""],[23.77,62.47,"38 m · free 19:00","",""],[37.1,62.47,"Set-up","",""],[40.92,62.47,"15 min, from 18:45","",""],[55,65.82,"Box code 4172. The four\ncolumns light in turn.","","nl"],[5.24,68.49,"Not now","",""],[22.16,68.95,"Open G1-07","","i"],[39.13,68.95,"Cancel booking","",""],[75.88,68.95,"Send","","i"],[91.05,68.95,"Delete my bookings","",""],[2.9,82.87,"First open","",""],[20.43,82.87,"Nearby","",""],[37.97,82.87,"Booked","",""],[55.51,82.87,"Reminders","",""],[73.04,82.87,"Report","",""],[90.58,82.87,"This phone","",""],[1.6,82.85,"a","",""],[19.12,82.85,"b","",""],[36.68,82.85,"c","",""],[54.19,82.85,"d","",""],[71.74,82.85,"e","",""],[89.35,82.85,"f","",""],[1.16,90.76,"Asks for Bluetooth only. No\naccount, no name, no location\nhistory.","","nl"],[18.7,90.76,"The lane as it is: the pixels\nwithin 3 m are lit, the room\nup the lane is free.","","nl"],[36.23,90.76,"The cell, the hours and a\nfour-digit code for the box,\nlive 15 min before.","","nl"],[53.77,90.76,"On the lock screen: the room\nis ready; ten minutes left;\nnothing else.","","nl"],[71.3,90.76,"One tap: what is wrong. The\npixel has already told the gu\nit is dark.","","nl"],[88.84,89.16,"What is shared, for how long,\nand a button that deletes it.","","nl"]]},{"src":"assets/img/smart-pixel/app-words.jpg","caption":"The light's own words — how a pixel answers without a screen; level over time, each strip to its own scale","r":1.506,"w":"62%","tags":[[55.57,16.33,"20 → 100 % in 0.5 s; back to 20 % 40 s after the last pass","",""],[1.59,17.63,"Someone passes","",""],[55.57,26.21,"one slow breath, 1.5 s: the pixel knows it is you","",""],[1.59,27.51,"Check-in heard","",""],[55.57,36.09,"the cell's four columns light in turn, 1 s apart","",""],[1.59,37.4,"Room ready","",""],[55.57,45.97,"two slow breaths on the room's columns","",""],[1.59,47.28,"Ten minutes left","",""],[55.57,55.85,"23:00: down to 20 % over 60 s; rooms close","",""],[1.59,57.16,"Quiet hours","",""],[55.57,67.2,"the gate flashes once a second until the police box clears it","",""],[1.59,67.04,"SOS","",""],[55.57,77.08,"5 % and steady, never a flash, so it is never read as SOS; it reports itself","",""],[1.59,76.92,"Fault","",""],[55.57,85.49,"off; radar and radio listen on 0.5 W","",""],[1.59,86.8,"Day","",""],[1.59,95.37,"Dashed: the 20 % night level. All signals are warm white; nothing is coloured.","","m"],[1.59,8.74,"Signal","","m"],[23.96,8.74,"Level","","m"],[55.57,8.74,"What it means","","m"]]}]
-      },
-      {
-        heading: "Two Sessions, Three Years, One Vote",
-        text: "A gate goes up in a day of digging and an evening of bolting, with the lane open throughout. The whole network is then tested in public before it stays: pop-up first, a three-year pilot, then a vote on every piece.",
-        stack: true,
-        // 핀 #104: 설치 여섯 단계를 시간표가 흐르는 단계 그림으로 (원본 09_construct.ai, 글자 없이)
-        seq: {"kind":"frames","below":true,"fade":true,"lite":true,"k":0.9,"r":0.969,"tl":{"bands":[["Day 1, daytime — permit for the pavement and kerb lane",480,900],["Day 2, after 20:30 — shops shut, hand tools only",1230,1440]]},"steps":[{"src":"assets/img/smart-pixel/install-1.jpg","t":"Mark and scan","s":"Day 1 · 08:30–09:30 · crew 2","d":"Dig notice filed with the one-call centre (EOCS) a week ahead; the gas and water owners mark their mains. A radar cart sweeps the lane mouth, and the four socket centres are sprayed on the 2.5 m grid, 0.75 m in from the walls. Plant: GPR cart, spray paint. Lane: open. Hold: anything above −1.00 in a pit: that pier stands on a ballast foot.","tm":[0,510,570,2]},{"src":"assets/img/smart-pixel/install-2.jpg","t":"Cut, dig and set","s":"Day 1 · 09:30–14:30 · crew 3","d":"Blocks lifted and stacked for reuse. Pits 0.9 × 0.9 to −0.88, a trench 300 wide to −0.70 from the street-light cabinet. Each 200 kg socket is lowered onto 60 of gravel, set level by laser and backfilled in two layers; blocks relaid, sockets capped. Plant: 1.7 t mini excavator, saw, plate compactor. Lane: one side fenced at a time. Hold: collar flush with the paving, ±3 mm.","tm":[0,570,870,3]},{"src":"assets/img/smart-pixel/install-3.jpg","t":"Plug","s":"Day 2 · 20:45–21:25 · crew 2","d":"After the shops shut. Two people walk each 33 kg column in, clip the plug on and lower it until the core sits on its stop; the base collar is closed and pinned. Plant: trolley, work lamp. Lane: open; cones round the pier. Hold: column plumb, plug seated.","tm":[1,1245,1285,2]},{"src":"assets/img/smart-pixel/install-4.jpg","t":"Bolt","s":"Day 2 · 21:30–22:10 · crew 2","d":"From two step ladders, each 13 kg lintel is lifted onto the head nodes, slid over the arms and fixed with 2 × M12 at each end. Each pier is now a frame that stands on its own. Plant: two 2 m step ladders. Lane: open. Hold: bolts torqued and paint-marked.","tm":[1,1290,1330,2]},{"src":"assets/img/smart-pixel/install-5.jpg","t":"Raise","s":"Day 2 · 22:15–23:05 · crew 3","d":"Upper columns go onto the spigots, then the two 3.5 m cross lintels are passed up to a mobile tower and bolted at 4.96 m. Their cable chamber carries power to the far pier. Plant: mobile tower, platform 3.2 m, outriggers out. Lane: 2.4 m beside the tower. Hold: frame square, top lintels level.","tm":[1,1335,1385,3]},{"src":"assets/img/smart-pixel/install-6.jpg","t":"Switch on","s":"Day 2 · 23:10–23:40 · crew 2","d":"Sign, bench and SOS fitted. The sub-board breaker is closed and each node joins the mesh. A walk-through checks 100 / 60 / 20 % and the 40 s hold; a test call goes to 112 and the police box. Plant: tablet. Lane: open, fences gone. Hold: test log signed by the gu office.","tm":[1,1390,1420,2]}]},
-        images: [
-          {
-            src: "assets/img/smart-pixel/construct-pilot.jpg",
-            caption: "Pop-up, pilot, then a vote — 3 gates, then 11, then what the residents keep",
-            r: 4.35
-          }
-        ]
-      },
-      {
-        heading: "A Night in Daerim, 18:40 to 22:40", big: true, // 핀 #177: 마지막 23:00 장면 삭제
-        text: "One walk home on a June weekday, through the pieces of the frame. Each scene is the same 12 × 12 m plot, the same angle, the same scale.",
-        images: [],
-        seq: {
-          kind: "frames",
-          r: 1.119,
-          lite: true,
-          fade: true,
-          steps: [
-            {
-              src: "assets/img/smart-pixel/night-1.jpg",
-              t: "18:40",
-              s: "Exit 10, the market corridor",
-              d: "“I come up from the station and take the market way. Under the roofs it is still busy; nobody needs a light yet.” Frame off; the roof panels give the shade."
-            },
-            {
-              src: "assets/img/smart-pixel/night-2.jpg",
-              t: "20:30",
-              s: "The market closes",
-              d: "“The shutters come down and the same roofs light up from below. The street I knew by day is still the way home.” Lintels 100 %, walkway 31 lx."
-            },
-            {
-              src: "assets/img/smart-pixel/night-3.jpg",
-              t: "21:15",
-              s: "Room at the crossroads",
-              d: "“Four of us at the table, so the room is in its gathering mode. Tonight the screen upstairs shows the kids' drawings.”"
-            },
-            {
-              src: "assets/img/smart-pixel/night-4.jpg",
-              t: "22:10",
-              s: "Gate, Digital-ro 54-gil",
-              d: "“I walk alone. The gate brightens as I pass under it, and the lane ahead is already lit before I get there.” 100 % here, 60 % on the next two."
-            },
-            {
-              src: "assets/img/smart-pixel/night-5.jpg",
-              t: "22:40",
-              s: "SOS at the gate",
-              d: "“One press on the sign: the gate flashed, a neighbour opened the window, the police box called back.”"
-            }
-          ]
-        }
-      },
-      // 핀 #150·#151: 밤 장면 뒤 렌더 두 장
-      { heading: "Scenes", text: "Two nights in the rain: a gate on Digital-ro 54-gil held lit from a phone, and the room at the crossroads in its gathering mode.", images: [{src: "assets/img/smart-pixel/render-gate-app.jpg", caption: "Gate, Digital-ro 54-gil — stay lit from the app", r: 0.914}, {src: "assets/img/smart-pixel/render-room.jpg", caption: "Room at the crossroads — tables below, the lantern above", r: 0.788}], stack: true, scenes: true }
-    ],
-    drawings: []
-  },
-  {
-    slug: "campus-renovation", blurb: "OLED 물결로 잇는 4계절 캠퍼스재생",
-    title: "Campus Renovation J′",
-    titleKo: "성균관대 자연과학캠퍼스 리노베이션",
-    subtitle: "Central park, media corridor, bridge connect — the engineering buildings of SKKU joined through their corridors, and the same places followed through the seasons",
-    type: "Education",
-    year: "2024",
-    studio: "Design Studio 4",
-    award: "SKKU Design Excellence Award 3 · 4 최우수작품",
-    program: "중앙공원 · 미디어 코리더 · 연결 브리지",
-    site: "성균관대학교 자연과학캠퍼스 (수원)",
-    area: "",
-    team: "2인 공동작품",
-    tools: "",
-    pos: [-0.42, 5.53],
-    mass: [
-      [0, 0, 3, 0.6, 0.85],
-      [0, 1.45, 3, 0.6, 0.85],
-      [0.06, 0.6, 0.035, 0.07, 0.85],
-      [0.06, 1.38, 0.035, 0.07, 0.85],
-      [0.25, 0.6, 0.035, 0.07, 0.85],
-      [0.25, 1.38, 0.035, 0.07, 0.85],
-      [0.44, 0.6, 0.035, 0.07, 0.85],
-      [0.44, 1.38, 0.035, 0.07, 0.85],
-      [0.63, 0.6, 0.035, 0.07, 0.85],
-      [0.63, 1.38, 0.035, 0.07, 0.85],
-      [0.82, 0.6, 0.035, 0.07, 0.85],
-      [0.82, 1.38, 0.035, 0.07, 0.85],
-      [1.01, 0.6, 0.035, 0.07, 0.85],
-      [1.01, 1.38, 0.035, 0.07, 0.85],
-      [1.2, 0.6, 0.035, 0.07, 0.85],
-      [1.2, 1.38, 0.035, 0.07, 0.85],
-      [1.39, 0.6, 0.035, 0.07, 0.85],
-      [1.39, 1.38, 0.035, 0.07, 0.85],
-      [1.58, 0.6, 0.035, 0.07, 0.85],
-      [1.58, 1.38, 0.035, 0.07, 0.85],
-      [1.77, 0.6, 0.035, 0.07, 0.85],
-      [1.77, 1.38, 0.035, 0.07, 0.85],
-      [1.96, 0.6, 0.035, 0.07, 0.85],
-      [1.96, 1.38, 0.035, 0.07, 0.85],
-      [2.15, 0.6, 0.035, 0.07, 0.85],
-      [2.15, 1.38, 0.035, 0.07, 0.85],
-      [2.34, 0.6, 0.035, 0.07, 0.85],
-      [2.34, 1.38, 0.035, 0.07, 0.85],
-      [2.53, 0.6, 0.035, 0.07, 0.85],
-      [2.53, 1.38, 0.035, 0.07, 0.85],
-      [2.72, 0.6, 0.035, 0.07, 0.85],
-      [2.72, 1.38, 0.035, 0.07, 0.85],
-      [2.91, 0.6, 0.035, 0.07, 0.85],
-      [2.91, 1.38, 0.035, 0.07, 0.85],
-      [1.15, 0.67, 0.45, 0.71, 0.08, 0.5],
-      [1.15, 0.67, 0.45, 0.71, 0.04, 0.8],
-      [1.15, 0.72, 0.035, 0.035, 0.3, 0.5],
-      [1.565, 0.72, 0.035, 0.035, 0.3, 0.5],
-      [1.15, 0.88, 0.035, 0.035, 0.3, 0.5],
-      [1.565, 0.88, 0.035, 0.035, 0.3, 0.5],
-      [1.15, 1.04, 0.035, 0.035, 0.3, 0.5],
-      [1.565, 1.04, 0.035, 0.035, 0.3, 0.5],
-      [1.15, 1.2, 0.035, 0.035, 0.3, 0.5],
-      [1.565, 1.2, 0.035, 0.035, 0.3, 0.5],
-      [1.15, 1.36, 0.035, 0.035, 0.3, 0.5],
-      [1.565, 1.36, 0.035, 0.035, 0.3, 0.5],
-      [0.25, 0.85, 0.22, 0.22, 0.308, 0, "cone"],
-      [0.6, 1.1, 0.18, 0.18, 0.252, 0, "cone"],
-      [2, 0.8, 0.2, 0.2, 0.28, 0, "cone"],
-      [2.45, 1.05, 0.24, 0.24, 0.336, 0, "cone"],
-      [2.8, 0.78, 0.16, 0.16, 0.224, 0, "cone"],
-      [0.15, 0.78, 0.85, 0.5, 0.06, 0, "dome"],
-      [1.9, 0.72, 1, 0.6, 0.06, 0, "dome"],
-      [0.06, 0, 0.035, 0.67, 0.035, 0.85],
-      [0.06, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [0.25, 0, 0.035, 0.67, 0.035, 0.85],
-      [0.25, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [0.44, 0, 0.035, 0.67, 0.035, 0.85],
-      [0.44, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [0.63, 0, 0.035, 0.67, 0.035, 0.85],
-      [0.63, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [0.82, 0, 0.035, 0.67, 0.035, 0.85],
-      [0.82, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [1.01, 0, 0.035, 0.67, 0.035, 0.85],
-      [1.01, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [1.2, 0, 0.035, 0.67, 0.035, 0.85],
-      [1.2, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [1.39, 0, 0.035, 0.67, 0.035, 0.85],
-      [1.39, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [1.58, 0, 0.035, 0.67, 0.035, 0.85],
-      [1.58, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [1.77, 0, 0.035, 0.67, 0.035, 0.85],
-      [1.77, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [1.96, 0, 0.035, 0.67, 0.035, 0.85],
-      [1.96, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [2.15, 0, 0.035, 0.67, 0.035, 0.85],
-      [2.15, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [2.34, 0, 0.035, 0.67, 0.035, 0.85],
-      [2.34, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [2.53, 0, 0.035, 0.67, 0.035, 0.85],
-      [2.53, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [2.72, 0, 0.035, 0.67, 0.035, 0.85],
-      [2.72, 1.38, 0.035, 0.67, 0.035, 0.85],
-      [2.91, 0, 0.035, 0.67, 0.035, 0.85],
-      [2.91, 1.38, 0.035, 0.67, 0.035, 0.85]
-    ],
-    cover: "assets/img/campus-renovation/eng1-courtyard-winter.jpg",
-    thumb: "assets/img/campus-renovation/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
-    coverCaption: "Engineering No.1 Courtyard in winter — the central park under snow",
-    coverR: 1.778,
-    summary: "On SKKU's natural science campus, buildings that carry the university's history stand beside new ones that will make its future — but they do not meet. The proposal connects them through the corridor spaces between the engineering buildings: the scattered green spaces are gathered into one central park, a media facade turns the neglected streets into places to stop, and a bridge spans between the blocks so students can cross the whole campus on foot.",
-    sections: [
-      {
-        heading: "Site Plan",
-        text: "The natural science campus and its surroundings — the engineering blocks in the middle, the central green between them.",
-        images: [
-          {
-            src: "assets/img/campus-renovation/site-plan.jpg",
-            caption: "Site plan",
-            r: 1.871
-          }
-        ]
-      },
-      {
-        heading: "Concept",
-        text: "Let students travel and enjoy the entire campus. The central park is revitalized by joining green spaces that had nothing to do with each other, and the connected green becomes a chain of pocket parks, each with its own theme — pedestrian-friendly, a central park, a green campus.",
-        images: [
-          {
-            src: "assets/img/campus-renovation/concept.jpg",
-            caption: "Pedestrian-friendly · Central park · Green campus",
-            r: 2.537,
-            w: "58%"
-          }
-        ]
-      },
-      {
-        heading: "Strategy",
-        text: "Three moves on the existing buildings.",
-        cols: 3,
-        images: [
-          {
-            src: "assets/img/campus-renovation/strategy-void.jpg",
-            caption: "Center park — void: a green space for gathering, and a void in the lower floors that opens paths and lets light through",
-            r: 2.876
-          },
-          {
-            src: "assets/img/campus-renovation/strategy-media.jpg",
-            caption: "Media facade: programs and images brought to the under-used streets, turning them into active places",
-            r: 2.876
-          },
-          {
-            src: "assets/img/campus-renovation/strategy-utilized.jpg",
-            caption: "Utilized facade: the media facade becomes a louver and part of the bridge structure, guiding the landscape through",
-            r: 2.876
-          }
-        ]
-      },
-      {
-        heading: "Seasons",
-        big: true,
-        text: "The project is read through the year. The same seven places — two courtyards, two corridors and the bridge seen from outside, along it and inside it — are followed from summer rain to autumn ginkgo, to snow, and to night when the media facade lights up. Scroll to move through the seasons; each place turns over when its year is done.",
-        images: [],
-        seasons: {
-          r: 1.778,
-          places: [
-            {
-              t: "Engineering No.1 Courtyard",
-              s: "the central park",
-              d: "The courtyard opened as the central park: paths, low planting and steps where students stop.",
-              imgs: {
-                rain: "assets/img/campus-renovation/eng1-courtyard-rain.jpg",
-                autumn: "assets/img/campus-renovation/eng1-courtyard-autumn.jpg",
-                winter: "assets/img/campus-renovation/eng1-courtyard-winter.jpg",
-                night: "assets/img/campus-renovation/eng1-courtyard-night.jpg"
-              }
-            },
-            {
-              t: "Engineering No.2 Courtyard",
-              s: "a pocket park",
-              d: "The second courtyard linked into the same green, with the media louvers on the facades around it.",
-              imgs: {
-                rain: "assets/img/campus-renovation/eng2-courtyard-rain.jpg",
-                autumn: "assets/img/campus-renovation/eng2-courtyard-autumn.jpg",
-                winter: "assets/img/campus-renovation/eng2-courtyard-winter.jpg",
-                night: "assets/img/campus-renovation/eng2-courtyard-night.jpg"
-              }
-            },
-            {
-              t: "Ginkgo Corridor",
-              s: "between the engineering blocks",
-              d: "The corridor between the buildings made into a street — the ginkgo turns, the louvers carry images at night.",
-              imgs: {
-                rain: "assets/img/campus-renovation/ginkgo-corridor-rain.jpg",
-                autumn: "assets/img/campus-renovation/ginkgo-corridor-autumn.jpg",
-                winter: "assets/img/campus-renovation/ginkgo-corridor-winter.jpg",
-                night: "assets/img/campus-renovation/ginkgo-corridor-night.jpg"
-              }
-            },
-            {
-              t: "Corridor",
-              s: "looking toward the bridge",
-              d: "The media facade folds out of the buildings and down to the ground as benches and edges.",
-              imgs: {
-                rain: "assets/img/campus-renovation/corridor-2-rain.jpg",
-                autumn: "assets/img/campus-renovation/corridor-2-autumn.jpg",
-                winter: "assets/img/campus-renovation/corridor-2-winter.jpg"
-              }
-            },
-            {
-              t: "Bridge — Outside",
-              s: "spanning between the blocks",
-              d: "The bridge hangs between the buildings like a suspension bridge, its truss curving down into the facades.",
-              imgs: {
-                autumn: "assets/img/campus-renovation/bridge-outside-autumn.jpg",
-                winter: "assets/img/campus-renovation/bridge-outside-winter.jpg",
-                night: "assets/img/campus-renovation/bridge-outside-night.jpg"
-              }
-            },
-            {
-              t: "Bridge — Along",
-              s: "the straight deck",
-              d: "Walking the deck, the campus is framed on both sides through glass and louvers.",
-              imgs: {
-                rain: "assets/img/campus-renovation/bridge-straight-rain.jpg",
-                autumn: "assets/img/campus-renovation/bridge-straight-autumn.jpg",
-                winter: "assets/img/campus-renovation/bridge-straight-winter.jpg",
-                night: "assets/img/campus-renovation/bridge-straight-night.jpg"
-              }
-            },
-            {
-              t: "Bridge — Inside",
-              s: "two levels, a half-void",
-              d: "Inside, the bridge is a corridor with a view: the upper level is left half-open so the two floors talk to each other.",
-              imgs: {
-                rain: "assets/img/campus-renovation/bridge-inside-rain.jpg",
-                autumn: "assets/img/campus-renovation/bridge-inside-autumn.jpg",
-                winter: "assets/img/campus-renovation/bridge-inside-winter.jpg",
-                night: "assets/img/campus-renovation/bridge-inside-night.jpg"
-              }
-            }
-          ]
-        }
-      },
-      {
-        heading: "Long Section", big: true,
-        text: "Through the campus, from the courtyard to the bridge.",
-        images: [
-          {
-            src: "assets/img/campus-renovation/long-section.jpg",
-            caption: "Long section",
-            r: 2.963
-          }
-        ]
-      },
-      {
-        heading: "Section Through the Bridge", big: true,
-        text: "Across the corridor at the bridge: the lower truss on its steel frame, the two-level deck, and the upper truss with PV hanging it from above.",
-        images: [
-          {
-            src: "assets/img/campus-renovation/section.jpg",
-            caption: "Section through the bridge",
-            r: 1.871
-          }
-        ]
-      },
-      { heading: "Plans", text: "Four levels on one frame, from the ground up — scroll and each floor drops onto the one below.", big: true, images: [], seq: {"kind":"frames","r":1.871,"fade":true,"drop":true,"tag":true,"below":true,"steps":[{"src":"assets/img/campus-renovation/plan-1.jpg","t":"Ground","s":"Engineering 2 B1F · Engineering 1 1F","d":"Both buildings meet the ground on two levels. The sunken court under Engineering 2 becomes a student shelter.","k":[["1","Student shelter"]]},{"src":"assets/img/campus-renovation/plan-2.jpg","t":"+1","s":"Engineering 2 1F · Engineering 1 2F","d":"The corridors open into an open library that runs between the two buildings around the gardens.","k":[["1","Open library"]]},{"src":"assets/img/campus-renovation/plan-3.jpg","t":"+2","s":"Engineering 2 3F · Engineering 1 4F","d":"The bridge crosses the central park and ties the two corridor rings into one loop.","k":[["1","Bridge"]]},{"src":"assets/img/campus-renovation/plan-4.jpg","t":"Roof","s":"Engineering 2 5F · Engineering 1 6F","d":"On top, the bridge widens into a media terrace beside a community lounge.","k":[["1","Media terrace"],["2","Community lounge"]]}]} },
-      {
-        heading: "Structure — A Suspension Bridge",
-        text: "A suspension bridge reaches a long span in one piece by letting each part do one job. Here the buildings act as the main towers, the slab takes the walkers, cables carry the slab, and a truss replaces the hanging cable — spreading the forces between deck, towers and foundation.",
-        images: [
-          {
-            src: "assets/img/campus-renovation/structure-bridge.jpg",
-            caption: "Main tower · Slab · Cable · Suspension — the load runs from the deck up the cables, along the truss and down the towers",
-            r: 2.652,
-            reveal: 4,
-            flow: "bridge"
-          }
-        ]
-      },
-      {
-        heading: "Structure and System",
-        text: "The bridge in three layers, and the joint that holds each one. The mega beam, the truss beam and the precast columns are welded and bolted so the joints stay seamless; expansion joints and heat-resistant materials take the movement of the steel through the seasons.",
-        images: [],
-        seq: {
-          kind: "frames",
-          r: 0.579,
-          fade: true,
-          k: 0.9,
-          steps: [
-            {
-              src: "assets/img/campus-renovation/system-1.jpg", j: { src: "assets/img/campus-renovation/joint-truss.jpg", t: "Truss beam", s: "curved steel trusses, bolted at every node" },
-              t: "The lower truss beam",
-              s: "four main beams",
-              d: "Carried by a single steel frame and made of four main beams; like a stadium roof, it is curved for both structure and form."
-            },
-            {
-              src: "assets/img/campus-renovation/system-2.jpg", j: { src: "assets/img/campus-renovation/joint-mega.jpg", t: "Mega structure", s: "beams meet in welded and bolted plates" },
-              t: "The bridge story",
-              s: "two levels",
-              d: "The inside has two levels. The upper level is not fully enclosed but left as a half-void, so the two floors talk to each other."
-            },
-            {
-              src: "assets/img/campus-renovation/system-3.jpg", j: { src: "assets/img/campus-renovation/joint-precast.jpg", t: "Pre-cast concrete", s: "precast columns plated to the steel frame" },
-              t: "The upper truss + PV",
-              s: "held by cables",
-              d: "Hung from the upper level through cables and built as a truss like the lower one, to take the tension."
-            }
-          ]
-        }
-      },
-      {
-        heading: "Media Facade", big: true,
-        text: "Wider, more frequent windows bring more light than the existing facade. The louvers carry a media BIPV layer that generates solar power, and their angle changes how much sunlight the facade lets through.",
-        images: [{"ba":["assets/img/campus-renovation/facade-before.jpg","assets/img/campus-renovation/facade-after.jpg"],"baL":["Existing","Renovated"],"caption":"Window width and spacing — drag the line to compare","r":0.542,"lite":true,"notes":[["","Window width and spacing","The existing brick wall has small windows set far apart. Widening them and adding a louver bay between each pair brings more daylight deep into the rooms than the old facade allows."]]},{"xp":{"w":1200,"h":1090,"k":0.06,"base":[[70,115],[390,115],[390,1025],[70,1025]],"parts":[[[418,508],[542,575],[542,937],[418,864]],[[558,426],[688,494],[688,856],[558,788]],[[712,346],[825,404],[825,769],[712,703]],[[828,268],[905,230],[1020,298],[1020,697],[938,702],[828,638]]]},"src":"assets/img/campus-renovation/facade-2.jpg","caption":"Media BIPV louver — glass · media BIPV · steel · steel · pipe","r":1.1,"lite":true,"notes":[["","Media BIPV louver","Each louver is a layered panel. Behind the outer glass sits a media BIPV sheet that makes solar power by day and shows images at night, held by two steel plates on a pipe."]]},{"sim":"louver","src":"assets/img/campus-renovation/facade-3.jpg","caption":"Variable permeability — the louver angle sets the light","r":1.1,"lite":true,"notes":[["","Variable permeability","Turned open, the louvers let the low sun reach the floor inside; turned flat, they throw it back out and shade the room. The same facade lets more or less sunlight through."]]}], cols: 3, cw: [0.542, 1.1, 1.1]
-      }
-    ],
-    drawings: [
-      {
-        src: "assets/img/campus-renovation/detail-plan.jpg",
-        caption: "Detail plan — 3rd and 4th floor (Engineering 1), 1/20",
-        r: 1.871
-      }
-    ]
-  },
   // ---- 자료 준비 중 (CV의 수상·스튜디오 기록만 있어요. 자료를 받으면 채워요) ----
   {
     "slug": "the-tree-house", "blurb": "강원도 인제군 The tree house",
@@ -2522,6 +1988,595 @@ const SITE = {
     "drawings": []
   },
   {
+    slug: "smart-pixel", blurb: "귀갓길을 밝히는 빛 기둥",
+    title: "SMART PIXEL",
+    titleKo: "대림2동 귀갓길의 빛 기둥",
+    subtitle: "One lit column on a 2.5 m grid — a gate, a colonnade and a pavilion for the walk home in Daerim 2-dong",
+    type: "Urban",
+    year: "2023",
+    studio: "Teraviva 국제공모 · Tactical Urbanism",
+    award: "",
+    program: "골목 조명 키트 · 게이트, 회랑, 정자",
+    site: "서울 영등포구 대림2동",
+    area: "",
+    team: "2인 공동작품",
+    tools: "",
+    pos: [-0.28, -1.26],
+    mass: [
+      [-0.01, -0.01, 0.07, 0.07, 0.33, 0, "cyl"],
+      [0.34, -0.01, 0.07, 0.07, 0.33, 0, "cyl"],
+      [0.69, -0.01, 0.07, 0.07, 0.33, 0, "cyl"],
+      [1.04, -0.01, 0.07, 0.07, 0.33, 0, "cyl"],
+      [1.39, -0.01, 0.07, 0.07, 0.33, 0, "cyl"],
+      [-0.01, 0.75, 0.07, 0.07, 0.33, 0, "cyl"],
+      [0.34, 0.75, 0.07, 0.07, 0.33, 0, "cyl"],
+      [0.69, 0.75, 0.07, 0.07, 0.33, 0, "cyl"],
+      [1.04, 0.75, 0.07, 0.07, 0.33, 0, "cyl"],
+      [1.39, 0.75, 0.07, 0.07, 0.33, 0, "cyl"],
+      [0, -0.05, 1.45, 0.2, 0.02, 0.33],
+      [0, 0.66, 1.45, 0.2, 0.02, 0.33],
+      [1.84, -0.01, 0.07, 0.07, 0.69, 0, "cyl"],
+      [2.19, -0.01, 0.07, 0.07, 0.69, 0, "cyl"],
+      [2.54, -0.01, 0.07, 0.07, 0.69, 0, "cyl"],
+      [1.84, 0.34, 0.07, 0.07, 0.69, 0, "cyl"],
+      [2.54, 0.34, 0.07, 0.07, 0.69, 0, "cyl"],
+      [1.84, 0.69, 0.07, 0.07, 0.69, 0, "cyl"],
+      [2.19, 0.69, 0.07, 0.07, 0.69, 0, "cyl"],
+      [2.54, 0.69, 0.07, 0.07, 0.69, 0, "cyl"],
+      [1.85, 0, 0.75, 0.75, 0.02, 0.34],
+      [1.85, 0, 0.75, 0.75, 0.02, 0.69],
+      [0.29, 1.34, 0.07, 0.07, 0.69, 0, "cyl"],
+      [0.78, 1.34, 0.07, 0.07, 0.69, 0, "cyl"],
+      [0.3, 1.33, 0.54, 0.09, 0.03, 0.66]
+    ],
+    cover: "assets/img/smart-pixel/cover-lane.jpg",
+    coverR: 0.914, // 대표사진 가로/세로 (머리 배치용)
+    coverCaption: "Eleven gates, seven lit lanes, one corridor, three rooms — one walk home from Daerim station",
+    summary: "Daerim 2-dong has deep lanes that open straight into the dark, a market street edged by patchwork awnings, and corners that are left over. SMART PIXEL does not add lamps to them. It adds three of the oldest pieces of architecture, rebuilt from one lit column on a 2.5 m grid: a gate you pass through, a colonnade you walk along, a pavilion you stay in. Light is switched on only by the people who are there, and every piece bolts on and lifts out again.",
+    sections: [
+      {
+        heading: "Site — Why Daerim 2-dong",
+        text: "The kit is not spread over the city. It goes where many people walk home through deep, unlit alleys, and where the neighbourhood already lives outdoors at night. Six readings of the same 1 km frame decide where: 45,000 residents, 80 % of 16.6 km of streets are lanes, 177 of 400 walks home share one street, 64 % of street length lies over 40 m from a main road — and 316 of the 400 routes pass the frame.",
+        images: [], seq: {"kind":"frames","below":true,"r":0.83,"k":1.05,"fade":true,"steps":[{"src":"assets/img/smart-pixel/site-1-location.jpg","t":"Location","s":"Korea's most concentrated ethnic enclave"},{"src":"assets/img/smart-pixel/site-2-fabric.jpg","t":"Fabric","s":"80 % of 16.6 km of streets are lanes"},{"src":"assets/img/smart-pixel/site-3-walk-home.jpg","t":"Walk home","s":"177 of 400 routes share one street"},{"src":"assets/img/smart-pixel/site-4-depth.jpg","t":"Depth","s":"64 % of street length is over 40 m deep"},{"src":"assets/img/smart-pixel/site-5-already-there.jpg","t":"Already there","s":"cameras, lamps, two safe routes"},{"src":"assets/img/smart-pixel/site-6-where.jpg","t":"Where the frame goes","s":"316 of 400 routes pass it"}]}
+      },
+      {
+        heading: "Threshold, Colonnade, Pavilion", big: true, // 핀 #100: 그림 위 글자가 읽히게 넓게
+        text: "Each old type is read for what it does to the ground, not for how it looks. The gate (Hongsalmun) marks where a lane begins; the market colonnade (Sijeon haengnang) thickens an edge into a room; the raised pavilion (nu) lifts the ground twice. The frame keeps the act, drops the ornament and the wall, and adds what the type never had after dark: light that answers.",
+        stack: true,
+        images: [
+          {"src":"assets/img/smart-pixel/type-threshold.jpg","caption":"01 Threshold — pass through: ×11 at the mouths of deep lanes, 3.5 m between the piers","r":4.307,"tags":[[35.17,5.36,"5.0","",""],[33.22,10.69,"deep lane","","m"],[80.8,19.07,"lane walls","","m"],[89.88,24.82,"portal 3.5 × 2.5 × 4.96 m\nlit from the head","","nl w1"],[59,23.94,"lane 5.0","",""],[16.03,41.14,"arrow bars\non two beams","","nl w1"],[64.79,48.18,"head lit, cone ±34°;\nupper tier held at 20 %","","nl w1"],[26.55,56.78,"pavement","","m"],[16.03,64.25,"no wall,\nnothing closes","","nl w1"],[58.9,63.12,"3.3 clear","",""],[34.7,70.48,"3.5 c/c","",""],[63.93,73.59,"4.96","",""],[81.21,74.93,"pass through","","w"],[42.28,77.68,"street","","m"],[25.34,91.7,"bench, lane name,\nSOS button","","nl w1"],[38.41,91.7,"threshold 3.5 × 2.5 m,\n100 % while someone passes","","nl w1"]],"notes":[["01","Hongsalmun, red-arrow gate","Two posts and two beams before a shrine, tomb or school. No wall: it closes nothing, it marks where the inside begins."],["02","Plan: a line across the lane mouth","The frame stands on the pavement, 0.75 m in from the walls; its 3.5 × 2.5 m threshold is the brightest spot of the lane."],["03","Elevation from the pavement","The head frames the lane and keeps 3.3 m clear for deliveries and fire access; a seat waits at the door."],["04","A portal you cross, not enter","The lit volume is the doorway the lane never had: two piers, one head, no door."]]},
+          {"src":"assets/img/smart-pixel/type-colonnade.jpg","caption":"02 Colonnade — walk along: 335 m along the market street, two aisles and a nave open to the sky","r":4.695,"tags":[[77.41,7.66,"shopfront","","m"],[25.72,12.32,"shops","","i"],[82.29,20.42,"open to the sky","","w"],[57.87,20.97,"open to the sky","","w"],[47.82,25.12,"1.25","",""],[47.82,32.42,"1.25","",""],[28.76,32.47,"aisle","","m"],[32.64,43.04,"nave, open to the sky","","w"],[47.82,44.82,"3.0","",""],[32.83,47.08,"fire access, deliveries","","m"],[54.44,52.2,"lintel light ±34°\n31 lx on the walk","","nl w1"],[83.73,51.9,"nave","","w"],[47.82,57.25,"1.25","",""],[71.91,57.55,"shopfront","","m"],[41.2,57.59,"aisle","","m"],[60.53,59.9,"roof panel, louvred","","w"],[61,63.49,"2 % fall outwards","","m"],[47.82,64.56,"1.25","",""],[78.52,68.7,"walk along","","w"],[89.24,71.93,"aisle under the roof\n2.5 m, lit from above","","nl w1"],[25.72,78.33,"shops","","i"],[6.42,91.87,"kan","c",""],[9.56,91.87,"kan","c",""],[12.69,91.87,"kan","c",""],[15.83,91.87,"kan","c",""],[50.97,92.97,"shop","",""],[54.67,92.97,"2.5 aisle","",""],[58.92,92.97,"3.0 nave","",""],[63.22,92.97,"2.5 aisle","",""],[67.77,92.97,"shop","",""]],"notes":[["01","Sijeon haengnang, Jongno","From 1412 the state built the market a long row of identical bays (kan); the merchants filled them."],["02","Plan: an edge thickened into aisles","Columns every 2.5 m in two rows; roofs over the stalls and the walkway, 3.0 m left open down the middle."],["03","Cross-section: aisle, nave, aisle","The roofs cover the stalls and the walk; the nave stays open to the sky for fire access and deliveries."],["04","A hall made of a street","Two lit aisles to walk along, one nave to look up from. Ten metres drawn; 335 m built."]]},
+          {"src":"assets/img/smart-pixel/type-pavilion.jpg","caption":"03 Pavilion — stay in: ×3 on public land at route nodes, 2 × 2 cells over two tiers","r":4.317,"tags":[[42.4,7.86,"lane","","m"],[34,25.83,"pocket park","","m"],[90.44,25.98,"lantern 5.0 × 2.5 × 2.4 m","","w"],[64.95,41.98,"1.2 m guard on\nthe open edges","","nl w1"],[69.25,43.2,"house","","m"],[25.82,49.49,"lane","","m"],[56.03,49.9,"lantern: grating floor, lit screen","",""],[18.28,63.13,"a room to\nlook out from","","nl w1"],[88.51,62.4,"shade 5.0 × 5.0 × 2.56 m","","w"],[66,66.85,"2.40","",""],[54.5,68.05,"stair","","m"],[31.31,68.05,"up","","m"],[79.98,74.92,"stay in","","w"],[66,77.55,"2.56","",""],[18.28,79.25,"shade and\na path below","","nl w1"],[36.49,90.05,"lane","","m"],[58.8,93.57,"2.5","c",""],[61.12,93.57,"2.5","c",""]],"notes":[["01","Nu, raised pavilion","A floor lifted on posts, open on every side: shade and a path below, a room to look out from above."],["02","Plan: a roof on a left-over corner","2 × 2 cells where three lanes meet; the lantern upstairs is in view from each of them."],["03","Section: shade below, lantern above","A table under the first tier; upstairs a grating floor, a 1.2 m guard and the lit mesh screen."],["04","A room that is also a lamp","5.0 × 5.0 m of shade under 5.0 × 2.5 m of light, open on every side, closed by nothing."]]},
+          {
+            src: "assets/img/smart-pixel/type-abstraction.jpg",
+            caption: "Keep the act, drop the form — mark, thicken, lift",
+            r: 5.805
+          }
+        ]
+      },
+      {
+        // 핀 #102: 엑소노를 키 그림으로 크게 고정, 상세 렌즈 a·b·c가 차례로 올라오고 빨간 지시선이 이어져요 (원본 03_frame.ai, 글자·번호 원·지시선 없이)
+        "heading":"One Frame, Three Gestures","text":"The light column becomes architecture when it is joined. A lintel on two heads makes a gate; a row of gates under roof panels makes a corridor; a second tier on four cells makes a room. Same parts, same 2.5 m grid, all bolted, all removable — ten part types, about 2,300 pieces, nothing made for one place only.","images":[],"keyed":{"key":{"src":"assets/img/smart-pixel/frame-key.jpg","r":0.683,"caption":"The Pixel Frame — one 2.5 m cell, exploded in assembly order"},"items":[{"src":"assets/img/smart-pixel/lens-a.jpg","r":1,"t":"Head node and lintel joint","d":"Lintels slide over the arms, 2 × M12 each end; driver, board and cover lift out of the top.","x":83.3,"y":48.1,"notes":[["1","2 × M12 × 40"],["2","Lintel 100 × 160, LED + opal lens"],["3","Cover ø170, 4 × M6 pin-Torx"],["4","Gasket, EPDM"],["5","Controller + Bluetooth LE 5"],["6","Driver 30 W, 24 V"],["7","Arm 92 × 152, M12 bosses"],["8","Radar 24 GHz"]]},{"src":"assets/img/smart-pixel/lens-b.jpg","r":1,"t":"Light column","d":"Core, two LED lines, opal diffuser and mask; the diffuser slides off once the head is off.","x":64.8,"y":72.2,"notes":[["1","Mask, 180°"],["2","End ring"],["3","Spigot ø93, 2 × M8"],["4","Core ø101.6 × 4"],["5","Diffuser ø150, PC opal"],["6","LED 24 V, two lines"]]},{"src":"assets/img/smart-pixel/lens-c.jpg","r":1,"t":"Ground connection","d":"Plug, collar and lock pin on the cast-in sleeve; the socket stays when the pixel leaves.","x":64.8,"y":86.5,"notes":[["1","Lock pin M12 × 110"],["2","Collar ø170, hatch, QR"],["3","Plug IP68, 3-pole"],["4","Paving 200 × 100"],["5","Sleeve ø114.3"],["6","Socket shaft ø300"]]}]}
+      },
+      {
+        heading: "Point, Line, Volume", big: true, cols: 3, // 핀 #153: 세 장면을 한 줄에
+        text: "One column becomes a gate frame, a gate, a corridor and a room — scroll through the steps. The same ten standard parts, about 2,300 pieces in all, are counted for the Daerim 2-dong pilot: 620 sockets, 682 columns, 656 lintels, 280 roof panels. Below, the three gestures drawn at the same scale on a 12 × 12 m plot.",
+        // 핀 #140: 다섯 단계 시뮬레이션 + 세 장면을 따로 크게(원본 03_frame.ai, 글자·지시선 없이), 치수·설명은 사이트 글자
+        seq: {"kind":"frames","fade":true,"r":0.9381,"k":0.9,"steps":[{"src":"assets/img/smart-pixel/plv-1.jpg","t":"Column","s":"one pixel","d":"A socket set in the paving, one lit column, a head node on top — the smallest piece of the kit, on a 2.5 m grid.","k":[["In the pilot","682 columns"],["Sockets","620"]],"tags":[[3,5,"Point","","w"]]},{"src":"assets/img/smart-pixel/plv-2.jpg","t":"Gate frame","s":"+ lintel","d":"A lintel slides over two head nodes and two columns become a frame. 3.5 m across a gate, 2.5 m everywhere else.","k":[["Lintels","656"]],"tags":[[3,5,"Line","","w"]]},{"src":"assets/img/smart-pixel/plv-3.jpg","t":"Gate","s":"+ second tier","d":"A second tier stands on the head nodes: a portal 4.96 m high at the mouth of a deep lane.","k":[["Gates","11"],["Each","4 sockets · 8 columns · 6 lintels"]],"tags":[[3,5,"Line","","w"]]},{"src":"assets/img/smart-pixel/plv-4.jpg","t":"Corridor","s":"+ roof panels","d":"Two rows of frames carry roof panels over the stalls: 335 m along the market street. Seven lane lines (662 m) use the same frame without a roof.","k":[["Sockets · columns","270 · 270"],["Lintels · roof panels","268 · 268"]],"tags":[[3,5,"Line","","w"]]},{"src":"assets/img/smart-pixel/plv-5.jpg","t":"Room","s":"2 × 2 cells × 2 tiers","d":"Four cells on two tiers, with a grating floor, a mesh screen and guards: a small temporary building at a route node.","k":[["Rooms","3"],["Each","9 sockets · 15 columns · 19 lintels · 4 roof panels"],["Gratings · mesh · guards","2 · 2 · 4"]],"tags":[[3,5,"Volume","","w"]]}]},
+        images: [{"src":"assets/img/smart-pixel/gesture-gate.jpg","r":1.0787,"tags":[[57.5,70.6,"4.96 m","",""],[36.5,79.3,"3.5 m c/c","",""],[48.3,86.7,"street","","m"]],"notes":[["01","Gate","Two piers on the pavement, 0.75 m in from the lane walls, joined at 4.96 m. Keeps 3.3 m clear for deliveries and fire access; carries the lane name, a bench and an SOS button."]]},{"src":"assets/img/smart-pixel/gesture-corr.jpg","r":1.0787,"tags":[[97.3,78.7,"3.0 m open to the sky","r",""],[15.4,81.6,"2.5 m","",""],[99,83.8,"8.0 m between shopfronts","r",""],[36.5,84.4,"near-side shopfront, cut away","","m"]],"notes":[["02","Corridor","Two colonnades 5.5 m apart replace the patchwork awnings. Panels shade the stalls by day; after closing at 20:30 the lintels light the 8 m street, 3 m of it open to the sky."]]},{"src":"assets/img/smart-pixel/gesture-room.jpg","r":1.0787,"tags":[[61.7,70.3,"4.96 m","",""],[39.2,78,"5.0 m","",""],[44.4,88.2,"pocket park","","m"]],"notes":[["03","Room","2 × 2 cells on two tiers: a table below, a lit lantern above with the mesh screen. A temporary building (max. 3 years, renewable) — the neighbourhood can keep it, move it or return it."]]}]
+      },
+      {
+        heading: "The Gathering Rule", big: true,
+        text: "Light is switched on only by the people who are there. The number of people sets the size of the space — scroll from nobody to a group of four: the plan on the left, the same 16 pixels on the right, and below what is lit, who it needs and when it runs. Every mode keeps the light at residents' windows at or below 10 lx, the limit for residential zones; when everyone leaves, or after 23:00, it falls back to the default.",
+        // 핀 #152: 평면(원본 05_program) + 16기둥 엑소노를 한 장면에, Four Modes 사양 표를 단계마다
+        images: [],
+        seq: {"kind":"frames","fade":true,"below":true,"k":0.86,"r":2.2143,"steps":[{"src":"assets/img/smart-pixel/rule-0.jpg","t":"00 Default","s":"CPTED state · nobody gathered","d":"Runs by itself from dusk to dawn: every pixel low, rising to 100 % as you pass. Used for the walk home from the station, a lit and watched corner at 2 am, and SOS — the cluster flashes.","k":[["People","none: runs by itself"],["Pixels lit","all, low"],["Output","20 % → 100 % as you pass"],["Colour","2700 K warm white"],["Sensors","radar in the column head"],["Alarm","flashes on an Ansimi app SOS"],["Runs","dusk to dawn"]],"tags":[[1.6,4,"Plan","","m"],[38.3,4,"Axonometric — 16 pixels, 2.5 m grid","","m"],[45.9,80.5,"2.5 m","c",""]]},{"src":"assets/img/smart-pixel/rule-1.jpg","t":"01 Column","s":"point · 1 person","d":"One person checks in and the pixel next to them lights up. For waiting for someone, a short phone-free talk, walking the dog.","k":[["People","1, checked in on site"],["Pixels lit","1, next to you"],["Output","100 %"],["Colour","2700–4000 K, user set"],["Check-in","Bluetooth, within 3 m"],["Hold","while you stay, 10 min after"],["Runs","18:00–24:00"]],"tags":[[1.6,4,"Plan","","m"],[38.3,4,"Axonometric — 16 pixels, 2.5 m grid","","m"]]},{"src":"assets/img/smart-pixel/rule-2.jpg","t":"02 Wall","s":"line · 2 people","d":"Two neighbouring pixels pull a mesh screen between them. A neighbourhood film night, kids' drawings on the screen, a quiet backdrop for a stall.","k":[["People","2+, at neighbouring pixels"],["Pixels lit","2 + mesh screen"],["Screen","2.35 × 1.90 m, pulled by hand"],["Image","edge-lit, or projector in head"],["Set-up","unroll, clip to the next column"],["Sound","none"],["Runs","18:00–22:00"]],"tags":[[1.6,4,"Plan","","m"],[38.3,4,"Axonometric — 16 pixels, 2.5 m grid","","m"]]},{"src":"assets/img/smart-pixel/rule-3.jpg","t":"03 Space","s":"volume · 4 people","d":"Four corners of a cell light up under a string-light canopy, with a table and stools from the furniture box. A neighbour dinner, a study circle, the night-market table.","k":[["People","4+, one booking in the app"],["Pixels lit","4 corners of a cell"],["Canopy","2.5 × 2.5 m string lights, H 2.4 m"],["Furniture","box: 1 table, 4 stools"],["Set-up","15 min, by the group"],["Return","pack the box to sign out"],["Runs","18:00–22:00, Fri–Sat to 23:00"]],"tags":[[1.6,4,"Plan","","m"],[38.3,4,"Axonometric — 16 pixels, 2.5 m grid","","m"]]}]}
+      },
+      {
+        heading: "Under the Corridor at 21:00", big: true,
+        text: "Section A–A cuts the market street through a column pair. Shops keep their stalls under the roof, homes above keep their dark windows, and nothing under the street moves: the sockets stop at −0.88, above every service.",
+        images: [
+          {
+            src: "assets/img/smart-pixel/section-aa.jpg",
+            caption: "Section A–A — Digital-ro 37na-gil at 21:00, perspective beyond the cut",
+            r: 1.291,
+            w: "80%" // 핀 #149 전체 폭 → 핀 #158 조금 작게
+          }
+        ]
+      },
+      {
+        heading: "Checks",
+        text: "2.2 lx at the window, 31 / 6 lx on the walkway, 28 MPa in a frame in wind, 3.75 kN uplift on a socket, 21 kWh a night for the whole pilot.",
+        images: [
+          {
+            src: "assets/img/smart-pixel/detail-checks.jpg",
+            caption: "Light, wind, uplift and energy — checked against the limits",
+            r: 9.256
+          }
+        ]
+      },
+      {
+        heading: "One Pixel, Taken Apart", big: true,
+        text: "A pixel is three things on one axis: a socket that ties it to the ground, a column that gives light, and a head that senses and talks. Nothing is glued or cast on site; every layer comes off with one spanner, top down. It travels as four packages — socket 200 kg, column set 33 kg, head unit 12 kg, lintel 13 kg — and only the socket needs a machine.",
+        // 핀 #144: 단면 A(08_detail) + 분해 엑소노(11_device)를 한 장면에, 글자·지시선 없이 — 단계마다 묶음만 진하게, 같은 부품 번호
+        seq: {"kind":"frames","fade":true,"below":true,"r":1.4285,"steps":[{"src":"assets/img/smart-pixel/pixel-0.jpg","t":"One pixel","s":"three things on one axis · 247 kg","d":"Left, the column cut across the street; right, the same pixel taken apart. Scroll to put it together from the ground up — socket, light, head — the order it is built in, and the reverse of the order it leaves.","k":[["Ground connection","202 kg"],["Light","33 kg"],["Sense and talk","12 kg"],["Lintel","13 kg per bay"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"]]},{"src":"assets/img/smart-pixel/pixel-1.jpg","t":"A Ground connection","s":"set once by a mini excavator · stays when the pixel leaves","d":"A precast socket with the sleeve, supply elbow and drain already cast in. The collar is bolted on top and a capped lock pin goes through it into the core; the plug sits behind a hatch.","k":[["01 Socket, precast","600 × 600 base, ø300 shaft · 200 kg"],["02 Sleeve ø114.3 × 3.6","cast in; the core stops at −560"],["03 Supply elbow ø50","cast in, to the feeder duct"],["04 Drain ø20","to the gravel bed"],["05 Plug-in connector","230 V 16 A, 3-pole"],["06 Base collar ø170 × 180","cast aluminium · 1.8 kg"],["07 Lock pin M12 × 110","stainless, capped"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"],[18.7,70.9,"01","c pt"],[86.2,92.6,"01","c pt"],[20.5,67.8,"02","c pt"],[81,78.3,"02","c pt"],[24.9,79,"03","c pt"],[88.4,88.6,"03","c pt"],[22,81.7,"04","c pt"],[83.5,96.8,"04","c pt"],[22,75.7,"05","c pt"],[82.4,69.3,"05","c pt"],[24.1,51.6,"06","c pt"],[83.3,64.4,"06","c pt"],[24.6,54.4,"07","c pt"],[77.1,62.8,"07","c pt"]]},{"src":"assets/img/smart-pixel/pixel-2.jpg","t":"C Light","s":"lifts out as one piece once the head is off","d":"A steel core carries two LED lines; an opal diffuser slides over it, with a black film on the shop side so no light reaches the windows. End rings clip it shut.","k":[["08 Core ø101.6 × 4.0 × 2,796","S275 · 26.9 kg"],["09 Linear LED, 24 V","2700–4000 K, × 2"],["10 Diffuser ø150 × 3 × 2,060","opal PC · 3.4 kg"],["11 Mask, 180° film","on the shop side"],["12 End ring","× 2, seals the gap"],["13 Spigot ø93 × 5","into the core, 2 × M8 grub"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"],[20.6,40.8,"08","c pt"],[82.8,37.3,"08","c pt"],[23.4,31.5,"09","c pt"],[82.2,55.3,"09","c pt"],[23.9,27.6,"10","c pt"],[73.9,48.5,"10","c pt"],[20,29.5,"11","c pt"],[68.8,46.9,"11","c pt"],[73.8,25.6,"12","c pt"],[20.9,24.1,"13","c pt"],[82.7,26.5,"13","c pt"]]},{"src":"assets/img/smart-pixel/pixel-3.jpg","t":"B Sense and talk","s":"the head unit, wired and tested · swapped in 10 minutes","d":"A cast node with four arms holds the radar, the controller and the driver under one cover plate, and takes up to four lintels. The radar sees a pass, not a face.","k":[["14 Head node ø170 × 320","four arms 92 × 152 · 9.9 kg"],["15 Sensor lens","radar and Bluetooth window"],["16 Radar 24 GHz","holds the light 40 s"],["17 Controller, Bluetooth LE 5","check-in within 3 m"],["18 LED driver 30 W, 24 V","column + four lintels"],["19 Gasket","EPDM, under the cover"],["20 Cover plate ø170 × 12","4 × M6 pin-Torx"],["21 Lintel 100 × 160 × 3 × 2,500","sleeved over an arm · 13 kg"]],"tags":[[0.6,2.5,"Section A, 1:10 — across the street, shaft broken","","m"],[66,2.5,"Exploded axonometric","","m"],[2.5,53,"±0.00 street","","m"],[2.5,84.7,"−0.82 socket base","","m"],[55.3,1.6,"4","c","m"],[29.6,8.1,"1","c","m"],[12.7,71.5,"3","c","m"],[20,11.4,"14","c pt"],[80.5,19.7,"14","c pt"],[24.4,19.5,"15","c pt"],[83.5,20.1,"15","c pt"],[86.7,23.1,"16","c pt"],[83.1,10.6,"17","c pt"],[82.5,13.2,"18","c pt"],[83.3,8.5,"19","c pt"],[83.3,6.4,"20","c pt"],[22.6,14.8,"21","c pt"],[69,11.6,"21","c pt"]]}]},
+        images: []
+      },
+      {
+        heading: "How a Resident Talks to a Pixel", big: true,
+        text: "Four ways in, one phone, no account. Walking past needs nothing; a tap holds the light; a booking opens a room; a press on the gate calls for help. The pixel answers in light, and keeps nothing it does not need. Scroll through the four ways, then run them below.",
+        stack: true,
+        // 핀 #172: 원본 12_app.ai에서 글자 없이 뽑고 글은 모두 사이트 글자로, 네 가지 쓰임은 단계 장면 + 빛 시뮬레이션(church.js pixel)
+        seq: {"kind":"frames","fade":true,"below":true,"r":2.3471,"steps":[{"src":"assets/img/smart-pixel/app-way-1.jpg","t":"Walk past","s":"No phone, no sign-in. The radar sees a pass, not a face.","d":"The radar in each head watches the lane, 6 m each way, ±60°. The pixel you pass goes to 100 %; the next ones each way go to 60 %. The bright patch walks with you, one pixel ahead. 40 s after the last pass it falls back to 20 %, warm 2700 K.","k":[["Trigger","movement in the radar field"],["Holds","40 s after the last pass"],["Hours","dusk to dawn"]],"tags":[[2.38,11.94,"22:10","",""],[4.91,29.36,"22:10","","b"],[8.26,36.74,"Friday","",""],[9.9,55.89,"no app, no alert\nthe phone stays\nin the pocket","c","nl"],[32.59,34.32,"20 %","",""],[47.11,34.32,"60 %","",""],[61.32,34.32,"100 %","",""],[76.16,34.32,"60 %","",""],[90.69,34.32,"20 %","",""],[82.45,57.15,"radar, 6 m","",""]]},{"src":"assets/img/smart-pixel/app-way-2.jpg","t":"Check in","s":"One tap in the app, within 3 m: for a wait, a slow walk, a dog.","d":"Open the app beside a pixel; Bluetooth finds its head within 3 m. Tap Stay lit: the pixel next to you goes to 100 %, only that one. Pick the colour between 2700 and 4000 K, if you like. It holds while the phone stays within 3 m, and 10 min after.","k":[["Trigger","a tap in the app, nothing to sign"],["Holds","while you stay, 10 min after"],["Hours","18:00 – 24:00"]],"tags":[[2.38,11.94,"22:10","",""],[1.58,17.83,"Pixel","","w"],[12.43,18.18,"anonymous","",""],[1.58,28.2,"G1-07 · Digital-ro 54-gil\n2.1 m away, Bluetooth","","nl"],[7.85,52.77,"Stay lit","",""],[1.58,65.25,"Colour","",""],[1.58,73.97,"2700 K","",""],[19.6,73.97,"4000 K","r",""],[1.58,79.5,"Hold","",""],[6.76,79.55,"while I'm here + 10 min","",""],[6.81,85.81,"Check out","",""],[36.55,34.32,"20 %","",""],[61.32,34.32,"100 %","",""],[86.73,34.32,"20 %","",""],[83.63,44.92,"Bluetooth, 3 m","",""]]},{"src":"assets/img/smart-pixel/app-way-3.jpg","t":"Gather","s":"Two checked in side by side open the wall; four with a booking, the room.","d":"Wall: two people checked in at neighbouring pixels pull the 2.35 × 1.90 m screen. Room: one booking for four or more lights the four corners of a cell and the canopy. The group opens the box — 1 table, 4 stools — and sets up in about 15 min. Packing the box signs the room out; from 23:00 only the walk-past light runs.","k":[["Trigger","2 check-ins, or 1 booking"],["Holds","the booking; packing ends it"],["Hours","18:00 – 22:00, Fri–Sat to 23:00"]],"tags":[[2.38,11.94,"19:00","",""],[1.58,17.83,"Book","","w"],[11.04,18.18,"R2 crossroads","",""],[4.51,27.98,"Wall","",""],[12.32,27.98,"Room","",""],[2.43,32.17,"2+ checked in","",""],[11.39,32.17,"4+, booked","",""],[1.58,41.07,"Cell","",""],[10.83,41.07,"B, 2.5 × 2.5 m","",""],[1.58,47.27,"Day","",""],[14.95,47.27,"Friday","",""],[1.58,53.47,"Time","",""],[11.25,53.47,"19:00 – 21:00","",""],[1.58,59.67,"People","",""],[15.37,59.67,"− 4 +","",""],[1.58,65.87,"Box","",""],[10,65.87,"1 table, 4 stools","",""],[1.58,75.1,"18:00 – 22:00, Fri–Sat to 23:00\npack the box to sign out","","nl"],[8.36,85.81,"Book","","i"],[32.36,34.32,"wall","",""],[48.86,34.32,"wall","",""],[64.95,34.32,"room","",""],[81.46,34.32,"room","",""],[86.36,66.94,"box","",""]]},{"src":"assets/img/smart-pixel/app-way-4.jpg","t":"Call for help","s":"One press on the gate sign, or SOS in Seoul's Ansimi app.","d":"Press SOS on the gate sign (under a flap), or hold SOS in the Ansimi app. The gate and its cluster flash once a second; the lane line goes to 100 %. A call goes to 112 and to the Daerim 2-dong police box, with the gate number. The flash stops when the police box clears it on site; then 20 % again.","k":[["Trigger","the sign button, or the Ansimi app"],["Reaches","112 and the police box"],["Hours","day and night; flash after dusk"]],"tags":[[2.38,11.94,"22:40","",""],[1.58,17.83,"Ansimi","","w"],[15.4,18.18,"Seoul","",""],[7.57,39.73,"SOS","","b"],[7.8,56.57,"hold 3 s","",""],[3.7,75.17,"Gate G1 flashing\nLane line at 100 %\nCall to 112\nPolice box alerted\nCall back to this phone","","nl"],[70.14,28.18,"a window opens","",""],[35.48,34.32,"gate","",""],[51.99,34.32,"gate","",""],[72.5,34.32,"lane","",""],[39.93,44.42,"G1 54-GIL","",""]]}]},
+        images: [{"sim":"pixel","w":"76%","caption":"The four ways, live — the lane lights as each one runs; below, the light at one pixel over time. Pick a way, or let it cycle.","r":2.8},{"src":"assets/img/smart-pixel/app-network.jpg","caption":"What talks to what — the phone only asks; the pixel answers in light. No camera, no microphone, no account.","r":4.4057,"w":"100%","tags":[[75.91,6.31,"Seoul Ansimi app","",""],[75.91,10.74,"SOS from anywhere","",""],[10.47,18.85,"Bluetooth LE, 3 m\ntoken, hold, colour","","nl"],[29.66,18.85,"mesh, 2.5 m hops\nlevels, SOS, counts","","nl"],[51.56,18.85,"mesh\ngateway","c","nl"],[91.81,19.84,"112","",""],[66.42,21.19,"position → nearest gate","",""],[88.35,23.03,"112","","w"],[91.81,24.57,"police emergency line","",""],[66.35,30.53,"LTE\nSOS, counts, faults","c","nl"],[82.88,43.44,"call, alert\ngate no., map pin","c","nl"],[91.81,48.11,"police box","",""],[91.81,54.84,"Daerim 2-dong\ncalls back, comes","","nl"],[3.9,57.34,"your phone","",""],[19.45,57.34,"pixel head","",""],[30.73,57.34,"next pixel","",""],[41.88,57.34,"gate pixel","",""],[56.38,57.34,"sub-board","",""],[71.44,57.34,"gu office server","",""],[2.87,62.07,"the app, no account","",""],[21.35,64.06,"radar, Bluetooth,\nmesh node","c","nl"],[30.63,62.07,"passes it on","",""],[41.06,62.07,"sign, SOS button","",""],[58.33,64.06,"on the street-lamp feeder:\nLTE, astro timer, RCD","c","nl"],[74.37,64.06,"Yeongdeungpo-gu:\nbookings, faults, SOS","c","nl"],[39.23,82.66,"230 V feeder under the paving, about 58 columns a circuit","",""],[4.19,94.8,"Bluetooth","",""],[17.44,94.8,"mesh radio","",""],[30.7,94.8,"LTE, mobile network","",""],[43.95,94.8,"power","",""]]},{"src":"assets/img/smart-pixel/app-sos.jpg","caption":"SOS, second by second — from the gate sign; an app SOS joins at the gu server. Design targets for the pilot.","r":3.7069,"w":"100%","tags":[[6.02,8.47,"resident","",""],[20.19,8.47,"gate pixel","",""],[33.5,8.47,"cluster, lane line","",""],[48.88,8.47,"sub-board","",""],[63.46,8.47,"gu server","",""],[78.98,8.47,"112","",""],[92.18,8.47,"police box","",""],[12.97,15.76,"press SOS","",""],[1.12,18.34,"0 s","",""],[1.12,26.88,"0.1 s","",""],[24.47,26.88,"flash, once a second","",""],[23.39,32.83,"mesh: cluster flashes, lane to 100 %","",""],[1.12,35.41,"0.5 s","",""],[22.93,41.36,"mesh: SOS, gate G1","",""],[1.12,43.95,"1 s","",""],[54.74,49.9,"LTE: SOS, G1, 22:40","",""],[1.12,52.48,"2 s","",""],[67.01,58.43,"call with the gate no. and map pin","",""],[1.12,61.02,"3 s","",""],[66.19,66.97,"alert on the duty screen","",""],[1.12,69.55,"3 s","",""],[78.87,75.5,"call back (to the phone, if sent from the app)","",""],[1.12,78.09,"~1 min","",""],[82.29,84.03,"officer clears the SOS on the sign","",""],[1.12,86.62,"on site","",""],[25.59,92.57,"back to 20 % standby","",""],[1.12,95.16,"+40 s","",""]]},{"src":"assets/img/smart-pixel/app-screens.jpg","caption":"The rest of the app — six more screens behind the four above, one tap deep, nothing to sign in to","r":3.1555,"w":"100%","tags":[[2.46,14.45,"21:58","",""],[20,14.45,"22:00","",""],[37.54,14.45,"17:40","",""],[55.07,14.45,"20:50","",""],[72.61,14.45,"22:40","",""],[90.14,14.45,"22:41","",""],[2.03,18.8,"Smart Pixel","","w"],[19.57,18.8,"Nearby","","w"],[37.1,18.8,"Booked","","w"],[72.17,18.8,"Report","","w"],[89.71,18.8,"This phone","","w"],[8.54,19.05,"first open","",""],[26.71,19.05,"G1 lane","",""],[42.29,19.05,"R2 crossroads","",""],[79.69,19.05,"G1-07","",""],[96.1,19.05,"no sign-in","",""],[56.24,26.39,"20:50","","b"],[37.1,24.91,"Friday 19:00 – 21:00","",""],[72.17,24.91,"What is wrong?","",""],[89.71,25.43,"Token","",""],[93.8,25.43,"new every 15 min","",""],[37.1,28.17,"cell B · 4 people · 1 box","",""],[89.71,30,"On the pixel","",""],[95.22,30,"nothing kept","",""],[73.64,30.79,"Dark","",""],[77.72,30.79,"Flickering","",""],[58.3,31.83,"Friday","",""],[89.71,34.57,"Check-ins","",""],[95.24,34.57,"hourly totals","",""],[72.55,37.65,"Lens broken","",""],[78.32,37.65,"Other","",""],[6.59,41.66,"Bluetooth finds the light\nnext to you. No account,\nno name, no location history.","c","nl"],[89.71,39.15,"Bookings","",""],[93.44,39.15,"deleted at 30 days","",""],[44.43,39.79,"B","",""],[14.56,40.03,"allow","",""],[32.13,40.03,"book","",""],[49.59,40.03,"18:45","",""],[67.11,40.03,"menu","",""],[84.65,40.03,"menu","",""],[56.02,40.61,"SMART PIXEL · now","",""],[55,44.15,"R2: 10 minutes left","",""],[89.71,46.46,"Bluetooth check-in","",""],[24.18,46.52,"you · 3 m","",""],[55,48.45,"Pack the box to sign out.\nThe room dims at 21:00.","","nl"],[2.9,52.85,"walking past needs no app\nSOS works without it too\n한국어","","nl"],[73.85,50.61,"add a photo, optional","",""],[89.71,51.49,"Booking reminders","",""],[37.1,51.52,"Box code, live from 18:45","",""],[19.57,53.32,"G1-07","",""],[26.21,53.32,"2.1 m · lit","",""],[4.64,55.87,"·","",""],[5.13,55.72,"中文","",""],[6.29,55.87,"· English","",""],[98.53,56.37,"›","",""],[37.77,56.71,"4","","w"],[40.27,56.71,"1","","w"],[42.59,56.71,"7","","w"],[44.97,56.71,"2","","w"],[72.17,58.84,"The pixel has reported itself\nalready; this tells the gu what\nyou saw. Or call 120, Dasan.","","nl"],[89.71,56.52,"Language:","",""],[92.95,56.36,"한국어","",""],[19.57,57.9,"G1-08","",""],[27.06,57.9,"4.6 m","",""],[56.02,57.99,"SMART PIXEL · 18:45","",""],[55,61.52,"R2 is ready","",""],[3.7,62.09,"Allow while using","","i"],[19.57,62.47,"R2 room","",""],[23.77,62.47,"38 m · free 19:00","",""],[37.1,62.47,"Set-up","",""],[40.92,62.47,"15 min, from 18:45","",""],[55,65.82,"Box code 4172. The four\ncolumns light in turn.","","nl"],[5.24,68.49,"Not now","",""],[22.16,68.95,"Open G1-07","","i"],[39.13,68.95,"Cancel booking","",""],[75.88,68.95,"Send","","i"],[91.05,68.95,"Delete my bookings","",""],[2.9,82.87,"First open","",""],[20.43,82.87,"Nearby","",""],[37.97,82.87,"Booked","",""],[55.51,82.87,"Reminders","",""],[73.04,82.87,"Report","",""],[90.58,82.87,"This phone","",""],[1.6,82.85,"a","",""],[19.12,82.85,"b","",""],[36.68,82.85,"c","",""],[54.19,82.85,"d","",""],[71.74,82.85,"e","",""],[89.35,82.85,"f","",""],[1.16,90.76,"Asks for Bluetooth only. No\naccount, no name, no location\nhistory.","","nl"],[18.7,90.76,"The lane as it is: the pixels\nwithin 3 m are lit, the room\nup the lane is free.","","nl"],[36.23,90.76,"The cell, the hours and a\nfour-digit code for the box,\nlive 15 min before.","","nl"],[53.77,90.76,"On the lock screen: the room\nis ready; ten minutes left;\nnothing else.","","nl"],[71.3,90.76,"One tap: what is wrong. The\npixel has already told the gu\nit is dark.","","nl"],[88.84,89.16,"What is shared, for how long,\nand a button that deletes it.","","nl"]]},{"src":"assets/img/smart-pixel/app-words.jpg","caption":"The light's own words — how a pixel answers without a screen; level over time, each strip to its own scale","r":1.506,"w":"62%","tags":[[55.57,16.33,"20 → 100 % in 0.5 s; back to 20 % 40 s after the last pass","",""],[1.59,17.63,"Someone passes","",""],[55.57,26.21,"one slow breath, 1.5 s: the pixel knows it is you","",""],[1.59,27.51,"Check-in heard","",""],[55.57,36.09,"the cell's four columns light in turn, 1 s apart","",""],[1.59,37.4,"Room ready","",""],[55.57,45.97,"two slow breaths on the room's columns","",""],[1.59,47.28,"Ten minutes left","",""],[55.57,55.85,"23:00: down to 20 % over 60 s; rooms close","",""],[1.59,57.16,"Quiet hours","",""],[55.57,67.2,"the gate flashes once a second until the police box clears it","",""],[1.59,67.04,"SOS","",""],[55.57,77.08,"5 % and steady, never a flash, so it is never read as SOS; it reports itself","",""],[1.59,76.92,"Fault","",""],[55.57,85.49,"off; radar and radio listen on 0.5 W","",""],[1.59,86.8,"Day","",""],[1.59,95.37,"Dashed: the 20 % night level. All signals are warm white; nothing is coloured.","","m"],[1.59,8.74,"Signal","","m"],[23.96,8.74,"Level","","m"],[55.57,8.74,"What it means","","m"]]}]
+      },
+      {
+        heading: "Two Sessions, Three Years, One Vote",
+        text: "A gate goes up in a day of digging and an evening of bolting, with the lane open throughout. The whole network is then tested in public before it stays: pop-up first, a three-year pilot, then a vote on every piece.",
+        stack: true,
+        // 핀 #104: 설치 여섯 단계를 시간표가 흐르는 단계 그림으로 (원본 09_construct.ai, 글자 없이)
+        seq: {"kind":"frames","below":true,"fade":true,"lite":true,"k":0.9,"r":0.969,"tl":{"bands":[["Day 1, daytime — permit for the pavement and kerb lane",480,900],["Day 2, after 20:30 — shops shut, hand tools only",1230,1440]]},"steps":[{"src":"assets/img/smart-pixel/install-1.jpg","t":"Mark and scan","s":"Day 1 · 08:30–09:30 · crew 2","d":"Dig notice filed with the one-call centre (EOCS) a week ahead; the gas and water owners mark their mains. A radar cart sweeps the lane mouth, and the four socket centres are sprayed on the 2.5 m grid, 0.75 m in from the walls. Plant: GPR cart, spray paint. Lane: open. Hold: anything above −1.00 in a pit: that pier stands on a ballast foot.","tm":[0,510,570,2]},{"src":"assets/img/smart-pixel/install-2.jpg","t":"Cut, dig and set","s":"Day 1 · 09:30–14:30 · crew 3","d":"Blocks lifted and stacked for reuse. Pits 0.9 × 0.9 to −0.88, a trench 300 wide to −0.70 from the street-light cabinet. Each 200 kg socket is lowered onto 60 of gravel, set level by laser and backfilled in two layers; blocks relaid, sockets capped. Plant: 1.7 t mini excavator, saw, plate compactor. Lane: one side fenced at a time. Hold: collar flush with the paving, ±3 mm.","tm":[0,570,870,3]},{"src":"assets/img/smart-pixel/install-3.jpg","t":"Plug","s":"Day 2 · 20:45–21:25 · crew 2","d":"After the shops shut. Two people walk each 33 kg column in, clip the plug on and lower it until the core sits on its stop; the base collar is closed and pinned. Plant: trolley, work lamp. Lane: open; cones round the pier. Hold: column plumb, plug seated.","tm":[1,1245,1285,2]},{"src":"assets/img/smart-pixel/install-4.jpg","t":"Bolt","s":"Day 2 · 21:30–22:10 · crew 2","d":"From two step ladders, each 13 kg lintel is lifted onto the head nodes, slid over the arms and fixed with 2 × M12 at each end. Each pier is now a frame that stands on its own. Plant: two 2 m step ladders. Lane: open. Hold: bolts torqued and paint-marked.","tm":[1,1290,1330,2]},{"src":"assets/img/smart-pixel/install-5.jpg","t":"Raise","s":"Day 2 · 22:15–23:05 · crew 3","d":"Upper columns go onto the spigots, then the two 3.5 m cross lintels are passed up to a mobile tower and bolted at 4.96 m. Their cable chamber carries power to the far pier. Plant: mobile tower, platform 3.2 m, outriggers out. Lane: 2.4 m beside the tower. Hold: frame square, top lintels level.","tm":[1,1335,1385,3]},{"src":"assets/img/smart-pixel/install-6.jpg","t":"Switch on","s":"Day 2 · 23:10–23:40 · crew 2","d":"Sign, bench and SOS fitted. The sub-board breaker is closed and each node joins the mesh. A walk-through checks 100 / 60 / 20 % and the 40 s hold; a test call goes to 112 and the police box. Plant: tablet. Lane: open, fences gone. Hold: test log signed by the gu office.","tm":[1,1390,1420,2]}]},
+        images: [
+          {
+            src: "assets/img/smart-pixel/construct-pilot.jpg",
+            caption: "Pop-up, pilot, then a vote — 3 gates, then 11, then what the residents keep",
+            r: 4.35
+          }
+        ]
+      },
+      {
+        heading: "A Night in Daerim, 18:40 to 22:40", big: true, // 핀 #177: 마지막 23:00 장면 삭제
+        text: "One walk home on a June weekday, through the pieces of the frame. Each scene is the same 12 × 12 m plot, the same angle, the same scale.",
+        images: [],
+        seq: {
+          kind: "frames",
+          r: 1.119,
+          lite: true,
+          fade: true,
+          steps: [
+            {
+              src: "assets/img/smart-pixel/night-1.jpg",
+              t: "18:40",
+              s: "Exit 10, the market corridor",
+              d: "“I come up from the station and take the market way. Under the roofs it is still busy; nobody needs a light yet.” Frame off; the roof panels give the shade."
+            },
+            {
+              src: "assets/img/smart-pixel/night-2.jpg",
+              t: "20:30",
+              s: "The market closes",
+              d: "“The shutters come down and the same roofs light up from below. The street I knew by day is still the way home.” Lintels 100 %, walkway 31 lx."
+            },
+            {
+              src: "assets/img/smart-pixel/night-3.jpg",
+              t: "21:15",
+              s: "Room at the crossroads",
+              d: "“Four of us at the table, so the room is in its gathering mode. Tonight the screen upstairs shows the kids' drawings.”"
+            }, // 핀 #189: 22:10 게이트 장면 뺌(night-4.jpg 파일은 남김)
+            {
+              src: "assets/img/smart-pixel/night-5.jpg",
+              t: "22:40",
+              s: "SOS at the gate",
+              d: "“One press on the sign: the gate flashed, a neighbour opened the window, the police box called back.”"
+            }
+          ]
+        }
+      },
+      // 핀 #150·#151: 밤 장면 뒤 렌더 두 장
+      { heading: "Scenes", text: "Two nights in the rain: a gate on Digital-ro 54-gil held lit from a phone, and the room at the crossroads in its gathering mode.", images: [{src: "assets/img/smart-pixel/render-gate-app.jpg", caption: "Gate, Digital-ro 54-gil — stay lit from the app", r: 0.914}, {src: "assets/img/smart-pixel/render-room.jpg", caption: "Room at the crossroads — tables below, the lantern above", r: 0.788}], stack: true, scenes: true }
+    ],
+    drawings: []
+  },
+  {
+    slug: "campus-renovation", blurb: "OLED 물결로 잇는 4계절 캠퍼스재생",
+    title: "Campus Renovation J′",
+    titleKo: "성균관대 자연과학캠퍼스 리노베이션",
+    subtitle: "Central park, media corridor, bridge connect — the engineering buildings of SKKU joined through their corridors, and the same places followed through the seasons",
+    type: "Education",
+    year: "2024",
+    studio: "Design Studio 4",
+    award: "SKKU Design Excellence Award 3 · 4 최우수작품",
+    program: "중앙공원 · 미디어 코리더 · 연결 브리지",
+    site: "성균관대학교 자연과학캠퍼스 (수원)",
+    area: "",
+    team: "2인 공동작품",
+    tools: "",
+    pos: [-0.42, 5.53],
+    mass: [
+      [0, 0, 3, 0.6, 0.85],
+      [0, 1.45, 3, 0.6, 0.85],
+      [0.06, 0.6, 0.035, 0.07, 0.85],
+      [0.06, 1.38, 0.035, 0.07, 0.85],
+      [0.25, 0.6, 0.035, 0.07, 0.85],
+      [0.25, 1.38, 0.035, 0.07, 0.85],
+      [0.44, 0.6, 0.035, 0.07, 0.85],
+      [0.44, 1.38, 0.035, 0.07, 0.85],
+      [0.63, 0.6, 0.035, 0.07, 0.85],
+      [0.63, 1.38, 0.035, 0.07, 0.85],
+      [0.82, 0.6, 0.035, 0.07, 0.85],
+      [0.82, 1.38, 0.035, 0.07, 0.85],
+      [1.01, 0.6, 0.035, 0.07, 0.85],
+      [1.01, 1.38, 0.035, 0.07, 0.85],
+      [1.2, 0.6, 0.035, 0.07, 0.85],
+      [1.2, 1.38, 0.035, 0.07, 0.85],
+      [1.39, 0.6, 0.035, 0.07, 0.85],
+      [1.39, 1.38, 0.035, 0.07, 0.85],
+      [1.58, 0.6, 0.035, 0.07, 0.85],
+      [1.58, 1.38, 0.035, 0.07, 0.85],
+      [1.77, 0.6, 0.035, 0.07, 0.85],
+      [1.77, 1.38, 0.035, 0.07, 0.85],
+      [1.96, 0.6, 0.035, 0.07, 0.85],
+      [1.96, 1.38, 0.035, 0.07, 0.85],
+      [2.15, 0.6, 0.035, 0.07, 0.85],
+      [2.15, 1.38, 0.035, 0.07, 0.85],
+      [2.34, 0.6, 0.035, 0.07, 0.85],
+      [2.34, 1.38, 0.035, 0.07, 0.85],
+      [2.53, 0.6, 0.035, 0.07, 0.85],
+      [2.53, 1.38, 0.035, 0.07, 0.85],
+      [2.72, 0.6, 0.035, 0.07, 0.85],
+      [2.72, 1.38, 0.035, 0.07, 0.85],
+      [2.91, 0.6, 0.035, 0.07, 0.85],
+      [2.91, 1.38, 0.035, 0.07, 0.85],
+      [1.15, 0.67, 0.45, 0.71, 0.08, 0.5],
+      [1.15, 0.67, 0.45, 0.71, 0.04, 0.8],
+      [1.15, 0.72, 0.035, 0.035, 0.3, 0.5],
+      [1.565, 0.72, 0.035, 0.035, 0.3, 0.5],
+      [1.15, 0.88, 0.035, 0.035, 0.3, 0.5],
+      [1.565, 0.88, 0.035, 0.035, 0.3, 0.5],
+      [1.15, 1.04, 0.035, 0.035, 0.3, 0.5],
+      [1.565, 1.04, 0.035, 0.035, 0.3, 0.5],
+      [1.15, 1.2, 0.035, 0.035, 0.3, 0.5],
+      [1.565, 1.2, 0.035, 0.035, 0.3, 0.5],
+      [1.15, 1.36, 0.035, 0.035, 0.3, 0.5],
+      [1.565, 1.36, 0.035, 0.035, 0.3, 0.5],
+      [0.25, 0.85, 0.22, 0.22, 0.308, 0, "cone"],
+      [0.6, 1.1, 0.18, 0.18, 0.252, 0, "cone"],
+      [2, 0.8, 0.2, 0.2, 0.28, 0, "cone"],
+      [2.45, 1.05, 0.24, 0.24, 0.336, 0, "cone"],
+      [2.8, 0.78, 0.16, 0.16, 0.224, 0, "cone"],
+      [0.15, 0.78, 0.85, 0.5, 0.06, 0, "dome"],
+      [1.9, 0.72, 1, 0.6, 0.06, 0, "dome"],
+      [0.06, 0, 0.035, 0.67, 0.035, 0.85],
+      [0.06, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [0.25, 0, 0.035, 0.67, 0.035, 0.85],
+      [0.25, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [0.44, 0, 0.035, 0.67, 0.035, 0.85],
+      [0.44, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [0.63, 0, 0.035, 0.67, 0.035, 0.85],
+      [0.63, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [0.82, 0, 0.035, 0.67, 0.035, 0.85],
+      [0.82, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [1.01, 0, 0.035, 0.67, 0.035, 0.85],
+      [1.01, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [1.2, 0, 0.035, 0.67, 0.035, 0.85],
+      [1.2, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [1.39, 0, 0.035, 0.67, 0.035, 0.85],
+      [1.39, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [1.58, 0, 0.035, 0.67, 0.035, 0.85],
+      [1.58, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [1.77, 0, 0.035, 0.67, 0.035, 0.85],
+      [1.77, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [1.96, 0, 0.035, 0.67, 0.035, 0.85],
+      [1.96, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [2.15, 0, 0.035, 0.67, 0.035, 0.85],
+      [2.15, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [2.34, 0, 0.035, 0.67, 0.035, 0.85],
+      [2.34, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [2.53, 0, 0.035, 0.67, 0.035, 0.85],
+      [2.53, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [2.72, 0, 0.035, 0.67, 0.035, 0.85],
+      [2.72, 1.38, 0.035, 0.67, 0.035, 0.85],
+      [2.91, 0, 0.035, 0.67, 0.035, 0.85],
+      [2.91, 1.38, 0.035, 0.67, 0.035, 0.85]
+    ],
+    cover: "assets/img/campus-renovation/eng1-courtyard-winter.jpg",
+    thumb: "assets/img/campus-renovation/card-frame.jpg", // 카드 사진 = 대표 영상(card-loop.mp4)의 첫 장면이라 영상과 딱 맞아요
+    coverCaption: "Engineering No.1 Courtyard in winter — the central park under snow",
+    coverR: 1.778,
+    summary: "On SKKU's natural science campus, buildings that carry the university's history stand beside new ones that will make its future — but they do not meet. The proposal connects them through the corridor spaces between the engineering buildings: the scattered green spaces are gathered into one central park, a media facade turns the neglected streets into places to stop, and a bridge spans between the blocks so students can cross the whole campus on foot.",
+    sections: [
+      {
+        heading: "Site Plan",
+        text: "The natural science campus and its surroundings — the engineering blocks in the middle, the central green between them.",
+        images: [
+          {
+            src: "assets/img/campus-renovation/site-plan.jpg",
+            caption: "Site plan",
+            r: 1.871
+          }
+        ]
+      },
+      {
+        heading: "Concept",
+        text: "Let students travel and enjoy the entire campus. The central park is revitalized by joining green spaces that had nothing to do with each other, and the connected green becomes a chain of pocket parks, each with its own theme — pedestrian-friendly, a central park, a green campus.",
+        images: [
+          {
+            src: "assets/img/campus-renovation/concept.jpg",
+            caption: "Pedestrian-friendly · Central park · Green campus",
+            r: 2.537,
+            w: "58%"
+          }
+        ]
+      },
+      {
+        heading: "Strategy",
+        text: "Three moves on the existing buildings.",
+        cols: 3,
+        images: [
+          {
+            src: "assets/img/campus-renovation/strategy-void.jpg",
+            caption: "Center park — void: a green space for gathering, and a void in the lower floors that opens paths and lets light through",
+            r: 2.876
+          },
+          {
+            src: "assets/img/campus-renovation/strategy-media.jpg",
+            caption: "Media facade: programs and images brought to the under-used streets, turning them into active places",
+            r: 2.876
+          },
+          {
+            src: "assets/img/campus-renovation/strategy-utilized.jpg",
+            caption: "Utilized facade: the media facade becomes a louver and part of the bridge structure, guiding the landscape through",
+            r: 2.876
+          }
+        ]
+      },
+      {
+        heading: "Seasons",
+        big: true,
+        text: "The project is read through the year. The same seven places — two courtyards, two corridors and the bridge seen from outside, along it and inside it — are followed from summer rain to autumn ginkgo, to snow, and to night when the media facade lights up. Scroll to move through the seasons; each place turns over when its year is done.",
+        images: [],
+        seasons: {
+          r: 1.778,
+          places: [
+            {
+              t: "Engineering No.1 Courtyard",
+              s: "the central park",
+              d: "The courtyard opened as the central park: paths, low planting and steps where students stop.",
+              imgs: {
+                rain: "assets/img/campus-renovation/eng1-courtyard-rain.jpg",
+                autumn: "assets/img/campus-renovation/eng1-courtyard-autumn.jpg",
+                winter: "assets/img/campus-renovation/eng1-courtyard-winter.jpg",
+                night: "assets/img/campus-renovation/eng1-courtyard-night.jpg"
+              }
+            },
+            {
+              t: "Engineering No.2 Courtyard",
+              s: "a pocket park",
+              d: "The second courtyard linked into the same green, with the media louvers on the facades around it.",
+              imgs: {
+                rain: "assets/img/campus-renovation/eng2-courtyard-rain.jpg",
+                autumn: "assets/img/campus-renovation/eng2-courtyard-autumn.jpg",
+                winter: "assets/img/campus-renovation/eng2-courtyard-winter.jpg",
+                night: "assets/img/campus-renovation/eng2-courtyard-night.jpg"
+              }
+            },
+            {
+              t: "Ginkgo Corridor",
+              s: "between the engineering blocks",
+              d: "The corridor between the buildings made into a street — the ginkgo turns, the louvers carry images at night.",
+              imgs: {
+                rain: "assets/img/campus-renovation/ginkgo-corridor-rain.jpg",
+                autumn: "assets/img/campus-renovation/ginkgo-corridor-autumn.jpg",
+                winter: "assets/img/campus-renovation/ginkgo-corridor-winter.jpg",
+                night: "assets/img/campus-renovation/ginkgo-corridor-night.jpg"
+              }
+            },
+            {
+              t: "Corridor",
+              s: "looking toward the bridge",
+              d: "The media facade folds out of the buildings and down to the ground as benches and edges.",
+              imgs: {
+                rain: "assets/img/campus-renovation/corridor-2-rain.jpg",
+                autumn: "assets/img/campus-renovation/corridor-2-autumn.jpg",
+                winter: "assets/img/campus-renovation/corridor-2-winter.jpg"
+              }
+            },
+            {
+              t: "Bridge — Outside",
+              s: "spanning between the blocks",
+              d: "The bridge hangs between the buildings like a suspension bridge, its truss curving down into the facades.",
+              imgs: {
+                autumn: "assets/img/campus-renovation/bridge-outside-autumn.jpg",
+                winter: "assets/img/campus-renovation/bridge-outside-winter.jpg",
+                night: "assets/img/campus-renovation/bridge-outside-night.jpg"
+              }
+            },
+            {
+              t: "Bridge — Along",
+              s: "the straight deck",
+              d: "Walking the deck, the campus is framed on both sides through glass and louvers.",
+              imgs: {
+                rain: "assets/img/campus-renovation/bridge-straight-rain.jpg",
+                autumn: "assets/img/campus-renovation/bridge-straight-autumn.jpg",
+                winter: "assets/img/campus-renovation/bridge-straight-winter.jpg",
+                night: "assets/img/campus-renovation/bridge-straight-night.jpg"
+              }
+            },
+            {
+              t: "Bridge — Inside",
+              s: "two levels, a half-void",
+              d: "Inside, the bridge is a corridor with a view: the upper level is left half-open so the two floors talk to each other.",
+              imgs: {
+                rain: "assets/img/campus-renovation/bridge-inside-rain.jpg",
+                autumn: "assets/img/campus-renovation/bridge-inside-autumn.jpg",
+                winter: "assets/img/campus-renovation/bridge-inside-winter.jpg",
+                night: "assets/img/campus-renovation/bridge-inside-night.jpg"
+              }
+            }
+          ]
+        }
+      },
+      {
+        heading: "Long Section", big: true,
+        text: "Through the campus, from the courtyard to the bridge.",
+        images: [
+          {
+            src: "assets/img/campus-renovation/long-section.jpg",
+            caption: "Long section",
+            r: 2.963
+          }
+        ]
+      },
+      {
+        heading: "Section Through the Bridge", big: true,
+        text: "Across the corridor at the bridge: the lower truss on its steel frame, the two-level deck, and the upper truss with PV hanging it from above.",
+        images: [
+          {
+            src: "assets/img/campus-renovation/section.jpg",
+            caption: "Section through the bridge",
+            r: 1.871
+          }
+        ]
+      },
+      { heading: "Plans", text: "Four levels on one frame, from the ground up — scroll and each floor drops onto the one below.", big: true, images: [], seq: {"kind":"frames","r":1.871,"fade":true,"drop":true,"tag":true,"below":true,"steps":[{"src":"assets/img/campus-renovation/plan-1.jpg","t":"Ground","s":"Engineering 2 B1F · Engineering 1 1F","d":"Both buildings meet the ground on two levels. The sunken court under Engineering 2 becomes a student shelter.","k":[["1","Student shelter"]]},{"src":"assets/img/campus-renovation/plan-2.jpg","t":"+1","s":"Engineering 2 1F · Engineering 1 2F","d":"The corridors open into an open library that runs between the two buildings around the gardens.","k":[["1","Open library"]]},{"src":"assets/img/campus-renovation/plan-3.jpg","t":"+2","s":"Engineering 2 3F · Engineering 1 4F","d":"The bridge crosses the central park and ties the two corridor rings into one loop.","k":[["1","Bridge"]]},{"src":"assets/img/campus-renovation/plan-4.jpg","t":"Roof","s":"Engineering 2 5F · Engineering 1 6F","d":"On top, the bridge widens into a media terrace beside a community lounge.","k":[["1","Media terrace"],["2","Community lounge"]]}]} },
+      {
+        heading: "Structure — A Suspension Bridge",
+        text: "A suspension bridge reaches a long span in one piece by letting each part do one job. Here the buildings act as the main towers, the slab takes the walkers, cables carry the slab, and a truss replaces the hanging cable — spreading the forces between deck, towers and foundation.",
+        images: [
+          {
+            src: "assets/img/campus-renovation/structure-bridge.jpg",
+            caption: "Main tower · Slab · Cable · Suspension — the load runs from the deck up the cables, along the truss and down the towers",
+            r: 2.652,
+            reveal: 4,
+            flow: "bridge"
+          }
+        ]
+      },
+      {
+        heading: "Structure and System",
+        text: "The bridge in three layers, and the joint that holds each one. The mega beam, the truss beam and the precast columns are welded and bolted so the joints stay seamless; expansion joints and heat-resistant materials take the movement of the steel through the seasons.",
+        images: [],
+        seq: {
+          kind: "frames",
+          r: 0.579,
+          fade: true,
+          k: 0.9,
+          steps: [
+            {
+              src: "assets/img/campus-renovation/system-1.jpg", j: { src: "assets/img/campus-renovation/joint-truss.jpg", t: "Truss beam", s: "curved steel trusses, bolted at every node" },
+              t: "The lower truss beam",
+              s: "four main beams",
+              d: "Carried by a single steel frame and made of four main beams; like a stadium roof, it is curved for both structure and form."
+            },
+            {
+              src: "assets/img/campus-renovation/system-2.jpg", j: { src: "assets/img/campus-renovation/joint-mega.jpg", t: "Mega structure", s: "beams meet in welded and bolted plates" },
+              t: "The bridge story",
+              s: "two levels",
+              d: "The inside has two levels. The upper level is not fully enclosed but left as a half-void, so the two floors talk to each other."
+            },
+            {
+              src: "assets/img/campus-renovation/system-3.jpg", j: { src: "assets/img/campus-renovation/joint-precast.jpg", t: "Pre-cast concrete", s: "precast columns plated to the steel frame" },
+              t: "The upper truss + PV",
+              s: "held by cables",
+              d: "Hung from the upper level through cables and built as a truss like the lower one, to take the tension."
+            }
+          ]
+        }
+      },
+      {
+        heading: "Media Facade", big: true,
+        text: "Wider, more frequent windows bring more light than the existing facade. The louvers carry a media BIPV layer that generates solar power, and their angle changes how much sunlight the facade lets through.",
+        images: [{"ba":["assets/img/campus-renovation/facade-before.jpg","assets/img/campus-renovation/facade-after.jpg"],"baL":["Existing","Renovated"],"caption":"Window width and spacing — drag the line to compare","r":0.542,"lite":true,"notes":[["","Window width and spacing","The existing brick wall has small windows set far apart. Widening them and adding a louver bay between each pair brings more daylight deep into the rooms than the old facade allows."]]},{"xp":{"w":1200,"h":1090,"k":0.06,"base":[[70,115],[390,115],[390,1025],[70,1025]],"parts":[[[418,508],[542,575],[542,937],[418,864]],[[558,426],[688,494],[688,856],[558,788]],[[712,346],[825,404],[825,769],[712,703]],[[828,268],[905,230],[1020,298],[1020,697],[938,702],[828,638]]]},"src":"assets/img/campus-renovation/facade-2.jpg","caption":"Media BIPV louver — glass · media BIPV · steel · steel · pipe","r":1.1,"lite":true,"notes":[["","Media BIPV louver","Each louver is a layered panel. Behind the outer glass sits a media BIPV sheet that makes solar power by day and shows images at night, held by two steel plates on a pipe."]]},{"sim":"louver","src":"assets/img/campus-renovation/facade-3.jpg","caption":"Variable permeability — the louver angle sets the light","r":1.1,"lite":true,"notes":[["","Variable permeability","Turned open, the louvers let the low sun reach the floor inside; turned flat, they throw it back out and shade the room. The same facade lets more or less sunlight through."]]}], cols: 3, cw: [0.542, 1.1, 1.1]
+      }
+    ],
+    drawings: [
+      {
+        src: "assets/img/campus-renovation/detail-plan.jpg",
+        caption: "Detail plan — 3rd and 4th floor (Engineering 1), 1/20",
+        r: 1.871
+      }
+    ]
+  },
+  // 라주니타 (2026-11-22 추가) — 원본: portfolio-source/라주니타. 글은 패널(.ai)의 설명문에서 옮겼어요.
+  // 확인 필요: year(원본 파일 날짜 2025.03 기준 추정) · studio · 대지 위치 · 팀 — 사용자에게 받으면 채우기
+  {
+    slug: "la-junita", blurb: "la junita, 아르헨티나 단독주택",
+    title: "Flowing layers",
+    titleKo: "아르헨티나 단독주택",
+    subtitle: "A house for a family of four on a slope above the river — masses that step down the ground, each one turned to the water",
+    type: "House",
+    year: "2025",
+    studio: "",
+    award: "",
+    program: "단독주택 (4인 가족 + 손님)",
+    site: "Los Dorados Avenue",
+    area: "",
+    team: "3인 공동작품", // 핀 #184
+    tools: "",
+    cover: "assets/img/la-junita/aerial.jpg",
+    coverR: 1.577, // 대표사진 가로/세로 (머리 배치용)
+    coverCaption: "Aerial view — the masses stepping down toward the river",
+    summary:
+      "A home is more than a shelter; it is where life unfolds and memories are made. Designed for a family of four while welcoming guests with warmth and privacy, the house steps down a slope toward the river — open to natural light, with seamless passages between indoors and outdoors.",
+    sections: [
+      { heading: "Masses on the Slope", big: true, /* 핀 #187: 아래 평면과 같은 크기 */ text: "The masses were first laid along an axis that flows down the slope. Those running east to west were shifted south so none overlaps and every room gets daylight, and each mass along the slope opens to a view of the river. The land left over became a courtyard, keeping as many of the existing trees as possible.", images: [{ src: "assets/img/la-junita/site-plan.jpg", caption: "Site plan", r: 1.42, w: "min(100%, calc((100vh - 330px) * 1.385));margin-inline:auto" }] },
+      // 핀 #137·#138: 두 층 평면을 같은 축척·같은 자리로 겹쳐 스크롤로 넘김 — 그리드 이름·치수(축척 막대로 잰 값, mm)·프로그램 번호는 사이트 글자
+      { heading: "Two Levels on One Grid", big: true, text: "The lower level and the entrance level drawn at the same scale and laid on the same spot — scroll up a level. The grid lines run through both floors; dimensions are in millimetres between grid lines.", images: [], seq: {"kind":"frames","fade":true,"below":true,"r":1.385,"steps":[{"src":"assets/img/la-junita/plan-lower.jpg","t":"Lower level","s":"a few steps down, the house ends at the river","d":"A second living room connects to the two children's rooms and a bathroom. An open void with a stand and stair brings the family together, and a loft above the master bedroom adds variety. Glass on three sides brings light and the river in; large openings help passive heating, and a partition wall hides the utilities.","k":[["01 Living room","glass on three sides toward the river"],["02 Music hall","beside the open lounge"],["03 Master bedroom","with a loft above"],["04 Bedrooms","two children's rooms"],["05 Infinity pool","extending from the living room"],["06 Outdoor lounge · garden","sunken where the pool meets the garden"]],"tags":[[36,17.4,"X1","","m"],[43.7,17.4,"X2","","m"],[48.1,17.4,"X3","","m"],[56.8,17.4,"X4","","m"],[62.6,17.4,"X5","","m"],[71.6,17.4,"X6","","m"],[39.5,21,"8,000","c","m"],[45.6,21,"4,600","c","m"],[52.1,21,"9,000","c","m"],[59.3,21,"6,000","c","m"],[66.8,21,"9,400","c","m"],[19.9,32,"Y5","","m"],[19.9,48.1,"Y4","","m"],[19.9,57.2,"Y3","","m"],[19.9,68.5,"Y2","","m"],[19.9,80.8,"Y1","","m"],[19.5,41.2,"12,000","","m"],[19.5,53.8,"6,800","","m"],[19.5,64,"8,500","","m"],[19.5,75.9,"9,200","","m"],[78.4,95.3,"0","c","m"],[83.2,95.3,"5","c","m"],[88,95.3,"10","c","m"],[97.7,95.3,"20 m","c","m"],[50.2,54.9,"01","c pt"],[50.2,64.3,"02","c pt"],[58.8,77.2,"03","c pt"],[66.8,76.9,"04","c pt"],[39.2,57.7,"05","c pt"],[54,40.3,"06","c pt"]]},{"src":"assets/img/la-junita/plan-upper.jpg","t":"Entrance level","s":"by car and on foot from Los Dorados Avenue","d":"The main entrance sits on the east side. From the door the guest lounge opens to the river, while a corridor leads to two guest rooms with terraces — the guest wing stays apart, so the family keeps its privacy.","k":[["01 Guest lounge","living room at the door, facing the river"],["02 Open lounge","double-height void over the lower lounge"],["03 Guest rooms","two rooms with their own terraces"],["04 Multiroom · bedrooms","children's rooms above the stand"],["05 Parking","from Los Dorados Avenue"],["06 Living · dining","the family wing at the top of the slope"]],"tags":[[53.7,17.4,"X3′","","m"],[56.8,17.4,"X4","","m"],[62.6,17.4,"X5","","m"],[68.8,17.4,"X5′","","m"],[71.7,17.4,"X6","","m"],[80.5,17.4,"X7","","m"],[82.8,17.4,"X7′","","m"],[54.9,21,"3,300","c","m"],[59.4,21,"6,000","c","m"],[65.4,21,"6,400","c","m"],[69.9,21,"3,000","c","m"],[75.8,21,"9,200","c","m"],[81.3,21,"2,300","c","m"],[19.9,32,"Y5","","m"],[19.9,48.1,"Y4","","m"],[19.9,57.2,"Y3","","m"],[19.9,68.5,"Y2","","m"],[19.9,80.8,"Y1","","m"],[19.5,41.2,"12,000","","m"],[19.5,53.8,"6,800","","m"],[19.5,64,"8,500","","m"],[19.5,75.9,"9,200","","m"],[78.4,95.3,"0","c","m"],[83.2,95.3,"5","c","m"],[88,95.3,"10","c","m"],[97.7,95.3,"20 m","c","m"],[59.3,75.1,"01","c pt"],[58.8,64.7,"02","c pt"],[66.4,77.2,"03","c pt"],[74.4,40.3,"04","c pt"],[70.9,26.4,"05","c pt"],[74.4,54.9,"06","c pt"]]}]} }, // 핀 #188: 아래층부터
+      { heading: "Materials", text: "Stone, brick, steel, glass and wood, balanced between the modern and the natural. Stone and brick ground the house; glass lets in light and the river; steel carries the open spaces; wood brings warmth inside. Outside, the pool extends from the living room toward the river, and a sunken lounge sits where the pool meets the garden.", big: true, images: [], seq: {"kind":"lead","src":"assets/img/la-junita/axo.jpg","r":1.159,"n":8,"steps":[{"t":"The house on the slope","s":"three masses stepping down to the river"},{"t":"Roofs lifted","s":"flat roofs drawn off the walls"},{"t":"Entrance level","s":"door, guest lounge and the open void"},{"t":"Brick, glass and steel","s":"the materials that hold the rooms"},{"t":"Pool and garden","s":"the house runs out toward the river"}],"L":[["l",41.7,37,"Flat roof, gravel, steel edge fascia",1],["r",44.6,60.5,"Roof over the family wing",1],["r",58.5,60.5,"Roof over the guest wing, stepped lower",1],["l",60.2,40,"Pedestrian access from the east",2],["l",65.7,24.5,"Vehicular access and parking",2],["r",66.6,54.5,"Guest lounge",2,1],["r",68.9,59,"Open lounge, double-height void",2,1],["l",71.2,31,"Parking court",2,1],["r",73,65,"Floor-to-ceiling low-E glass, slim steel frames",3],["l",75.3,50.5,"Dark clay brick, running bond",3],["r",76.4,62,"Terrazzo and oak floors",3],["l",78.6,46,"Terraced lawn steps, native planting",4],["r",82.2,69,"Infinity pool, mosaic tile, stone coping",4],["l",86.5,57.5,"Sunken lounge where pool meets garden",4,1]]} },
+      { heading: "Scenes", text: "The house from the garden and the river side, and the living spaces inside.", images: [{ src: "assets/img/la-junita/exterior-1.jpg", caption: "Exterior", r: 1.577 }, { src: "assets/img/la-junita/exterior-2.jpg", caption: "Pool and garden", r: 1.577 }, { src: "assets/img/la-junita/interior-1.jpg", caption: "Living room", r: 1.502 }, { src: "assets/img/la-junita/interior-2.jpg", caption: "Interior", r: 1.502 }], stack: true, scenes: true },
+    ],
+  },
+  // 유치원 (2026-11-23 추가) — 원본: portfolio-source/유치원 프로젝트 (KG 시트 11장). 그림은 원본 벡터에서 글자·지시선 레이어를 숨기고 뽑았고, 글은 시트의 설명문을 옮겼어요. 메모: portfolio-source/_kg-work/NOTES.md
+  {
+    slug: "natural-palette", blurb: "호수부터 숲까지, 유희 레이어 유치원",
+    title: "Natural Palette",
+    titleKo: "호수부터 숲까지, 유희 레이어 유치원",
+    subtitle: "A kindergarten on the slope between the lake and the forest — six play grounds that climb from the water to the trees",
+    type: "Education",
+    year: "2023",
+    studio: "Design Studio 2 · 2023-2",
+    award: "",
+    program: "유치원 · 신축 (5·6세반, 7세반, 특수학급)",
+    site: "호수와 숲 사이 경사지",
+    area: "실내 약 1,128 m² · 건축 투영 약 737 m² · 지붕 데크 약 506 m²",
+    team: "단독작품", // 핀 #186
+    tools: "",
+    cover: "assets/img/natural-palette/section-final.jpg",
+    coverR: 2.5211, // 대표: 최종 단면 투시(KG-09C)
+    thumb: "assets/img/natural-palette/axo.jpg", // 카드: 분해 엑소(KG-06)
+    coverCaption: "Sectional perspective A–A′ — from the forest floor to the lake",
+    summary:
+      "A kindergarten on a slope that falls about 14 m from the forest to the lake. The slope is set into two grounds — the lake ground at the level of the road and the forest ground a floor above — and a three-storey building is slid in between, carved by a hall and a light well so that children on every floor see and hear each other. What is left of the slope becomes six play grounds — lake, deck, sand, garden, small forest and forest — climbing one step at a time. Reinforced concrete, wrapped in ipe.",
+    sections: [
+      { heading: "Between the Lake Road and the Wooded Hill", big: true, // KG-04 배치도와 대지 분석
+        text: "The site is a slope that climbs from the reservoir road on the east to the wooded hill on the north-west. The road side takes the drop zone, the main entrance and the parking, so cars end at the front of the site; the light well and the play yards step back from the noise and the eyes of the road, one level at a time toward the forest. The forest entrance on the second floor and the forest yard join the hill path directly.",
+        images: [{"src":"assets/img/natural-palette/site.jpg","caption":"Site plan — roof plan, shadows at 10 a.m. in spring, spot heights S.L (m)","r":1.0399,"tags":[[15.2,32.6,"Forest","c","b"],[40.1,27.1,"Hill path","c","m"],[82.2,33.8,"Wooded hill","c","b"],[31.6,50.8,"Forest entrance · 2F S.L +3.8","r","m"],[31.9,68.1,"Main entrance · 1F S.L ±0","r","m"],[13.9,76.9,"Lakeside road","c","b"],[57.3,78.1,"Car access","c","m"],[51.1,91.2,"Reservoir","c","b"]],"w":"100%"}] },
+      { heading: "Four Readings of the Site", cols: 4, // KG-04 A–D
+        text: "Sun, view, noise and access — the four things the slope gives and takes.",
+        images: [{"src":"assets/img/natural-palette/sun.jpg","caption":"A Sun — open to the south and east. Classrooms and the play deck take the low winter sun; the light well lets the high summer sun in deep.","r":0.9017,"tags":[[44.4,3.9,"W","c","m"],[11.6,45.9,"S","c","m"],[44.4,96.4,"E","c","m"],[40,70.2,"Winter solstice","","m"],[38.2,82,"Summer solstice","","m"],[62.6,45.6,"Light well","","m"]]},{"src":"assets/img/natural-palette/view.jpg","caption":"B View — the water below, the forest ridge above. The first floor looks at the lake; the second, the third and the roof classroom look at the forest.","r":0.8989,"tags":[[31,9.8,"Forest ridge","c","m"],[93.1,10.2,"Forest","c","m"],[57.3,95.8,"Reservoir","c","m"]]},{"src":"assets/img/natural-palette/noise.jpg","caption":"C Noise — the road is filtered by the front yard, the street trees and the parking block; the play yards withdraw inside the building.","r":0.9043,"tags":[[49.1,37.5,"Quiet yard","c","m"],[10.2,83.2,"Road","","m"]]},{"src":"assets/img/natural-palette/access.jpg","caption":"D Access — cars end at the drop zone and the parking on the road. Children walk in two ways: the main door on the first floor, the forest door on the second.","r":0.9014,"tags":[[10.6,3.9,"Walk","","m"],[25.9,3.9,"Car","","m"],[13.9,13.2,"Forest entrance","","m"],[15.7,55.6,"Main entrance","c","m"],[24.8,63.5,"Drop zone","c","m"]]}] },
+      { heading: "Read, Insert, Carve, Play", big: true, // KG-07 매스 과정
+        text: "The slope that falls from the forest to the lake is set into two flat grounds, and a three-storey mass is slid in between. The middle of the mass is carved so light and eyes reach the play deck on the first floor; the rest of the slope is cut into sand, garden and small-forest yards that children climb one step at a time.",
+        images: [],
+        seq: {"kind":"frames","fade":true,"below":true,"r":1.2095,"steps":[{"src":"assets/img/natural-palette/mass-1.jpg","t":"Read the slope","s":"From the forest (S.L +11) to the lake (W.L −3.0), the ground falls about 14 m.","d":"The road runs halfway down, at S.L ±0 — the level every ground of the building is measured from.","tags":[[59.8,16.7,"Forest on the hill\nS.L +3.8 → +11","","m nl"],[29.3,68.9,"Lakeside road\nS.L ±0","c","m nl"],[69,74.8,"Lake\nW.L −3.0","","m nl"]]},{"src":"assets/img/natural-palette/mass-2.jpg","t":"Two grounds","s":"The slope is set into a lake ground (±0) and a forest ground (+3.8).","d":"The building takes its place on the edge between the two.","tags":[[55.1,20.9,"Forest ground · S.L +3.8","","m"],[29.1,62.1,"Lake ground · S.L ±0","c","m"]]},{"src":"assets/img/natural-palette/mass-3.jpg","t":"Insert the mass","s":"Three floors slid into the edge.","d":"The first floor meets the lake ground, the second meets the forest ground, and the third opens over the trees.","tags":[[26.5,21.5,"3F — a classroom open over the forest","","m"],[71.5,35.3,"2F — meets the forest","","m"],[74.6,54.5,"1F — meets the road and the lake","","m"]]},{"src":"assets/img/natural-palette/mass-4.jpg","t":"Carve the voids","s":"The light well (c), the hall (b) and the void over the entrance (a).","d":"Carved out so that light and eyes come down to the play deck on the first floor.","tags":[[22.1,34.8,"b Hall","r","m"],[25.4,55.4,"a Entry void","r","m"],[62.5,33.3,"c Light well","","m"]]},{"src":"assets/img/natural-palette/mass-5.jpg","t":"Play layers","s":"What is left of the slope becomes deck, sand, garden and small forest.","d":"Seen from the lake, the play grounds climb toward the forest one step at a time: 1 lake W.L −3.0 · 2 play deck ±0 · 3 sand +0.8 · 4 garden +1.8 · 5 small forest +2.8 · 6 forest +3.8.","tags":[[39.2,19.1,"6","c","pt"],[40.9,30.5,"5","c","pt"],[35.7,35.1,"4","c","pt"],[34.3,39.8,"3","c","pt"],[37.9,44.9,"2","c","pt"],[49.6,73.5,"1","c","pt"]]}]} },
+      { heading: "Two Grounds, One Hall", big: true, // KG-06 분해 엑소
+        text: "The building sits between two grounds of different height. The first floor meets the road and the lake ground (S.L ±0); the second meets the forest ground (S.L +3.9). Three voids thread them together — the void over the entrance, the hall linking the second and third floors, and the light well over the play deck — so a child on any floor sees and hears the play above and below.",
+        cols: 2, cw: [3, 1],
+        images: [{"src":"assets/img/natural-palette/axo.jpg","caption":"Exploded axonometric — the lake ground, the forest ground and the voids that join them","r":1.0776,"tags":[[69.1,10.8,"3F — roof classroom and sun terrace · S.L +7.6","","m"],[99,41.1,"2F — forest ground · S.L +3.9","r","m"],[98.5,77.2,"1F — lake ground · S.L ±0","r","m"],[12.2,40.2,"b Hall","r","m"],[23.9,60,"a Entry void","r","m"],[68,59.8,"c Light well","","m"]],"notes":[["1F","Lake ground","Entrance, welcome room, classrooms, open library — one floor out to the play deck and the sand yard, level with the road."],["2F","Forest ground","Forest entrance, dining, assembly hall, special class — at the height of the hill, looking down onto the garden and the forest yard."],["3F","Open classroom","A hand-wash corner over the hall, the roof garden and the sun terrace — a classroom open to the sky at the height of the forest."],["a·b·c","Three voids","Entry void (1↔2F), hall (2↔3F), light well (deck↔sky). On different floors, the children still see and hear each other."]]},{"src":"assets/img/natural-palette/axo-concept.jpg","caption":"Concept section — one hall between the lake ground and the forest ground","r":0.9529,"tags":[[53.5,5.2,"Hall","c","m"],[13.5,86.7,"Lake ground ±0","","m"],[98,65.7,"Forest ground +3.9","r","m"]]}] },
+      { heading: "Four Strategies", big: true, // KG-08
+        text: "Classrooms open to yards, the corridor loops around the light well, and two entrances sit on two grounds of different height. Floor by floor, the ground changes from the road and the lake to the forest and the sky.",
+        images: [],
+        seq: {"kind":"frames","fade":true,"below":true,"r":1.1974,"steps":[{"src":"assets/img/natural-palette/strategy-a.jpg","t":"Classroom + yard","s":"Each classroom opens onto its own yard.","d":"The 5–6 class opens west through folding doors onto the play palette, the 7 class north onto the play deck. With the doors open, room and yard become one play space, and the deck steps on to the sand yard and the garden.","tags":[[62.2,21.3,"Garden +1.8","c","m"],[62.5,36.5,"Sand yard +0.8","c","m"],[62.5,50,"Play deck ±0","c","m"],[18.7,64.3,"Play palette","c","m"],[40.1,46.6,"Welcome room","c","m"],[39.3,74,"Class 5–6","c","i"],[64.4,74,"Class 7","c","i"]]},{"src":"assets/img/natural-palette/strategy-b.jpg","t":"A loop around the light well","s":"The second-floor corridor goes once around the light well.","d":"It links the dining room, floor play, the assembly hall and the hall. With no dead end, children never walk back the same way, and all along they see the play deck below and the sky above. The north side of the well becomes a bridge over the sand yard.","tags":[[26,5.9,"Forest entrance +3.9","","m"],[24.2,20.8,"Director · counselling","c","m"],[18.9,38,"Special class","c","i"],[34.5,45.2,"Hall — open three floors","c","m"],[62.3,58.8,"Light well","c","m"],[82.1,52.7,"Floor play","c","m"],[46.3,78.7,"Dining","c","m"],[67.4,79.2,"Kitchen","c","m"],[83.5,76.4,"Assembly hall","c","m"]]},{"src":"assets/img/natural-palette/strategy-c.jpg","t":"Two grounds, two doors","s":"The main door on the lakeside road, the forest door on the hill.","d":"Main entrance on the first floor (S.L ±0), forest entrance on the second (S.L +3.9). Inside, the hall stair and the lift join the two grounds; outside, the play grounds do — deck, sand, garden, small forest.","tags":[[21.3,25.2,"Forest entrance · 2F","","m"],[79.9,31.3,"Main entrance · 1F","","m"],[93.1,27.3,"S.L +3.9","","m"],[93.1,33.1,"S.L ±0","","m"],[10,77.2,"1F indoor","c","m"],[24.1,77.2,"Play deck ±0","c","m"],[37.7,70.5,"Sand +0.8","c","m"],[52.9,62.8,"Garden +1.8","c","m"],[67.2,54.6,"Small forest +2.8","c","m"],[81.8,46.7,"Forest · 2F +3.8","c","m"]]},{"src":"assets/img/natural-palette/strategy-d.jpg","t":"Program by floor","s":"A different ground on each floor.","d":"First floor, the ground of the road and the lake: classrooms, the welcome room, the open library. Second, the ground of the forest: big rooms — dining, assembly, floor play — and the special class. Third, the ground of the sky: the roof garden, the sun terrace and the open classroom on the roof.","tags":[[11.8,5,"3F — ground of the sky · S.L +7.6","","m"],[11.8,40.7,"2F — ground of the forest · S.L +3.9","","m"],[11.8,77.8,"1F — ground of the road and lake · S.L ±0","","m"],[38.2,4.5,"Open classroom","c","i"],[29.7,46.8,"Special class","c","i"],[57.1,90.5,"Class","c","i"],[72.6,86.9,"Class","c","i"],[44.8,77.4,"Library","c","m"],[87.3,49.8,"Assembly hall","c","m"],[61.8,55.9,"Dining","c","m"]]}]} },
+      { heading: "Ground Floor — the Lake Side", big: true, // KG-03A
+        text: "The first floor starts level with the road (S.L ±0). Past the entrance and the welcome room are the hall that threads three floors and the open library; to the east, the play deck and the sand yard reach right up to the classrooms. The 5–6 and 7 classrooms open through folding doors to the deck and the yard by the road.",
+        images: [{"src":"assets/img/natural-palette/plan-1f.jpg","caption":"Ground floor plan, S.L ±0 — opening to the road, the deck and the sand","r":1.3169,"tags":[[17.3,17.7,"Plant","c","m"],[22.6,17.7,"WC","c","m"],[35,17.4,"Maze play −0.85","c","m"],[16.9,33.5,"Staff","c","m"],[23.5,32.9,"Meeting","c","m"],[36.8,32.6,"Open library","c","b"],[62.5,37,"Sand yard 7.8 × 4.4 m","c","m"],[40.3,50.1,"Entrance hall","c","m"],[42.7,59.2,"Welcome room","c","m"],[63.9,54.6,"Play deck","c","b"],[26.2,67.7,"Play palette","c","b"],[40,78.6,"Class 5–6","c","b"],[55,76.1,"WC","c","m"],[65.1,77.7,"Class 7","c","b"],[86.9,80.1,"Parking","c","m"],[23.8,88.5,"Drop zone","c","m"],[7.2,79.2,"Main entrance →","c","m"]],"w":"100%"}] },
+      { heading: "Upper Floors — the Hill Side", big: true, // KG-03B
+        text: "The second floor is entered from the forest ground through the forest entrance. Dining and kitchen, the assembly hall and the special class are on this floor, with the garden yard and the forest yard to the west. The third floor opens to the forest and the sky: a hand-wash corner over the hall, the open classroom on the roof and the sun terrace.",
+        cols: 2,
+        images: [{"src":"assets/img/natural-palette/plan-2f.jpg","caption":"2F, S.L +3.9 — forest entrance floor","r":1.2197,"tags":[[12.5,15.7,"Director","c","m"],[20.1,16.2,"Counsel","c","m"],[26.3,15.7,"Entry","c","m"],[34.3,15.7,"WC","c","m"],[43.8,7.1,"Terrace","c","m"],[56.6,7.6,"Forest yard","c","m"],[63.3,24,"Garden yard","c","m"],[16,37.7,"Special class","c","b"],[34.3,34.4,"Hall","c","b"],[61.1,38.8,"Sand yard below","c","m"],[84.1,38,"Terrace","c","m"],[86,51.2,"Floor play","c","b"],[63.3,59.5,"Light well","c","b"],[22.8,71.9,"Play palette below","c","m"],[40.2,79.8,"Staff dining","c","m"],[52.6,81.8,"Dining","c","b"],[68,87.1,"Kitchen","c","m"],[87.4,81.5,"Assembly hall","c","b"],[4.3,11.1,"Forest entrance →","","m"]]},{"src":"assets/img/natural-palette/plan-3f.jpg","caption":"3F, S.L +7.6 — roof classroom","r":1.2197,"tags":[[17.7,8.8,"Roof garden","c","b"],[33.5,8.8,"Open classroom","c","b"],[17.5,33.1,"Sun terrace","c","b"],[48.5,47.4,"Hand-wash corner","c","b"],[34.4,41.6,"Hall below","c","m"]]}] },
+      { heading: "Classroom Unit — a Room That Becomes a Yard", big: true, // KG-12
+        text: "The two classrooms on the first floor share the toilets in the middle and open three ways: sliding doors to the corridor by the welcome room, the 5–6 class's folding doors to the play palette, the 7 class's folding doors to the play deck under the light well. How far the doors open decides whether the classroom is a room, a corridor or a yard.",
+        images: [{"src":"assets/img/natural-palette/unit.jpg","caption":"Classroom unit 1/100 — two classrooms, one shared core, three ways to open","r":1.4191,"tags":[[32,11.3,"Entrance hall","c","m"],[36.6,29.2,"Welcome room","c","m"],[75.8,20.2,"Play deck","c","m"],[6.1,46.1,"Play palette","c","m"],[32.5,67.5,"Class 5–6","c","b"],[59.3,62.6,"WC","c","m"],[77.7,65.2,"Class 7","c","b"],[19.5,79.4,"1","c","pt"],[88.9,35.9,"2","c","pt"],[47.2,43.1,"3","c","pt"],[58.7,43.1,"3","c","pt"],[60.2,71.4,"4","c","pt"],[79.8,81.8,"5","c","pt"],[28.6,41.4,"6","c","pt"]],"w":"100%","notes":[["1","Folding doors","to the play palette"],["2","Folding doors","to the play deck"],["3","Sliding doors","to the welcome room and the corridor"],["4","Shared toilets","used by both classrooms"],["5","Coffered ceiling","raised in each classroom"],["6","Teacher's desk","at the corner by the corridor"]]}] },
+      { heading: "Three States of Opening", cols: 3, // KG-12 A–C
+        text: "2 classrooms on the road side at FL ±0 · 1 shared core · 4 doors — 2 folding, 2 sliding — to three outsides · 2 outdoor classrooms, the play palette to the west and the play deck under the light well.",
+        images: [{"src":"assets/img/natural-palette/unit-closed.jpg","caption":"A Closed — each class its own room: circle time, activities, quiet voices.","r":1.4083},{"src":"assets/img/natural-palette/unit-hall.jpg","caption":"B To the hall — with the corridor's sliding doors open, both classes join the welcome room and play crosses from one class to the other.","r":1.4083},{"src":"assets/img/natural-palette/unit-yards.jpg","caption":"C To the yards — with the folding doors folded away, the classroom becomes a yard that reaches the play palette and the play deck.","r":1.4083}] },
+      { heading: "From the Forest Floor to the Lake — Sectional Perspectives", big: true, stack: true, // KG-09A · 09C
+        text: "Two cuts through A–A′, looking north. The first steps through the 7 class and the light well, then turns to pass through the hall: the first floor, entered from the lakeside road at S.L ±0, is buried under the forest ground at S.L +3.8 on the left; the light well opens from the play deck to the sky, the hall from the second floor to the roof. The second keeps the final section as the cut and pushes the rooms behind it back in one-point perspective — from the wall buried in the forest soil, through the two-storey hall and the entrance, to the lakeside road and the lake.",
+        images: [{"src":"assets/img/natural-palette/section-stepped.jpg","caption":"Sectional perspective A–A′, stepped cut through the classroom, the light well and the hall — eye level of a child standing on the forest ground, S.L +4.7","r":2.4576,"tags":[[4.9,46.3,"Forest terrace","c","m"],[32.2,42.5,"Hall — 2F to roof","c","b"],[52.7,42.2,"Light well — open to the sky","c","b"],[72.4,43.5,"Dining","c","b"],[19.7,68.3,"Maze play","c","m"],[30.2,68.3,"Open library","c","m"],[52.7,74.5,"Play deck","c","b"],[74.2,68.3,"Class 7","c","b"],[93.1,57.8,"Lake road","c","m"],[97,6,"RF +11.8","r","m"],[97,22.8,"RF +9.3","r","m"],[97,34.2,"3F +7.6","r","m"],[97,59.2,"2F +3.9","r","m"],[97,85.3,"1F ±0","r","m"]],"w":"100%"},{"src":"assets/img/natural-palette/section-final.jpg","caption":"Sectional perspective A–A′ on the final section — forest, hall, classrooms, lake road and lake; eye level of a child in the second-floor hall","r":2.5211,"tags":[[1.3,30.8,"Forest","c","m"],[11.4,28.2,"Open classroom","c","m"],[23.8,26.7,"Hall","c","m"],[37.5,26.7,"Hand-wash corner","c","m"],[9.3,49.4,"Forest entrance","c","m"],[16.2,49.4,"WC","c","m"],[36,49.4,"Hall stair","c","b"],[49.5,49.4,"Corridor","c","m"],[64.9,49.4,"Dining","c","b"],[74.2,49.4,"Terrace","c","m"],[25.7,69.7,"Maze play","c","m"],[35.5,69.7,"Open library","c","b"],[46.9,69.7,"Entrance","c","m"],[53.2,69.7,"Welcome","c","m"],[65.6,69.7,"Class 5–6","c","b"],[96.6,67.7,"Lake","c","m"],[91,79.8,"Lake road","c","m"],[97.6,15.4,"RF +11.8","r","m"],[97.6,33,"RF +8.8","r","m"],[97.6,39.7,"3F +7.6","r","m"],[97.6,58.6,"2F +3.9","r","m"],[97.6,81.7,"1F ±0","r","m"]],"w":"100%"}] },
+      { heading: "Concrete Wrapped in Timber", big: true, // KG-13
+        text: "The structure is reinforced concrete, the skin is ipe. The roof lays screed and galvanised battens over the insulation and finishes in an ipe deck, so it becomes a floor the children climb up to play on. The walls are wrapped in ipe boards over the insulation, and the windows are hidden curtain walls with their frames buried in the wall.",
+        images: [{"src":"assets/img/natural-palette/detail.jpg","caption":"Detail axonometric — roof deck, clad wall, hidden curtain wall, floor on the mat; A ceiling hanger · B curtain-wall base · C cladding fixing · D deck fixing","r":1.4032,"tags":[[48.3,91.9,"A","c","pt"],[63.6,91.9,"B","c","pt"],[78.8,91.9,"C","c","pt"],[94,91.9,"D","c","pt"]],"w":"100%","notes":[["01","Roof","A roof deck the children climb onto. Over the insulation and vapour barrier, a screed sets the fall; the ipe deck floats on battens so the water drains away. The parapet is capped with aluminium flashing with drips inside and out."],["02","Services","The ceiling drops to the window head (+3.0); its 360 mm void gathers the supply duct and line diffusers, sprinkler branches and the cable tray. The floor is ondol — XL heating pipes buried in screed over insulation."],["03","Wall","The concrete wall is insulated outside and clad in ipe boards over a ventilated cavity; birch plywood lines the inside. The window is a hidden curtain wall — fixed lights below the transom, project vents above, mullions bolted to shoes top and bottom."],["04","Floor and footing","The lower first floor sits on a 900 mm mat: drainage board, insulation, heating screed and engineered timber. Under the mat, membrane, blinding and rubble; outside, waterproofing and a protection board, with a perforated drain in a gravel trench."]]}] },
+    ],
+  },
+  {
     "slug": "metaverse-church", "blurb": "디지털 트윈 건축 (메타버스)",
     "title": "Moduleverse Church",
     "titleKo": "메타버스 시스템의 교회공간",
@@ -2727,67 +2782,6 @@ const SITE = {
       }
     ],
     "drawings": []
-  },
-  // 유치원 (2026-11-23 추가) — 원본: portfolio-source/유치원 프로젝트 (KG 시트 11장). 그림은 원본 벡터에서 글자·지시선 레이어를 숨기고 뽑았고, 글은 시트의 설명문을 옮겼어요. 메모: portfolio-source/_kg-work/NOTES.md
-  {
-    slug: "natural-palette", blurb: "호수부터 숲까지, 유희 레이어 유치원",
-    title: "Natural Palette",
-    titleKo: "호수부터 숲까지, 유희 레이어 유치원",
-    subtitle: "A kindergarten on the slope between the lake and the forest — six play grounds that climb from the water to the trees",
-    type: "Education",
-    year: "2023",
-    studio: "Design Studio 2 · 2023-2",
-    award: "",
-    program: "유치원 · 신축 (5·6세반, 7세반, 특수학급)",
-    site: "호수와 숲 사이 경사지",
-    area: "실내 약 1,128 m² · 건축 투영 약 737 m² · 지붕 데크 약 506 m²",
-    team: "단독작품", // 핀 #186
-    tools: "",
-    cover: "assets/img/natural-palette/section-final.jpg",
-    coverR: 2.5211, // 대표: 최종 단면 투시(KG-09C)
-    thumb: "assets/img/natural-palette/axo.jpg", // 카드: 분해 엑소(KG-06)
-    coverCaption: "Sectional perspective A–A′ — from the forest floor to the lake",
-    summary:
-      "A kindergarten on a slope that falls about 14 m from the forest to the lake. The slope is set into two grounds — the lake ground at the level of the road and the forest ground a floor above — and a three-storey building is slid in between, carved by a hall and a light well so that children on every floor see and hear each other. What is left of the slope becomes six play grounds — lake, deck, sand, garden, small forest and forest — climbing one step at a time. Reinforced concrete, wrapped in ipe.",
-    sections: [
-      { heading: "Between the Lake Road and the Wooded Hill", big: true, // KG-04 배치도와 대지 분석
-        text: "The site is a slope that climbs from the reservoir road on the east to the wooded hill on the north-west. The road side takes the drop zone, the main entrance and the parking, so cars end at the front of the site; the light well and the play yards step back from the noise and the eyes of the road, one level at a time toward the forest. The forest entrance on the second floor and the forest yard join the hill path directly.",
-        images: [{"src":"assets/img/natural-palette/site.jpg","caption":"Site plan — roof plan, shadows at 10 a.m. in spring, spot heights S.L (m)","r":1.0399,"tags":[[15.2,32.6,"Forest","c","b"],[40.1,27.1,"Hill path","c","m"],[82.2,33.8,"Wooded hill","c","b"],[31.6,50.8,"Forest entrance · 2F S.L +3.8","r","m"],[31.9,68.1,"Main entrance · 1F S.L ±0","r","m"],[13.9,76.9,"Lakeside road","c","b"],[57.3,78.1,"Car access","c","m"],[51.1,91.2,"Reservoir","c","b"]],"w":"100%"}] },
-      { heading: "Four Readings of the Site", cols: 4, // KG-04 A–D
-        text: "Sun, view, noise and access — the four things the slope gives and takes.",
-        images: [{"src":"assets/img/natural-palette/sun.jpg","caption":"A Sun — open to the south and east. Classrooms and the play deck take the low winter sun; the light well lets the high summer sun in deep.","r":0.9017,"tags":[[44.4,3.9,"W","c","m"],[11.6,45.9,"S","c","m"],[44.4,96.4,"E","c","m"],[40,70.2,"Winter solstice","","m"],[38.2,82,"Summer solstice","","m"],[62.6,45.6,"Light well","","m"]]},{"src":"assets/img/natural-palette/view.jpg","caption":"B View — the water below, the forest ridge above. The first floor looks at the lake; the second, the third and the roof classroom look at the forest.","r":0.8989,"tags":[[31,9.8,"Forest ridge","c","m"],[93.1,10.2,"Forest","c","m"],[57.3,95.8,"Reservoir","c","m"]]},{"src":"assets/img/natural-palette/noise.jpg","caption":"C Noise — the road is filtered by the front yard, the street trees and the parking block; the play yards withdraw inside the building.","r":0.9043,"tags":[[49.1,37.5,"Quiet yard","c","m"],[10.2,83.2,"Road","","m"]]},{"src":"assets/img/natural-palette/access.jpg","caption":"D Access — cars end at the drop zone and the parking on the road. Children walk in two ways: the main door on the first floor, the forest door on the second.","r":0.9014,"tags":[[10.6,3.9,"Walk","","m"],[25.9,3.9,"Car","","m"],[13.9,13.2,"Forest entrance","","m"],[15.7,55.6,"Main entrance","c","m"],[24.8,63.5,"Drop zone","c","m"]]}] },
-      { heading: "Read, Insert, Carve, Play", big: true, // KG-07 매스 과정
-        text: "The slope that falls from the forest to the lake is set into two flat grounds, and a three-storey mass is slid in between. The middle of the mass is carved so light and eyes reach the play deck on the first floor; the rest of the slope is cut into sand, garden and small-forest yards that children climb one step at a time.",
-        images: [],
-        seq: {"kind":"frames","fade":true,"below":true,"r":1.2095,"steps":[{"src":"assets/img/natural-palette/mass-1.jpg","t":"Read the slope","s":"From the forest (S.L +11) to the lake (W.L −3.0), the ground falls about 14 m.","d":"The road runs halfway down, at S.L ±0 — the level every ground of the building is measured from.","tags":[[59.8,16.7,"Forest on the hill\nS.L +3.8 → +11","","m nl"],[29.3,68.9,"Lakeside road\nS.L ±0","c","m nl"],[69,74.8,"Lake\nW.L −3.0","","m nl"]]},{"src":"assets/img/natural-palette/mass-2.jpg","t":"Two grounds","s":"The slope is set into a lake ground (±0) and a forest ground (+3.8).","d":"The building takes its place on the edge between the two.","tags":[[55.1,20.9,"Forest ground · S.L +3.8","","m"],[29.1,62.1,"Lake ground · S.L ±0","c","m"]]},{"src":"assets/img/natural-palette/mass-3.jpg","t":"Insert the mass","s":"Three floors slid into the edge.","d":"The first floor meets the lake ground, the second meets the forest ground, and the third opens over the trees.","tags":[[26.5,21.5,"3F — a classroom open over the forest","","m"],[71.5,35.3,"2F — meets the forest","","m"],[74.6,54.5,"1F — meets the road and the lake","","m"]]},{"src":"assets/img/natural-palette/mass-4.jpg","t":"Carve the voids","s":"The light well (c), the hall (b) and the void over the entrance (a).","d":"Carved out so that light and eyes come down to the play deck on the first floor.","tags":[[22.1,34.8,"b Hall","r","m"],[25.4,55.4,"a Entry void","r","m"],[62.5,33.3,"c Light well","","m"]]},{"src":"assets/img/natural-palette/mass-5.jpg","t":"Play layers","s":"What is left of the slope becomes deck, sand, garden and small forest.","d":"Seen from the lake, the play grounds climb toward the forest one step at a time: 1 lake W.L −3.0 · 2 play deck ±0 · 3 sand +0.8 · 4 garden +1.8 · 5 small forest +2.8 · 6 forest +3.8.","tags":[[39.2,19.1,"6","c","pt"],[40.9,30.5,"5","c","pt"],[35.7,35.1,"4","c","pt"],[34.3,39.8,"3","c","pt"],[37.9,44.9,"2","c","pt"],[49.6,73.5,"1","c","pt"]]}]} },
-      { heading: "Two Grounds, One Hall", big: true, // KG-06 분해 엑소
-        text: "The building sits between two grounds of different height. The first floor meets the road and the lake ground (S.L ±0); the second meets the forest ground (S.L +3.9). Three voids thread them together — the void over the entrance, the hall linking the second and third floors, and the light well over the play deck — so a child on any floor sees and hears the play above and below.",
-        cols: 2, cw: [3, 1],
-        images: [{"src":"assets/img/natural-palette/axo.jpg","caption":"Exploded axonometric — the lake ground, the forest ground and the voids that join them","r":1.0776,"tags":[[69.1,10.8,"3F — roof classroom and sun terrace · S.L +7.6","","m"],[99,41.1,"2F — forest ground · S.L +3.9","r","m"],[98.5,77.2,"1F — lake ground · S.L ±0","r","m"],[12.2,40.2,"b Hall","r","m"],[23.9,60,"a Entry void","r","m"],[68,59.8,"c Light well","","m"]],"notes":[["1F","Lake ground","Entrance, welcome room, classrooms, open library — one floor out to the play deck and the sand yard, level with the road."],["2F","Forest ground","Forest entrance, dining, assembly hall, special class — at the height of the hill, looking down onto the garden and the forest yard."],["3F","Open classroom","A hand-wash corner over the hall, the roof garden and the sun terrace — a classroom open to the sky at the height of the forest."],["a·b·c","Three voids","Entry void (1↔2F), hall (2↔3F), light well (deck↔sky). On different floors, the children still see and hear each other."]]},{"src":"assets/img/natural-palette/axo-concept.jpg","caption":"Concept section — one hall between the lake ground and the forest ground","r":0.9529,"tags":[[53.5,5.2,"Hall","c","m"],[13.5,86.7,"Lake ground ±0","","m"],[98,65.7,"Forest ground +3.9","r","m"]]}] },
-      { heading: "Four Strategies", big: true, // KG-08
-        text: "Classrooms open to yards, the corridor loops around the light well, and two entrances sit on two grounds of different height. Floor by floor, the ground changes from the road and the lake to the forest and the sky.",
-        images: [],
-        seq: {"kind":"frames","fade":true,"below":true,"r":1.1974,"steps":[{"src":"assets/img/natural-palette/strategy-a.jpg","t":"Classroom + yard","s":"Each classroom opens onto its own yard.","d":"The 5–6 class opens west through folding doors onto the play palette, the 7 class north onto the play deck. With the doors open, room and yard become one play space, and the deck steps on to the sand yard and the garden.","tags":[[62.2,21.3,"Garden +1.8","c","m"],[62.5,36.5,"Sand yard +0.8","c","m"],[62.5,50,"Play deck ±0","c","m"],[18.7,64.3,"Play palette","c","m"],[40.1,46.6,"Welcome room","c","m"],[39.3,74,"Class 5–6","c","i"],[64.4,74,"Class 7","c","i"]]},{"src":"assets/img/natural-palette/strategy-b.jpg","t":"A loop around the light well","s":"The second-floor corridor goes once around the light well.","d":"It links the dining room, floor play, the assembly hall and the hall. With no dead end, children never walk back the same way, and all along they see the play deck below and the sky above. The north side of the well becomes a bridge over the sand yard.","tags":[[26,5.9,"Forest entrance +3.9","","m"],[24.2,20.8,"Director · counselling","c","m"],[18.9,38,"Special class","c","i"],[34.5,45.2,"Hall — open three floors","c","m"],[62.3,58.8,"Light well","c","m"],[82.1,52.7,"Floor play","c","m"],[46.3,78.7,"Dining","c","m"],[67.4,79.2,"Kitchen","c","m"],[83.5,76.4,"Assembly hall","c","m"]]},{"src":"assets/img/natural-palette/strategy-c.jpg","t":"Two grounds, two doors","s":"The main door on the lakeside road, the forest door on the hill.","d":"Main entrance on the first floor (S.L ±0), forest entrance on the second (S.L +3.9). Inside, the hall stair and the lift join the two grounds; outside, the play grounds do — deck, sand, garden, small forest.","tags":[[21.3,25.2,"Forest entrance · 2F","","m"],[79.9,31.3,"Main entrance · 1F","","m"],[93.1,27.3,"S.L +3.9","","m"],[93.1,33.1,"S.L ±0","","m"],[10,77.2,"1F indoor","c","m"],[24.1,77.2,"Play deck ±0","c","m"],[37.7,70.5,"Sand +0.8","c","m"],[52.9,62.8,"Garden +1.8","c","m"],[67.2,54.6,"Small forest +2.8","c","m"],[81.8,46.7,"Forest · 2F +3.8","c","m"]]},{"src":"assets/img/natural-palette/strategy-d.jpg","t":"Program by floor","s":"A different ground on each floor.","d":"First floor, the ground of the road and the lake: classrooms, the welcome room, the open library. Second, the ground of the forest: big rooms — dining, assembly, floor play — and the special class. Third, the ground of the sky: the roof garden, the sun terrace and the open classroom on the roof.","tags":[[11.8,5,"3F — ground of the sky · S.L +7.6","","m"],[11.8,40.7,"2F — ground of the forest · S.L +3.9","","m"],[11.8,77.8,"1F — ground of the road and lake · S.L ±0","","m"],[38.2,4.5,"Open classroom","c","i"],[29.7,46.8,"Special class","c","i"],[57.1,90.5,"Class","c","i"],[72.6,86.9,"Class","c","i"],[44.8,77.4,"Library","c","m"],[87.3,49.8,"Assembly hall","c","m"],[61.8,55.9,"Dining","c","m"]]}]} },
-      { heading: "Ground Floor — the Lake Side", big: true, // KG-03A
-        text: "The first floor starts level with the road (S.L ±0). Past the entrance and the welcome room are the hall that threads three floors and the open library; to the east, the play deck and the sand yard reach right up to the classrooms. The 5–6 and 7 classrooms open through folding doors to the deck and the yard by the road.",
-        images: [{"src":"assets/img/natural-palette/plan-1f.jpg","caption":"Ground floor plan, S.L ±0 — opening to the road, the deck and the sand","r":1.3169,"tags":[[17.3,17.7,"Plant","c","m"],[22.6,17.7,"WC","c","m"],[35,17.4,"Maze play −0.85","c","m"],[16.9,33.5,"Staff","c","m"],[23.5,32.9,"Meeting","c","m"],[36.8,32.6,"Open library","c","b"],[62.5,37,"Sand yard 7.8 × 4.4 m","c","m"],[40.3,50.1,"Entrance hall","c","m"],[42.7,59.2,"Welcome room","c","m"],[63.9,54.6,"Play deck","c","b"],[26.2,67.7,"Play palette","c","b"],[40,78.6,"Class 5–6","c","b"],[55,76.1,"WC","c","m"],[65.1,77.7,"Class 7","c","b"],[86.9,80.1,"Parking","c","m"],[23.8,88.5,"Drop zone","c","m"],[7.2,79.2,"Main entrance →","c","m"]],"w":"100%"}] },
-      { heading: "Upper Floors — the Hill Side", big: true, // KG-03B
-        text: "The second floor is entered from the forest ground through the forest entrance. Dining and kitchen, the assembly hall and the special class are on this floor, with the garden yard and the forest yard to the west. The third floor opens to the forest and the sky: a hand-wash corner over the hall, the open classroom on the roof and the sun terrace.",
-        cols: 2,
-        images: [{"src":"assets/img/natural-palette/plan-2f.jpg","caption":"2F, S.L +3.9 — forest entrance floor","r":1.2197,"tags":[[12.5,15.7,"Director","c","m"],[20.1,16.2,"Counsel","c","m"],[26.3,15.7,"Entry","c","m"],[34.3,15.7,"WC","c","m"],[43.8,7.1,"Terrace","c","m"],[56.6,7.6,"Forest yard","c","m"],[63.3,24,"Garden yard","c","m"],[16,37.7,"Special class","c","b"],[34.3,34.4,"Hall","c","b"],[61.1,38.8,"Sand yard below","c","m"],[84.1,38,"Terrace","c","m"],[86,51.2,"Floor play","c","b"],[63.3,59.5,"Light well","c","b"],[22.8,71.9,"Play palette below","c","m"],[40.2,79.8,"Staff dining","c","m"],[52.6,81.8,"Dining","c","b"],[68,87.1,"Kitchen","c","m"],[87.4,81.5,"Assembly hall","c","b"],[4.3,11.1,"Forest entrance →","","m"]]},{"src":"assets/img/natural-palette/plan-3f.jpg","caption":"3F, S.L +7.6 — roof classroom","r":1.2197,"tags":[[17.7,8.8,"Roof garden","c","b"],[33.5,8.8,"Open classroom","c","b"],[17.5,33.1,"Sun terrace","c","b"],[48.5,47.4,"Hand-wash corner","c","b"],[34.4,41.6,"Hall below","c","m"]]}] },
-      { heading: "Classroom Unit — a Room That Becomes a Yard", big: true, // KG-12
-        text: "The two classrooms on the first floor share the toilets in the middle and open three ways: sliding doors to the corridor by the welcome room, the 5–6 class's folding doors to the play palette, the 7 class's folding doors to the play deck under the light well. How far the doors open decides whether the classroom is a room, a corridor or a yard.",
-        images: [{"src":"assets/img/natural-palette/unit.jpg","caption":"Classroom unit 1/100 — two classrooms, one shared core, three ways to open","r":1.4191,"tags":[[32,11.3,"Entrance hall","c","m"],[36.6,29.2,"Welcome room","c","m"],[75.8,20.2,"Play deck","c","m"],[6.1,46.1,"Play palette","c","m"],[32.5,67.5,"Class 5–6","c","b"],[59.3,62.6,"WC","c","m"],[77.7,65.2,"Class 7","c","b"],[19.5,79.4,"1","c","pt"],[88.9,35.9,"2","c","pt"],[47.2,43.1,"3","c","pt"],[58.7,43.1,"3","c","pt"],[60.2,71.4,"4","c","pt"],[79.8,81.8,"5","c","pt"],[28.6,41.4,"6","c","pt"]],"w":"100%","notes":[["1","Folding doors","to the play palette"],["2","Folding doors","to the play deck"],["3","Sliding doors","to the welcome room and the corridor"],["4","Shared toilets","used by both classrooms"],["5","Coffered ceiling","raised in each classroom"],["6","Teacher's desk","at the corner by the corridor"]]}] },
-      { heading: "Three States of Opening", cols: 3, // KG-12 A–C
-        text: "2 classrooms on the road side at FL ±0 · 1 shared core · 4 doors — 2 folding, 2 sliding — to three outsides · 2 outdoor classrooms, the play palette to the west and the play deck under the light well.",
-        images: [{"src":"assets/img/natural-palette/unit-closed.jpg","caption":"A Closed — each class its own room: circle time, activities, quiet voices.","r":1.4083},{"src":"assets/img/natural-palette/unit-hall.jpg","caption":"B To the hall — with the corridor's sliding doors open, both classes join the welcome room and play crosses from one class to the other.","r":1.4083},{"src":"assets/img/natural-palette/unit-yards.jpg","caption":"C To the yards — with the folding doors folded away, the classroom becomes a yard that reaches the play palette and the play deck.","r":1.4083}] },
-      { heading: "From the Forest Floor to the Lake — Sectional Perspectives", big: true, stack: true, // KG-09A · 09C
-        text: "Two cuts through A–A′, looking north. The first steps through the 7 class and the light well, then turns to pass through the hall: the first floor, entered from the lakeside road at S.L ±0, is buried under the forest ground at S.L +3.8 on the left; the light well opens from the play deck to the sky, the hall from the second floor to the roof. The second keeps the final section as the cut and pushes the rooms behind it back in one-point perspective — from the wall buried in the forest soil, through the two-storey hall and the entrance, to the lakeside road and the lake.",
-        images: [{"src":"assets/img/natural-palette/section-stepped.jpg","caption":"Sectional perspective A–A′, stepped cut through the classroom, the light well and the hall — eye level of a child standing on the forest ground, S.L +4.7","r":2.4576,"tags":[[4.9,46.3,"Forest terrace","c","m"],[32.2,42.5,"Hall — 2F to roof","c","b"],[52.7,42.2,"Light well — open to the sky","c","b"],[72.4,43.5,"Dining","c","b"],[19.7,68.3,"Maze play","c","m"],[30.2,68.3,"Open library","c","m"],[52.7,74.5,"Play deck","c","b"],[74.2,68.3,"Class 7","c","b"],[93.1,57.8,"Lake road","c","m"],[97,6,"RF +11.8","r","m"],[97,22.8,"RF +9.3","r","m"],[97,34.2,"3F +7.6","r","m"],[97,59.2,"2F +3.9","r","m"],[97,85.3,"1F ±0","r","m"]],"w":"100%"},{"src":"assets/img/natural-palette/section-final.jpg","caption":"Sectional perspective A–A′ on the final section — forest, hall, classrooms, lake road and lake; eye level of a child in the second-floor hall","r":2.5211,"tags":[[1.3,30.8,"Forest","c","m"],[11.4,28.2,"Open classroom","c","m"],[23.8,26.7,"Hall","c","m"],[37.5,26.7,"Hand-wash corner","c","m"],[9.3,49.4,"Forest entrance","c","m"],[16.2,49.4,"WC","c","m"],[36,49.4,"Hall stair","c","b"],[49.5,49.4,"Corridor","c","m"],[64.9,49.4,"Dining","c","b"],[74.2,49.4,"Terrace","c","m"],[25.7,69.7,"Maze play","c","m"],[35.5,69.7,"Open library","c","b"],[46.9,69.7,"Entrance","c","m"],[53.2,69.7,"Welcome","c","m"],[65.6,69.7,"Class 5–6","c","b"],[96.6,67.7,"Lake","c","m"],[91,79.8,"Lake road","c","m"],[97.6,15.4,"RF +11.8","r","m"],[97.6,33,"RF +8.8","r","m"],[97.6,39.7,"3F +7.6","r","m"],[97.6,58.6,"2F +3.9","r","m"],[97.6,81.7,"1F ±0","r","m"]],"w":"100%"}] },
-      { heading: "Concrete Wrapped in Timber", big: true, // KG-13
-        text: "The structure is reinforced concrete, the skin is ipe. The roof lays screed and galvanised battens over the insulation and finishes in an ipe deck, so it becomes a floor the children climb up to play on. The walls are wrapped in ipe boards over the insulation, and the windows are hidden curtain walls with their frames buried in the wall.",
-        images: [{"src":"assets/img/natural-palette/detail.jpg","caption":"Detail axonometric — roof deck, clad wall, hidden curtain wall, floor on the mat; A ceiling hanger · B curtain-wall base · C cladding fixing · D deck fixing","r":1.4032,"tags":[[48.3,91.9,"A","c","pt"],[63.6,91.9,"B","c","pt"],[78.8,91.9,"C","c","pt"],[94,91.9,"D","c","pt"]],"w":"100%","notes":[["01","Roof","A roof deck the children climb onto. Over the insulation and vapour barrier, a screed sets the fall; the ipe deck floats on battens so the water drains away. The parapet is capped with aluminium flashing with drips inside and out."],["02","Services","The ceiling drops to the window head (+3.0); its 360 mm void gathers the supply duct and line diffusers, sprinkler branches and the cable tray. The floor is ondol — XL heating pipes buried in screed over insulation."],["03","Wall","The concrete wall is insulated outside and clad in ipe boards over a ventilated cavity; birch plywood lines the inside. The window is a hidden curtain wall — fixed lights below the transom, project vents above, mullions bolted to shoes top and bottom."],["04","Floor and footing","The lower first floor sits on a 900 mm mat: drainage board, insulation, heating screed and engineered timber. Under the mat, membrane, blinding and rubble; outside, waterproofing and a protection board, with a perforated drain in a gravel trench."]]}] },
-    ],
   },
 ];
 
