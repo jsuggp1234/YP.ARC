@@ -2471,3 +2471,11 @@ html.sb-on { overflow-x: hidden; }
 .cx-full .cx-cv video.cx-vid { object-fit: cover; } /* 핀 #219: 화면 꽉 채운 대표에서는 영상도 사진처럼 꽉 */
 .media:has(img[src*="re-tide/twelve-mounds"]) .ftag.lv { background: none; padding: 0; } /* 핀 #220: 열두 언덕 배치 그림 글자 밑 흰 바탕 없앰 */
 .cx-full .cx-play { bottom: 64px; } /* 화면 꽉 찬 대표에서는 아래 고정 표시(시각)와 겹치지 않게 */
+/* 핀 #223: next case 사진 위 NEXT — 더 크게, 반투명 */
+.cx-go { font-size: var(--t-xl); letter-spacing: .04em; color: rgba(255,255,255,.55); }
+.cx-nx:hover .cx-go { color: rgba(255,255,255,.85); }
+/* 핀 #225: 모바일에서 그림 묶음(여러 칸)은 모두 한 줄에 하나씩 크게 */
+@media (max-width: 760px) {
+  .figs.gc { grid-template-columns: 1fr !important; row-gap: 32px; }
+  .figs.gc > * { grid-column: auto !important; }
+}
