@@ -2427,3 +2427,16 @@ html.sb-on { overflow-x: hidden; }
   .fnotes.ld-m li { border-top: 1px solid var(--line); padding-top: 4px; }
   .fnotes.ld-m b { font-weight: 400; }
 }
+/* 핀 #205–#207: next case — 사진 크게(데스크톱), 모바일은 글자와 사진을 한 줄 아래끝 맞춤, 사진 위 커서는 투명 유리 렌즈 */
+@media (min-width: 761px) { .cx-nm { grid-column: 3 / span 2; width: min(34vw, 600px); } }
+@media (max-width: 760px) {
+  .cx-nx { align-items: end; column-gap: 12px; }
+  .cx-nt { grid-column: 1 / span 2; grid-row: 1; align-self: end; }
+  .cx-nm { grid-column: 3 / -1; grid-row: 1; align-self: end; justify-self: end; width: 100%; margin-bottom: 0; }
+}
+@media (min-width: 761px) { .cx-nt { grid-column: 1 / span 2; grid-row: 1; } .cx-nm { grid-row: 1; } }
+/* 핀 #207: 사진 가운데 투명(유리) NEXT 버튼 */
+.cx-nm .media { position: relative; }
+.cx-go { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2; padding: 10px 22px; font-size: var(--t-s); letter-spacing: .08em; text-transform: uppercase; color: #fff;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: background .4s var(--ease); pointer-events: none; }
+.cx-nx:hover .cx-go { background: rgba(255,255,255,.2); }

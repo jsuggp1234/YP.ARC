@@ -3961,7 +3961,7 @@
           </section>` : ""}
           <a class="cx-nx g4" href="project.html#${nx.slug}" aria-label="Next case: ${esc(nx.title)}">
             <span class="cx-nt"><span class="cx-nl">next case</span><span class="cx-nn">${esc(nx.title)}</span></span>
-            <span class="cx-nm"><span class="media">${mz(card(nx, 600, 800))}</span></span>
+            <span class="cx-nm"><span class="media">${mz(card(nx, 600, 800))}<span class="cx-go" aria-hidden="true">Next</span></span></span>
           </a>
         </article>`;
 
