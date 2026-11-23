@@ -90,7 +90,7 @@
 
 ## 진행 상황
 - 작업 브랜치: `v2-redesign`(2026-11-22부터, `v1-calculator`의 커밋 81cb4b8에서 갈라짐). 예전 `v1-calculator`는 PR #1 열려 있음 (https://github.com/jsuggp1234/YP.ARC/pull/1).
-- GitHub Pages 공개 배포는 아직 안 했어요. **공개 배포는 사용자에게 먼저 확인받기.**
+- GitHub Pages 공개(2026-11-23 사용자 요청): https://jsuggp1234.github.io/YP.ARC/ — `v2-redesign` 브랜치 루트에서 바로 공개돼요(`.nojekyll`). 그래서 이 브랜치에 push하면 곧 인터넷에 반영돼요. **push(=공개 갱신)는 사용자에게 먼저 확인받기.**
 
 ## 남은 일
 1. 작품은 9개. 포트폴리오 PDF(`portfolio-source/`, git 제외)로 RE:TIDE · Motorism · Tim(team) Work · Modular O′ housing 4개를 채웠어요. 나머지 5개(`draft: true`)는 CV의 수상·스튜디오 이름만 있어요 — 사용자 자료를 받으면 채우기(작품명 확인 필요).
