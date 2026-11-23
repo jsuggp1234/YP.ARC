@@ -2055,9 +2055,11 @@ const SITE = {
     "area": "모듈 3.6 × 2.4 m · 방 6.2 m² + 잎 데크",
     "team": "3인 팀 · 팀장",
     "tools": "",
-    "cover": "assets/img/the-tree-house/village-section.jpg",
-    "coverCaption": "A day in the village — seven rooms on four birches by the Soyang lake",
-    "coverR": 1.858,
+    // 핀 #178·#179: 대표사진(상세 머리) = 호숫가 새벽 렌더, studio 카드 = 숲속 아이들 렌더 (예전 대표: village-section.jpg)
+    "cover": "assets/img/the-tree-house/cover.jpg",
+    "thumb": "assets/img/the-tree-house/card.jpg",
+    "coverCaption": "Morning on the Soyang lake — a bloomed room on its birch, curtains open to the water",
+    "coverR": 1.2217,
     "summary": "A 3.6 × 2.4 m room hung on one living birch. Nothing stands on the ground: a split steel sleeve wraps the trunk, three tree bolts carry the whole room, and a helical flight lets the room climb its own tree, one turn per level. Every wall is a leaf on a hinge — a wall, an awning, a deck, a bridge, a stair or a ramp — so a few rooms on neighbouring trees join into a village without felling a tree or cutting a branch.",
     "sections": [
       {
