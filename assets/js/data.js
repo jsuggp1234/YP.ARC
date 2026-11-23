@@ -2531,7 +2531,7 @@ const SITE = {
     team: "단독작품", // 핀 #186
     tools: "",
     cover: "assets/img/natural-palette/render-main.jpg", // 2026-11-24 사용자 요청: 렌더 메인샷을 대표사진으로
-    coverR: 1.1019,
+    coverR: 1.1019, coverWide: true, // 핀 #198: 대표사진 크게 — 맨 위 화면 높이 가득(가로형 머리 배치)
     thumb: "assets/img/natural-palette/render-entrance.jpg", // 2026-11-24 사용자 요청: studio 카드 = 이게찐(입구 홀), 작품 페이지 대표 = 메인샷
     coverCaption: "The kindergarten across the lake, the forest behind",
     summary:
