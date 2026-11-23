@@ -2443,3 +2443,8 @@ html.sb-on { overflow-x: hidden; }
 /* 핀 #208: NEXT는 상자 없이 반투명 글자만 */
 .cx-go { padding: 0; background: none; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none; color: rgba(255,255,255,.75); transition: color .4s var(--ease); }
 .cx-nx:hover .cx-go { background: none; color: #fff; }
+/* 핀 #209: 모바일 영상 대표 이미지는 가장자리까지 꽉(좌우 여백 없이), 재생하면 전체 화면 */
+@media (max-width: 760px) {
+  .cx-hd .cx-cv:has(.cx-play) { margin-inline: calc(-1 * var(--g4-e)); }
+  .cx-cv video.cx-vid:fullscreen { object-fit: contain; background: #000; }
+}

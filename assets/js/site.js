@@ -3969,7 +3969,8 @@
       $$(".cx-play").forEach((b) => b.addEventListener("click", () => { // 핀 #114: 누르면 사진 위로 영상이 열리고, 다시 누르면 멈춤/재생
         const box = b.parentElement; let v = $("video.cx-vid", box);
         if (!v) { v = document.createElement("video"); Object.assign(v, { src: b.dataset.vid, muted: true, loop: true, playsInline: true, className: "cx-vid" }); v.setAttribute("playsinline", ""); box.insertBefore(v, b); }
-        if (v.paused) { v.play().catch(() => {}); box.classList.add("vid-on"); b.setAttribute("aria-label", "Pause film"); $("span", b).textContent = "Pause"; }
+        if (v.paused) { v.play().catch(() => {}); box.classList.add("vid-on"); if (matchMedia("(max-width: 760px)").matches) { try { (v.requestFullscreen ? v.requestFullscreen() : v.webkitEnterFullscreen && v.webkitEnterFullscreen())?.catch?.(() => {}); } catch (er) {} } // 핀 #209: 모바일은 재생하면 화면 꽉 채움(가로로 돌려 볼 수 있어요)
+          b.setAttribute("aria-label", "Pause film"); $("span", b).textContent = "Pause"; }
         else { v.pause(); b.setAttribute("aria-label", "Play film"); $("span", b).textContent = "Play film"; }
         b.classList.toggle("on", !v.paused);
       }));
