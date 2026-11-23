@@ -2414,3 +2414,4 @@ html.sb-on { overflow-x: hidden; }
 .media .ftag.dim-t.dv { transform: translate(-50%, -50%) rotate(-90deg); }
 .media .dims line.g { stroke: var(--mid); stroke-width: .6; stroke-dasharray: 10 3 2 3; opacity: .7; } /* 핀 #199: 그리드선(일점쇄선) */
 .media .ftag.dim-t { font-size: var(--t-xs); padding: 0 2px; }
+.kj-it .media { width: min(100%, var(--kjw, 100%)); } /* 핀 #202: keyed.lw로 확대 상세 그림 폭 */
