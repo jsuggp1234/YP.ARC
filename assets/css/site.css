@@ -2463,3 +2463,8 @@ html.sb-on { overflow-x: hidden; }
 .cx-full .cx-l, .cx-full .cx-lead { grid-row: 2; }
 @media (max-width: 760px) { .cx-full .cx-cv { padding-top: 0; } .cx-full .cx-cv .media { width: 100%; height: 100svh; aspect-ratio: auto; } .cx-full .cx-l, .cx-full .cx-lead { grid-row: auto; } }
 @media (max-width: 760px) { .cx-full .cx-cv .media img { object-position: 74% 50%; } } /* 모바일: 나무집이 화면 가운데 오도록 */
+/* 핀 #216·#217 (데스크톱): Menu는 오른쪽 끝(Light/Dark 바로 왼쪽)으로, 서울 시각은 다이얼(원) 바로 아래로 */
+@media (min-width: 761px) {
+  .hdr.g4 > .hdr-n { grid-column: 4; grid-row: 1; justify-self: end; margin-right: 112px; }
+  .hdr.g4 > .hdr-t { grid-column: 4; grid-row: 1; position: absolute; right: var(--g4-e); top: calc(env(safe-area-inset-top, 0px) + 16px + 34px + 6px); padding-right: 0; align-items: flex-end; text-align: right; }
+}
