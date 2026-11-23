@@ -2530,10 +2530,10 @@ const SITE = {
     area: "실내 약 1,128 m² · 건축 투영 약 737 m² · 지붕 데크 약 506 m²",
     team: "단독작품", // 핀 #186
     tools: "",
-    cover: "assets/img/natural-palette/section-final.jpg",
-    coverR: 2.5211, // 대표: 최종 단면 투시(KG-09C)
-    thumb: "assets/img/natural-palette/axo.jpg", // 카드: 분해 엑소(KG-06)
-    coverCaption: "Sectional perspective A–A′ — from the forest floor to the lake",
+    cover: "assets/img/natural-palette/render-main.jpg", // 2026-11-24 사용자 요청: 렌더 메인샷을 대표사진으로
+    coverR: 1.1019,
+    thumb: "assets/img/natural-palette/render-main.jpg",
+    coverCaption: "The kindergarten across the lake, the forest behind",
     summary:
       "A kindergarten on a slope that falls about 14 m from the forest to the lake. The slope is set into two grounds — the lake ground at the level of the road and the forest ground a floor above — and a three-storey building is slid in between, carved by a hall and a light well so that children on every floor see and hear each other. What is left of the slope becomes six play grounds — lake, deck, sand, garden, small forest and forest — climbing one step at a time. Reinforced concrete, wrapped in ipe.",
     sections: [
@@ -2574,6 +2574,8 @@ const SITE = {
       { heading: "Concrete Wrapped in Timber", big: true, // KG-13
         text: "The structure is reinforced concrete, the skin is ipe. The roof lays screed and galvanised battens over the insulation and finishes in an ipe deck, so it becomes a floor the children climb up to play on. The walls are wrapped in ipe boards over the insulation, and the windows are hidden curtain walls with their frames buried in the wall.",
         images: [{"src":"assets/img/natural-palette/detail.jpg","caption":"Detail axonometric — roof deck, clad wall, hidden curtain wall, floor on the mat; A ceiling hanger · B curtain-wall base · C cladding fixing · D deck fixing","r":1.4032,"tags":[[48.3,91.9,"A","c","pt"],[63.6,91.9,"B","c","pt"],[78.8,91.9,"C","c","pt"],[94,91.9,"D","c","pt"]],"w":"100%","notes":[["01","Roof","A roof deck the children climb onto. Over the insulation and vapour barrier, a screed sets the fall; the ipe deck floats on battens so the water drains away. The parapet is capped with aluminium flashing with drips inside and out."],["02","Services","The ceiling drops to the window head (+3.0); its 360 mm void gathers the supply duct and line diffusers, sprinkler branches and the cable tray. The floor is ondol — XL heating pipes buried in screed over insulation."],["03","Wall","The concrete wall is insulated outside and clad in ipe boards over a ventilated cavity; birch plywood lines the inside. The window is a hidden curtain wall — fixed lights below the transom, project vents above, mullions bolted to shoes top and bottom."],["04","Floor and footing","The lower first floor sits on a 900 mm mat: drainage board, insulation, heating screed and engineered timber. Under the mat, membrane, blinding and rubble; outside, waterproofing and a protection board, with a perforated drain in a gravel trench."]]}] },
+      // 2026-11-24 사용자 요청: 렌더 (원본 portfolio-source/유치원 프로젝트/렌더, 긴 변 2400px)
+      { heading: "Scenes", text: "The kindergarten from the lake and the road, the court behind it, and the way in under the bear.", images: [{ src: "assets/img/natural-palette/render-lake.jpg", caption: "From the lake", r: 1.1019 }, { src: "assets/img/natural-palette/render-side.jpg", caption: "Along the slope", r: 1.0939 }, { src: "assets/img/natural-palette/render-court.jpg", caption: "The court between the wings", r: 1.0939 }, { src: "assets/img/natural-palette/render-entrance.jpg", caption: "Entrance hall", r: 1.0643 }], stack: true, scenes: true },
     ],
   },
   {
