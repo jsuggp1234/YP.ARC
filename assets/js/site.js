@@ -3931,7 +3931,7 @@
                 </div>
               </div>
             </div>
-            <figure class="cx-cv"><div class="media">${cover(p, 2400, Math.round(2400 / (p.coverR || 0.8)))}${p.coverVideo ? `<button type="button" class="cx-play" data-vid="${esc(p.coverVideo)}" aria-label="Play film"><i aria-hidden="true"></i><span>Play film</span></button>` : ""}${p.coverLoop && !REDUCED ? `<video class="cx-vid cx-loop" src="${esc(p.coverLoop)}" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>` : ""}</div></figure>
+            <figure class="cx-cv"><div class="media">${cover(p, 2400, Math.round(2400 / (p.coverR || 0.8)))}${p.coverVideo ? `<button type="button" class="cx-play" data-vid="${esc(p.coverVideo)}"${p.coverVideoOnce ? " data-once" : ""} aria-label="Play film"><i aria-hidden="true"></i><span>Play film</span></button>` : ""}${p.coverLoop && !REDUCED ? `<video class="cx-vid cx-loop" src="${esc(p.coverLoop)}" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>` : ""}</div></figure>
             <div class="cx-lead">
               <p class="cx-big">${esc(p.summary)}</p>
               <dl class="pj-facts cx-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
@@ -3969,7 +3969,8 @@
       $$("video.cx-loop").forEach((v) => { v.muted = true; v.addEventListener("playing", () => v.parentElement.classList.add("vid-on")); v.play().catch(() => {}); }); // 핀 #210: 소리 없는 반복 영상(시네마그래프)은 저절로 재생
       $$(".cx-play").forEach((b) => b.addEventListener("click", () => { // 핀 #114: 누르면 사진 위로 영상이 열리고, 다시 누르면 멈춤/재생
         const box = b.parentElement; let v = $("video.cx-vid", box);
-        if (!v) { v = document.createElement("video"); Object.assign(v, { src: b.dataset.vid, muted: true, loop: true, playsInline: true, className: "cx-vid" }); v.setAttribute("playsinline", ""); box.insertBefore(v, b); }
+        if (!v) { v = document.createElement("video"); Object.assign(v, { src: b.dataset.vid, muted: true, loop: !("once" in b.dataset), playsInline: true, className: "cx-vid" }); v.setAttribute("playsinline", ""); box.insertBefore(v, b);
+          v.addEventListener("ended", () => { box.classList.remove("vid-on"); b.classList.remove("on"); b.setAttribute("aria-label", "Play film"); $("span", b).textContent = "Play film"; try { v.currentTime = 0; } catch (er) {} }); } // 핀 #214: 한 번 재생(data-once)은 끝나면 사진으로 돌아와요
         if (v.paused) { v.play().catch(() => {}); box.classList.add("vid-on"); if (matchMedia("(max-width: 760px)").matches) { try { (v.requestFullscreen ? v.requestFullscreen() : v.webkitEnterFullscreen && v.webkitEnterFullscreen())?.catch?.(() => {}); } catch (er) {} } // 핀 #209: 모바일은 재생하면 화면 꽉 채움(가로로 돌려 볼 수 있어요)
           b.setAttribute("aria-label", "Pause film"); $("span", b).textContent = "Pause"; }
         else { v.pause(); b.setAttribute("aria-label", "Play film"); $("span", b).textContent = "Play film"; }
