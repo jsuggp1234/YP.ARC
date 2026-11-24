@@ -1021,7 +1021,7 @@
         const n = 3 + Math.floor(Math.random() * 3); for (let i = 0; i < n; i++) later(c, t, 0, 0, fs0 * 0.035, 170);
         c.work = t + n * 200 + 400; return;
       }
-      if (who === PI && Math.random() < 0.55) { reading(c, who, t); return; } // 핀 #282: 안경 쓰고 책 읽기
+      // 핀 #312: 안경·책 읽기 모션은 뺐어요 (reading 함수는 남겨 둠)
       if (who === PI) { // P 철학자: 천천히 한 걸음 → 멈춰 고개를 젖히고 깊은 생각
         if (Math.random() < 0.45) { const x = Math.max(-fs0 * 0.12, Math.min(fs0 * 0.12, c.x + (Math.random() < 0.5 ? -1 : 1) * fs0 * 0.06)); later(c, t, x, 0, fs0 * 0.025, 1100); }
         c.ponder = t + 3200 + Math.random() * 2400; return;
