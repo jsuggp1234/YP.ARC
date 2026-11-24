@@ -2505,3 +2505,5 @@ html.sb-on { overflow-x: hidden; }
   .seq-box .sbx-lb { font-size: 9px; white-space: normal; max-width: calc(var(--sbx) - 2px); }
 }
 .cx-body .pj-sec:has(.seq-box) { --bx: 0%; --bw: 100%; }
+/* 핀 #232: NEXT 글자 한 단계 더 크게 */
+.cx-go { font-size: var(--t-xxl); letter-spacing: -.01em; }
