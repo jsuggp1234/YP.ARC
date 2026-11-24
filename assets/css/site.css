@@ -2507,3 +2507,5 @@ html.sb-on { overflow-x: hidden; }
 .cx-body .pj-sec:has(.seq-box) { --bx: 0%; --bw: 100%; }
 /* 핀 #232: NEXT 글자 한 단계 더 크게 */
 .cx-go { font-size: var(--t-xxl); letter-spacing: -.01em; }
+/* 핀 #237: 연락 패널 위 탭(Email·Instagram·PDF)은 아래 목록과 겹쳐서 숨김 */
+.ct-tabs { display: none; }
