@@ -540,7 +540,7 @@ const SITE = {
     subtitle: "High-Rise Timber Complex Cultural Facilities in Pangyo",
     type: "Office",
     year: "2024",
-    studio: "공모전",
+    studio: "2024 대한민국 목조건축대전 (계획부문)", // 핀 #227
     award: "2024 대한민국 목조건축대전 서울특별시장상",
     program: "14층 목조 오피스 · 문화시설",
     site: "성남시 판교 삼평동 641",
