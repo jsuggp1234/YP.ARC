@@ -2486,3 +2486,22 @@ html.sb-on { overflow-x: hidden; }
   .fnotes.ld-all b { font-size: var(--t-xs); font-weight: 500; }
   .fnotes.ld-all li > span { color: var(--mid); }
 }
+
+/* 핀 #229: 단면 상자(seq box) — 그림은 가운데 얇은 테두리 상자, 번호·이름은 양옆으로 길게 뺀 지시선 끝에 */
+.seq-box .seq-stage img { inset: 0 var(--sbx); width: auto; height: 100%; }
+.seq-box .sbx-fr { position: absolute; inset: 0 var(--sbx); border: .5px solid var(--ink); opacity: .55; pointer-events: none; z-index: 4; }
+.seq-box .sbx-lb { position: absolute; z-index: 5; display: flex; gap: 6px; align-items: baseline; font-size: var(--t-xs); line-height: 1.2; white-space: nowrap; transform: translateY(-50%); opacity: 0; transition: opacity .4s; }
+.seq-box .sbx-lb.on { opacity: 1; }
+.seq-box .sbx-lb b { font-weight: 500; }
+.seq-box .sbx-lb.l { right: calc(100% - var(--sbx)); padding-right: 56px; flex-direction: row-reverse; }
+.seq-box .sbx-lb.r { left: calc(100% - var(--sbx)); padding-left: 56px; }
+.seq-box .sbx-lb::after { content: ""; position: absolute; top: 50%; width: 50px; height: 0; border-top: .5px solid var(--ink); }
+.seq-box .sbx-lb.l::after { right: 0; }
+.seq-box .sbx-lb.r::after { left: 0; }
+.seq-box .seq-side dl { display: none !important; }
+@media (max-width: 760px) {
+  .seq-box .sbx-lb.l { padding-right: 14px; } .seq-box .sbx-lb.r { padding-left: 14px; }
+  .seq-box .sbx-lb::after { width: 10px; }
+  .seq-box .sbx-lb { font-size: 9px; white-space: normal; max-width: calc(var(--sbx) - 2px); }
+}
+.cx-body .pj-sec:has(.seq-box) { --bx: 0%; --bw: 100%; }
