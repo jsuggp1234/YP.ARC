@@ -2562,3 +2562,17 @@ html.sb-on { overflow-x: hidden; }
 /* 핀 #247: YP. STUDIO & LAB — 단어 사이 띄어쓰기 */
 .sl-tr .sl-a[href="works.html"], .sl-tr .sl-a[data-contact]:has(.st-gl[data-g="&"]) { margin-right: 0.28em; }
 .sl-tr .sl-a:has(.st-gl[data-g="."]) { margin-right: 0.28em; }
+
+/* 핀 #277: lab — studio처럼 흐르는 카드 띠, 사진 대신 글씨 카드 (흰 바탕 + 머리카락 선) */
+.lb .lb-cd .media { background: var(--bg); border: 1px solid var(--line); }
+.lb .lb-tx { position: absolute; inset: 0; display: grid; grid-template-rows: auto 1fr auto auto auto; gap: 6px; padding: 16px; transform: none !important; }
+.lb .lb-n { font-size: var(--t-s); color: var(--mid, #6b6b6b); }
+.lb .lb-t { align-self: center; font-size: var(--t-l); letter-spacing: -0.02em; text-transform: uppercase; }
+.lb .lb-m { font-size: var(--t-xs); color: var(--mid, #6b6b6b); }
+.lb .lb-y { font-size: var(--t-xs); color: var(--mid, #6b6b6b); }
+.lb .lb-go { font-size: var(--t-s); border-top: 1px solid var(--line); padding-top: 8px; margin-top: 6px; transition: letter-spacing .4s var(--ease); }
+.lb .lb-cd:hover .lb-go { letter-spacing: 0.04em; }
+.lb .lb-cd:hover .media { border-color: var(--ink); }
+.lb .lb-cd.soon { cursor: default; }
+.lb-note { position: absolute; left: var(--g4-e, 16px); top: calc(var(--hdr, 40px) + 24px); max-width: 28em; margin: 0; font-size: var(--t-xs); color: var(--mid, #6b6b6b); z-index: 2; }
+.lb-note .num { margin-left: 6px; }
