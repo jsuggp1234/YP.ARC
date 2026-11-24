@@ -153,7 +153,7 @@ for a, b in [
  ('<h3>지금 찾은 값</h3>', '<h3>Found so far</h3>'),
  ('<h3>링크 시뮬레이션 · 무엇이 무엇과, 왜 이어지나 <small>선을 누르거나 변수를 고르면 그 연결이 왜 생기고 어떤 관계인지 나옵니다</small></h3>', '<h3>Links — what connects to what, and why <small>click a line or a variable to see the reason for that link</small></h3>'),
  ('aria-label="물음, 데이터 열, 변수, 기단 부분의 연결"', 'aria-label="Links between questions, record columns, variables and plinth parts"'),
- ('<h3>3D로 보기 · 찾은 높이가 기단의 어느 부분이 되나 <small id="d3-sub"></small></h3>', '<h3>In 3D — which part of the plinth each height becomes <small id="d3-sub"></small></h3>'),
+ ('<h3>평면과 단면 · 변수마다 바뀌는 부분 <small id="d3-sub"></small></h3>', '<h3>Plan and section — which part each variable changes <small id="d3-sub"></small></h3>'),
  ('<h3>네 물음과 다섯 변수 <small>어느 변수가 어느 물음의 열을 읽나</small></h3>', '<h3>Four questions, five variables <small>which variable reads which column</small></h3>'),
  ('<h3>높이와 너비를 하나의 형태로 <small>논문 5.1의 네 배치 결정</small></h3>', '<h3>Heights and widths into one form <small>four layout decisions, thesis 5.1</small></h3>'),
  ('<li><b>둥글게 둔다.</b> 데이터는 물이 오는 방향을 말하지 않으므로, 단면 하나로 형태 전체를 정합니다.</li>', '<li><b>Make it round.</b> The data says nothing about direction, so one section sets the whole form.</li>'),

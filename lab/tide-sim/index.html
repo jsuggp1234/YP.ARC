@@ -710,6 +710,16 @@ html.docked .brand h1 { font-weight: 500; }
 .u-play .btn { display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-m); color: var(--ink) !important; }
 .u-play-t { font-size: var(--t-s); color: var(--muted); }
 </style>
+<style>
+/* 핀 #303: 변수체계 — 3D 대신 평면 + 단면 그림, 위에 아이콘 줄 */
+#d-3d { aspect-ratio: auto !important; outline: 0 !important; background: none !important; overflow: visible; display: flex; flex-direction: column; gap: 12px; }
+#d-3d #d-cv3, #d-3d .hint, #d-3d .nav-lg, #d-3d .tag, #d-3d .v3bar, #d-3d .ov3 { display: none !important; }
+#d-3d .lk-bar { position: static; max-width: none; max-height: none; background: none; padding: 0; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+#d-diag { display: block; width: 100%; height: clamp(260px, 42svh, 420px); }
+.d-cap { font-size: var(--t-m) !important; margin-top: 8px; }
+.d-cap b { font-weight: 600; }
+@media (max-width: 760px) { #d-diag { height: 460px; } }
+</style>
 <div class="ybar" role="banner">
   <a class="y-logo" href="../../index.html" aria-label="YP.STUDIO &amp; LAB home"><span class="roll"><span data-t="YP.STUDIO &amp; LAB">YP.STUDIO &amp; LAB</span></span></a>
   <a class="y-work" href="../../lab.html"><span class="roll"><span data-t="Lab / tide-sim">Lab / tide-sim</span></span></a>
@@ -1020,8 +1030,8 @@ html.docked .brand h1 { font-weight: 500; }
       <div class="linkinfo" id="d-link-info" aria-live="polite"></div>
     </div>
     <div class="card" style="margin-top:12px">
-      <h3>In 3D — which part of the plinth each height becomes <small id="d3-sub"></small></h3>
-      <div class="cv3" id="d-3d"><canvas id="d-cv3" aria-label="Plinth part set by the current variable, in 3D"></canvas><span class="hint">Drag to orbit · scroll to zoom · double-click to reset</span><span class="tag" id="d3-tag"></span></div>
+      <h3>Plan and section — which part each variable changes <small id="d3-sub"></small></h3>
+      <div class="cv3" id="d-3d"><canvas id="d-cv3" aria-label="Plinth part set by the current variable, in 3D"></canvas><span class="hint">Drag to orbit · scroll to zoom · double-click to reset</span><span class="tag" id="d3-tag"></span><canvas id="d-diag" aria-label="Plan and section of the plinth: the part the chosen variable changes"></canvas></div><p class="note d-cap" id="d-cap" aria-live="polite"></p>
       <p class="note" style="margin-top:6px">The sea is held at the lowest low water so the whole plinth shows. A clear plane sweeps the record upward; where the condition is met it stays as an outline and marks the height. The part that height sets is drawn dark, the rest knocked back. Click any node in the links above to light the part it sets — the surrounding plinths follow the same rules and light up with it.</p>
     </div>
     <div class="two" style="margin-top:12px">
@@ -3455,6 +3465,44 @@ function linkInfo(k) {
   };
   return I[k];
 }
+const PLAN_T = 'Plan', SEC_T = 'Section';
+// 핀 #303: 변수체계 — 3D 대신 평면 + 단면 그림. 아이콘을 누르면 그 변수가 바꾸는 부분만 먹색, 나머지는 옅은 회색.
+const DG_VARS = ['layer', 'edge', 'connect', 'stay', 'slope', 'zone', 'noon'], DG_PART = { floors: 'layer', steps: 'edge', neck: 'connect', ramp: 'stay', widths: 'slope', zones: 'zone', open: 'noon' };
+function dgVar(k) {
+  if (DG_VARS.includes(k)) return k; if (DG_PART[k]) return DG_PART[k];
+  for (const [a, b] of LK.links) if (a === k && DG_VARS.includes(b)) return b;
+  for (const [a, b] of LK.links) if (a === k) { const v = dgVar(b); if (v) return v; }
+  return 'layer';
+}
+function dgCaption(sel, v) {
+  const nm = k => (LK.nodes.find(n => n[0] === k) || [])[2] || k, col = (LK.links.find(l => l[1] === v && !l[2] && LK.nodes.some(n => n[0] === l[0] && n[1] === 1)) || [])[0];
+  const part = (LK.links.find(l => l[0] === v && !l[2]) || [])[1], q = sel && sel[0] === 'q' && /^q\d$/.test(sel) ? nm(sel) + ' → ' : '';
+  return q + (col ? nm(col) + ' → ' : '') + '<b>' + nm(v) + '</b>' + (part ? ' → ' + nm(part) : '');
+}
+function drawDiag() {
+  const el = document.getElementById('d-diag'); if (!el || el.getBoundingClientRect().width < 10 || typeof model !== 'function' || !DATA) return;
+  let g; try { g = model(ST.sea).g; } catch (_) { return; }
+  const v = dgVar(LK.sel), XC = CORE.XC, { x, w, h } = cv('d-diag'), narrow = w < 560;
+  const ink = K.ink, faint = K.faint, on = k => k === v || v === 'zone' || v === 'noon';
+  // 평면 (왼쪽, 휴대폰은 위)
+  const PW = narrow ? w : w * 0.38, PH = narrow ? h * 0.48 : h, Rf = g.R + (g.L > 0.1 ? g.L : 0), xl = Math.min(XC - Rf, g.xn0 != null ? g.xn0 : XC - Rf, ...(g.stairs || []).map(s => s[0]));
+  const ext = Math.max(Rf, XC - xl), ps = Math.min((PW - 24) / (ext + Rf), (PH - 40) / (2 * Rf)), cx = 12 + (XC - xl) * ps, cy = 22 + (PH - 30) / 2, PX = a => cx + (a - XC) * ps;
+  txt(x, PLAN_T, 12, 10, { font: FS(10.5, true), color: K.muted });
+  const shape = (draw, act, fill) => { x.save(); draw(); if (act) { x.fillStyle = ink; x.globalAlpha = fill == null ? .16 : fill; x.fill('evenodd'); x.globalAlpha = 1; x.strokeStyle = ink; x.lineWidth = 1.8; } else { x.strokeStyle = faint; x.lineWidth = .8; } x.stroke(); x.restore(); };
+  if (g.L > 0.1) shape(() => { x.beginPath(); x.arc(cx, cy, Rf * ps, 0, 7); x.arc(cx, cy, g.R * ps, 7, 0, true); }, on('stay'));
+  for (let i = g.T.length - 1; i >= 0; i--) { const t = g.T[i], st = t.k === 'step'; shape(() => { x.beginPath(); x.arc(cx, cy, t.r1 * ps, 0, 7); if (t.r0 > 0.01) x.arc(cx, cy, t.r0 * ps, 7, 0, true); }, st ? (on('edge') || on('slope')) : on('layer'), st ? .1 : .2); }
+  const nw = CORE.NECK_W * ps;
+  if (g.xn1 > g.xn0) shape(() => { x.beginPath(); x.rect(PX(g.xn0), cy - nw / 2, (g.xn1 - g.xn0) * ps, nw); }, on('connect'), .3);
+  for (const [a, b] of g.stairs || []) shape(() => { x.beginPath(); x.rect(PX(a), cy - nw / 2, (b - a) * ps, nw); }, false);
+  // 단면 (오른쪽, 휴대폰은 아래)
+  const SL = narrow ? 36 : PW + 48, SR = w - 8, T0 = narrow ? PH + 30 : 30, B = h - 16, zlo = g.ground - 0.8, zhi = Math.max(g.land, g.top) + 0.5, xMax = Math.max(CORE.XE, g.xs1 + 3);
+  const X = lin(CORE.XL, xMax, SL, SR), Y = lin(zlo, zhi, B, T0), P = (a, b) => [X(a), Y(b)];
+  txt(x, SEC_T, SL, T0 - 18, { font: FS(10.5, true), color: K.muted });
+  for (const z of ticks(zlo, zhi, 4)) txt(x, fH(z, 0), SL - 6, Y(z), { align: 'right', font: FS(10), color: faint });
+  x.save(); x.globalAlpha = .28; drawSection(x, g, P, {}); x.globalAlpha = 1; x.restore();
+  if (v === 'zone' || v === 'noon') { x.save(); x.globalAlpha = .9; drawSection(x, g, P, {}); x.restore(); } else partLines(x, g, P, v, ink);
+  const cap = document.getElementById('d-cap'); if (cap) cap.innerHTML = dgCaption(LK.sel, v);
+}
 function drawLinks() {
   const svg = $('#d-link'); if (!svg) return;
   const W = 1000, H = 460, cx = [12, 232, 478, 748], cw = [150, 200, 220, 240], top = 36, ns = {};
@@ -3472,7 +3520,7 @@ function drawLinks() {
   for (const k in ns) { const N = ns[k], on = path.has(k);
     out += `<g class="nd${on ? ' on' : ' dim'}" data-k="${k}" tabindex="0" role="button" aria-label="${N.n[2]}"><rect x="${N.x}" y="${N.y}" width="${N.w}" height="${N.h}"/><text x="${N.x + 10}" y="${N.y + (N.n[3] ? 17 : 25)}">${N.n[2]}</text>${N.n[3] ? `<text class="s" x="${N.x + 10}" y="${N.y + 32}">${N.n[3]}</text>` : ''}</g>`; }
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.innerHTML = out;
-  $$('.lk-bar button').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.k === sel)); b.classList.toggle('in', path.has(b.dataset.k)); });
+  drawDiag(); $$('.lk-bar button').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.k === sel)); b.classList.toggle('in', path.has(b.dataset.k)); });
   const vk = ['layer', 'edge', 'connect', 'stay', 'slope', 'zone', 'noon'].includes(sel) ? sel : null;
   const info = vk ? linkInfo(vk) : null;
   if (info) $('#d-link-info').innerHTML = `<div><div class="k">What links to what</div>${info[0]}</div><div><div class="k">Why</div>${info[1]}</div><div><div class="k">What happens if you change it</div>${info[2]}</div>`;
@@ -4037,6 +4085,7 @@ async function boot() {
   for (const v of Object.values(VIEWS)) v.init();
   setSea('INC');
   window.addEventListener('hashchange', route); route();
+  { const d = document.getElementById('d-diag'); if (d) { let w0 = 0; new ResizeObserver(() => { const w = d.clientWidth; if (w && w !== w0) { w0 = w; drawDiag(); } }).observe(d); new MutationObserver(() => drawDiag()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } }
   { const WM = { 'c-lanes': ['c-start', 1, 200], 'c-sum': ['c-start', 1, 200], 'c-ph': ['c-ph-tr', 10], 'r-year': ['r-d', 1], 'r-fort': ['r-d', 1], 'r-day': ['r-d', 1], 'r-ph': ['r-d', 1], 'r-rec': ['r-h', 0.05],
       'w-sec': ['w-t', 10], 'w-plan': ['w-t', 10], 'w-fort': ['w-t', 60], 'w-year': ['w-t', 1440] };
     for (const id in WM) { const cv = document.getElementById(id); if (!cv) continue; let acc = 0; cv.setAttribute('data-lenis-prevent', ''); cv.classList.add('wh-sim');

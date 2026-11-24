@@ -109,3 +109,11 @@ def patch_guides(R, T):
       "  if (g.L > 0.1 && Math.abs(g.P - z) < 0.05) return [(g.xs0 + g.xs1) / 2, '자락 끝'];\n"
       "  const n = g.T.reduce((a, t) => Math.abs(t.z - z) < Math.abs(a.z - z) ? t : a, g.T[0]); return [XC + (n.r0 + n.r1) / 2, NM[n.k] || '맨 위 바닥']; }\n"
       "VIEWS.rules = {", 1)
+
+# 핀 #303: 변수체계 3D 자리에 평면 + 단면 그림 (diag.js)
+def patch_diag(R, T):
+    R("<h3>3D로 보기 · 찾은 높이가 기단의 어느 부분이 되나", "<h3>평면과 단면 · 변수마다 바뀌는 부분", 1)
+    R("function drawLinks() {", "const PLAN_T = " + repr(T("Plan", "평면")) + ", SEC_T = " + repr(T("Section", "단면")) + ";\n" + open(os.path.join(HERE, "diag.js"), encoding="utf8").read() + "function drawLinks() {", 1)
+    R("  $$('.lk-bar button').forEach(b => {", "  drawDiag(); $$('.lk-bar button').forEach(b => {", 1)
+    R('<span class="tag" id="d3-tag"></span></div>', '<span class="tag" id="d3-tag"></span><canvas id="d-diag" aria-label="' + T("Plan and section of the plinth: the part the chosen variable changes", "기단 평면과 단면: 고른 변수가 바꾸는 부분") + '"></canvas></div><p class="note d-cap" id="d-cap" aria-live="polite"></p>', 1)
+    R("window.addEventListener('hashchange', route); route();", "window.addEventListener('hashchange', route); route();\n  { const d = document.getElementById('d-diag'); if (d) { let w0 = 0; new ResizeObserver(() => { const w = d.clientWidth; if (w && w !== w0) { w0 = w; drawDiag(); } }).observe(d); new MutationObserver(() => drawDiag()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } }", 1)
