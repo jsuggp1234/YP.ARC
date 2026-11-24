@@ -178,7 +178,7 @@ body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-
 /* works · img “La Junita” */
 body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(6) > div.media > div.mz > img {
   scale: 1.04 !important;
-  object-position: 74% 51% !important;
+  object-position: 74% 38% !important;
   object-fit: contain !important;
 }
 /* works · img “Samgakji Residential Project” */
