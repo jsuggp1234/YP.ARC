@@ -270,3 +270,22 @@ html.docked .brand h1 { font-weight: 500; }
   .cv3 .l3.axis { padding: 0 2px !important; border-width: 1px !important; }
 }
 </style>
+<style>
+/* 핀 #343: 변수 조작판 — 한 줄에 변수 하나 (아이콘·이름 | 슬라이더 | 값), 옅은 회색 판 */
+#u-ctl { background: var(--mn-bg, #f3f3f3); padding: 14px 14px 12px !important; }
+:root[data-theme="dark"] #u-ctl { background: #161616; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #u-ctl { background: #161616; } }
+#u-ctl .vrow { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) 4.6em; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); margin: 0; }
+#u-ctl .vrow.ro { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+#u-ctl .vn { display: flex; align-items: center; gap: 8px; min-width: 0; }
+#u-ctl .vn .icn { width: 18px; height: 18px; flex: none; }
+#u-ctl .vt { display: flex; flex-direction: column; min-width: 0; }
+#u-ctl .vt b { font-size: var(--t-s); font-weight: 600; white-space: nowrap; }
+#u-ctl .vt b i { font-style: normal; font-weight: 400; color: var(--muted); margin-right: 6px; font-variant-numeric: tabular-nums; }
+#u-ctl .vt small { font-size: 10px; color: var(--muted); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#u-ctl .vrow input[type=range] { width: 100%; margin: 0; }
+#u-ctl .vrow .v { text-align: right; font-size: var(--t-s); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+#u-ctl .vrow .vo { text-align: right; font-size: var(--t-xs); color: var(--ink); font-variant-numeric: tabular-nums; }
+#u-ctl .vrow.changed .v { color: var(--red, #c4432b); }
+#u-ctl .vrow.ro .vt b { color: var(--muted); }
+</style>

@@ -130,3 +130,25 @@ def patch_diag(R, T):
     R("  $$('.lk-bar button').forEach(b => {", "  drawDiag(); $$('.lk-bar button').forEach(b => {", 1)
     R('<span class="tag" id="d3-tag"></span></div>', '<span class="tag" id="d3-tag"></span><canvas id="d-diag" aria-label="' + T("Plan and section of the plinth: the part the chosen variable changes", "기단 평면과 단면: 고른 변수가 바꾸는 부분") + '"></canvas></div><p class="note d-cap" id="d-cap" aria-live="polite"></p>', 1)
     R("window.addEventListener('hashchange', route); route();", "window.addEventListener('hashchange', route); route();\n  { const d = document.getElementById('d-diag'); if (d) { let w0 = 0; new ResizeObserver(() => { const w = d.clientWidth; if (w && w !== w0) { w0 = w; drawDiag(); } }).observe(d); new MutationObserver(() => drawDiag()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } }", 1)
+
+# 핀 #343: 변수 조작판을 짧은 표로 — 한 줄에 변수 하나: 아이콘·이름(아래 작은 회색 읽기→만들기) | 슬라이더 | 값. 바탕은 옅은 회색 판
+def patch_vtable(R, T):
+    import json
+    VS = {'layer': (T('Layer', '층위'), T('time above water → floors', '물 위의 시간 → 바닥')),
+          'edge': (T('Edge', '경계'), T('days flooded → steps', '잠기는 날 → 수변 단')),
+          'connect': (T('Link', '연결'), T('daily high → neck', '날마다의 만조 → 이음목')),
+          'stay': (T('Stay', '머묾'), T('dry by day → apron', '낮에 마른 시간 → 자락')),
+          'slope': (T('Slope', '경사'), T('rising speed → step width', '오르는 빠르기 → 단 너비')),
+          'zone': (T('Zone', '영역'), T('days flooded → ground edges', '잠기는 날 → 땅의 경계')),
+          'noon': (T('Noon', '시각'), T('noon water → parts open', '정오의 물 → 열린 곳'))}
+    js = 'const VS = ' + json.dumps({k: list(v) for k, v in VS.items()}, ensure_ascii=False) + ';\n'
+    old_g = """    const grpH = ([gname, items, M]) => `<div class="group${M.read ? ' read' : ''}" data-k="${M.k}"><div class="gh"><span>${icn(M.k)}<span class="gnum">${M.n}</span>${M.read ? '읽기 지표 · ' : ''}${gname}</span></div>`
+      + `<div class="gio">읽는 열: ${M.col} → ${M.read ? '읽는 값' : '만드는 값'}: ${M.out}<br><b id="u-out-${M.k}"></b></div>`
+      + items.filter(it => !AUX.includes(it[0])).map(sl).join('') + '</div>';"""
+    new_g = "    " + js + """    const vn = M => `<div class="vn">${icn(M.k)}<span class="vt"><b><i>${M.n}</i>${VS[M.k][0]}</b><small>${VS[M.k][1]}</small></span></div>`;
+    const grpH = ([gname, items, M]) => { const main = items.filter(it => !AUX.includes(it[0]));
+      if (!main.length) return `<div class="group vrow ro${M.read ? ' read' : ''}" data-k="${M.k}" title="${gname}">${vn(M)}<span class="vo" id="u-out-${M.k}"></span></div>`;
+      return main.map(([k, lab, a, b, st]) => `<div class="group vrow ctl" data-k="${M.k}" title="${gname} — ${lab}">${vn(M)}<input type="range" id="u-${k}" min="${a}" max="${b}" step="${st}" aria-label="${lab}"><span class="v" id="u-${k}-v"></span><b id="u-out-${M.k}" hidden></b></div>`).join(''); };"""
+    R(old_g, new_g, 1)
+    R("if (e) e.innerHTML = '지금 값: ' + t;", "if (e) e.innerHTML = t;", 1)
+    R("set('noon', `바닥과 단 ${rd.nParts}곳 가운데 ${rd.openMin}~${rd.openMax}곳`);", "set('noon', `${rd.openMin}~${rd.openMax} / ${rd.nParts}" + T(" open", "곳") + "`);", 1)

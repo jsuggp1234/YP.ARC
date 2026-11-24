@@ -730,6 +730,25 @@ html.docked .brand h1 { font-weight: 500; }
   .cv3 .l3.axis { padding: 0 2px !important; border-width: 1px !important; }
 }
 </style>
+<style>
+/* 핀 #343: 변수 조작판 — 한 줄에 변수 하나 (아이콘·이름 | 슬라이더 | 값), 옅은 회색 판 */
+#u-ctl { background: var(--mn-bg, #f3f3f3); padding: 14px 14px 12px !important; }
+:root[data-theme="dark"] #u-ctl { background: #161616; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #u-ctl { background: #161616; } }
+#u-ctl .vrow { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) 4.6em; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); margin: 0; }
+#u-ctl .vrow.ro { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+#u-ctl .vn { display: flex; align-items: center; gap: 8px; min-width: 0; }
+#u-ctl .vn .icn { width: 18px; height: 18px; flex: none; }
+#u-ctl .vt { display: flex; flex-direction: column; min-width: 0; }
+#u-ctl .vt b { font-size: var(--t-s); font-weight: 600; white-space: nowrap; }
+#u-ctl .vt b i { font-style: normal; font-weight: 400; color: var(--muted); margin-right: 6px; font-variant-numeric: tabular-nums; }
+#u-ctl .vt small { font-size: 10px; color: var(--muted); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#u-ctl .vrow input[type=range] { width: 100%; margin: 0; }
+#u-ctl .vrow .v { text-align: right; font-size: var(--t-s); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+#u-ctl .vrow .vo { text-align: right; font-size: var(--t-xs); color: var(--ink); font-variant-numeric: tabular-nums; }
+#u-ctl .vrow.changed .v { color: var(--red, #c4432b); }
+#u-ctl .vrow.ro .vt b { color: var(--muted); }
+</style>
 <div class="ybar" role="banner">
   <a class="y-logo" href="../../index.html" aria-label="YP.STUDIO &amp; LAB home"><span class="roll"><span data-t="YP.STUDIO &amp; LAB">YP.STUDIO &amp; LAB</span></span></a>
   <a class="y-work" href="../../lab.html"><span class="roll"><span data-t="Lab / tide-sim">Lab / tide-sim</span></span></a>
@@ -3063,9 +3082,11 @@ VIEWS.rules = {
     const AUX = ['p50', 'margin', 'stayH', 'wMin', 'wMax'];
     const sl = ([k, lab, a, b, st, f, sub]) => `<div class="ctl" data-k="${k}"><div class="row"><label for="u-${k}">${lab}</label><span class="v" id="u-${k}-v"></span></div>
        <input type="range" id="u-${k}" min="${a}" max="${b}" step="${st}">${sub ? `<span class="sub">${sub}</span>` : ''}</div>`;
-    const grpH = ([gname, items, M]) => `<div class="group${M.read ? ' read' : ''}" data-k="${M.k}"><div class="gh"><span>${icn(M.k)}<span class="gnum">${M.n}</span>${M.read ? 'Reading · ' : ''}${gname}</span></div>`
-      + `<div class="gio">Reads: ${M.col} → ${M.read ? 'reads' : 'builds'}: ${M.out}<br><b id="u-out-${M.k}"></b></div>`
-      + items.filter(it => !AUX.includes(it[0])).map(sl).join('') + '</div>';
+    const VS = {"layer": ["Layer", "time above water → floors"], "edge": ["Edge", "days flooded → steps"], "connect": ["Link", "daily high → neck"], "stay": ["Stay", "dry by day → apron"], "slope": ["Slope", "rising speed → step width"], "zone": ["Zone", "days flooded → ground edges"], "noon": ["Noon", "noon water → parts open"]};
+    const vn = M => `<div class="vn">${icn(M.k)}<span class="vt"><b><i>${M.n}</i>${VS[M.k][0]}</b><small>${VS[M.k][1]}</small></span></div>`;
+    const grpH = ([gname, items, M]) => { const main = items.filter(it => !AUX.includes(it[0]));
+      if (!main.length) return `<div class="group vrow ro${M.read ? ' read' : ''}" data-k="${M.k}" title="${gname}">${vn(M)}<span class="vo" id="u-out-${M.k}"></span></div>`;
+      return main.map(([k, lab, a, b, st]) => `<div class="group vrow ctl" data-k="${M.k}" title="${gname} — ${lab}">${vn(M)}<input type="range" id="u-${k}" min="${a}" max="${b}" step="${st}" aria-label="${lab}"><span class="v" id="u-${k}-v"></span><b id="u-out-${M.k}" hidden></b></div>`).join(''); };
     const auxH = UCTL.filter(u => u[2].n && !u[2].read).map(([gname, items]) => { const a = items.filter(it => AUX.includes(it[0])); return a.length ? `<div class="auxg"><div class="gh2">${gname}</div>${a.map(sl).join('')}</div>` : ''; }).join('');
     const formH = UCTL.filter(u => u[2].form).map(([, items]) => `<div class="auxg"><div class="gh2">Form dimensions · not variables</div><p class="note">Dimensions not drawn from data, set to the body and the stride, fill between the heights above.</p>${items.map(sl).join('')}</div>`).join('');
     box.innerHTML = '<h3>Seven variables <small>five build · two read</small></h3>' + UCTL.filter(u => u[2].n).map(grpH).join('')
@@ -3116,9 +3137,9 @@ VIEWS.rules = {
       [null, 'Readings'],
       ['zone', 'Zone · grounds', 'Reads the ground it sits on', 'Flooded days (often)', s.cuts.map(v => fH(v)).join(' · ')],
       ['noon', 'Timing · open parts', 'Reads what is above water at midday', 'Noon water (when)', `${dtn}<br><span class="note">${rd.nParts} parts — ${rd.openMin}~${rd.openMax} open</span>`]];
-    { const set = (k, t) => { const e = document.getElementById('u-out-' + k); if (e) e.innerHTML = 'Now: ' + t; };
+    { const set = (k, t) => { const e = document.getElementById('u-out-' + k); if (e) e.innerHTML = t; };
       set('layer', fl(g)); set('edge', stp(g, st)); set('connect', `${fH(g.C)} · island ${rd.isl} days`); set('stay', stayV(m)); set('slope', wid(st));
-      set('zone', s.cuts.map(v => fH(v)).join(' · ')); set('noon', `Floors and steps ${rd.nParts} parts — ${rd.openMin}~${rd.openMax} open`); }
+      set('zone', s.cuts.map(v => fH(v)).join(' · ')); set('noon', `${rd.openMin}~${rd.openMax} / ${rd.nParts} open`); }
     $('#u-table').innerHTML = '<thead><tr><th>Variable · part</th><th>Condition to meet</th><th>Data read (question)</th><th style="text-align:right">Value (m)</th></tr></thead><tbody>' +
       rows.map(r => r[0] === null ? `<tr class="sep"><td colspan="4">${r[1]}</td></tr>` : `<tr data-hl="${r[0]}" class="${U4.hl === r[0] ? 'hl' : ''}"><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td class="n">${r[4]}</td></tr>`).join('') + '</tbody>';
   },
