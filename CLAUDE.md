@@ -122,3 +122,8 @@
 - Illustrator 원본에서 글자 없이 뽑기: scratchpad `ai-clean.ps1`(글자·지시선·번호 동그라미·글자 흰 테두리 윤곽선·긴 칸 나눔 선 숨김, 상자별 imageCapture, 지시선 끝점 좌표 JSON). imageCapture 뒤에는 Illustrator가 다음 호출에서 RPC 오류를 내므로 매번 껐다 켜요.
 - 무채색 + 조명색만: ffmpeg `geq`로 채도(최대−최소) 22 이하는 회색으로, 그 위만 색을 남겨요(SMART PIXEL 밤 장면).
 - `git checkout`으로 data.js를 되돌리면 CRLF가 돼서 `\n` 기준 수정 스크립트가 실패해요 → `sed -i 's/\r$//'`로 되돌린 뒤 실행.
+
+## 2026-11-24 lab 페이지
+- 메뉴에 `lab` 추가(`SITE.pages`, 시트 A-300). `lab.html`은 projects처럼 이름 목록이고, 이름에 올리면 세로 미리보기 사진이 커서를 따라와요(`render.lab`, 공통 `clHover()`). 글은 `SITE.lab`(title·note·items).
+- 항목: tide-sim → `lab/tide-sim/`(RE:TIDE 조석 기단 시뮬레이터 빌드본, `index.html`+`tide.json`. 원본은 jsuggp1234/Tide-sim 저장소, 시뮬레이터를 고치면 이 사본도 같이 갱신), bim-sim은 `soon: true`(준비 중, 공개 주소를 받으면 `href` 연결).
+- 미리보기: `assets/img/lab/tide-sim.jpg`(397:525), `bim-sim.svg`(자리표시).
