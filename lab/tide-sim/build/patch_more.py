@@ -1,0 +1,38 @@
+# build.py에서 불러요: 핀 #297 (화살표 끝 잡아 돌리기). R은 build() 안의 바꾸기 함수.
+def patch_more(R, T):
+    # 그릴 때 화살표 끝 위치 기억
+    R("    let px = cx, py = cy;\n    ph.forEach(([A, th], i) => {",
+      "    let px = cx, py = cy; PH.geo = { cx, cy, tips: [] };\n    ph.forEach(([A, th], i) => {", 1)
+    R("      px += dx; py += dy;\n", "      px += dx; py += dy; PH.geo.tips.push([px, py]);\n", 1)
+    # 왼쪽 버튼으로 끝을 잡고 원을 따라 끌면 시각이 바뀌어요 (M2가 한 바퀴 = 12시간 25분)
+    R("    $('#c-ph-play').addEventListener('click', () => PH.play ? this.pause() : this.start());\n",
+      "    $('#c-ph-play').addEventListener('click', () => PH.play ? this.pause() : this.start());\n"
+      "    { const c = $('#c-ph'); let g = null; const loc = e => { const r = c.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };\n"
+      "      const near = p => PH.geo && PH.geo.tips.some(q => Math.hypot(q[0] - p[0], q[1] - p[1]) < 22);\n"
+      "      const ang = p => Math.atan2(p[0] - PH.geo.cx, -(p[1] - PH.geo.cy));\n"
+      "      c.addEventListener('pointerdown', e => { if (e.button !== 0) return; const p = loc(e); if (!near(p)) return; e.preventDefault(); this.pause(); g = ang(p); try { c.setPointerCapture(e.pointerId); } catch (_) {} c.style.cursor = 'grabbing'; });\n"
+      "      c.addEventListener('pointermove', e => { const p = loc(e); if (g == null) { c.style.cursor = near(p) ? 'grab' : ''; return; }\n"
+      "        const a = ang(p); let d = a - g; d -= Math.round(d / (2 * Math.PI)) * 2 * Math.PI; g = a;\n"
+      "        PH.t = ((PH.t + d / (2 * Math.PI) * TIDE.period('M2') * 60) % 21240 + 21240) % 21240; inval('collect'); });\n"
+      "      const up = () => { if (g == null) return; g = null; c.style.cursor = 'grab'; }; c.addEventListener('pointerup', up); c.addEventListener('pointercancel', up); c.style.touchAction = 'pan-y'; }\n", 1)
+
+# 핀 #298: 단면을 실제 비율로 — 가로·세로 축척을 같게(3D의 높이 ×1 / ×2 버튼과 같은 배율), 땅 높이는 3D·평면과 같은 F.Z
+def patch_sec(R, T):
+    R("const { x, w, h } = cv('s-sec'), L = 44, R = w - 10, T = 26, B = h - 46, X = lin(0, 100, L, R), Y = lin(-1, 11.5, B, T);",
+      "const { x, w, h } = cv('s-sec'), L = 44, R = w - 10, B = h - 46, X = lin(0, 100, L, R), VE = C2.ve || 1, sy = (R - L) / 100 * VE, Y = z => B - (z + 1) * sy, T = Math.max(14, Y(11.5));", 1)
+    R("for (const v of [0, 2, 4, 6, 8, 10]) { hline(x, L, R, Y(v), K.line2); txt(x, fH(v, 0), L - 6, Y(v), { align: 'right', font: FS(10.5, true) }); }",
+      "for (const v of [0, 2, 4, 6, 8, 10]) { if (Y(v) < 8) continue; hline(x, L, R, Y(v), K.line2); txt(x, fH(v, 0), L - 6, Y(v), { align: 'right', font: FS(10.5, true) }); }", 1)
+    R("txt(x, '높이 2배 · 0.5 m 간격의 땅 높이', L, h - 6, { font: FS(10), color: K.faint });",
+      "txt(x, (VE === 1 ? '세로 축척 = 가로 축척 (실제 비율)' : '세로 ×' + VE) + ' · 3D·평면과 같은 땅 높이', L, h - 6, { font: FS(10), color: K.faint });", 1)
+    R("if (k >= 2) txt(x, '호안 약 1/4', X(22.5) + 8, Y(8.9), {", "if (k >= 2) txt(x, '호안 약 1/4', X(22.5) + 8, Y(8.9) - 10, {", 1)
+    R("txt(x, '약 1/14로 낮아짐 · 기복과 물결 자국', X(58), Y(4.8) - 12,", "txt(x, '약 1/14로 낮아짐 · 기복과 물결 자국', X(58), Y(4.8) - 18,", 1)
+    R("segBind('s-ve', 'v', val => { C2.ve = +val; this.mesh(); this.water(); });", "segBind('s-ve', 'v', val => { C2.ve = +val; this.mesh(); this.water(); inval('site'); });", 1)
+    R("<small>대지의 y = 30 m 선을 따라 자른 모습, 높이 2배</small>", "<small>대지의 y = 30 m 선을 따라 자른 모습, 세로 축척은 3D와 같음</small>", 1)
+
+# 핀 #300: 실험 대지 3D — 처음 모습과 '처음 모습으로'는 대지 전체가 꽉 차게 (화면 비율에 맞춰 거리 계산)
+def patch_fit(R, T):
+    R("  let pend = 0, w0 = 0, h0 = 0, env = null;", "  let pend = 0, w0 = 0, h0 = 0, env = null, touched = 0;", 1)
+    R("cam.aspect = w0 / h0; cam.updateProjectionMatrix(); }",
+      "cam.aspect = w0 / h0; cam.updateProjectionMatrix(); if (o.fit) { const vf = cam.fov * Math.PI / 360, hf = Math.atan(Math.tan(vf) * cam.aspect), d = o.fit / Math.sin(Math.min(vf, hf)); home.dist = d; if (!touched) orb.dist = d; } }", 1)
+    R("View3D($('#s-cv'), { tx: 2, ty: 4, tz: 0, az: 0.62, el: 0.5, dist: 150, min: 25, max: 500, only: 'wire' })",
+      "View3D($('#s-cv'), { tx: 0, ty: 3, tz: 0, az: 0.62, el: 0.55, dist: 150, min: 25, max: 500, only: 'wire', fit: 60 })", 1)

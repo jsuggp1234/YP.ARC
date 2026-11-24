@@ -8,7 +8,7 @@ SRC = open(os.path.join(HERE, "source.html"), encoding="utf8").read()
 RUNS = json.load(open(os.path.join(HERE, "runs.json"), encoding="utf8"))
 exec(open(os.path.join(HERE, "en_runs.py"), encoding="utf8").read())
 assert len(EN) == len(RUNS)
-RUN_EN = dict(zip(RUNS, EN)); RUN_EN.update({"렌더": "Render", "렌더 보기": "Render view"})
+RUN_EN = dict(zip(RUNS, EN)); RUN_EN.update({"렌더": "Render", "렌더 보기": "Render view", "세로 축척 = 가로 축척 (실제 비율)": "Vertical = horizontal (true scale)", "세로 ×": "Vertical ×", " · 3D·평면과 같은 땅 높이": " · same ground as 3D and plan"})
 RUN_RE = r"[^`'\"$\{\}<>\n]*[가-힣][^`'\"$\{\}<>\n]*"
 
 
@@ -121,11 +121,17 @@ def build(lang):
     R("soil = new THREE.MeshStandardMaterial({ map: repTex(texSoil(), 4, 1), color: '#8f8166', roughness: 1 });\n  const mud = tag(new THREE.Mesh(new THREE.BoxGeometry(W, 2.5, L), [soil, soil, mudTop, soil, soil, soil]), 'terrain'); mud.position.y = -1.25;",
       "soil = new THREE.MeshStandardMaterial({ map: repTex(texSoil(), 4, 24), color: '#8f8166', roughness: 1 });\n  const mud = tag(new THREE.Mesh(new THREE.BoxGeometry(W, 60, L), [soil, soil, mudTop, soil, soil, soil]), 'terrain'); mud.position.y = -30;", 1)
 
-    # 핀 #259: 3D 화면 — 가운데 버튼(또는 Shift) 끌기로 손바닥 이동
-    R("if (e.shiftKey || e.button === 2 || e.buttons === 2) { const k = orb.dist * 0.0016; orb.tx -= dx * Math.cos(orb.az) * k; orb.tz += dx * Math.sin(orb.az) * k; }",
-      "if (e.shiftKey || e.button === 2 || e.buttons === 2 || e.buttons === 4) { const k = orb.dist * 0.0016; orb.tx -= dx * Math.cos(orb.az) * k; orb.tz += dx * Math.sin(orb.az) * k; orb.ty = clamp(orb.ty + dy * k, -40, 80); }", 1)
-    R("canvas.addEventListener('contextmenu', e => e.preventDefault());",
-      "canvas.addEventListener('contextmenu', e => e.preventDefault());\n  canvas.addEventListener('mousedown', e => { if (e.button === 1) e.preventDefault(); }); canvas.addEventListener('auxclick', e => { if (e.button === 1) e.preventDefault(); });", 1)
+    # 핀 #294: 넓은 화면에선 평면 높이를 그리드 칸이 정해요 (폭으로 높이를 맞추던 것 끄기) + 칸 크기가 바뀌면 다시 그리기
+    R("{ const pe = $('#s-plan'), pw = pe.getBoundingClientRect().width || 600,", "if (!matchMedia('(min-width: 901px)').matches) { const pe = $('#s-plan'), pw = pe.getBoundingClientRect().width || 600,", 1)
+    R("new ResizeObserver(() => v.req()).observe($('#s-cv'));", "new ResizeObserver(() => v.req()).observe($('#s-cv'));\n    { let w0 = 0; const ro = new ResizeObserver(() => { const w = $('#s-plan').clientWidth * 10000 + $('#s-plan').clientHeight + $('#s-sec').clientHeight; if (w !== w0) { w0 = w; inval('site'); } }); ro.observe($('#s-plan')); ro.observe($('#s-sec')); }", 1)
+
+    exec(open(os.path.join(HERE, 'patch_more.py'), encoding='utf8').read(), G0 := {}); G0['patch_more'](R, T); G0['patch_sec'](R, T); G0['patch_fit'](R, T)
+
+    # 핀 #293 (예전 #259 대신): SketchUp 같은 3D 조작 — nav3d.js
+    i = s.find("  const pts = new Map(); let pinch = 0;"); j = s.find("canvas.addEventListener('contextmenu', e => e.preventDefault());", i)
+    assert i > 0 and j > i; j += len("canvas.addEventListener('contextmenu', e => e.preventDefault());") + 1
+    s = s[:i] + open(os.path.join(HERE, "nav3d.js"), encoding="utf8").read() + s[j:]
+    R("function View3D(canvas, o) {", "const NAV_LG = " + repr(T("Orbit: middle drag · Pan: Shift + middle drag · Zoom: wheel · Reset: double-click", "돌리기: 가운데 끌기 · 옮기기: Shift + 가운데 끌기 · 확대: 휠 · 처음 모습: 두 번 누르기")) + ";\nfunction View3D(canvas, o) {", 1)
 
     # 핀 #260·#273·#275: 실감 → Render / 렌더
     R('<span>실감</span>', '<span>렌더</span>'); R('title="실감 보기"', 'title="렌더 보기"')
@@ -155,11 +161,11 @@ def build(lang):
     # 핀 #288–#291: 마우스를 시뮬레이션 그림 위에 두고 휠을 돌리면 시간(날짜·시각·높이)이 넘어가고 페이지는 멈춰요. 그림 밖에서는 평소처럼 스크롤.
     R("window.addEventListener('hashchange', route); route();",
       "window.addEventListener('hashchange', route); route();\n"
-      "  { const WM = { 'c-lanes': ['c-start', 1], 'c-sum': ['c-start', 1], 'c-ph': ['c-ph-tr', 10], 'r-year': ['r-d', 1], 'r-fort': ['r-d', 1], 'r-day': ['r-d', 1], 'r-ph': ['r-d', 1], 'r-rec': ['r-h', 0.05],\n"
+      "  { const WM = { 'c-lanes': ['c-start', 1, 200], 'c-sum': ['c-start', 1, 200], 'c-ph': ['c-ph-tr', 10], 'r-year': ['r-d', 1], 'r-fort': ['r-d', 1], 'r-day': ['r-d', 1], 'r-ph': ['r-d', 1], 'r-rec': ['r-h', 0.05],\n"
       "      'w-sec': ['w-t', 10], 'w-plan': ['w-t', 10], 'w-fort': ['w-t', 60], 'w-year': ['w-t', 1440] };\n"
       "    for (const id in WM) { const cv = document.getElementById(id); if (!cv) continue; let acc = 0; cv.setAttribute('data-lenis-prevent', ''); cv.classList.add('wh-sim');\n"
       "      cv.addEventListener('wheel', e => { const r = document.getElementById(WM[id][0]); if (!r || r.closest('[hidden]')) return; e.preventDefault(); acc += e.deltaY + e.deltaX;\n"
-      "        const n = Math.trunc(acc / 100); if (!n) return; acc -= n * 100; const st = WM[id][1], v = clamp(+r.value + n * st, +r.min, +r.max);\n"
+      "        const th = WM[id][2] || 100, n = Math.trunc(acc / th); if (!n) return; acc -= n * th; const st = WM[id][1], v = clamp(+r.value + n * st, +r.min, +r.max);\n"
       "        if (v !== +r.value) { r.value = v; r.dispatchEvent(new Event('input', { bubbles: true })); } }, { passive: false }); } }", 1)
 
     # 핀 #292: 화살표 그림 자동 재생을 느리게 (1초에 90분 → 20분)

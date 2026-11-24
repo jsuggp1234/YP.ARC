@@ -94,7 +94,7 @@ for a, b in [
  ('<span class="hint">끌어서 돌리기 · 휠이나 두 손가락으로 확대</span>', '<span class="hint">Drag to orbit · scroll or pinch to zoom</span>'),
  ('<h3>평면 <small>등고선 0.25 m (굵은 선 1 m) · 축선 ⓪ ① ② · A–A는 아래 단면의 자리</small></h3>', '<h3>Plan <small>Contours 0.25 m (bold 1 m) · grid lines ⓪ ① ② · A–A marks the section below</small></h3>'),
  ('aria-label="실험 대지 평면"', 'aria-label="Test site plan"'),
- ('<h3>단면 A–A <small>대지의 y = 30 m 선을 따라 자른 모습, 높이 2배</small></h3>', '<h3>Section A–A <small>Cut along y = 30 m, heights ×2</small></h3>'),
+ ('<h3>단면 A–A <small>대지의 y = 30 m 선을 따라 자른 모습, 세로 축척은 3D와 같음</small></h3>', '<h3>Section A–A <small>Cut along y = 30 m, vertical scale as in 3D</small></h3>'),
  ('aria-label="실험 대지 단면"', 'aria-label="Test site section"'),
  ('<button class="btn" id="s-prev">이전</button><button class="btn pri" id="s-next">다음 단계</button><button class="btn" id="s-auto">처음부터 자동으로</button>', '<button class="btn" id="s-prev">Back</button><button class="btn pri" id="s-next">Next step</button><button class="btn" id="s-auto">Play from the start</button>'),
  ('aria-label="높이 배율"><button data-v="1" aria-pressed="true">높이 1배</button><button data-v="2" aria-pressed="false">2배</button>', 'aria-label="Height scale"><button data-v="1" aria-pressed="true">Height ×1</button><button data-v="2" aria-pressed="false">×2</button>'),

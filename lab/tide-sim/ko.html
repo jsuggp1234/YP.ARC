@@ -608,6 +608,53 @@ body > footer { color: var(--muted); }
 body > footer .wrap { padding-block: 0 40px; }
 @media (max-width: 760px) { .yfoot { grid-template-columns: 1fr 1fr; } }
 </style>
+<style>
+/* 핀 #293: 3D 조작 안내 — 화면 왼쪽 아래 작은 글자 (예전 안내 글은 숨김) */
+.cv3 .hint { display: none !important; }
+.nav-lg { position: absolute; left: 10px; bottom: 8px; z-index: 3; font-size: var(--t-xs); color: var(--muted); pointer-events: none; padding: 2px 6px; background: color-mix(in srgb, var(--bg) 80%, transparent); max-width: calc(100% - 20px); }
+@media (hover: none) { .nav-lg { display: none; } }
+</style>
+<style>
+/* 핀 #294: 실험 대지 — 3D(왼쪽 크게) · 평면과 단면(가운데 위아래) · 조작판(오른쪽 좁게)을 한 화면에 */
+@media (min-width: 901px) {
+  #v-site .grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(230px, 0.6fr); grid-template-rows: minmax(0, 1.9fr) minmax(0, 1fr);
+    grid-template-areas: "td pl ct" "td se ct"; gap: 20px var(--g4-gap); align-items: stretch; height: calc(100svh - 150px); min-height: 560px; }
+  #v-site .grid > .stack:first-child { display: contents; }
+  #v-site .card { margin: 0; min-height: 0; height: 100%; display: flex; flex-direction: column; }
+  #v-site .card:has(#s-3d) { grid-area: td; }
+  #v-site .card:has(#s-plan) { grid-area: pl; }
+  #v-site .card:has(#s-sec) { grid-area: se; }
+  #v-site .cv3 { flex: 1 1 0; min-height: 0; aspect-ratio: auto; }
+  #v-site canvas.ch { flex: 1 1 0; min-height: 0; height: 0 !important; }
+  #v-site .card h3 small { display: block; margin-top: 2px; }
+  #v-site .grid > .stack:last-child { grid-area: ct; overflow: auto; gap: 20px; scrollbar-width: thin; padding-right: 4px; min-height: 0; }
+  #v-site .grid > .stack:last-child .card + .card { margin-top: 0; }
+  #v-site .stg li { padding-block: 4px !important; }
+}
+</style>
+<style>
+/* 핀 #295: 데이터 구조화 — 기록표(Tide record by height)를 위로, 높이를 끌어 보는 조작판과 하루 그림은 맨 아래 줄로. 칸 위 선을 같은 가로줄에 맞춰요 (상단바 4칸과 같은 세로줄) */
+#v-structure .grid { display: grid; grid-template-columns: repeat(3, var(--g4-col)) minmax(0, 1fr); gap: 48px var(--g4-gap); align-items: start;
+  grid-template-areas: "yr yr rec rec" "fo dy rec rec" "ph ph ctl lin"; }
+#v-structure .grid > .stack, #v-structure .grid .two { display: contents; }
+#v-structure .grid .card { margin: 0; min-width: 0; }
+#v-structure .card:has(#r-year) { grid-area: yr; }
+#v-structure .card:has(#r-fort) { grid-area: fo; }
+#v-structure .card:has(#r-day) { grid-area: dy; }
+#v-structure .card:has(#r-rec) { grid-area: rec; }
+#v-structure .card:has(#r-h) { grid-area: ctl; }
+#v-structure .card:has(#r-ph) { grid-area: ph; }
+#v-structure .card:has(#r-row) { grid-area: lin; }
+@media (max-width: 900px) {
+  #v-structure .grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "yr" "fo" "dy" "rec" "lin" "ph" "ctl"; gap: 36px; }
+}
+</style>
+<style>
+/* 핀 #314: 단계 줄 글자 크게 — 이름 --t-l, 번호 --t-s */
+.steps a { font-size: var(--t-l); padding: 14px 0 12px; }
+.steps a .n { font-size: var(--t-s); }
+.stp-ct { font-size: var(--t-s); }
+</style>
 <div class="ybar" role="banner">
   <a class="y-logo" href="../../index.html" aria-label="YP.STUDIO &amp; LAB home"><span class="roll"><span data-t="YP.STUDIO &amp; LAB">YP.STUDIO &amp; LAB</span></span></a>
   <a class="y-work" href="../../lab.html"><span class="roll"><span data-t="Lab / tide-sim">Lab / tide-sim</span></span></a>
@@ -758,7 +805,7 @@ body > footer .wrap { padding-block: 0 40px; }
           <canvas class="ch" id="s-plan" style="height:420px" aria-label="실험 대지 평면"></canvas>
         </div>
         <div class="card">
-          <h3>단면 A–A <small>대지의 y = 30 m 선을 따라 자른 모습, 높이 2배</small></h3>
+          <h3>단면 A–A <small>대지의 y = 30 m 선을 따라 자른 모습, 세로 축척은 3D와 같음</small></h3>
           <canvas class="ch" id="s-sec" style="height:260px" aria-label="실험 대지 단면"></canvas>
         </div>
       </div>
@@ -1568,6 +1615,7 @@ const MODE_ICON = {
 const WIRE_COL = { terrain: 0x34b7c9, water: 0x3d8bff, plinth: 0xe9f1f4, land: 0x6f8794, person: 0xffb347, prop: 0x6f8794, foam: 0x9fd9ff, hl: 0xff6b6b };
 
 // ---------------------------------------------------------------- 3D 화면
+const NAV_LG = '돌리기: 가운데 끌기 · 옮기기: Shift + 가운데 끌기 · 확대: 휠 · 처음 모습: 두 번 누르기';
 function View3D(canvas, o) {
   if (typeof THREE === 'undefined') throw new Error('three.js 없음');
   const R = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -1582,7 +1630,7 @@ function View3D(canvas, o) {
   sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.04; scene.add(sun, sun.target);
   const fill = new THREE.DirectionalLight(0xd6e4f2, 0.22); fill.position.set(90, 40, -70); scene.add(fill);
   const home = Object.assign({}, o), orb = Object.assign({}, o);
-  let pend = 0, w0 = 0, h0 = 0, env = null;
+  let pend = 0, w0 = 0, h0 = 0, env = null, touched = 0;
   const box = canvas.parentElement;
   const ov = document.createElement('div'); ov.className = 'ov3'; box.appendChild(ov);
   const labels = new Set(), hooks = [], anims = [], modeHooks = [], tmp = new THREE.Vector3();
@@ -1664,7 +1712,7 @@ function View3D(canvas, o) {
   let syncN = -1;
   function render() {
     pend = 0; const r = canvas.getBoundingClientRect(); if (r.width < 2) return;
-    if (r.width !== w0 || r.height !== h0) { w0 = r.width; h0 = r.height; R.setSize(w0, h0, false); cam.aspect = w0 / h0; cam.updateProjectionMatrix(); }
+    if (r.width !== w0 || r.height !== h0) { w0 = r.width; h0 = r.height; R.setSize(w0, h0, false); cam.aspect = w0 / h0; cam.updateProjectionMatrix(); if (o.fit) { const vf = cam.fov * Math.PI / 360, hf = Math.atan(Math.tan(vf) * cam.aspect), d = o.fit / Math.sin(Math.min(vf, hf)); home.dist = d; if (!touched) orb.dist = d; } }
     for (const f of hooks) f();
     let n = 0; scene.traverse(() => n++); if (n !== syncN) { syncN = n; sync(); }
     place(); R.render(scene, cam); placeLabels();
@@ -1681,23 +1729,41 @@ function View3D(canvas, o) {
     loopOn = requestAnimationFrame(loop);
   }
   function play() { if (!loopOn && anims.length) { last = 0; loopOn = requestAnimationFrame(loop); } }
-  const pts = new Map(); let pinch = 0;
-  canvas.addEventListener('pointerdown', e => { pts.set(e.pointerId, [e.clientX, e.clientY]); try { canvas.setPointerCapture(e.pointerId); } catch (_) {} canvas.style.cursor = 'grabbing'; });
+  // 핀 #293: SketchUp처럼 — 가운데 끌기 돌리기, Shift + 가운데 끌기 옮기기, 휠은 커서 쪽으로 확대, 가운데 두 번 누르기 처음 모습.
+  // 트랙패드: Alt + 왼쪽 끌기 돌리기, Shift + 왼쪽 끌기 옮기기. 왼쪽 끌기만 해도 돌아가고(예전처럼), 왼쪽 클릭은 고르기에 그대로 써요. 손가락 둘은 확대.
+  const pts = new Map(); let pinch = 0, lastMid = 0;
+  const dmin = o.min || 20, dmax = o.max || 600, ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), hit = new THREE.Vector3();
+  const pan = (dx, dy) => { const k = orb.dist * 0.0016, ca = Math.cos(orb.az), sa = Math.sin(orb.az), se = Math.sin(orb.el);
+    orb.tx -= dx * ca * k - dy * sa * se * k; orb.tz += dx * sa * k + dy * ca * se * k; orb.ty = clamp(orb.ty + dy * Math.cos(orb.el) * k, -40, 80); };
+  const spin = (dx, dy) => { orb.az -= dx * 0.008; orb.el = clamp(orb.el + dy * 0.006, 0.04, 1.5); };
+  const toward = (x, y, f) => { // 커서 아래 땅(목표 높이의 수평면)을 향해 f만큼 다가가기
+    const r = canvas.getBoundingClientRect(); ndc.set((x - r.left) / r.width * 2 - 1, -((y - r.top) / r.height) * 2 + 1);
+    place(); cam.updateMatrixWorld(); ray.setFromCamera(ndc, cam);
+    const pl = new THREE.Plane(new THREE.Vector3(0, 1, 0), -orb.ty);
+    if (ray.ray.intersectPlane(pl, hit)) { orb.tx += (hit.x - orb.tx) * f; orb.tz += (hit.z - orb.tz) * f; } };
+  canvas.addEventListener('pointerdown', e => {
+    if (e.button === 1) { e.preventDefault(); const t = performance.now(); if (t - lastMid < 380) { Object.assign(orb, home); req(); lastMid = 0; return; } lastMid = t; }
+    pts.set(e.pointerId, [e.clientX, e.clientY]); try { canvas.setPointerCapture(e.pointerId); } catch (_) {} canvas.style.cursor = 'grabbing'; });
   canvas.addEventListener('pointermove', e => {
     if (!pts.has(e.pointerId)) return; const p = pts.get(e.pointerId), dx = e.clientX - p[0], dy = e.clientY - p[1]; pts.set(e.pointerId, [e.clientX, e.clientY]);
     if (pts.size === 1) {
-      if (e.shiftKey || e.button === 2 || e.buttons === 2 || e.buttons === 4) { const k = orb.dist * 0.0016; orb.tx -= dx * Math.cos(orb.az) * k; orb.tz += dx * Math.sin(orb.az) * k; orb.ty = clamp(orb.ty + dy * k, -40, 80); }
-      else { orb.az -= dx * 0.008; orb.el = clamp(orb.el + dy * 0.006, 0.04, 1.5); }
+      const mid = (e.buttons & 4) !== 0, right = (e.buttons & 2) !== 0;
+      if ((mid && e.shiftKey) || right || (!mid && e.shiftKey)) pan(dx, dy);
+      else spin(dx, dy);
     }
-    else if (pts.size === 2) { const [a, b] = [...pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]); if (pinch) orb.dist = clamp(orb.dist * pinch / d, o.min || 20, o.max || 600); pinch = d; }
-    req();
+    else if (pts.size === 2) { const [a, b] = [...pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]); if (pinch) orb.dist = clamp(orb.dist * pinch / d, dmin, dmax); pinch = d; }
+    touched = 1; req();
   });
   const up = e => { pts.delete(e.pointerId); if (pts.size < 2) pinch = 0; canvas.style.cursor = ''; };
   canvas.addEventListener('pointerup', up); canvas.addEventListener('pointercancel', up);
-  canvas.addEventListener('wheel', e => { e.preventDefault(); orb.dist = clamp(orb.dist * Math.exp(e.deltaY * 0.0012), o.min || 20, o.max || 600); req(); }, { passive: false });
+  canvas.addEventListener('mousedown', e => { if (e.button === 1) e.preventDefault(); });
+  canvas.addEventListener('auxclick', e => { if (e.button === 1) e.preventDefault(); });
+  canvas.setAttribute('data-lenis-prevent', '');
+  canvas.addEventListener('wheel', e => { e.preventDefault(); const d0 = orb.dist, d1 = clamp(d0 * Math.exp(e.deltaY * 0.0012), dmin, dmax);
+    if (d1 < d0) toward(e.clientX, e.clientY, 1 - d1 / d0); orb.dist = d1; touched = 1; req(); }, { passive: false });
   canvas.addEventListener('dblclick', () => { Object.assign(orb, home); req(); });
   canvas.addEventListener('contextmenu', e => e.preventDefault());
-  canvas.addEventListener('mousedown', e => { if (e.button === 1) e.preventDefault(); }); canvas.addEventListener('auxclick', e => { if (e.button === 1) e.preventDefault(); });
+  { const box = canvas.parentElement; if (box && !box.querySelector('.nav-lg')) { const g = document.createElement('span'); g.className = 'nav-lg'; g.textContent = NAV_LG; box.appendChild(g); } }
   function label(text, p, cls, tag) {
     const el = document.createElement('div'); el.className = 'l3 ' + (cls || ''); el.textContent = text; ov.appendChild(el);
     const L = { el, p: p.clone(), on: true, tag, set(t) { if (el.textContent !== t) el.textContent = t; return L; }, at(q) { L.p.copy(q); return L; }, show(b) { L.on = !!b; return L; } };
@@ -2300,6 +2366,14 @@ const howCollect = {
     segBind('c-ph-set', 'p', v => { PH.set = v; inval('collect'); });
     bindRange('c-ph-tr', v => { PH.t = v; this.pause(); inval('collect'); });
     $('#c-ph-play').addEventListener('click', () => PH.play ? this.pause() : this.start());
+    { const c = $('#c-ph'); let g = null; const loc = e => { const r = c.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+      const near = p => PH.geo && PH.geo.tips.some(q => Math.hypot(q[0] - p[0], q[1] - p[1]) < 22);
+      const ang = p => Math.atan2(p[0] - PH.geo.cx, -(p[1] - PH.geo.cy));
+      c.addEventListener('pointerdown', e => { if (e.button !== 0) return; const p = loc(e); if (!near(p)) return; e.preventDefault(); this.pause(); g = ang(p); try { c.setPointerCapture(e.pointerId); } catch (_) {} c.style.cursor = 'grabbing'; });
+      c.addEventListener('pointermove', e => { const p = loc(e); if (g == null) { c.style.cursor = near(p) ? 'grab' : ''; return; }
+        const a = ang(p); let d = a - g; d -= Math.round(d / (2 * Math.PI)) * 2 * Math.PI; g = a;
+        PH.t = ((PH.t + d / (2 * Math.PI) * TIDE.period('M2') * 60) % 21240 + 21240) % 21240; inval('collect'); });
+      const up = () => { if (g == null) return; g = null; c.style.cursor = 'grab'; }; c.addEventListener('pointerup', up); c.addEventListener('pointercancel', up); c.style.touchAction = 'pan-y'; }
   },
   start() { PH.last = performance.now(); $('#c-ph-play').textContent = '멈추기'; const f = now => { const dt = Math.min(.1, (now - PH.last) / 1000); PH.last = now; PH.t = (PH.t + dt * 20) % 21240; inval('collect'); PH.play = requestAnimationFrame(f); }; PH.play = requestAnimationFrame(f); },
   pause() { cancelAnimationFrame(PH.play); PH.play = 0; $('#c-ph-play').textContent = '재생'; },
@@ -2312,14 +2386,14 @@ const howCollect = {
     const ph = TIDE.phasors(s.const, DATA.jd0, t, keys);
     // 원과 축
     hline(x, 6, w - 6, cy, K.line2); vline(x, cx, 8, h - 8, K.line2);
-    let px = cx, py = cy;
+    let px = cx, py = cy; PH.geo = { cx, cy, tips: [] };
     ph.forEach(([A, th], i) => {
       const col = PH_COL[i % PH_COL.length], dx = A * Math.sin(th) * sc, dy = -A * Math.cos(th) * sc;
       x.save(); x.strokeStyle = col; x.globalAlpha = .28; x.lineWidth = 1; x.beginPath(); x.arc(px, py, A * sc, 0, 7); x.stroke(); x.restore();
       x.save(); x.strokeStyle = col; x.fillStyle = col; x.lineWidth = 2.4; x.beginPath(); x.moveTo(px, py); x.lineTo(px + dx, py + dy); x.stroke();
       const an = Math.atan2(dy, dx); x.beginPath(); x.moveTo(px + dx, py + dy); x.lineTo(px + dx - 8 * Math.cos(an - .4), py + dy - 8 * Math.sin(an - .4)); x.lineTo(px + dx - 8 * Math.cos(an + .4), py + dy - 8 * Math.sin(an + .4)); x.closePath(); x.fill(); x.restore();
       if (A * sc > 18) txt(x, keys[i], px + dx * .5 + 6, py + dy * .5 - 6, { font: FS(11, true), color: col, halo: K.surface });
-      px += dx; py += dy;
+      px += dx; py += dy; PH.geo.tips.push([px, py]);
     });
     x.fillStyle = K.ink; x.beginPath(); x.arc(px, py, 4, 0, 7); x.fill();
     // 오른쪽: 지나온 높이 (앞의 25시간)
@@ -2378,7 +2452,7 @@ VIEWS.site = {
     this.ready = true; this.go(0, true);
   },
   build() {
-    const v = View3D($('#s-cv'), { tx: 2, ty: 4, tz: 0, az: 0.62, el: 0.5, dist: 150, min: 25, max: 500, only: 'wire' }); C2.v3 = v;
+    const v = View3D($('#s-cv'), { tx: 0, ty: 3, tz: 0, az: 0.62, el: 0.55, dist: 150, min: 25, max: 500, only: 'wire', fit: 60 }); C2.v3 = v;
     const NX = S2N.nx, NY = S2N.ny, n = NX * NY;
     const grid = () => {
       const g = new THREE.BufferGeometry(), pos = new Float32Array(n * 3), uv = new Float32Array(n * 2), idx = [];
@@ -2440,11 +2514,12 @@ VIEWS.site = {
     v.hooks.push(() => { const ink = isDark() ? 0xededed : 0x111111; C2.cont.material.color.setHex(ink); C2.cont.material.opacity = 0.8; C2.contMn.material.color.setHex(ink); C2.contMn.material.opacity = 0.18; });
     v.scene.add(C2.terr, C2.water, C2.side, C2.wside, base, C2.grid);
     C2.dimList = []; C2.ve = 1; C2.dimsOn = true;
-    segBind('s-ve', 'v', val => { C2.ve = +val; this.mesh(); this.water(); });
+    segBind('s-ve', 'v', val => { C2.ve = +val; this.mesh(); this.water(); inval('site'); });
     $('#s-dims').addEventListener('click', e => { C2.dimsOn = !C2.dimsOn; e.currentTarget.setAttribute('aria-pressed', String(C2.dimsOn)); this.dims(); });
     v.hooks.push(() => waveTick([C2.water.material]));
     const io = new IntersectionObserver(es => { if (es[0].isIntersecting) v.play(); }); io.observe($('#s-cv'));
     new ResizeObserver(() => v.req()).observe($('#s-cv'));
+    { let w0 = 0; const ro = new ResizeObserver(() => { const w = $('#s-plan').clientWidth * 10000 + $('#s-plan').clientHeight + $('#s-sec').clientHeight; if (w !== w0) { w0 = w; inval('site'); } }); ro.observe($('#s-plan')); ro.observe($('#s-sec')); }
   },
   ring() {   // 둘레의 점 순서 (고운 격자)
     const NX = S2N.nx, NY = S2N.ny, r = [];
@@ -2598,7 +2673,7 @@ VIEWS.site = {
     const bubble = (x, X0, Y0, t) => { x.beginPath(); x.arc(X0, Y0, 8, 0, 7); x.fillStyle = K.surface; x.fill(); x.strokeStyle = red; x.lineWidth = 1; x.stroke(); txt(x, t, X0, Y0 + .5, { align: 'center', font: FS(10, true), color: red }); };
     const axisV = (x, X0, y0, y1, t) => { x.save(); x.strokeStyle = red; x.lineWidth = .9; x.setLineDash([10, 3, 2, 3]); x.beginPath(); x.moveTo(X0, y0); x.lineTo(X0, y1); x.stroke(); x.restore(); bubble(x, X0, y0 - 9, t); };
     // ---- 평면: 땅의 색 + 0.25 m 등고선 + 축선 + 치수
-    { const pe = $('#s-plan'), pw = pe.getBoundingClientRect().width || 600, ph = Math.round(Math.min(760, Math.max(260, (pw - 66) / 100 * 60 + 80))); if (Math.abs(pe.getBoundingClientRect().height - ph) > 2) pe.style.height = ph + 'px';
+    if (!matchMedia('(min-width: 901px)').matches) { const pe = $('#s-plan'), pw = pe.getBoundingClientRect().width || 600, ph = Math.round(Math.min(760, Math.max(260, (pw - 66) / 100 * 60 + 80))); if (Math.abs(pe.getBoundingClientRect().height - ph) > 2) pe.style.height = ph + 'px';
       const { x, w, h } = cv('s-plan'), L = 52, R = w - 14, T = 28, sc = Math.min((R - L) / 100, (h - T - 50) / 60), B = T + 60 * sc, X = v => L + v * sc, Y = v => T + v * sc;
       const c = new THREE.Color(), dd = S2N.d, wet = k === 6;
       for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) { const q = j * nx + i, z = F.Z[q]; c.set(this.color(z, i * dd, false, F.LL[q]));
@@ -2629,10 +2704,10 @@ VIEWS.site = {
       if (k >= 3) txt(x, '갯벌 → 바다', X(65), Y(4), { align: 'center', font: FS(10.5, true), color: K.ink, halo: K.surface });
       const bx = R - 10 * sc, by = h - 6; x.fillStyle = K.ink; x.fillRect(bx, by - 3, 5 * sc, 3); x.strokeStyle = K.ink; x.strokeRect(bx + .5, by - 2.5, 10 * sc, 3); txt(x, '10 m', bx + 5 * sc, by - 10, { align: 'center', font: FS(9.5), halo: K.surface }); }
     // ---- 단면 A–A (y = 30, 0.5 m 격자, 높이 2배)
-    const { x, w, h } = cv('s-sec'), L = 44, R = w - 10, T = 26, B = h - 46, X = lin(0, 100, L, R), Y = lin(-1, 11.5, B, T);
+    const { x, w, h } = cv('s-sec'), L = 44, R = w - 10, B = h - 46, X = lin(0, 100, L, R), VE = C2.ve || 1, sy = (R - L) / 100 * VE, Y = z => B - (z + 1) * sy, T = Math.max(14, Y(11.5));
     const jr = Math.round(30 / S2N.d), zr = [], Lr = []; for (let i = 0; i < nx; i++) { zr.push(F.Z[jr * nx + i]); Lr.push(F.LL[jr * nx + i]); }
     const XI = i => X(i * S2N.d);
-    for (const v of [0, 2, 4, 6, 8, 10]) { hline(x, L, R, Y(v), K.line2); txt(x, fH(v, 0), L - 6, Y(v), { align: 'right', font: FS(10.5, true) }); }
+    for (const v of [0, 2, 4, 6, 8, 10]) { if (Y(v) < 8) continue; hline(x, L, R, Y(v), K.line2); txt(x, fH(v, 0), L - 6, Y(v), { align: 'right', font: FS(10.5, true) }); }
     if (k === 6) { x.fillStyle = K.water; x.globalAlpha = .35; x.beginPath();
       for (let i = 0; i < nx - 1; i++) if (Lr[i] < C2.h || Lr[i + 1] < C2.h) { const a = XI(i), b = XI(i + 1); x.moveTo(a, Y(C2.h)); x.lineTo(b, Y(C2.h)); x.lineTo(b, Y(zr[i + 1])); x.lineTo(a, Y(zr[i])); x.closePath(); }
       x.fill(); x.globalAlpha = 1; }
@@ -2642,12 +2717,12 @@ VIEWS.site = {
     axisV(x, X(0), T - 4, B, '0'); if (k >= 1) axisV(x, X(15), T - 4, B, '1'); if (k >= 2) axisV(x, X(30), T - 4, B, '2');
     const lv = (xx, z, t) => { const px = X(xx), py = Y(z); x.fillStyle = K.ink; x.beginPath(); x.moveTo(px, py - 1); x.lineTo(px - 4, py - 7); x.lineTo(px + 4, py - 7); x.closePath(); x.fill(); txt(x, t, px + 6, py - 9, { font: FS(10.5, true), color: K.ink, halo: K.surface }); };
     if (k >= 1) lv(5, 10.75, '배후 대지 +10.75'); if (k >= 3) { lv(32, 6.75, '갯벌 +6.75'); lv(92, 1.75, '+1.75'); }
-    if (k >= 2) txt(x, '호안 약 1/4', X(22.5) + 8, Y(8.9), { color: K.ink, font: FS(11), halo: K.surface });
-    if (k >= 3) txt(x, '약 1/14로 낮아짐 · 기복과 물결 자국', X(58), Y(4.8) - 12, { color: K.muted, font: FS(11), halo: K.surface });
+    if (k >= 2) txt(x, '호안 약 1/4', X(22.5) + 8, Y(8.9) - 10, { color: K.ink, font: FS(11), halo: K.surface });
+    if (k >= 3) txt(x, '약 1/14로 낮아짐 · 기복과 물결 자국', X(58), Y(4.8) - 18, { color: K.muted, font: FS(11), halo: K.surface });
     if (k >= 5) { const i0 = Math.round(86 / S2N.d); txt(x, '갯골', XI(i0), Y(zr[i0]) + 16, { align: 'center', font: FS(10.5, true), color: K.ink, halo: K.surface }); }
     if (k === 6) { hline(x, L, R, Y(C2.h), K.water, 1, [4, 3]); txt(x, '물 ' + fH(C2.h), R - 2, Y(C2.h) - 8, { align: 'right', color: K.water, font: FS(11, true), halo: K.surface }); }
     const yb = B + 16; if (k >= 1) dimH(x, X(0), X(15), yb, '15 m'); if (k >= 2) dimH(x, X(15), X(30), yb, '15 m'); dimH(x, k >= 3 ? X(30) : X(0), X(100), k >= 3 ? yb : yb + 16, k >= 3 ? '70 m' : '100 m');
-    txt(x, '높이 2배 · 0.5 m 간격의 땅 높이', L, h - 6, { font: FS(10), color: K.faint });
+    txt(x, (VE === 1 ? '세로 축척 = 가로 축척 (실제 비율)' : '세로 ×' + VE) + ' · 3D·평면과 같은 땅 높이', L, h - 6, { font: FS(10), color: K.faint });
   }
 };
 
@@ -3859,11 +3934,11 @@ async function boot() {
   for (const v of Object.values(VIEWS)) v.init();
   setSea('INC');
   window.addEventListener('hashchange', route); route();
-  { const WM = { 'c-lanes': ['c-start', 1], 'c-sum': ['c-start', 1], 'c-ph': ['c-ph-tr', 10], 'r-year': ['r-d', 1], 'r-fort': ['r-d', 1], 'r-day': ['r-d', 1], 'r-ph': ['r-d', 1], 'r-rec': ['r-h', 0.05],
+  { const WM = { 'c-lanes': ['c-start', 1, 200], 'c-sum': ['c-start', 1, 200], 'c-ph': ['c-ph-tr', 10], 'r-year': ['r-d', 1], 'r-fort': ['r-d', 1], 'r-day': ['r-d', 1], 'r-ph': ['r-d', 1], 'r-rec': ['r-h', 0.05],
       'w-sec': ['w-t', 10], 'w-plan': ['w-t', 10], 'w-fort': ['w-t', 60], 'w-year': ['w-t', 1440] };
     for (const id in WM) { const cv = document.getElementById(id); if (!cv) continue; let acc = 0; cv.setAttribute('data-lenis-prevent', ''); cv.classList.add('wh-sim');
       cv.addEventListener('wheel', e => { const r = document.getElementById(WM[id][0]); if (!r || r.closest('[hidden]')) return; e.preventDefault(); acc += e.deltaY + e.deltaX;
-        const n = Math.trunc(acc / 100); if (!n) return; acc -= n * 100; const st = WM[id][1], v = clamp(+r.value + n * st, +r.min, +r.max);
+        const th = WM[id][2] || 100, n = Math.trunc(acc / th); if (!n) return; acc -= n * th; const st = WM[id][1], v = clamp(+r.value + n * st, +r.min, +r.max);
         if (v !== +r.value) { r.value = v; r.dispatchEvent(new Event('input', { bubbles: true })); } }, { passive: false }); } }
   document.addEventListener('click', e => { if (e.target.closest('a.nx, #stepNav a')) setTimeout(() => { const m = $('#main'), t = m.getBoundingClientRect().top + scrollY - 96; if (scrollY > t) scrollTo(0, t); }, 0); });
   new ResizeObserver(() => inval()).observe($('#main'));
