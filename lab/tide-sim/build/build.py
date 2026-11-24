@@ -115,7 +115,7 @@ def build(lang):
     one, five = T("One plinth", "하나의 기단"), T("Five plinths", "다섯 기단")
     ic1 = '<svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="6.5" y="2.5" width="9" height="9" fill="none" stroke="currentColor"/></svg>'
     ic5 = '<svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true">' + ''.join(f'<rect x="{x}" y="{y}" width="4" height="4" fill="none" stroke="currentColor"/>' for x, y in [(1.5, 1.5), (9, 1.5), (16.5, 1.5), (5.25, 8.5), (12.75, 8.5)]) + '</svg>'
-    R('<canvas id="v-cv"', f'<div class="seg ov-mode" id="v-mode" role="group" aria-label="{T("View", "보기")}"><button data-m="one" aria-pressed="true" title="{one}" aria-label="{one}">{ic1}</button><button data-m="five" aria-pressed="false" title="{five}" aria-label="{five}">{ic5}</button></div><canvas id="v-cv"', 1)
+    R('<canvas id="v-cv"', f'<div class="seg ov-mode" id="v-mode" role="group" aria-label="{T("View", "보기")}"><button data-m="one" aria-pressed="false" title="{one}" aria-label="{one}">{ic1}</button><button data-m="five" aria-pressed="true" title="{five}" aria-label="{five}">{ic5}</button></div><canvas id="v-cv"', 1)
 
     # 핀 #274: 네 바다 3D — 갯벌 아래를 꽉 채운 땅으로
     R("soil = new THREE.MeshStandardMaterial({ map: repTex(texSoil(), 4, 1), color: '#8f8166', roughness: 1 });\n  const mud = tag(new THREE.Mesh(new THREE.BoxGeometry(W, 2.5, L), [soil, soil, mudTop, soil, soil, soil]), 'terrain'); mud.position.y = -1.25;",
@@ -171,7 +171,7 @@ def build(lang):
     # 핀 #292: 화살표 그림 자동 재생을 느리게 (1초에 90분 → 20분)
     R("PH.t = (PH.t + dt * 60 * 1.5) % 21240;", "PH.t = (PH.t + dt * 20) % 21240;", 1)
 
-    G0['patch_icons'](R, T); G0['patch_vtable'](R, T); G0['patch_playwater'](R, T); G0['patch_guides'](R, T); G0['patch_diag'](R, T); G0['patch_skirts'](R, T)
+    G0['patch_icons'](R, T); G0['patch_vtable'](R, T); G0['patch_playwater'](R, T); G0['patch_guides'](R, T); G0['patch_diag'](R, T); G0['patch_skirts'](R, T); G0['patch_perf'](R, T); G0['patch_bg'](R, T); G0['patch_wvars'](R, T)
 
     # 큰 읽기 값의 글자 크기는 토큰으로
     R('style="font-family:var(--font);font-size:19px"', 'style="font-size:var(--t-xl)"')

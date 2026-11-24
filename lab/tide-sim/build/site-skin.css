@@ -289,3 +289,8 @@ html.docked .brand h1 { font-weight: 500; }
 #u-ctl .vrow.changed .v { color: var(--red, #c4432b); }
 #u-ctl .vrow.ro .vt b { color: var(--muted); }
 </style>
+<style>
+/* 핀 #347: 시뮬레이션 단계로 옮겨 온 변수 표 — 물 흘려 보기는 변수체계 3D 몫이라 숨김 */
+#v-water #u-ctl { order: 0; margin-top: 12px; }
+#v-water #u-ctl .u-play { display: none; }
+</style>

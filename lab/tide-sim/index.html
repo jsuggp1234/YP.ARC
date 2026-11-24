@@ -749,6 +749,11 @@ html.docked .brand h1 { font-weight: 500; }
 #u-ctl .vrow.changed .v { color: var(--red, #c4432b); }
 #u-ctl .vrow.ro .vt b { color: var(--muted); }
 </style>
+<style>
+/* 핀 #347: 시뮬레이션 단계로 옮겨 온 변수 표 — 물 흘려 보기는 변수체계 3D 몫이라 숨김 */
+#v-water #u-ctl { order: 0; margin-top: 12px; }
+#v-water #u-ctl .u-play { display: none; }
+</style>
 <div class="ybar" role="banner">
   <a class="y-logo" href="../../index.html" aria-label="YP.STUDIO &amp; LAB home"><span class="roll"><span data-t="YP.STUDIO &amp; LAB">YP.STUDIO &amp; LAB</span></span></a>
   <a class="y-work" href="../../lab.html"><span class="roll"><span data-t="Lab / tide-sim">Lab / tide-sim</span></span></a>
@@ -1209,7 +1214,7 @@ html.docked .brand h1 { font-weight: 500; }
     </div>
     <div class="card" style="margin-bottom:12px">
       <div class="chips" id="v-chips" aria-label="Sea data and maps"></div>
-      <div class="cv3" id="v-3d" style="margin-top:10px"><div class="seg ov-mode" id="v-mode" role="group" aria-label="View"><button data-m="one" aria-pressed="true" title="One plinth" aria-label="One plinth"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="6.5" y="2.5" width="9" height="9" fill="none" stroke="currentColor"/></svg></button><button data-m="five" aria-pressed="false" title="Five plinths" aria-label="Five plinths"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="1.5" y="1.5" width="4" height="4" fill="none" stroke="currentColor"/><rect x="9" y="1.5" width="4" height="4" fill="none" stroke="currentColor"/><rect x="16.5" y="1.5" width="4" height="4" fill="none" stroke="currentColor"/><rect x="5.25" y="8.5" width="4" height="4" fill="none" stroke="currentColor"/><rect x="12.75" y="8.5" width="4" height="4" fill="none" stroke="currentColor"/></svg></button></div><canvas id="v-cv" aria-label="Plinths of the four seas in 3D"></canvas><span class="hint">Drag to orbit · Shift-drag to pan · scroll to zoom · double-click to reset</span><span class="tag" id="v-tag"></span></div>
+      <div class="cv3" id="v-3d" style="margin-top:10px"><div class="seg ov-mode" id="v-mode" role="group" aria-label="View"><button data-m="one" aria-pressed="false" title="One plinth" aria-label="One plinth"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="6.5" y="2.5" width="9" height="9" fill="none" stroke="currentColor"/></svg></button><button data-m="five" aria-pressed="true" title="Five plinths" aria-label="Five plinths"><svg viewBox="0 0 22 14" width="22" height="14" aria-hidden="true"><rect x="1.5" y="1.5" width="4" height="4" fill="none" stroke="currentColor"/><rect x="9" y="1.5" width="4" height="4" fill="none" stroke="currentColor"/><rect x="16.5" y="1.5" width="4" height="4" fill="none" stroke="currentColor"/><rect x="5.25" y="8.5" width="4" height="4" fill="none" stroke="currentColor"/><rect x="12.75" y="8.5" width="4" height="4" fill="none" stroke="currentColor"/></svg></button></div><canvas id="v-cv" aria-label="Plinths of the four seas in 3D"></canvas><span class="hint">Drag to orbit · Shift-drag to pan · scroll to zoom · double-click to reset</span><span class="tag" id="v-tag"></span></div>
       <div class="btns" style="margin-top:8px;align-items:center">
         <div class="seg" id="v-focus" role="group" aria-label="Sea shown"><button data-f="ALL" aria-pressed="true">All four</button><button data-f="INC" aria-pressed="false">Incheon</button><button data-f="SML" aria-pressed="false">Mont-Saint-Michel</button><button data-f="HON" aria-pressed="false">Gulf of Tonkin</button><button data-f="VEN" aria-pressed="false">Venice</button></div>
         <button class="btn" id="v-dims" aria-pressed="false">Dimensions</button>
@@ -1743,8 +1748,8 @@ function View3D(canvas, o) {
   const wireMats = {}, wireLine = new THREE.LineBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.9 }),
     edgeMat = new THREE.LineBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.85 }), edgeSoft = new THREE.LineBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.28 }), edgeHl = new THREE.LineBasicMaterial({ color: pal.hl });
   const fillOf = kind => {
-    if (kind === 'water') return new THREE.MeshBasicMaterial({ color: pal.water, transparent: true, opacity: 0.1, depthWrite: false, side: THREE.DoubleSide });
-    if (kind === 'foam') return new THREE.MeshBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.25, depthWrite: false });
+    if (kind === 'water') return new THREE.MeshBasicMaterial({ color: pal.water, transparent: true, opacity: 0.15, depthWrite: false, side: THREE.DoubleSide });
+    if (kind === 'foam') return new THREE.MeshBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.72, depthWrite: false });
     return new THREE.MeshBasicMaterial({ color: pal[kind] != null ? pal[kind] : pal.prop, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1, side: THREE.DoubleSide });
   };
   const wireMat = kind => wireMats[kind] || (wireMats[kind] = fillOf(kind));
@@ -1816,13 +1821,14 @@ function View3D(canvas, o) {
   let loopOn = 0, last = 0;
   function loop(now) {
     const r = canvas.getBoundingClientRect();
-    if (!anims.length || r.width < 2 || document.hidden) { loopOn = 0; return; }
+    if (!anims.length || r.width < 2 || document.hidden || !onScr) { loopOn = 0; return; }
     const dt = Math.min(0.1, (now - (last || now)) / 1000); last = now;
     for (const f of anims) f(now / 1000, dt);
     if (pend) { cancelAnimationFrame(pend); pend = 0; } render();
     loopOn = requestAnimationFrame(loop);
   }
-  function play() { if (!loopOn && anims.length) { last = 0; loopOn = requestAnimationFrame(loop); } }
+  let onScr = true; try { new IntersectionObserver(es => { onScr = es[0].isIntersecting; if (onScr) play(); }).observe(canvas); } catch (_) {} document.addEventListener('visibilitychange', () => { if (!document.hidden) play(); });
+  function play() { if (!loopOn && anims.length && onScr) { last = 0; loopOn = requestAnimationFrame(loop); } }
   // 핀 #293: SketchUp처럼 — 가운데 끌기 돌리기, Shift + 가운데 끌기 옮기기, 휠은 커서 쪽으로 확대, 가운데 두 번 누르기 처음 모습.
   // 트랙패드: Alt + 왼쪽 끌기 돌리기, Shift + 왼쪽 끌기 옮기기. 왼쪽 끌기만 해도 돌아가고(예전처럼), 왼쪽 클릭은 고르기에 그대로 써요. 손가락 둘은 확대.
   const pts = new Map(); let pinch = 0, lastMid = 0;
@@ -1871,7 +1877,7 @@ function View3D(canvas, o) {
     for (const k in wireMats) { const m = wireMats[k]; m.color.setHex(k === 'water' ? pal.water : pal[k] != null ? pal[k] : pal.prop); }
     scene.traverse(q => { const u = q.userData; if (u.vfill) u.vfill.color.setHex(pal[u.kind] != null ? pal[u.kind] : pal.prop); if (u.vline) u.vline.color.setHex(pal.ink); });
     if (wire) { scene.background = new THREE.Color(pal.bg); scene.fog = null; }
-    else { scene.background = skyTex(dark); scene.fog = null; }
+    else { scene.background = new THREE.Color(pal.bg); scene.fog = null; }
     hemi.intensity = dark ? 0.40 : 0.58; sun.intensity = dark ? 0.62 : 0.95;
     // 하늘을 비추는 환경 (물과 젖은 면의 반사)
     try {
@@ -2084,9 +2090,62 @@ function plinthSite(g, depth, cl) {
   return { Rf, D, x0, x1, LH, Wr, crest, chans, cl: cl || [] };
 }
 // ---------------------------------------------------------------- 기단(들)과 그 둘레의 갯벌, 갯골, 호안, 뭍 (원점 = 큰 기단 가운데의 갯벌 높이)
+// 핀 #344: 기단과 기단을 잇는 목 — 졸업설계 배치도처럼 두 원에 접하는 오목한 필렛 곡선으로 매끈하게 이어 하나의 덩어리로 읽히게.
+// pads: [{x, z, R}] (큰 기단 = 0번). 가까운 것끼리 잇는 나무(MST). 목의 높이는 연결 변수(이음목 높이 g.C)를 따라 물에 잠기고 드러나요.
+function neckEdges(pads) {
+  const inT = [0], E = [];
+  while (inT.length < pads.length) { let best = null; for (const a of inT) pads.forEach((b, j) => { if (inT.includes(j)) return; const d = Math.hypot(b.x - pads[a].x, b.z - pads[a].z) - pads[a].R - b.R; if (!best || d < best[2]) best = [a, j, d]; }); inT.push(best[1]); E.push(best); }
+  return E;
+}
+// 두 원 A, B 사이 목의 윤곽: 필렛 원 둘(c+, c−)과 접점. 허리 너비 waist(m)
+function neckShape(A, B, waist) {
+  const dx = B.x - A.x, dz = B.z - A.z, d = Math.hypot(dx, dz) || 1, ux = dx / d, uz = dz / d, vx = -uz, vz = ux;
+  const geo = rf => { const a = A.R + rf, b = B.R + rf, xx = (a * a - b * b + d * d) / (2 * d), h2 = a * a - xx * xx; return h2 > 0 ? [xx, Math.sqrt(h2)] : null; };
+  const tgt = Math.min(waist / 2, 0.42 * Math.min(A.R, B.R));
+  let lo = 0.05, hi = 6 * d + 60;
+  for (let i = 0; i < 48; i++) { const mid = (lo + hi) / 2, q = geo(mid); if (!q || q[1] - mid < tgt) lo = mid; else hi = mid; }
+  const rf = hi, q = geo(rf); if (!q) return null;
+  const side = sg => { const cx = A.x + ux * q[0] + sg * vx * q[1], cz = A.z + uz * q[0] + sg * vz * q[1];
+    const ta = [A.x + (cx - A.x) * A.R / (A.R + rf), A.z + (cz - A.z) * A.R / (A.R + rf)], tb = [B.x + (cx - B.x) * B.R / (B.R + rf), B.z + (cz - B.z) * B.R / (B.R + rf)];
+    return { cx, cz, ta, tb }; };
+  return { rf, P: side(1), M: side(-1), A, B };
+}
+// 짧은 쪽 호를 점으로
+function arcPts(cx, cz, r, p0, p1, n) {
+  const a0 = Math.atan2(p0[1] - cz, p0[0] - cx); let da = Math.atan2(p1[1] - cz, p1[0] - cx) - a0;
+  while (da > Math.PI) da -= 2 * Math.PI; while (da < -Math.PI) da += 2 * Math.PI;
+  const out = []; for (let i = 0; i <= n; i++) { const t = a0 + da * i / n; out.push([cx + r * Math.cos(t), cz + r * Math.sin(t)]); } return out;
+}
+// 목의 닫힌 윤곽 (두 원 바깥만): 필렛 c+ → 원 B(마주 보는 쪽) → 필렛 c− → 원 A(마주 보는 쪽)
+function neckOutline(N, n) {
+  n = n || 24; const { rf, P, M, A, B } = N;
+  return [].concat(arcPts(P.cx, P.cz, rf, P.ta, P.tb, n), arcPts(B.x, B.z, B.R, P.tb, M.tb, Math.ceil(n / 2)).slice(1),
+    arcPts(M.cx, M.cz, rf, M.tb, M.ta, n).slice(1), arcPts(A.x, A.z, A.R, M.ta, P.ta, Math.ceil(n / 2)).slice(1, -1));
+}
+// 큰 기단 + 둘레 기단의 목 목록 (평면·3D가 같은 값을 써요)
+function neckList(g, cl) {
+  if (!cl || !cl.length || !(g.C > g.ground + 0.15)) return [];
+  const Rf = g.R + g.L, pads = [{ x: 0, z: 0, R: Rf }].concat(cl.map(c => ({ x: c.x, z: c.z, R: c.R }))), H = g.C - g.ground, waist = Math.max(4.5, 1.6 * H);
+  return neckEdges(pads).map(([a, b]) => neckShape(pads[a], pads[b], waist)).filter(Boolean);
+}
+// 평면 그림: 목을 칠하고 굵은 윤곽, 안쪽에 필렛을 따라 이어지는 등고선
+function drawNecks(x, N, X, Y, sc, fill, ink) {
+  for (const nk of N) {
+    const pts = neckOutline(nk, 28); x.save(); x.beginPath(); pts.forEach(([px, pz], i) => i ? x.lineTo(X(px), Y(pz)) : x.moveTo(X(px), Y(pz))); x.closePath();
+    x.fillStyle = fill; x.fill(); x.clip();
+    x.strokeStyle = ink; x.globalAlpha = .35; x.lineWidth = .5;
+    const half = Math.hypot(nk.P.cx - nk.M.cx, nk.P.cz - nk.M.cz) / 2 - nk.rf, st = Math.max(0.5, half / 4);
+    for (let k = 1; k * st < half; k++) for (const S of [nk.P, nk.M]) { x.beginPath(); x.arc(X(S.cx), Y(S.cz), (nk.rf + k * st) * sc, 0, 2 * Math.PI); x.stroke(); }
+    x.restore();
+    // 굵은 윤곽은 두 필렛 곡선만 (원 쪽은 기단 윤곽이 이어받아요)
+    x.save(); x.strokeStyle = ink; x.lineWidth = 1.6; x.lineCap = 'round';
+    for (const [S, a, b] of [[nk.P, nk.P.ta, nk.P.tb], [nk.M, nk.M.ta, nk.M.tb]]) { const q = arcPts(S.cx, S.cz, nk.rf, a, b, 28); x.beginPath(); q.forEach(([px, pz], i) => i ? x.lineTo(X(px), Y(pz)) : x.moveTo(X(px), Y(pz))); x.stroke(); }
+    x.restore();
+  }
+}
 function plinth3D(g, o = {}) {
   const grp = new THREE.Group(), gr = g.ground, XC = CORE.XC, NW = CORE.NECK_W, zoneCol = !!o.zones;
-  const cl = o.cluster || [], PS = plinthSite(g, o.depth, cl), Rf = PS.Rf, D = PS.D, x0 = PS.x0, x1 = PS.x1, LH = PS.LH, Wr = PS.Wr, crest = PS.crest, TH = 2.5, fine = o.coarse ? 1 : 0.5;
+  const cl = o.cluster || [], PS = plinthSite(g, o.depth, cl), Rf = PS.Rf, D = PS.D, x0 = PS.x0, x1 = PS.x1, LH = PS.LH, Wr = PS.Wr, crest = PS.crest, TH = 2.5, fine = o.draft ? 2 : o.coarse ? 1 : 0.5;
   const edgeM = new THREE.LineBasicMaterial({ color: C3.edge, transparent: true, opacity: 0.4 });
   const parts = [], cuts = g.cuts, pave = texPaving(), conT = texConcrete();
   const tint = z => zoneCol ? new THREE.Color(toneColor(z, cuts)) : new THREE.Color(z < cuts[2] ? '#8f8a76' : z < cuts[1] ? '#a7a291' : z < cuts[0] ? '#c9c4b6' : C3.con);
@@ -2094,7 +2153,7 @@ function plinth3D(g, o = {}) {
   const matWall = z => new THREE.MeshStandardMaterial({ map: conT, color: tint(z).multiplyScalar(0.9), roughness: 0.9 });
   const add = (m, z, kind) => { m.castShadow = true; m.receiveShadow = true; tag(m, 'plinth', { cast: true, part: kind, envI: z < cuts[1] ? 0.5 : 0.2 }); grp.add(m); parts.push({ m, z, k: kind, base: m.material.color.clone() }); return m; };
   const edges = (geo, par) => { const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 30), edgeM); e.userData.edge = true; (par || grp).add(e); return e; };
-  const SEG = o.coarse ? 96 : 180;
+  const SEG = o.draft ? 48 : o.coarse ? 96 : 180;
   // 큰 기단의 고리: 윗면(판석) + 바깥 챌면(콘크리트)
   g.T.forEach(t => { const H = t.z - gr; if (H <= 0.01) return;
     add(new THREE.Mesh(ringTop(t.r0, t.r1, H, SEG, 2), matTop(t.z)), t.z, t.k);
@@ -2118,7 +2177,7 @@ function plinth3D(g, o = {}) {
   const kOf = z => { const t = g.T.find(q => Math.abs(q.z - z) < 1e-6); return t ? t.k : 'step'; };
   const extras = cl.map((c, ci) => { const G = new THREE.Group(); G.position.set(c.x, 0, c.z); grp.add(G);
     c.p.rings.forEach(([zz, r0, r1], i) => { const H = zz - gr; if (H < 0.01) return; const k = i === 0 ? 'top' : kOf(zz);
-      const tp = new THREE.Mesh(ringTop(r0, r1, H, 120, 2), matTop(zz)), wl = new THREE.Mesh(ringWall(r1, -0.4, H, 120, 2), matWall(zz));
+      const NS = o.draft ? 40 : 120, tp = new THREE.Mesh(ringTop(r0, r1, H, NS, 2), matTop(zz)), wl = new THREE.Mesh(ringWall(r1, -0.4, H, NS, 2), matWall(zz));
       for (const m of [tp, wl]) { m.castShadow = m.receiveShadow = true; tag(m, 'plinth', { cast: true, part: k }); G.add(m); parts.push({ m, z: zz, k, base: m.material.color.clone(), extra: ci }); }
       edges(new THREE.CylinderGeometry(r1, r1, 0.001, 120, 1, true), G).position.y = H; });
     { const lr = c.p.rings[c.p.rings.length - 1], H0 = lr[0] - gr, Lx = c.L || 0;
@@ -2136,12 +2195,9 @@ function plinth3D(g, o = {}) {
   const nA = N1(), nB = N2(), nC = N3(), sm = t => t * t * (3 - 2 * t);
   const segD = (P, px, pz) => { let best = 1e9, acc = 0, at = 0; for (let i = 0; i < P.length - 1; i++) { const [ax, az] = P[i], [bx, bz] = P[i + 1], dx = bx - ax, dz = bz - az, L2 = dx * dx + dz * dz || 1e-6, t = clamp(((px - ax) * dx + (pz - az) * dz) / L2, 0, 1), d = Math.hypot(px - ax - t * dx, pz - az - t * dz), L = Math.sqrt(L2); if (d < best) { best = d; at = acc + t * L; } acc += L; } return [best, at / acc]; };
   const pads = [{ x: 0, z: 0, R: Rf }].concat(cl.map(c => ({ x: c.x, z: c.z, R: c.R })));
-  if (cl.length >= 3 && g.C > gr + 0.2) { const H = g.C - gr, Wd = Math.max(8, 2.4 * H), inT = [0], E = [];
-    while (inT.length < pads.length) { let best = null; for (const a of inT) pads.forEach((b, j) => { if (inT.includes(j)) return; const d = Math.hypot(b.x - pads[a].x, b.z - pads[a].z) - pads[a].R - b.R; if (!best || d < best[2]) best = [a, j, d]; }); inT.push(best[1]); E.push(best); }
-    const sg = new THREE.SphereGeometry(1, 48, 12, 0, Math.PI * 2, 0, Math.PI / 2);
-    for (const [a, b] of E) { const A = pads[a], B = pads[b], dx = B.x - A.x, dz = B.z - A.z, dd = Math.hypot(dx, dz) || 1, ux = dx / dd, uz = dz / dd;
-      const sx = A.x + ux * A.R * 0.8, sz = A.z + uz * A.R * 0.8, ex = B.x - ux * B.R * 0.8, ez = B.z - uz * B.R * 0.8, L = Math.hypot(ex - sx, ez - sz); if (L < 1) continue;
-      const m = new THREE.Mesh(sg, matTop(g.C)); m.scale.set(L / 2 + Wd * 0.25, H, Wd / 2); m.position.set((sx + ex) / 2, 0, (sz + ez) / 2); m.rotation.y = -Math.atan2(dz, dx); add(m, g.C, 'neck'); } }
+  { const H = g.C - gr; for (const nk of neckList(g, cl)) { const pts = neckOutline(nk, o.draft ? 10 : 24), sh = new THREE.Shape(pts.map(([px, pz]) => new THREE.Vector2(px, pz)));
+      const geo = new THREE.ExtrudeGeometry(sh, { depth: H + 0.4, bevelEnabled: false, curveSegments: 1 }), uv = geo.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) / 2, uv.getY(i) / 2);
+      const m = new THREE.Mesh(geo, matTop(g.C)); m.rotation.x = Math.PI / 2; m.position.y = H; add(m, g.C, 'neck'); edges(geo, m); } }
   const hf = (px, pz) => {
     if (px <= x0) { const u = clamp((px - crest) / Wr, 0, 1), s = 0.82 * u + 0.18 * sm(u), rip = (u > 0.02 && u < 0.98) ? 0.22 * (fbm(nC, px / 40, pz / 40, 16, 3) - 0.5) : 0; return LH * (1 - s) + rip; }
     let keep = clamp((px - x0 - 0.5) / 5, 0, 1); for (const q of pads) keep = Math.min(keep, clamp((Math.hypot(px - q.x, pz - q.z) - q.R - 0.8) / 6, 0, 1));
@@ -3696,8 +3752,9 @@ function rules3D() {
   const id = ST.sea, m = model(id), g = m.g, r = m.r, s = SEA(), gr = g.ground, key = id + JSON.stringify(ST.V);
   if (key !== U3.key) {   // 막대를 끄는 동안에는 잠깐 기다렸다가 다시 짓는다
     clearTimeout(U3.tm);
-    U3.tm = setTimeout(() => { dispose3(v, U3.p3); U3.p3 = plinth3D(g, { coarse: true, cluster: clusterOf(id) }); v.scene.add(U3.p3.grp); U3.key = key; U3.wl = null; rules3D(); }, U3.p3 ? 160 : 0);
-    if (!U3.p3) return;
+    const build = dr => { dispose3(v, U3.p3); U3.p3 = plinth3D(g, { coarse: true, draft: dr, cluster: clusterOf(id) }); v.scene.add(U3.p3.grp); U3.key = key; U3.wl = null; };
+    cancelAnimationFrame(U3.raf);
+    if (!U3.p3) build(false); else { U3.raf = requestAnimationFrame(() => { build(true); rules3D(); }); U3.tm = setTimeout(() => { U3.key = ''; build(false); rules3D(); }, 300); return; }
   }
   if (!U3.p3) return;
   const lv = { lo: s.q[0], T2: r.T2, C: g.C, T1: r.T1 }, w = U3.t != null ? wAt(id, U3.t) : lv[U3.w];
@@ -3915,7 +3972,7 @@ function drawPlan(cvId, id, w, o = {}) {
     if (w > g.ground) { x.fillStyle = K.water; x.globalAlpha = .3; x.fillRect(X(0), 0, W - X(0), h); x.globalAlpha = 1; }
     const con = z => w > z ? K.water2 : (o.zones ? toneColor(z, g.cuts) : C3.con);
     // 자락: 둘레 360°, 뭍 쪽은 호안 아래로 들어간다
-    if (g.L > 0.1) { x.beginPath(); x.arc(CX, CY, Rf * sc, 0, 7); x.arc(CX, CY, g.R * sc, 7, 0, true);
+    if (g.L > 0.1) { x.beginPath(); x.arc(CX, CY, Rf * sc, 0, 2 * Math.PI); x.moveTo(CX + g.R * sc, CY); x.arc(CX, CY, g.R * sc, 2 * Math.PI, 0, true);
       const dry = w <= g.P ? 1 : w >= g.zl ? 0 : (g.zl - w) / (g.zl - g.P); x.fillStyle = dry > 0.5 ? (o.zones ? toneColor(g.P, g.cuts) : '#cfc8b8') : K.water2; x.fill('evenodd'); x.strokeStyle = K.ink; x.lineWidth = .7; x.stroke();
       if (dry > 0 && dry < 1) { x.beginPath(); x.arc(CX, CY, (g.R + dry * g.L) * sc, 0, 7); x.strokeStyle = K.water; x.lineWidth = 2; x.stroke(); }
       // 내려가는 방향의 짧은 빗금
@@ -3928,6 +3985,7 @@ function drawPlan(cvId, id, w, o = {}) {
     x.save(); x.strokeStyle = 'rgba(0,0,0,.22)'; x.lineWidth = .6; for (let k = 1; k < 8; k++) { const xx = XR + (X(0) - XR) * k / 8; x.beginPath(); x.setLineDash(k % 2 ? [2, 3] : []); x.moveTo(xx, 0); x.lineTo(xx, h); x.stroke(); } x.restore();
     vline(x, XR, 0, h, K.ink, 1.4); vline(x, X(0), 0, h, K.ink, .8);
     x.fillStyle = '#d7d2c6'; x.fillRect(XR, Y(-CORE.NECK_W / 2), X(0) - XR, CORE.NECK_W * sc); x.strokeStyle = K.ink; x.lineWidth = .6; x.strokeRect(XR, Y(-CORE.NECK_W / 2), X(0) - XR, CORE.NECK_W * sc);
+    drawNecks(x, neckList(g, CL), v => X(XC + v), Y, sc, con(g.C), K.ink);
     // 다른 기단들
     CL.forEach(c => { for (let i = c.p.rings.length - 1; i >= 0; i--) { const [zz, , r1] = c.p.rings[i]; x.beginPath(); x.arc(X(XC + c.x), Y(c.z), r1 * sc, 0, 7); x.fillStyle = con(zz); x.fill(); x.strokeStyle = K.ink; x.lineWidth = i ? .5 : .9; x.stroke(); }
       if (o.dims) txt(x, `${c.p.d} days · ${fH(c.p.top)} · ⌀${(2 * c.R).toFixed(1)}`, X(XC + c.x), Y(c.z + c.R) + 11, { align: 'center', font: FS(10, true), color: K.ink, halo: K.surface }); });
@@ -3976,7 +4034,7 @@ function drawPlan(cvId, id, w, o = {}) {
 }
 
 // ---------------------------------------------------------------- 6. 네 바다
-const W6 = { t: 0, play: 0, speed: 6, mode: 'one', last: 0, stats: {} };
+const W6 = { t: 0, play: 0, speed: 6, mode: 'five', last: 0, stats: {} };
 let PLAN_SC = 1;
 { const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { const dk = isDark(), G = dk ? { mudLo: '#2a2a2a', con: '#4a4a4a', rev: '#333333', land: '#3a3a3a' } : { mudLo: '#e2e2e2', con: '#cfcfcf', rev: '#dedede', land: '#ececec' }, GK = dk ? { water: '#727272', water2: '#444444' } : { water: '#b6b6b6', water2: '#d2d2d2' };
   const s3 = {}, sk = {}; for (const k in G) { s3[k] = C3[k]; C3[k] = G[k]; } for (const k in GK) { sk[k] = K[k]; K[k] = GK[k]; } try { _dp(cvId, id, w, o); } finally { Object.assign(C3, s3); Object.assign(K, sk); } const el = document.getElementById(cvId); if (!el) return; const x = el.getContext('2d'), dpr = el.width / Math.max(1, el.getBoundingClientRect().width);
@@ -4098,6 +4156,8 @@ function route() {
   const grp = vv => GROUP[vv] || [vv];
   if (ST.view && ST.view !== view) grp(ST.view).forEach(q => VIEWS[q] && VIEWS[q].hide && VIEWS[q].hide());
   ST.view = view;
+  { const uc = $('#u-ctl'); if (uc) { if (!uc._home) uc._home = [uc.parentElement, uc.nextElementSibling]; const st = $$('#v-water .stack').pop();
+    if (view === 'water' && st) { if (uc.parentElement !== st) st.insertBefore(uc, st.children[1] || null); } else if (uc.parentElement !== uc._home[0]) uc._home[0].insertBefore(uc, uc._home[1]); } }
   $$('.view').forEach(s => s.classList.toggle('on', grp(view).includes(s.id.slice(2))));
   $$('#stepNav a').forEach(a => a.setAttribute('aria-current', a.dataset.v === view ? 'page' : 'false'));
   { const i = ['collect', 'site', 'structure', 'derive', 'water', 'seas'].indexOf(view), c = $('#stepCt'), b = $('#stepBar'); if (c) c.textContent = String(i + 1).padStart(2, '0') + ' / 06'; if (b) b.style.width = ((i + 1) / 6 * 100) + '%'; }

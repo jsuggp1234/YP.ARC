@@ -62,8 +62,10 @@ def patch_plan2(R, T):
       "  const s3 = {}, sk = {}; for (const k in G) { s3[k] = C3[k]; C3[k] = G[k]; } for (const k in GK) { sk[k] = K[k]; K[k] = GK[k]; } try { _dp(cvId, id, w, o); } finally { Object.assign(C3, s3); Object.assign(K, sk); }", 1)
 
 def patch_plan3(R, T):
-    # 핀 #340: 도면 보기 3D의 바닷물 회색을 한 단계 진하게 (무채색)
-    R("if (kind === 'water') return new THREE.MeshBasicMaterial({ color: pal.water, transparent: true, opacity: 0.07,", "if (kind === 'water') return new THREE.MeshBasicMaterial({ color: pal.water, transparent: true, opacity: 0.1,", 1)
+    # 핀 #340·#346: 도면 보기 3D의 바닷물 회색을 진하게 (무채색)
+    R("if (kind === 'water') return new THREE.MeshBasicMaterial({ color: pal.water, transparent: true, opacity: 0.07,", "if (kind === 'water') return new THREE.MeshBasicMaterial({ color: pal.water, transparent: true, opacity: 0.15,", 1)
+    # 핀 #346: 도면 보기에서 물가선(물과 기단이 만나는 띠)을 진하게
+    R("if (kind === 'foam') return new THREE.MeshBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.25,", "if (kind === 'foam') return new THREE.MeshBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.72,", 1)
     R("x1 = XC + ext + (full ? 15 : 3), yH = ey + (full ? 7 : 2);", "x1 = o.tight ? XC + Rf + 6 : XC + ext + (full ? 15 : 3), yH = o.tight ? Rf + 5 : ey + (full ? 7 : 2);", 1)
 
 # 핀 #315: 큰 제목이 스크롤을 따라 맨 위로 올라가 작아지며 얇은 줄에 붙어요 (움직임 줄이기면 그대로 지나감)
@@ -114,14 +116,40 @@ def patch_guides(R, T):
 
 # 핀 #307: 기단이 4–5개면 이웃끼리 낮고 매끈한 모래톱 목(스커트)으로 이어요. 등성이 높이 = 연결 변수(이음목 높이 g.C)라 섬이 되는 날 함께 잠겨요
 def patch_skirts(R, T):
+    # 핀 #307 → #344: 기단 사이 목을 필렛 곡선으로 매끈하게 잇는 판 (평면 모양을 그대로 세운 것, 윗면 = 이음목 높이)
+    R("function plinth3D(g, o = {}) {", open(os.path.join(HERE, "necks.js"), encoding="utf8").read() + "function plinth3D(g, o = {}) {", 1)
     R("  const pads = [{ x: 0, z: 0, R: Rf }].concat(cl.map(c => ({ x: c.x, z: c.z, R: c.R })));\n",
       "  const pads = [{ x: 0, z: 0, R: Rf }].concat(cl.map(c => ({ x: c.x, z: c.z, R: c.R })));\n"
-      "  if (cl.length >= 3 && g.C > gr + 0.2) { const H = g.C - gr, Wd = Math.max(8, 2.4 * H), inT = [0], E = [];\n"
-      "    while (inT.length < pads.length) { let best = null; for (const a of inT) pads.forEach((b, j) => { if (inT.includes(j)) return; const d = Math.hypot(b.x - pads[a].x, b.z - pads[a].z) - pads[a].R - b.R; if (!best || d < best[2]) best = [a, j, d]; }); inT.push(best[1]); E.push(best); }\n"
-      "    const sg = new THREE.SphereGeometry(1, 48, 12, 0, Math.PI * 2, 0, Math.PI / 2);\n"
-      "    for (const [a, b] of E) { const A = pads[a], B = pads[b], dx = B.x - A.x, dz = B.z - A.z, dd = Math.hypot(dx, dz) || 1, ux = dx / dd, uz = dz / dd;\n"
-      "      const sx = A.x + ux * A.R * 0.8, sz = A.z + uz * A.R * 0.8, ex = B.x - ux * B.R * 0.8, ez = B.z - uz * B.R * 0.8, L = Math.hypot(ex - sx, ez - sz); if (L < 1) continue;\n"
-      "      const m = new THREE.Mesh(sg, matTop(g.C)); m.scale.set(L / 2 + Wd * 0.25, H, Wd / 2); m.position.set((sx + ex) / 2, 0, (sz + ez) / 2); m.rotation.y = -Math.atan2(dz, dx); add(m, g.C, 'neck'); } }\n", 1)
+      "  { const H = g.C - gr; for (const nk of neckList(g, cl)) { const pts = neckOutline(nk, o.draft ? 10 : 24), sh = new THREE.Shape(pts.map(([px, pz]) => new THREE.Vector2(px, pz)));\n"
+      "      const geo = new THREE.ExtrudeGeometry(sh, { depth: H + 0.4, bevelEnabled: false, curveSegments: 1 }), uv = geo.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) / 2, uv.getY(i) / 2);\n"
+      "      const m = new THREE.Mesh(geo, matTop(g.C)); m.rotation.x = Math.PI / 2; m.position.y = H; add(m, g.C, 'neck'); edges(geo, m); } }\n", 1)
+    R("const SEG = o.coarse ? 96 : 180;", "const SEG = o.draft ? 48 : o.coarse ? 96 : 180;", 1)
+    R("TH = 2.5, fine = o.coarse ? 1 : 0.5;", "TH = 2.5, fine = o.draft ? 2 : o.coarse ? 1 : 0.5;", 1)
+    R("const tp = new THREE.Mesh(ringTop(r0, r1, H, 120, 2), matTop(zz)), wl = new THREE.Mesh(ringWall(r1, -0.4, H, 120, 2), matWall(zz));", "const NS = o.draft ? 40 : 120, tp = new THREE.Mesh(ringTop(r0, r1, H, NS, 2), matTop(zz)), wl = new THREE.Mesh(ringWall(r1, -0.4, H, NS, 2), matWall(zz));", 1)
+    # 평면 자락 고리에서 바깥 원 끝과 안쪽 원 시작이 이어져 그어지던 사선 없애기 (#341과 같은 원인)
+    R("if (g.L > 0.1) { x.beginPath(); x.arc(CX, CY, Rf * sc, 0, 7); x.arc(CX, CY, g.R * sc, 7, 0, true);", "if (g.L > 0.1) { x.beginPath(); x.arc(CX, CY, Rf * sc, 0, 2 * Math.PI); x.moveTo(CX + g.R * sc, CY); x.arc(CX, CY, g.R * sc, 2 * Math.PI, 0, true);", 1)
+    # 평면: 목을 다른 기단보다 먼저 칠하고 굵은 필렛 윤곽
+    R("    // 다른 기단들\n    CL.forEach(c => {", "    drawNecks(x, neckList(g, CL), v => X(XC + v), Y, sc, con(g.C), K.ink);\n    // 다른 기단들\n    CL.forEach(c => {", 1)
+
+# 핀 #345: 변수 3D가 막대에 바로 따라오게 — 끄는 동안은 한 장면에 한 번 거친 모형, 멈추면 고운 모형. 화면 밖·숨은 탭에서는 그리기를 멈춰요
+def patch_perf(R, T):
+    R("    U3.tm = setTimeout(() => { dispose3(v, U3.p3); U3.p3 = plinth3D(g, { coarse: true, cluster: clusterOf(id) }); v.scene.add(U3.p3.grp); U3.key = key; U3.wl = null; rules3D(); }, U3.p3 ? 160 : 0);\n    if (!U3.p3) return;\n",
+      "    const build = dr => { dispose3(v, U3.p3); U3.p3 = plinth3D(g, { coarse: true, draft: dr, cluster: clusterOf(id) }); v.scene.add(U3.p3.grp); U3.key = key; U3.wl = null; };\n"
+      "    cancelAnimationFrame(U3.raf);\n"
+      "    if (!U3.p3) build(false); else { U3.raf = requestAnimationFrame(() => { build(true); rules3D(); }); U3.tm = setTimeout(() => { U3.key = ''; build(false); rules3D(); }, 300); return; }\n", 1)
+    R("  function play() { if (!loopOn && anims.length) { last = 0; loopOn = requestAnimationFrame(loop); } }",
+      "  let onScr = true; try { new IntersectionObserver(es => { onScr = es[0].isIntersecting; if (onScr) play(); }).observe(canvas); } catch (_) {} document.addEventListener('visibilitychange', () => { if (!document.hidden) play(); });\n"
+      "  function play() { if (!loopOn && anims.length && onScr) { last = 0; loopOn = requestAnimationFrame(loop); } }", 1)
+    R("    if (!anims.length || r.width < 2 || document.hidden) { loopOn = 0; return; }", "    if (!anims.length || r.width < 2 || document.hidden || !onScr) { loopOn = 0; return; }", 1)
+
+# 핀 #348: 네 바다는 다섯 기단 보기로 시작 / 핀 #349: 실감(렌더) 보기의 하늘색 그라데이션 대신 무채색 바탕(--bg, 다크 모드 따라감)
+def patch_bg(R, T):
+    R("const W6 = { t: 0, play: 0, speed: 6, mode: 'one',", "const W6 = { t: 0, play: 0, speed: 6, mode: 'five',", 1)
+    R("    else { scene.background = skyTex(dark); scene.fog = null; }", "    else { scene.background = new THREE.Color(pal.bg); scene.fog = null; }", 1)
+
+# 핀 #347: 시뮬레이션 단계 오른쪽 판에도 변수 표(#u-ctl)를 — 같은 판을 그 단계로 옮겨 와 물 조작과 함께 써요 (변수체계로 가면 되돌아가요)
+def patch_wvars(R, T):
+    R("  ST.view = view;\n  $$('.view').forEach(", "  ST.view = view;\n  { const uc = $('#u-ctl'); if (uc) { if (!uc._home) uc._home = [uc.parentElement, uc.nextElementSibling]; const st = $$('#v-water .stack').pop();\n    if (view === 'water' && st) { if (uc.parentElement !== st) st.insertBefore(uc, st.children[1] || null); } else if (uc.parentElement !== uc._home[0]) uc._home[0].insertBefore(uc, uc._home[1]); } }\n  $$('.view').forEach(", 1)
 
 # 핀 #303: 변수체계 3D 자리에 평면 + 단면 그림 (diag.js)
 def patch_diag(R, T):
