@@ -4092,8 +4092,8 @@
       const scenesHtml = (sec, si) => {
         const rows = [], im = sec.images; let i = 0;
         while (i < im.length) {
-          if (im[i].r >= 1.3) { rows.push([im[i]]); i++; continue; }
-          let j = i; while (j < im.length && im[j].r < 1.3) j++;
+          if (im[i].r >= 1.3 || im[i].full) { rows.push([im[i]]); i++; continue; } // full: 한 줄 통째로 크게 (핀 #331)
+          let j = i; while (j < im.length && im[j].r < 1.3 && !im[j].full) j++;
           let run = im.slice(i, j); i = j;
           while (run.length) { const k = run.length === 3 ? 3 : Math.min(2, run.length); rows.push(run.slice(0, k)); run = run.slice(k); }
         }

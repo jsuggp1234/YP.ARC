@@ -2652,3 +2652,19 @@ html.sb-on { overflow-x: hidden; }
 .fp-n { border: 0; border-radius: 0; background: none; font-weight: 600; }
 .fp-n.fp-on { background: none; color: var(--red); scale: 1.35; }
 .fp-lv { background: none; }
+
+/* 핀 #329: 단면 레벨 글자에 지시선 — 글자 왼쪽으로 가는 가는 선 + 작은 삼각 레벨 표시 */
+.media .ftag.lvl { padding-left: 0; }
+.media .ftag.lvl::before { content: ""; position: absolute; right: calc(100% + 4px); top: 50%; width: 44px; border-top: 1px solid currentColor; }
+.media .ftag.lvl::after { content: ""; position: absolute; right: calc(100% + 44px); top: calc(50% - 5px); width: 8px; height: 5px; background: currentColor; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+/* 핀 #328: 모바일 — 넓은 단면 투시도는 옆으로 밀어 보는 큰 그림으로(글자 겹침 해결), 글자는 살짝 작게 */
+@media (max-width: 760px) {
+  .figs figure:has(img[src*="natural-palette/section-"]):has(.ftag) { overflow-x: auto; overscroll-behavior-x: contain; width: 100vw; margin-left: calc(50% - 50vw); padding: 0 var(--g4-e); scrollbar-width: none; }
+  .figs figure:has(img[src*="natural-palette/section-"]):has(.ftag)::-webkit-scrollbar { display: none; }
+  .figs figure:has(img[src*="natural-palette/section-"]):has(.ftag) > .media { width: max(100%, calc(var(--r) * 75%)) !important; }
+  .figs figure:has(img[src*="natural-palette/section-"]):has(.ftag) > .fnotes,
+  .figs figure:has(img[src*="natural-palette/section-"]):has(.ftag) > figcaption { position: sticky; left: var(--g4-e); width: calc(100vw - 2 * var(--g4-e) - 8px); }
+  .media:has(img[src*="natural-palette/section-"]) .ftag { font-size: 9px; }
+  .media:has(img[src*="natural-palette/section-"]) .ftag.b { font-size: 10px; }
+  .media .ftag.lvl::before { width: 24px; } .media .ftag.lvl::after { right: calc(100% + 24px); width: 6px; height: 4px; top: calc(50% - 4px); }
+}
