@@ -2647,3 +2647,8 @@ html.sb-on { overflow-x: hidden; }
 .ab3 .cv-sec > h2.mono { padding-top: 8px; padding-bottom: 6px; }
 /* GPA: Design Studio 목록 오른쪽 아래, 작은 회색 */
 .cv-gpa { margin: 10px 0 0; text-align: right; font-size: var(--t-xs); color: var(--mid); }
+
+/* 핀 #326: 층별 평면(fplan) 번호 — 뒤의 원·흰 바탕 없이 글자만, 강조는 빨간 굵은 글자 */
+.fp-n { border: 0; border-radius: 0; background: none; font-weight: 600; }
+.fp-n.fp-on { background: none; color: var(--red); scale: 1.35; }
+.fp-lv { background: none; }
