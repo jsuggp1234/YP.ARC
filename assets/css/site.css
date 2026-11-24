@@ -2738,3 +2738,10 @@ html:not(#_) body[data-page="works"] #cases > div.cs-gd > div.cs-gd-in > a.cs-ca
 @media (max-width: 760px) {
   html[data-slug="timteam-work"]:not(#_) body[data-page="project"] :is(#s2, #s3) > div.seq.seq-frames > div.seq-pin > div.seq-stage { width: min(68%, calc((100vh - 320px) * var(--r))) !important; }
 }
+
+/* 핀 #365: Tim(team) Work 모바일 — 바로 위 엑소노(한 조각 장면 넘김)와 같은 그림이 접합부 위에 다시 나오지 않게, 엑소노에서 바로 상세들로 이어져요 */
+@media (max-width: 760px) {
+  html[data-slug="timteam-work"]:not(#_) body[data-page="project"] #s6 .kj .kj-key { display: none; }
+  html[data-slug="timteam-work"]:not(#_) body[data-page="project"] #s6 .kj { margin-top: 0; }
+  html[data-slug="timteam-work"]:not(#_) body[data-page="project"] #s6 .kj-list { padding-top: 2vh; }
+}
