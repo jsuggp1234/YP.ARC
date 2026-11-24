@@ -2668,3 +2668,9 @@ html.sb-on { overflow-x: hidden; }
   .media:has(img[src*="natural-palette/section-"]) .ftag.b { font-size: 10px; }
   .media .ftag.lvl::before { width: 24px; } .media .ftag.lvl::after { right: calc(100% + 24px); width: 6px; height: 4px; top: calc(50% - 4px); }
 }
+
+/* 핀 #244·#335: 디자인 조정(tune.css)의 캠퍼스 첫 글 값은 데스크톱에서만 — 모바일은 다른 작품과 똑같이 */
+@media (max-width: 760px) {
+  html[data-slug="campus-renovation"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > div.cx-lead:nth-of-type(2) > p.cx-big { font-size: var(--t-l) !important; line-height: 1.4 !important; max-width: 34em !important; height: auto !important; margin-top: 0 !important; }
+  html[data-slug="campus-renovation"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > div.cx-l:nth-of-type(1) { font-size: unset !important; }
+}
