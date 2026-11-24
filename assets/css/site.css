@@ -2745,3 +2745,15 @@ html:not(#_) body[data-page="works"] #cases > div.cs-gd > div.cs-gd-in > a.cs-ca
   html[data-slug="timteam-work"]:not(#_) body[data-page="project"] #s6 .kj { margin-top: 0; }
   html[data-slug="timteam-work"]:not(#_) body[data-page="project"] #s6 .kj-list { padding-top: 2vh; }
 }
+
+/* 핀 #366: Modular O′ 평면 — 라 후니타 배치도 표현법처럼: 실 번호는 동그라미 없이 검정 숫자, 치수·번호 글자는 도면 스케일에 맞게 작게 */
+.media:has(img[src*="modular-o-housing/plan-"]) .ftag.pt { width: auto; height: auto; border-radius: 0; background: none; color: var(--ink); font-size: 9px; font-weight: 600; }
+.media:has(img[src*="modular-o-housing/plan-"]) .seq-dm em { font-size: 9px; }
+@media (max-width: 760px) {
+  .media:has(img[src*="modular-o-housing/plan-"]) .ftag.pt { width: auto; height: auto; font-size: 6px; }
+  .media:has(img[src*="modular-o-housing/plan-"]) .seq-dm em { font-size: 5px; bottom: 1px; }
+  .media:has(img[src*="modular-o-housing/plan-"]) .seq-dm::before, .media:has(img[src*="modular-o-housing/plan-"]) .seq-dm::after { top: -2px; height: 4px; }
+  .media:has(img[src*="modular-o-housing/plan-"]) .seq-dm.v::before, .media:has(img[src*="modular-o-housing/plan-"]) .seq-dm.v::after { left: -2px; width: 4px; height: 0; top: auto; }
+  .media:has(img[src*="modular-o-housing/plan-"]) .seq-dm.v::before { top: 0; }
+  .media:has(img[src*="modular-o-housing/plan-"]) .seq-dm.v em { left: 2px; }
+}
