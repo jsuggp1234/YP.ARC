@@ -1278,12 +1278,12 @@
         c.dirx = c.vx / 340;
         c.gp += (Math.abs(c.vx) * dt) / (g.fs * (run ? 0.1 : 0.13)); // 보폭: 빨리 달릴수록 걸음이 빨라져요
       });
-      if (calm && t > nextAt) { pick(t); nextAt = t + 600 + Math.random() * 1300; }
+      if (calm && t > nextAt) { pick(t); pick(t); if (Math.random() < 0.5) pick(t); nextAt = t + 250 + Math.random() * 550; } // 2026-11-24: 더 활발하게 — 한 번에 2–3명이 움직여요
       const AIR = KIDS.find((k) => CH[k] && CH[k].act && CH[k].act.t0 <= t), dotC = CH[AIR ?? DOT], dotG = geo[AIR ?? DOT], dotAir = AIR != null;
       const HJ = CH.findIndex((c) => c.mode === "held");
       // 감정: 졸음(9초 넘게 아무 입력 없으면 서서히 꾸벅) → 깨면 깜짝 / 커서가 빠르게 스치면 깜짝 놀라 물러섬 / 천천히 다가오면 궁금해 까치발
       msp *= Math.exp(-dt * 5);
-      const sleep = clamp((t - Math.max(last, lastIn) - 9000) / 2500);
+      const sleep = clamp((t - Math.max(last, lastIn) - 40000) / 2500);
       if (slp > 0.5 && sleep < 0.05) CH.forEach((c, j) => { if (c.mode === "home" && !c.act && !c.q.length) { later(c, t + j * 110, c.x, 0, g0(j).fs * 0.17, 520); c.trem = t + j * 110; } });
       slp = sleep;
       CH.forEach((c, j) => {
