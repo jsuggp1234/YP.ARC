@@ -4225,13 +4225,12 @@
     const fig = (k) => `<svg class="pf" viewBox="0 0 400 500" aria-hidden="true">${Drawing.fig(k)}</svg>`;
     $("#main").innerHTML = `
       <div class="ab2 ab3">
-        <section class="ab-st g4"><h1 class="ab-big">${esc(SITE.owner)}</h1><p class="ab-sub mid">${esc(SITE.ownerKo || "")} — ${esc(SITE.role)}, ${esc(SITE.based)}. ${esc(SITE.status)}.</p></section>
+        <section class="ab-st g4"><h1 class="ab-big">${esc(SITE.owner)}</h1><p class="ab-sub mid">${esc(SITE.ownerKo || "")} — ${esc(SITE.role)}, ${esc(SITE.based)}.</p></section> <!-- 2026-11-24 요청: 뒤의 졸업 상태 문구 뺌 -->
 
         <section class="ab-me g4">
           <div class="ab-pic">${mz(art(SITE.portrait, "portrait", "me", 900, 1200, null, SITE.owner))}</div>
           <div class="ab-col">
-            <h2 class="ab-lab">About me</h2>
-            <p class="ab-p">${esc(CV.intro)}</p>
+            <!-- 2026-11-24 요청: About me 문단 뺌 (글은 data.js CV.intro에 남아 있어요) -->
             <h2 class="ab-lab">${esc(AB.toolkitTitle || "Toolkit")}</h2>
             <p class="ab-p">${CV.skills.map(([t]) => esc(t)).join(", ")}</p>
             <section class="ab-cv"> <!-- 핀 #76: Profile/CV를 사진 옆 칸 안으로 넣어 사진이 끝까지 따라와요 -->
@@ -4252,6 +4251,7 @@
             ${sec("Certification", CV.certification)}
             ${sec("Course", CV.courses)}
             ${sec("Design Studio", CV.studios)}
+            ${CV.gpa ? `<p class="cv-gpa mid">GPA ${esc(CV.gpa)}</p>` : ""}
             ${sec("Military", CV.military)}
             </div>
             </section>

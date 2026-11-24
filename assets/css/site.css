@@ -2641,3 +2641,9 @@ html.sb-on { overflow-x: hidden; }
   background: radial-gradient(circle, rgba(18, 18, 18, 0.9) 0, rgba(18, 18, 18, 0.55) 40%, rgba(18, 18, 18, 0) 70%); filter: blur(2px); pointer-events: none; }
 .lx .fx-boom { left: calc(50% - 0.08em); top: 0.2em; }
 @media (prefers-reduced-motion: reduce) { .lx { display: none; } }
+
+/* 2026-11-24 요청: yeop 페이지 제목(Toolkit·Profile·Education…)을 살짝 아래로 */
+.ab3 .ab-lab { transform: translateY(8px); }
+.ab3 .cv-sec > h2.mono { padding-top: 8px; padding-bottom: 6px; }
+/* GPA: Design Studio 목록 오른쪽 아래, 작은 회색 */
+.cv-gpa { margin: 10px 0 0; text-align: right; font-size: var(--t-xs); color: var(--mid); }
