@@ -2690,3 +2690,14 @@ html.sb-on { overflow-x: hidden; }
   .figs figure:has(img[src*="natural-palette/site."]) > .media { width: 190% !important; max-width: none; }
   .figs figure:has(img[src*="natural-palette/site."]) > figcaption { position: sticky; left: var(--g4-e); width: calc(100vw - 2 * var(--g4-e) - 8px); }
 }
+/* 핀 #336: Campus Strategy 세 그림 — 모바일에서도 한 줄에 세 장 나란히, 작게 */
+@media (max-width: 760px) {
+  .figs.gc:has(img[src*="campus-renovation/strategy-"]) { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px; }
+  .figs.gc:has(img[src*="campus-renovation/strategy-"]) > figure { grid-column: auto !important; margin: 0; }
+  .figs.gc:has(img[src*="campus-renovation/strategy-"]) .media { width: 100% !important; }
+  .figs.gc:has(img[src*="campus-renovation/strategy-"]) figcaption { font-size: 8px; line-height: 1.35; }
+}
+/* 핀 #338: 모바일 단계 목록 안 단면 그림(.seq-jd)을 작게 */
+@media (max-width: 760px) { .seq-jd { max-width: 100%; margin: 6px 0; } .seq-jd img { width: auto; max-width: 60%; max-height: 17svh; } }
+/* 핀 #324·#337: 모바일 장면 넘김 그림은 남은 높이에 맞춘 폭(--fitw, site.js)으로 — 위가 잘리지 않게 */
+@media (max-width: 760px) { .seq-pin > .seq-stage { max-width: var(--fitw, none); justify-self: center; align-self: center; } }

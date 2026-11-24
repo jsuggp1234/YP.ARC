@@ -3864,6 +3864,13 @@
       const q = qs[k], N = q.steps.length, lis = $$(".seq-side li", el), ctr = $(".seq-ctr b", el), bar = $(".seq-bar i", el);
       const imgs = q.kind === "frames" ? $$(".seq-stage img", el) : [], top = $(".seq-top", el);
       const car = q.car ? seqCar($(".seq-stage", el), q.car) : null;
+      // 핀 #324·#337: 모바일에서 단계 글(.seq-side)이 길면 그림 칸이 줄어 그림 위가 잘렸어요 → 남은 높이에 맞게 그림 폭을 줄여 통째로 보이게
+      { const pin = $(".seq-pin", el), stg = $(".seq-stage", el), sd = $(".seq-side", el);
+        if (pin && stg && !el.matches(".seq-lead") && !stg.closest(".seq-pin")?.querySelector("img[src*='smart-pixel/']")) {
+          const fit = () => { if (innerWidth > 760) { stg.style.removeProperty("--fitw"); return; }
+            const r = parseFloat(stg.style.getPropertyValue("--r")) || 1.5, H = pin.clientHeight - (sd ? sd.offsetHeight : 0) - 14;
+            if (H > 60) stg.style.setProperty("--fitw", Math.floor(H * r) + "px"); };
+          fit(); if (window.ResizeObserver) { const ro = new ResizeObserver(fit); ro.observe(pin); if (sd) ro.observe(sd); } } }
       const M = q.L ? q.L.length : 0, lds = q.L ? [$$(".seq-ln", el), $$(".seq-dt", el), $$(".seq-lb", el)] : null;
       // 핀 #139: 지시선은 정보 위계 순서로 — 층 구분(프로그램) → 주요 구조체(기둥·슬래브·보·아치) → 외피·접합부 → 마감·설비. 같은 위계 안에서는 위에서부터
       const tier = (l) => (l[5] ? 0 : /foot|shoe/i.test(l[3]) ? 2 : /column|slab|girder|core|arch|frame/i.test(l[3]) ? 1 : /facade|curtain wall|parapet/i.test(l[3]) ? 2 : 3);
