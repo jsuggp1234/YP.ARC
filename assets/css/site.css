@@ -2530,3 +2530,7 @@ html.sb-on { overflow-x: hidden; }
 .seq-dm.v em { left: 4px; bottom: auto; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: left center; }
 .cx-body .pj-sec[data-toc="Plans"]:has(.seq-lgd) { --bx: 0%; --bw: 100%; }
 @media (max-width: 760px) { .seq-lg { padding: 4px 6px; font-size: 8px; line-height: 1.35; } .seq-dm em { font-size: 8px; } }
+
+/* ---------- Lab (A-300, 2026-11-24) ---------- */
+.cl.lab .cl-row.soon { color: var(--mid); cursor: default; }
+.cl.lab .cl-row.soon .cl-y { color: var(--soft); }

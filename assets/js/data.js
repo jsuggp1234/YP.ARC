@@ -64,8 +64,18 @@ const SITE = {
     { key: "about", title: "yeop", href: "about.html" },
     { key: "philosophy", title: "philosophy", href: "philosophy.html" },
     { key: "works", title: "studio", href: "works.html" },
+    { key: "lab", title: "lab", href: "lab.html" },
     { key: "contact", title: "contact", href: "#contact", contact: true },
   ],
+  // Lab 페이지 (2026-11-24 요청): 설계를 돕는 시뮬레이션 도구. 줄을 누르면 그 도구가 열려요
+  lab: {
+    title: "lab",
+    note: "Tools built alongside the work — simulations that read data and turn it into space.",
+    items: [
+      { key: "tide-sim", title: "tide-sim", href: "lab/tide-sim/", type: "Simulation — 조석 기단 시뮬레이터", year: "2026", img: "assets/img/lab/tide-sim.jpg" },
+      { key: "bim-sim", title: "bim-sim", href: "", type: "Simulation — BIM 시뮬레이터 (준비 중)", year: "2026", img: "assets/img/lab/bim-sim.svg", soon: true },
+    ],
+  },
   // About 페이지 (v2 8–10단계). draft: true 인 글은 제가 쓴 초안이라 화면에 "Draft"가 붙어요 — 확인 후 draft를 지우면 표시가 사라져요
   about: {
     image2: "", // What I do 옆 사진 (핀 #36으로 뺌)

@@ -47,6 +47,7 @@
     if (/projects\.html$/.test(path)) return ["A-100", "Index of Works"];
     if (/about\.html$/.test(path)) return ["A-900", "Profile"];
     if (/archive\.html$/.test(path)) return ["A-200", "Archive"];
+    if (/lab\.html$/.test(path)) return ["A-300", "Lab"];
     if (/works\.html$/.test(path)) return ["A-010", "Studio"];
     if (/philosophy\.html$/.test(path)) return ["A-001", "Philosophy"];
     if (/project\.html$/.test(path)) {
@@ -439,6 +440,10 @@
       // 첫 화면(glyph 있음): 사진 줄은 숨겨 두고 글자 모듈 S. 누르면 S가 흩어지며 사진 줄이 드러나요
       if (pg.glyph) return top + `<p class="mn-note mn-ph">${esc(pg.note || "")}</p>` + strip(" st-hide") + `<canvas class="mn-art" data-g="${esc(pg.glyph)}" aria-hidden="true"></canvas>`;
       return top + `<div class="mn-strip">${list.map((p) => `<div class="mn-c"><span>${esc(p.title)}</span><div class="mn-im">${mImg(p.thumb || p.cover)}</div></div>`).join("")}</div>`;
+    }
+    if (pg.key === "lab") {
+      const L = SITE.lab || {};
+      return top + `<p class="mn-note">${esc(L.note || "")}<span>${(L.items || []).map((it) => esc(it.title)).join(" · ")}</span></p><div class="mn-row">${(L.items || []).map((it) => `<div class="mn-ar" style="aspect-ratio:${397 / 525}">${mImg(it.img)}</div>`).join("")}</div>`;
     }
     if (pg.key === "archive") {
       const A = SITE.archive || {};
@@ -3239,23 +3244,8 @@
 
   // ---------- 작품 목록 ----------
   // ---------- v2 작품 이름 목록 (계획 7단계) ----------
-  render.projects = () => {
-    const I = SITE.index || {}, list = PROJECTS.filter((p) => !p.draft);
-    const src = (p) => (typeof (p.thumb || p.cover) === "string" ? p.thumb || p.cover : "");
-    $("#main").innerHTML = `
-      <section class="ar-hd cl-hd g4">
-        <h1 class="ar-h">${esc(I.title || "index")}</h1>
-        <p class="ar-note">${esc(I.note || "")}<span class="num">(${pad(list.length)})</span></p>
-      </section>
-      <ol class="cl">${list.map((p, i) => `
-        <li><a class="cl-row g4" href="project.html#${p.slug}" data-i="${i}">
-          <span class="cl-t"><span class="cl-n num">${pad(i + 1)}</span>${esc(p.title)}</span>
-          <span class="cl-m">${esc(p.type)} — ${esc(p.titleKo || "")}</span>
-          <span class="cl-y num">${esc(p.year)}</span>
-          <span class="cl-th" aria-hidden="true">${src(p) ? `<img src="${esc(src(p))}" alt="" loading="lazy" decoding="async">` : ""}</span>
-        </a></li>`).join("")}
-      </ol>
-      <div class="cl-pv" aria-hidden="true">${list.map((p) => `<img data-src="${esc(src(p))}" alt="">`).join("")}</div>`;
+  // 목록 줄에 올리면 사진이 커서를 따라와요 (index · lab 공용)
+  function clHover() {
     const pv = $(".cl-pv"), imgs = $$("img", pv);
     let x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y, on = -1, raf = 0, loaded = false;
     const load = () => { if (loaded) return; loaded = true; imgs.forEach((im) => (im.src = im.dataset.src)); };
@@ -3275,6 +3265,43 @@
     });
     $(".cl").addEventListener("pointerleave", () => show(-1));
     addEventListener("pointermove", (e) => { if (on < 0) return; tx = e.clientX; ty = e.clientY; if (!raf) raf = requestAnimationFrame(frame); }, { passive: true });
+  }
+  render.lab = () => {
+    const L = SITE.lab || {}, list = L.items || [];
+    $("#main").innerHTML = `
+      <section class="ar-hd cl-hd g4">
+        <h1 class="ar-h">${esc(L.title || "lab")}</h1>
+        <p class="ar-note">${esc(L.note || "")}<span class="num">(${pad(list.length)})</span></p>
+      </section>
+      <ol class="cl lab">${list.map((it, i) => `
+        <li><a class="cl-row g4${it.soon ? " soon" : ""}" ${it.href ? `href="${esc(it.href)}"` : 'aria-disabled="true"'} data-i="${i}">
+          <span class="cl-t"><span class="cl-n num">${pad(i + 1)}</span>${esc(it.title)}</span>
+          <span class="cl-m">${esc(it.type || "")}</span>
+          <span class="cl-y num">${it.soon ? "Coming soon" : esc(it.year || "")}</span>
+          <span class="cl-th" aria-hidden="true">${it.img ? `<img src="${esc(it.img)}" alt="" loading="lazy" decoding="async">` : ""}</span>
+        </a></li>`).join("")}
+      </ol>
+      <div class="cl-pv" aria-hidden="true">${list.map((it) => `<img data-src="${esc(it.img || "")}" alt="">`).join("")}</div>`;
+    clHover();
+  };
+  render.projects = () => {
+    const I = SITE.index || {}, list = PROJECTS.filter((p) => !p.draft);
+    const src = (p) => (typeof (p.thumb || p.cover) === "string" ? p.thumb || p.cover : "");
+    $("#main").innerHTML = `
+      <section class="ar-hd cl-hd g4">
+        <h1 class="ar-h">${esc(I.title || "index")}</h1>
+        <p class="ar-note">${esc(I.note || "")}<span class="num">(${pad(list.length)})</span></p>
+      </section>
+      <ol class="cl">${list.map((p, i) => `
+        <li><a class="cl-row g4" href="project.html#${p.slug}" data-i="${i}">
+          <span class="cl-t"><span class="cl-n num">${pad(i + 1)}</span>${esc(p.title)}</span>
+          <span class="cl-m">${esc(p.type)} — ${esc(p.titleKo || "")}</span>
+          <span class="cl-y num">${esc(p.year)}</span>
+          <span class="cl-th" aria-hidden="true">${src(p) ? `<img src="${esc(src(p))}" alt="" loading="lazy" decoding="async">` : ""}</span>
+        </a></li>`).join("")}
+      </ol>
+      <div class="cl-pv" aria-hidden="true">${list.map((p) => `<img data-src="${esc(src(p))}" alt="">`).join("")}</div>`;
+    clHover();
   };
 
   render.projectsV1 = () => {
