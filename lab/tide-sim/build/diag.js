@@ -21,8 +21,8 @@ function drawDiag() {
   const ext = Math.max(Rf, XC - xl), ps = Math.min((PW - 24) / (ext + Rf), (PH - 40) / (2 * Rf)), cx = 12 + (XC - xl) * ps, cy = 22 + (PH - 30) / 2, PX = a => cx + (a - XC) * ps;
   txt(x, PLAN_T, 12, 10, { font: FS(10.5, true), color: K.muted });
   const shape = (draw, act, fill) => { x.save(); draw(); if (act) { x.fillStyle = ink; x.globalAlpha = fill == null ? .16 : fill; x.fill('evenodd'); x.globalAlpha = 1; x.strokeStyle = ink; x.lineWidth = 1.8; } else { x.strokeStyle = faint; x.lineWidth = .8; } x.stroke(); x.restore(); };
-  if (g.L > 0.1) shape(() => { x.beginPath(); x.arc(cx, cy, Rf * ps, 0, 7); x.arc(cx, cy, g.R * ps, 7, 0, true); }, on('stay'));
-  for (let i = g.T.length - 1; i >= 0; i--) { const t = g.T[i], st = t.k === 'step'; shape(() => { x.beginPath(); x.arc(cx, cy, t.r1 * ps, 0, 7); if (t.r0 > 0.01) x.arc(cx, cy, t.r0 * ps, 7, 0, true); }, st ? (on('edge') || on('slope')) : on('layer'), st ? .1 : .2); }
+  if (g.L > 0.1) shape(() => { x.beginPath(); x.arc(cx, cy, Rf * ps, 0, 2 * Math.PI); x.moveTo(cx + g.R * ps, cy); x.arc(cx, cy, g.R * ps, 2 * Math.PI, 0, true); }, on('stay'));
+  for (let i = g.T.length - 1; i >= 0; i--) { const t = g.T[i], st = t.k === 'step'; shape(() => { x.beginPath(); x.arc(cx, cy, t.r1 * ps, 0, 2 * Math.PI); if (t.r0 > 0.01) { x.moveTo(cx + t.r0 * ps, cy); x.arc(cx, cy, t.r0 * ps, 2 * Math.PI, 0, true); } }, st ? (on('edge') || on('slope')) : on('layer'), st ? .1 : .2); }
   const nw = CORE.NECK_W * ps;
   if (g.xn1 > g.xn0) shape(() => { x.beginPath(); x.rect(PX(g.xn0), cy - nw / 2, (g.xn1 - g.xn0) * ps, nw); }, on('connect'), .3);
   for (const [a, b] of g.stairs || []) shape(() => { x.beginPath(); x.rect(PX(a), cy - nw / 2, (b - a) * ps, nw); }, false);

@@ -58,10 +58,12 @@ def patch_plan(R, T):
 # 핀 #306: 평면 색을 무채색 도면 색으로 바꿔 그린 뒤 되돌려요
 def patch_plan2(R, T):
     R("{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { _dp(cvId, id, w, o);",
-      "{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { const dk = isDark(), G = dk ? { mudLo: '#2a2a2a', con: '#4a4a4a', rev: '#333333', land: '#3a3a3a' } : { mudLo: '#e2e2e2', con: '#cfcfcf', rev: '#dedede', land: '#ececec' }, GK = dk ? { water: '#6a6a6a', water2: '#3c3c3c' } : { water: '#c4c4c4', water2: '#dcdcdc' };\n"
+      "{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { const dk = isDark(), G = dk ? { mudLo: '#2a2a2a', con: '#4a4a4a', rev: '#333333', land: '#3a3a3a' } : { mudLo: '#e2e2e2', con: '#cfcfcf', rev: '#dedede', land: '#ececec' }, GK = dk ? { water: '#727272', water2: '#444444' } : { water: '#b6b6b6', water2: '#d2d2d2' };\n"
       "  const s3 = {}, sk = {}; for (const k in G) { s3[k] = C3[k]; C3[k] = G[k]; } for (const k in GK) { sk[k] = K[k]; K[k] = GK[k]; } try { _dp(cvId, id, w, o); } finally { Object.assign(C3, s3); Object.assign(K, sk); }", 1)
 
 def patch_plan3(R, T):
+    # 핀 #340: 도면 보기 3D의 바닷물 회색을 한 단계 진하게 (무채색)
+    R("if (kind === 'water') return new THREE.MeshBasicMaterial({ color: pal.water, transparent: true, opacity: 0.07,", "if (kind === 'water') return new THREE.MeshBasicMaterial({ color: pal.water, transparent: true, opacity: 0.1,", 1)
     R("x1 = XC + ext + (full ? 15 : 3), yH = ey + (full ? 7 : 2);", "x1 = o.tight ? XC + Rf + 6 : XC + ext + (full ? 15 : 3), yH = o.tight ? Rf + 5 : ey + (full ? 7 : 2);", 1)
 
 # 핀 #315: 큰 제목이 스크롤을 따라 맨 위로 올라가 작아지며 얇은 줄에 붙어요 (움직임 줄이기면 그대로 지나감)

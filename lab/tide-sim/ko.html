@@ -720,6 +720,15 @@ html.docked .brand h1 { font-weight: 500; }
 .d-cap b { font-weight: 600; }
 @media (max-width: 760px) { #d-diag { height: 460px; } }
 </style>
+
+<style>
+/* 핀 #339: 휴대폰에서 3D 옆 축 이름·숫자가 대지를 가리지 않게 — 캔버스 폭에 비례해 절반 이하로 */
+.cv3 { container-type: inline-size; }
+@media (max-width: 760px) {
+  .cv3 .l3 { font-size: clamp(5px, 1.55cqi, 8px) !important; line-height: 1.1 !important; }
+  .cv3 .l3.axis { padding: 0 2px !important; border-width: 1px !important; }
+}
+</style>
 <div class="ybar" role="banner">
   <a class="y-logo" href="../../index.html" aria-label="YP.STUDIO &amp; LAB home"><span class="roll"><span data-t="YP.STUDIO &amp; LAB">YP.STUDIO &amp; LAB</span></span></a>
   <a class="y-work" href="../../lab.html"><span class="roll"><span data-t="Lab / tide-sim">Lab / tide-sim</span></span></a>
@@ -1714,7 +1723,7 @@ function View3D(canvas, o) {
   const wireMats = {}, wireLine = new THREE.LineBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.9 }),
     edgeMat = new THREE.LineBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.85 }), edgeSoft = new THREE.LineBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.28 }), edgeHl = new THREE.LineBasicMaterial({ color: pal.hl });
   const fillOf = kind => {
-    if (kind === 'water') return new THREE.MeshBasicMaterial({ color: pal.water, transparent: true, opacity: 0.07, depthWrite: false, side: THREE.DoubleSide });
+    if (kind === 'water') return new THREE.MeshBasicMaterial({ color: pal.water, transparent: true, opacity: 0.1, depthWrite: false, side: THREE.DoubleSide });
     if (kind === 'foam') return new THREE.MeshBasicMaterial({ color: pal.ink, transparent: true, opacity: 0.25, depthWrite: false });
     return new THREE.MeshBasicMaterial({ color: pal[kind] != null ? pal[kind] : pal.prop, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1, side: THREE.DoubleSide });
   };
@@ -3495,8 +3504,8 @@ function drawDiag() {
   const ext = Math.max(Rf, XC - xl), ps = Math.min((PW - 24) / (ext + Rf), (PH - 40) / (2 * Rf)), cx = 12 + (XC - xl) * ps, cy = 22 + (PH - 30) / 2, PX = a => cx + (a - XC) * ps;
   txt(x, PLAN_T, 12, 10, { font: FS(10.5, true), color: K.muted });
   const shape = (draw, act, fill) => { x.save(); draw(); if (act) { x.fillStyle = ink; x.globalAlpha = fill == null ? .16 : fill; x.fill('evenodd'); x.globalAlpha = 1; x.strokeStyle = ink; x.lineWidth = 1.8; } else { x.strokeStyle = faint; x.lineWidth = .8; } x.stroke(); x.restore(); };
-  if (g.L > 0.1) shape(() => { x.beginPath(); x.arc(cx, cy, Rf * ps, 0, 7); x.arc(cx, cy, g.R * ps, 7, 0, true); }, on('stay'));
-  for (let i = g.T.length - 1; i >= 0; i--) { const t = g.T[i], st = t.k === 'step'; shape(() => { x.beginPath(); x.arc(cx, cy, t.r1 * ps, 0, 7); if (t.r0 > 0.01) x.arc(cx, cy, t.r0 * ps, 7, 0, true); }, st ? (on('edge') || on('slope')) : on('layer'), st ? .1 : .2); }
+  if (g.L > 0.1) shape(() => { x.beginPath(); x.arc(cx, cy, Rf * ps, 0, 2 * Math.PI); x.moveTo(cx + g.R * ps, cy); x.arc(cx, cy, g.R * ps, 2 * Math.PI, 0, true); }, on('stay'));
+  for (let i = g.T.length - 1; i >= 0; i--) { const t = g.T[i], st = t.k === 'step'; shape(() => { x.beginPath(); x.arc(cx, cy, t.r1 * ps, 0, 2 * Math.PI); if (t.r0 > 0.01) { x.moveTo(cx + t.r0 * ps, cy); x.arc(cx, cy, t.r0 * ps, 2 * Math.PI, 0, true); } }, st ? (on('edge') || on('slope')) : on('layer'), st ? .1 : .2); }
   const nw = CORE.NECK_W * ps;
   if (g.xn1 > g.xn0) shape(() => { x.beginPath(); x.rect(PX(g.xn0), cy - nw / 2, (g.xn1 - g.xn0) * ps, nw); }, on('connect'), .3);
   for (const [a, b] of g.stairs || []) shape(() => { x.beginPath(); x.rect(PX(a), cy - nw / 2, (b - a) * ps, nw); }, false);
@@ -3947,7 +3956,7 @@ function drawPlan(cvId, id, w, o = {}) {
 // ---------------------------------------------------------------- 6. 네 바다
 const W6 = { t: 0, play: 0, speed: 6, mode: 'one', last: 0, stats: {} };
 let PLAN_SC = 1;
-{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { const dk = isDark(), G = dk ? { mudLo: '#2a2a2a', con: '#4a4a4a', rev: '#333333', land: '#3a3a3a' } : { mudLo: '#e2e2e2', con: '#cfcfcf', rev: '#dedede', land: '#ececec' }, GK = dk ? { water: '#6a6a6a', water2: '#3c3c3c' } : { water: '#c4c4c4', water2: '#dcdcdc' };
+{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { const dk = isDark(), G = dk ? { mudLo: '#2a2a2a', con: '#4a4a4a', rev: '#333333', land: '#3a3a3a' } : { mudLo: '#e2e2e2', con: '#cfcfcf', rev: '#dedede', land: '#ececec' }, GK = dk ? { water: '#727272', water2: '#444444' } : { water: '#b6b6b6', water2: '#d2d2d2' };
   const s3 = {}, sk = {}; for (const k in G) { s3[k] = C3[k]; C3[k] = G[k]; } for (const k in GK) { sk[k] = K[k]; K[k] = GK[k]; } try { _dp(cvId, id, w, o); } finally { Object.assign(C3, s3); Object.assign(K, sk); } const el = document.getElementById(cvId); if (!el) return; const x = el.getContext('2d'), dpr = el.width / Math.max(1, el.getBoundingClientRect().width);
   x.save(); x.setTransform(1, 0, 0, 1, 0, 0); x.globalCompositeOperation = 'saturation'; x.fillStyle = '#808080'; x.fillRect(0, 0, el.width, el.height); x.globalCompositeOperation = 'source-over';
   x.setTransform(dpr, 0, 0, dpr, 0, 0); const Wc = el.width / dpr, Hc = el.height / dpr, ink = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#111';

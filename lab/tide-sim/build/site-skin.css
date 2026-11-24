@@ -260,3 +260,12 @@ html.docked .brand h1 { font-weight: 500; }
 .d-cap b { font-weight: 600; }
 @media (max-width: 760px) { #d-diag { height: 460px; } }
 </style>
+
+<style>
+/* 핀 #339: 휴대폰에서 3D 옆 축 이름·숫자가 대지를 가리지 않게 — 캔버스 폭에 비례해 절반 이하로 */
+.cv3 { container-type: inline-size; }
+@media (max-width: 760px) {
+  .cv3 .l3 { font-size: clamp(5px, 1.55cqi, 8px) !important; line-height: 1.1 !important; }
+  .cv3 .l3.axis { padding: 0 2px !important; border-width: 1px !important; }
+}
+</style>
