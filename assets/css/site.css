@@ -2712,3 +2712,11 @@ html.sb-on { overflow-x: hidden; }
 .seq-dt { width: 2.5px; height: 2.5px; margin: -1.25px 0 0 -1.25px; }
 .seq-lb { font-size: calc(var(--t-xs) * 0.9); }
 @media (max-width: 760px) { .seq-ln { height: 0.5px; opacity: .6; } .seq-lb { font-size: 6px; } }
+
+/* 핀 #332: La Junita 평면 — 축선 이름(X1…/Y1…)·치수·축척 글자를 배치도 글자 정도로 작게 (그림 위 글자, 흰 바탕 없이) */
+.media:has(img[src*="la-junita/plan-"]) .ftag:not(.pt) { font-size: 9px; letter-spacing: 0; background: none; }
+.media:has(img[src*="la-junita/plan-"]) .ftag.pt { width: 15px; height: 15px; font-size: 8px; }
+@media (max-width: 760px) {
+  .media:has(img[src*="la-junita/plan-"]) .ftag:not(.pt) { font-size: 5px; }
+  .media:has(img[src*="la-junita/plan-"]) .ftag.pt { width: 9px; height: 9px; font-size: 5px; }
+}
