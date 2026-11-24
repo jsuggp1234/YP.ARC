@@ -2674,3 +2674,19 @@ html.sb-on { overflow-x: hidden; }
   html[data-slug="campus-renovation"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > div.cx-lead:nth-of-type(2) > p.cx-big { font-size: var(--t-l) !important; line-height: 1.4 !important; max-width: 34em !important; height: auto !important; margin-top: 0 !important; }
   html[data-slug="campus-renovation"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > div.cx-l:nth-of-type(1) { font-size: unset !important; }
 }
+
+/* 핀 #322: 그림 위 깃발 글자(.ftag.fl)가 예전 이미지 띠 구간(.fl: 화면 높이·흰 바탕)과 이름이 겹쳐 그림을 흰 상자로 덮던 것 바로잡기 */
+.media .ftag.fl { min-height: 0; display: block; padding-top: 0; padding-bottom: 0; padding-right: 0; gap: 0; background: none; z-index: 2; }
+@media (max-width: 760px) {
+  .media .ftag.dim-t { font-size: 7px; padding: 0 1px; }
+  .media .ftag.fl { padding-left: 9px; font-size: 8px; }
+  .media .ftag.fl::before { height: 12px; top: calc(50% - 6px); }
+  .media .ftag.fl::after { width: 6px; height: 3px; top: calc(50% - 6px); }
+}
+/* 핀 #322: 모바일 배치도 — 화면 폭의 1.9배 큰 그림을 옆으로 밀어 보기(치수·축 글자가 그림 축척에 맞게 덜 겹치도록) */
+@media (max-width: 760px) {
+  .figs figure:has(img[src*="natural-palette/site."]) { overflow-x: auto; overscroll-behavior-x: contain; width: 100vw; margin-left: calc(50% - 50vw); padding: 0 var(--g4-e); scrollbar-width: none; }
+  .figs figure:has(img[src*="natural-palette/site."])::-webkit-scrollbar { display: none; }
+  .figs figure:has(img[src*="natural-palette/site."]) > .media { width: 190% !important; max-width: none; }
+  .figs figure:has(img[src*="natural-palette/site."]) > figcaption { position: sticky; left: var(--g4-e); width: calc(100vw - 2 * var(--g4-e) - 8px); }
+}
