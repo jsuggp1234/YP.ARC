@@ -116,23 +116,12 @@ def patch_guides(R, T):
 
 # 핀 #307: 기단이 4–5개면 이웃끼리 낮고 매끈한 모래톱 목(스커트)으로 이어요. 등성이 높이 = 연결 변수(이음목 높이 g.C)라 섬이 되는 날 함께 잠겨요
 def patch_skirts(R, T):
-    # 핀 #307 → #344 → #354: 기단과 목은 하나의 매끈한 지형 — 기단들과 이음 능선을 smooth-max로 합친 높이장, 굵은 선 = 지금 물높이의 등고선(물가선)
-    R("function plinth3D(g, o = {}) {", open(os.path.join(HERE, "necks.js"), encoding="utf8").read() + "function plinth3D(g, o = {}) {", 1)
-    R("  const pads = [{ x: 0, z: 0, R: Rf }].concat(cl.map(c => ({ x: c.x, z: c.z, R: c.R })));\n",
-      "  const pads = [{ x: 0, z: 0, R: Rf }].concat(cl.map(c => ({ x: c.x, z: c.z, R: c.R }))), SF = siteField(g, cl);\n", 1)
-    R("    return (big + wr + ripple) * keep * toe - dig * clamp((px - x0 - 1) / 3, 0, 1);",
-      "    const base = (big + wr + ripple) * keep * toe - dig * clamp((px - x0 - 1) / 3, 0, 1);\n    return SF.on ? smax(base, SF.ridgeZ(px, pz) - gr, 0.6) : base;", 1)
+    # 핀 #357: 기단 사이를 잇는 것(#307 목·#344 필렛·#354 능선)은 사용자 요청으로 모두 뺐어요 — 기단은 하나씩 따로 서요
     R("const SEG = o.coarse ? 96 : 180;", "const SEG = o.draft ? 48 : o.coarse ? 96 : 180;", 1)
     R("TH = 2.5, fine = o.coarse ? 1 : 0.5;", "TH = 2.5, fine = o.draft ? 2 : o.coarse ? 1 : 0.5;", 1)
     R("const tp = new THREE.Mesh(ringTop(r0, r1, H, 120, 2), matTop(zz)), wl = new THREE.Mesh(ringWall(r1, -0.4, H, 120, 2), matWall(zz));", "const NS = o.draft ? 40 : 120, tp = new THREE.Mesh(ringTop(r0, r1, H, NS, 2), matTop(zz)), wl = new THREE.Mesh(ringWall(r1, -0.4, H, NS, 2), matWall(zz));", 1)
     # 평면 자락 고리에서 바깥 원 끝과 안쪽 원 시작이 이어져 그어지던 사선 없애기 (#341과 같은 원인)
     R("if (g.L > 0.1) { x.beginPath(); x.arc(CX, CY, Rf * sc, 0, 7); x.arc(CX, CY, g.R * sc, 7, 0, true);", "if (g.L > 0.1) { x.beginPath(); x.arc(CX, CY, Rf * sc, 0, 2 * Math.PI); x.moveTo(CX + g.R * sc, CY); x.arc(CX, CY, g.R * sc, 2 * Math.PI, 0, true);", 1)
-    # 평면: 능선(마른 곳)과 가는 등고선은 기단 아래에, 굵은 물가선은 맨 위에
-    R("    const con = z => w > z ? K.water2 : (o.zones ? toneColor(z, g.cuts) : C3.con);\n",
-      "    const con = z => w > z ? K.water2 : (o.zones ? toneColor(z, g.cuts) : C3.con);\n"
-      "    const FG = CL.length ? fieldGrid(id + JSON.stringify(V) + CL.length, g, CL, x0 - XC, x1 - XC, -yH, yH) : null, XF = v => X(XC + v);\n"
-      "    if (FG) drawFieldUnder(x, FG, w, XF, Y, sc, con(g.C), K.ink);\n", 1)
-    R("    // 물가선\n", "    if (FG) drawWaterline(x, FG, w, XF, Y, K.ink);\n    // 물가선\n", 1)
 
 # 핀 #345: 변수 3D가 막대에 바로 따라오게 — 끄는 동안은 한 장면에 한 번 거친 모형, 멈추면 고운 모형. 화면 밖·숨은 탭에서는 그리기를 멈춰요
 def patch_perf(R, T):
