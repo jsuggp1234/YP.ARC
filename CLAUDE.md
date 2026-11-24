@@ -127,3 +127,11 @@
 - 메뉴에 `lab` 추가(`SITE.pages`, 시트 A-300). `lab.html`은 projects처럼 이름 목록이고, 이름에 올리면 세로 미리보기 사진이 커서를 따라와요(`render.lab`, 공통 `clHover()`). 글은 `SITE.lab`(title·note·items).
 - 항목: tide-sim → `lab/tide-sim/`(RE:TIDE 조석 기단 시뮬레이터 빌드본, `index.html`+`tide.json`. 원본은 jsuggp1234/Tide-sim 저장소, 시뮬레이터를 고치면 이 사본도 같이 갱신), bim-sim은 `soon: true`(준비 중, 공개 주소를 받으면 `href` 연결).
 - 미리보기: `assets/img/lab/tide-sim.jpg`(397:525), `bim-sim.svg`(자리표시).
+
+## 2026-11-24 도면 치수 표기 통일 (라 후니타 배치도 방식, 사용자 요청)
+- 그리드 기호는 동그라미 없이 굵은 짧은 선 + 글자: 그림 `tags`의 종류 `gx`(X), `gyl`(왼쪽 Y, 시계 반대 90°), `gyr`(오른쪽 Y, 시계 90°). 회전 글자만 필요하면 `rl`/`rr`.
+- 세로 치수 글자도 같은 규칙: 왼쪽이면 시계 반대, 오른쪽이면 시계 방향(`dimsHtml`의 `dl`, `seq-dm.v.l`).
+- 실 번호(`pt`)는 모든 그림에서 동그라미·흰 바탕 없이 숫자만(site.css 끝 블록). `.fp-n` 강조도 동그라미 없음.
+- 그림에 구워져 있던 동그라미 기호·검정 원 번호는 지우고(scratchpad `bub.py` 인페인트) 같은 자리에 tags로 다시 씀: Motorism 6개 층, Tim(team) Work 8개 층(1F는 원래 기호 없음 → 기호만 추가), RE:TIDE 파빌리온·리프(오른쪽 A–F, SA–SJ), The Tree House 평면·네 상태.
+- Natural Palette 층별 평면(`fplan.grid`, `site.js`의 `axHtml`): 배치도 그리드 X1–X10·Y1–Y9과 치수(mm)를 같은 축척으로 옮겨 그림(배치도 → 평면 변환 2.16배, 벽·기둥에 맞춰 확인).
+- Campus Renovation 평면은 원래 이 방식이라 그대로. Samgakji·Smart Pixel·RE:TIDE 광역 배치도·캠퍼스 배치도·메타버스 지도는 도시 스케일 분석도라 그리드를 넣지 않음.

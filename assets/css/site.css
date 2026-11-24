@@ -2715,10 +2715,10 @@ html.sb-on { overflow-x: hidden; }
 
 /* 핀 #332: La Junita 평면 — 축선 이름(X1…/Y1…)·치수·축척 글자를 배치도 글자 정도로 작게 (그림 위 글자, 흰 바탕 없이) */
 .media:has(img[src*="la-junita/plan-"]) .ftag:not(.pt) { font-size: 9px; letter-spacing: 0; background: none; }
-.media:has(img[src*="la-junita/plan-"]) .ftag.pt { width: 15px; height: 15px; font-size: 8px; }
+/* (2026-11-24: 실 번호 동그라미는 아래 "도면 치수 표기 통일"에서 모두 뺌) */
 @media (max-width: 760px) {
   .media:has(img[src*="la-junita/plan-"]) .ftag:not(.pt) { font-size: 5px; }
-  .media:has(img[src*="la-junita/plan-"]) .ftag.pt { width: 9px; height: 9px; font-size: 5px; }
+  /* 위와 같음 */
 }
 
 /* 핀 #353: studio 그리드 보기 — 전체를 살짝 위로 올려 사진 아래(다음 줄)가 첫 화면에 더 보이게 */
@@ -2757,3 +2757,29 @@ html:not(#_) body[data-page="works"] #cases > div.cs-gd > div.cs-gd-in > a.cs-ca
   .media:has(img[src*="modular-o-housing/plan-"]) .seq-dm.v::before { top: 0; }
   .media:has(img[src*="modular-o-housing/plan-"]) .seq-dm.v em { left: 2px; }
 }
+
+/* 2026-11-24 요청: 모든 평면·배치도 치수 표기 통일 (라 후니타 배치도 방식)
+   - 실 번호(.pt): 검정·흰 동그라미, 흰 바탕 없이 숫자만
+   - 그리드 기호: X는 굵은 짧은 선 + 글자(.gx), Y는 왼쪽이면 시계 반대 90°(.gyl), 오른쪽이면 시계 90°(.gyr)
+   - 세로 치수 글자: 왼쪽은 시계 반대 90°, 오른쪽은 시계 90° */
+.media .ftag.pt { width: auto; height: auto; border-radius: 0; background: none; color: var(--ink); display: block; font-size: 9px; font-weight: 600; line-height: 1; }
+.media .ftag.lv { background: none; padding: 0; }
+.media .ftag.gx, .media .ftag.gyl, .media .ftag.gyr { font-size: 9px; line-height: 1; padding-left: 5px; transform: translate(0, -50%); color: var(--ink); }
+.media .ftag.gx::before, .media .ftag.gyl::before, .media .ftag.gyr::before { content: ""; position: absolute; left: 0; top: -35%; height: 170%; border-left: 2px solid currentColor; }
+.media .ftag.gyl { transform-origin: 0 50%; transform: translate(0, -50%) rotate(-90deg); }
+.media .ftag.gyr { transform-origin: 0 50%; transform: translate(0, -50%) rotate(90deg); }
+.media .ftag.rl { transform: translate(-50%, -50%) rotate(-90deg); }
+.media .ftag.rr { transform: translate(-50%, -50%) rotate(90deg); }
+.media .ftag.dim-t.dv.dl { transform: translate(-50%, -50%) rotate(-90deg) translateY(calc(-50% - 2px)); }
+.seq-dm.v em { left: 0; top: 50%; transform: translate(-50%, -50%) rotate(90deg) translateY(calc(-50% - 3px)); transform-origin: 50% 50%; }
+.seq-dm.v.l em { transform: translate(-50%, -50%) rotate(-90deg) translateY(calc(-50% - 3px)); }
+@media (max-width: 760px) {
+  .media .ftag.pt { width: auto; height: auto; font-size: 6px; }
+  .media .ftag.gx, .media .ftag.gyl, .media .ftag.gyr { font-size: 6px; padding-left: 3px; }
+  .media .ftag.gx::before, .media .ftag.gyl::before, .media .ftag.gyr::before { border-left-width: 1.5px; }
+}
+/* natural palette 층별 평면: 그리드·치수는 모든 층 공통, 번호 강조도 동그라미 없이 */
+.fp-n.fp-on { background: none; color: var(--ink); scale: 1.5; }
+.fp-m .ax ~ .ftag { z-index: 1; }
+.media .ax ~ .ftag.dim-t { font-size: 8px; }
+@media (max-width: 760px) { .media .ax ~ .ftag.dim-t { font-size: 5px; } }
