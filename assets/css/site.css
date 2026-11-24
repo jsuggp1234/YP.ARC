@@ -2576,3 +2576,68 @@ html.sb-on { overflow-x: hidden; }
 .lb .lb-cd.soon { cursor: default; }
 .lb-note { position: absolute; left: var(--g4-e, 16px); top: calc(var(--hdr, 40px) + 24px); max-width: 28em; margin: 0; font-size: var(--t-xs); color: var(--mid, #6b6b6b); z-index: 2; }
 .lb-note .num { margin-left: 6px; }
+
+/* 핀 #279: LAB 화학 실험 — 플라스크(먹선) · 거품 · 펑 연기 · 머리의 불(강조색 하나) */
+.sl-g { position: relative; }
+.lx { position: absolute; inset: 0; pointer-events: none; font-style: normal; }
+.lx-fl { position: absolute; left: 100%; bottom: 0.2em; width: 0.26em; height: 0.36em; margin-left: 0.06em; overflow: visible; transform-origin: 50% 100%; opacity: 0; }
+.lx-fl path { fill: none; stroke: var(--ink); stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.lx-fl .lx-liq { fill: color-mix(in srgb, var(--ink) 22%, transparent); stroke: none; }
+.lx-b { position: absolute; left: calc(100% + 0.17em); bottom: 0.55em; width: 0.035em; height: 0.035em; border: 1px solid var(--ink); border-radius: 50%; opacity: 0; }
+.lx-p, .lx-s { position: absolute; width: 0.16em; height: 0.16em; border-radius: 50%; background: color-mix(in srgb, var(--ink) 14%, transparent); opacity: 0; }
+.lx-p { left: calc(100% + 0.1em); bottom: 0.35em; }
+.lx-s { left: calc(50% - 0.08em); bottom: calc(100% - 0.3em); }
+.lx-fire { position: absolute; left: calc(50% - 0.12em); bottom: calc(100% - 0.3em); width: 0.24em; height: 0.34em; overflow: visible; transform-origin: 50% 100%; opacity: 0; }
+.lx-fire path { fill: var(--red); }
+.lx-fire .lx-core { fill: color-mix(in srgb, var(--red) 40%, var(--bg)); }
+@media (prefers-reduced-motion: reduce) { .lx { display: none; } }
+
+/* 핀 #280: STUDIO 목공 — 망치·톱·나뭇조각·완성된 상자 (먹선) */
+.wk { position: absolute; inset: 0; pointer-events: none; font-style: normal; }
+.wk svg { position: absolute; overflow: visible; opacity: 0; }
+.wk svg path { fill: none; stroke: var(--ink); stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.wk-h { right: 0.02em; bottom: calc(100% - 0.32em); width: 0.34em; height: 0.34em; transform-origin: 13% 87%; }
+.wk-h .wk-hd { fill: var(--ink); }
+.wk-s { left: 0.1em; bottom: calc(100% - 0.3em); width: 0.42em; height: 0.15em; }
+.wk-c { position: absolute; right: 0.1em; bottom: calc(100% - 0.28em); width: 0.05em; height: 0.02em; background: color-mix(in srgb, var(--ink) 55%, transparent); opacity: 0; }
+.wk-b { left: calc(100% + 0.08em); bottom: 0.2em; width: 0.26em; height: 0.22em; }
+@media (prefers-reduced-motion: reduce) { .wk { display: none; } }
+
+/* 핀 #282: P — 안경과 펼친 책 (먹선) */
+.rd { position: absolute; inset: 0; pointer-events: none; font-style: normal; }
+.rd svg { position: absolute; overflow: visible; opacity: 0; }
+.rd svg path, .rd svg circle { fill: none; stroke: var(--ink); stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.rd svg .rd-ln { stroke: color-mix(in srgb, var(--ink) 45%, transparent); }
+.rd-g { left: 0.12em; top: 0.3em; width: 0.4em; height: 0.14em; }
+.rd-b { left: calc(100% - 0.06em); bottom: 0.28em; width: 0.42em; height: 0.23em; transform-origin: 50% 100%; }
+.rd-pg { left: calc(100% + 0.15em); bottom: 0.28em; width: 0.21em; height: 0.23em; transform-origin: 0 50%; }
+.rd-pg path { fill: var(--bg) !important; }
+@media (prefers-reduced-motion: reduce) { .rd { display: none; } }
+
+/* 핀 #283: 만화 같은 불 — 세 겹 불꽃 + 검은 연기 */
+.lx-fire { display: block; position: absolute; left: calc(50% - 0.14em); bottom: calc(100% - 0.32em); width: 0.28em; height: 0.4em; transform-origin: 50% 100%; opacity: 0; }
+.lx-fire svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; transform-origin: 50% 100%; }
+.lx-f1 path { fill: #d8321e; } .lx-f2 path { fill: #f08a1c; } .lx-f3 path { fill: #ffd23a; }
+.lx-k { position: absolute; left: calc(50% - 0.07em); bottom: calc(100% + 0.02em); width: 0.14em; height: 0.14em; border-radius: 50%; background: #1a1a1a; opacity: 0; pointer-events: none; }
+
+/* 핀 #284: 안경 — 굵은 테, 옅은 렌즈, 반짝 */
+.rd-g { top: 0.28em; width: 0.44em; height: 0.16em; transform-origin: 50% 50%; }
+.rd svg.rd-g path, .rd svg.rd-g rect { stroke-width: 2.2; fill: none; stroke: var(--ink); vector-effect: non-scaling-stroke; }
+.rd svg.rd-g .rd-lz { fill: color-mix(in srgb, var(--ink) 7%, transparent); }
+.rd svg.rd-g .rd-sh { stroke: var(--bg); stroke-width: 1.4; }
+
+/* 핀 #285: STUDIO — 글자들이 모여 네모 모듈을 쌓아 작은 집 하나를 만들어요 (도구 없음) */
+.wk .wk-l { position: absolute; line-height: 1; white-space: pre; color: var(--ink); transform-origin: 50% 100%; }
+.wk .wk-o { position: absolute; bottom: calc(100% - 0.1em); width: 0.27em; height: 0.36em; translate: -50% 0; }
+.wk .wk-o i { position: absolute; left: calc(var(--x) * 0.09em); bottom: calc((2 - var(--y)) * 0.09em); width: 0.084em; height: 0.084em; background: var(--ink); opacity: 0; }
+.wk .wk-o b { position: absolute; left: -0.02em; bottom: 0.27em; width: 0.31em; height: 0.09em; background: var(--ink); clip-path: polygon(50% 0, 100% 100%, 0 100%); opacity: 0; }
+
+/* 핀 #286: LAB — 글자 몸짓 실험, 픽사풍 불(흐릿한 불꽃 알갱이)과 검은 연기 */
+.lx .wk-l { position: absolute; line-height: 1; white-space: pre; color: var(--ink); transform-origin: 50% 100%; }
+.lx .fx-host { position: absolute; left: 50%; top: 0.26em; width: 0; height: 0; }
+.lx .fx-fl { position: absolute; left: -0.06em; top: -0.08em; width: 0.12em; height: 0.16em; border-radius: 50% 50% 45% 45% / 62% 62% 38% 38%;
+  background: radial-gradient(ellipse at 50% 72%, #fff6c8 0, #ffd04a 22%, #ff8a1e 48%, rgba(214, 52, 24, 0.85) 66%, rgba(214, 52, 24, 0) 78%); filter: blur(1.2px); mix-blend-mode: multiply; pointer-events: none; }
+.lx .fx-sm { position: absolute; left: -0.08em; top: -0.12em; width: 0.16em; height: 0.16em; border-radius: 50%;
+  background: radial-gradient(circle, rgba(18, 18, 18, 0.9) 0, rgba(18, 18, 18, 0.55) 40%, rgba(18, 18, 18, 0) 70%); filter: blur(2px); pointer-events: none; }
+.lx .fx-boom { left: calc(50% - 0.08em); top: 0.2em; }
+@media (prefers-reduced-motion: reduce) { .lx { display: none; } }

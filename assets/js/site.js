@@ -996,8 +996,8 @@
     const pick = (t) => {
       const fs0 = geo[0] ? geo[0].fs : 100, r = Math.random();
       const kid = KIDS[Math.floor(Math.random() * KIDS.length)];
-      const who = r < 0.42 ? kid : r < 0.62 ? YI : r < 0.72 ? PI : r < 0.86 ? WORD : LABI;
-      const c = CH[who]; if (!c || c.act || c.q.length || c.mode !== "home") return;
+      const who = r < 0.36 ? kid : r < 0.62 ? YI : r < 0.7 ? PI : r < 0.85 ? WORD : LABI; // 핀 #281: Y가 더 자주
+      const c = CH[who]; if (!c || c.act || c.q.length || c.mode !== "home" || (c.fx || 0) > t) return;
       if (isKid(who)) { // 꼬마들: 다른 글자 머리 위로 폴짝 → 그 위에서 콩콩 → 다음 글자 머리로 건너뛰거나 집으로
         const me = geo[who]; if (!me) return;
         if (c.on >= 0 && Math.random() < 0.4) { later(c, t, 0, 0, fs0 * 0.5, 700); c.on = -1; return; } // 집으로
@@ -1016,19 +1016,28 @@
         else later(c, t, c.x, 0, fs0 * 0.1, 360); // Y: 같이 신나서 통통
         return;
       }
+      if (who === WORD && Math.random() < 0.5) { workshop(c, who, t); return; } // 핀 #280: 뚝딱뚝딱 목공
       if (who === WORD) { // STUDIO 일잘러: 짧고 빠른 작업 리듬(톡톡톡) — 늘 같은 높이, 같은 간격
         const n = 3 + Math.floor(Math.random() * 3); for (let i = 0; i < n; i++) later(c, t, 0, 0, fs0 * 0.035, 170);
         c.work = t + n * 200 + 400; return;
       }
+      if (who === PI && Math.random() < 0.55) { reading(c, who, t); return; } // 핀 #282: 안경 쓰고 책 읽기
       if (who === PI) { // P 철학자: 천천히 한 걸음 → 멈춰 고개를 젖히고 깊은 생각
         if (Math.random() < 0.45) { const x = Math.max(-fs0 * 0.12, Math.min(fs0 * 0.12, c.x + (Math.random() < 0.5 ? -1 : 1) * fs0 * 0.06)); later(c, t, x, 0, fs0 * 0.025, 1100); }
         c.ponder = t + 3200 + Math.random() * 2400; return;
       }
+      if (who === LABI && Math.random() < 0.45) { experiment(c, who, t); return; } // 핀 #279: 화학 실험 (가끔 실패해서 머리에 불)
       if (who === LABI) { // LAB 연구자: 자로 잰 듯 같은 보폭 세 번 → 멈춰 관찰 → 같은 보폭으로 정확히 제자리
         const d = (Math.random() < 0.5 ? -1 : 1) * fs0 * 0.04;
         for (let i = 1; i <= 3; i++) later(c, t, d * i, 0, fs0 * 0.02, 240);
         later(c, t, d * 3, 0, 0, 900); for (let i = 2; i >= 0; i--) later(c, t, d * i, 0, fs0 * 0.02, 240);
         c.lookT = t + 1400; return;
+      }
+      if (who === YI && Math.random() < 0.45) { // 핀 #281: Y는 주도적으로 화면 곳곳을 돌아다녀요 (멀리 갔다가 가끔 집으로)
+        const g = geo[YI]; if (!g) return; const lo = -g.x0 + g.hw + 16, hi = innerWidth - g.x0 - g.hw - 16;
+        c.mode = "wander"; c.ty = 0;
+        c.tx = Math.abs(c.x) > g.fs * 0.6 && Math.random() < 0.35 ? 0 : Math.max(lo, Math.min(hi, c.x + (Math.random() < 0.5 ? -1 : 1) * g.fs * (0.8 + Math.random() * 2.2)));
+        return;
       }
       if (who === YI) { // Y 깨발랄: 높이 뛰며 한 바퀴, 깡충깡충 스킵
         if (Math.random() < 0.4) { later(c, t, c.x, 0, fs0 * 0.42, 720); c.spin = t + 160; c.spinDir = Math.random() < 0.5 ? -1 : 1; }
@@ -1049,6 +1058,120 @@
         const dir = Math.abs(c.x) > fs0 * 0.08 ? -Math.sign(c.x) : Math.random() < 0.5 ? -1 : 1, n = 2 + (Math.random() < 0.5 ? 1 : 0);
         let x = c.x; for (let i = 0; i < n; i++) { x = Math.max(-fs0 * 0.14, Math.min(fs0 * 0.14, x + dir * fs0 * 0.05)); later(c, t, x, 0, fs0 * 0.05, 300); }
       } else { c.lookT = t + 1500; } // 쳐다보기
+    };
+    // 핀 #279: LAB의 화학 실험 — 옆에 플라스크가 나타나 흔들며 보글보글 → 펑! 연기 → 머리에 불이 붙어 허둥지둥 뛰다가 → 불이 꺼지며 연기, 몸을 털어요
+    // 글자 묶음(STUDIO·LAB)을 글자 하나하나로 잠깐 나눠요 — 원래 글자는 숨기고 같은 자리에 같은 모양으로
+    const splitGlyph = (el, cls) => {
+      const gl = $(".st-gl", el), g0t = gl && $(".st-g0", gl); if (!g0t || el.querySelector(".wk, .lx")) return null;
+      const pt = el.style.transform; el.style.transform = "none";
+      const er = el.getBoundingClientRect(), tn = g0t.firstChild, rg = D.createRange(), cs = getComputedStyle(gl), fs = parseFloat(cs.fontSize);
+      const chars = [...(tn.textContent || "")].map((ch, i) => { rg.setStart(tn, i); rg.setEnd(tn, i + 1); const r = rg.getBoundingClientRect(); return { ch, x: r.left - er.left, y: r.top - er.top + (r.height - fs) / 2, w: r.width }; });
+      el.style.transform = pt;
+      const w = D.createElement("i"); w.className = cls; w.setAttribute("aria-hidden", "true");
+      w.style.cssText = `font-family:${cs.fontFamily};font-size:${fs}px;font-weight:${cs.fontWeight};letter-spacing:${cs.letterSpacing}`;
+      w.innerHTML = chars.map((q) => `<span class="wk-l" style="left:${q.x}px;top:${q.y}px;width:${q.w}px">${esc(q.ch)}</span>`).join("");
+      el.appendChild(w); gl.style.visibility = "hidden";
+      return { gl, w, fs, chars, Ls: $$(".wk-l", w), done: () => { gl.style.visibility = ""; w.remove(); } };
+    };
+    // 불: 흐릿한 불꽃 알갱이가 계속 솟아올라 작아지며 사라져요 (노랑 속 → 주황 → 빨강 가장자리), 위로는 검은 연기
+    const flames = (host, ms) => {
+      const spawn = (smoke) => { const q = D.createElement("i"); q.className = smoke ? "fx-sm" : "fx-fl"; host.appendChild(q);
+        const x = (Math.random() - 0.5) * (smoke ? 0.1 : 0.12), up = smoke ? 0.45 + Math.random() * 0.3 : 0.16 + Math.random() * 0.14, d = smoke ? 1300 + Math.random() * 600 : 420 + Math.random() * 300;
+        q.animate(smoke ? [{ opacity: 0, translate: `${x}em -0.12em`, scale: 0.5 }, { opacity: 0.75, offset: 0.2 }, { opacity: 0, translate: `${x * 2.5 + 0.04}em ${-up}em`, scale: 2.6 }]
+          : [{ opacity: 0.95, translate: `${x}em 0`, scale: 1 }, { opacity: 0.9, translate: `${x * 0.6 + (Math.random() - 0.5) * 0.03}em ${-up * 0.5}em`, scale: 0.75, offset: 0.45 }, { opacity: 0, translate: `${x * 0.3}em ${-up}em`, scale: 0.15 }],
+          { duration: d, easing: smoke ? "ease-out" : "cubic-bezier(0.3, 0, 0.6, 1)", fill: "forwards" }).onfinish = () => q.remove(); };
+      const a = setInterval(() => spawn(false), 28), b = setInterval(() => spawn(true), 110);
+      setTimeout(() => { clearInterval(a); clearInterval(b); for (let k = 0; k < 7; k++) setTimeout(() => spawn(true), k * 60); }, ms);
+    };
+    const experiment = (c, j, t) => {
+      const S = splitGlyph(c.el, "lx"); if (!S) return;
+      const { Ls, fs } = S, [L, A, B] = Ls; if (!A || !B) { S.done(); return; }
+      const E = "cubic-bezier(0.16, 1, 0.3, 1)", T = { mix: 450, boom: 2300, out: 4700, end: 5600 };
+      c.fx = t + T.end + 600;
+      const pose = (el, kf, o) => el.animate(kf, Object.assign({ fill: "forwards" }, o));
+      // 1) 다가서기: L은 한 발 물러나 팔짱 낀 듯 관찰, B는 A 쪽으로 붙어요
+      if (L) pose(L, [{ translate: "0 0", rotate: "0deg" }, { translate: `${-fs * 0.03}px 0`, rotate: "-3deg" }], { duration: T.mix, easing: E });
+      pose(B, [{ translate: "0 0", rotate: "0deg" }, { translate: `${-fs * 0.1}px ${-fs * 0.04}px`, rotate: "-22deg" }], { duration: T.mix, easing: E });
+      // 2) 섞기: B가 A 위로 기울어 흔들흔들 붓고, A는 부글부글 떨고, L은 몸을 내밀어 끄덕이며 관찰
+      B.animate([{ rotate: "0deg" }, { rotate: "-9deg" }, { rotate: "5deg" }, { rotate: "0deg" }], { duration: 180, delay: T.mix, iterations: 8, composite: "add" });
+      A.animate([{ scale: "1 1" }, { scale: "1.03 0.97" }, { scale: "0.98 1.04" }, { scale: "1 1" }], { duration: 140, delay: T.mix + 300, iterations: 10, composite: "add" });
+      if (L) L.animate([{ rotate: "0deg", translate: "0 0" }, { rotate: "7deg", translate: `${fs * 0.02}px 0` }, { rotate: "4deg", translate: `${fs * 0.02}px 0` }, { rotate: "7deg", translate: `${fs * 0.02}px 0` }], { duration: 900, delay: T.mix + 300, fill: "forwards", composite: "add" });
+      // 3) 조용… A가 점점 세게 떨어요 (터지기 직전)
+      A.animate([{ translate: "0 0" }, { translate: `${fs * 0.008}px 0` }, { translate: `${-fs * 0.008}px 0` }, { translate: "0 0" }], { duration: 60, delay: T.boom - 420, iterations: 7, composite: "add" });
+      // 4) 펑! 그을음이 터지고 다들 날아가요 → A 머리에 불
+      setTimeout(() => {
+        for (let k = 0; k < 14; k++) { const q = D.createElement("i"); q.className = "fx-sm fx-boom"; A.appendChild(q); const an = (k / 14) * Math.PI * 2, r = 0.18 + Math.random() * 0.12;
+          q.animate([{ opacity: 0.9, translate: "0 0", scale: 0.6 }, { opacity: 0, translate: `${Math.cos(an) * r}em ${Math.sin(an) * r * 0.7 - 0.08}em`, scale: 2.4 }], { duration: 700 + Math.random() * 300, easing: "cubic-bezier(0.1, 0.8, 0.3, 1)", fill: "forwards" }).onfinish = () => q.remove(); }
+        c.imp = 1; c.trem = performance.now();
+        if (L) pose(L, [{ translate: `${-fs * 0.03}px 0`, rotate: "-3deg" }, { translate: `${-fs * 0.14}px ${-fs * 0.05}px`, rotate: "-24deg", offset: 0.35 }, { translate: `${-fs * 0.1}px 0`, rotate: "-8deg" }], { duration: 650, easing: E });
+        pose(B, [{ translate: `${-fs * 0.1}px ${-fs * 0.04}px`, rotate: "-22deg" }, { translate: `${fs * 0.1}px ${-fs * 0.32}px`, rotate: "160deg", offset: 0.45 }, { translate: `${fs * 0.14}px 0`, rotate: "350deg" }], { duration: 900, easing: "cubic-bezier(0.3, 0.6, 0.5, 1)" });
+        pose(A, [{ scale: "1 1", translate: "0 0" }, { scale: "1.25 0.68", translate: "0 0", offset: 0.25 }, { scale: "0.9 1.12", translate: `0 ${-fs * 0.08}px`, offset: 0.55 }, { scale: "1 1", translate: "0 0" }], { duration: 600, easing: E });
+        const fh = D.createElement("i"); fh.className = "fx-host"; A.appendChild(fh); flames(fh, T.out - T.boom);
+        // 허둥지둥: 불붙은 A가 좌우로 뛰어다니고, L·B는 몸을 젖혀 피해요
+        const run = [0, -0.16, 0.12, -0.2, 0.16, -0.08, 0.06, 0];
+        A.animate(run.map((x, k) => ({ translate: `${x * fs}px ${k % 2 ? -fs * 0.05 : 0}px`, rotate: `${-x * 60}deg` })), { duration: T.out - T.boom - 300, delay: 450, easing: "ease-in-out", composite: "add" });
+      }, T.boom);
+      // 5) 불이 꺼지면 연기 속에서 몸을 털고(부르르) 제자리로
+      setTimeout(() => {
+        Ls.forEach((q, i) => { q.animate([{ rotate: "0deg" }, { rotate: "5deg" }, { rotate: "-5deg" }, { rotate: "0deg" }], { duration: 110, delay: i * 60, iterations: 4, composite: "add" });
+          q.getAnimations().filter((x) => x.effect && x.effect.getComputedTiming().fill === "forwards").forEach((x) => x.pause());
+          q.animate([{ translate: getComputedStyle(q).translate, rotate: getComputedStyle(q).rotate }, { translate: "0 0", rotate: "0deg" }], { duration: 700, delay: 450 + i * 60, easing: E, fill: "forwards" }); });
+        c.shake = performance.now() + 450; c.huff = performance.now() + 450;
+      }, T.out);
+      setTimeout(() => S.done(), T.end + 300);
+    };
+    const workshop = (c, j, t) => {
+      const el = c.el, gl = $(".st-gl", el), g0t = gl && $(".st-g0", gl); if (!g0t || el.querySelector(".wk")) return;
+      // 글자 하나하나의 자리 재기 (몸의 기울기·눌림은 잠깐 빼고)
+      const pt = el.style.transform; el.style.transform = "none";
+      const er = el.getBoundingClientRect(), tn = g0t.firstChild, rg = D.createRange(), cs = getComputedStyle(gl), fs = parseFloat(cs.fontSize);
+      const chars = [...(tn.textContent || "")].map((ch, i) => { rg.setStart(tn, i); rg.setEnd(tn, i + 1); const r = rg.getBoundingClientRect(); return { ch, x: r.left - er.left, y: r.top - er.top + (r.height - fs) / 2, w: r.width }; });
+      el.style.transform = pt;
+      if (!chars.length) return;
+      const w = D.createElement("i"); w.className = "wk"; w.setAttribute("aria-hidden", "true");
+      w.style.cssText = `font-family:${cs.fontFamily};font-size:${fs}px;font-weight:${cs.fontWeight};letter-spacing:${cs.letterSpacing}`;
+      const mid = (chars[0].x + chars[chars.length - 1].x + chars[chars.length - 1].w) / 2;
+      w.innerHTML = chars.map((q) => `<span class="wk-l" style="left:${q.x}px;top:${q.y}px">${esc(q.ch)}</span>`).join("")
+        + `<span class="wk-o" style="left:${mid}px">${[...Array(9)].map((_, k) => `<i style="--x:${k % 3};--y:${Math.floor(k / 3)}"></i>`).join("")}<b></b></span>`;
+      el.appendChild(w); gl.style.visibility = "hidden";
+      const Ls = $$(".wk-l", w), O = $(".wk-o", w), cells = $$("i", O), roof = $("b", O), E = "cubic-bezier(0.16, 1, 0.3, 1)";
+      const n = cells.length, per = 230, t1 = 520, t2 = t1 + n * per, t3 = t2 + 900;
+      c.fx = t + t3 + 900;
+      // 1) 모여요: 가운데로 바짝 붙어 둘러서요
+      Ls.forEach((L, i) => { const q = chars[i], dx = (mid - (q.x + q.w / 2)) * 0.38, lean = Math.sign(mid - (q.x + q.w / 2)) * 6;
+        L._dx = dx; L._lean = lean;
+        L.animate([{ translate: "0 0", rotate: "0deg" }, { translate: `${dx}px 0`, rotate: `${lean}deg` }], { duration: t1, easing: E, fill: "forwards" }); });
+      // 2) 뚝딱뚝딱: 한 명씩 번갈아 콩 찧을 때마다 네모 모듈이 하나씩 튀어 올라 쌓여요 (아래층부터)
+      for (let k = 0; k < n; k++) {
+        const i = [0, 5, 1, 4, 2, 3][k % 6], L = Ls[i], at = t1 + k * per;
+        if (L) L.animate([{ translate: `${L._dx}px 0`, rotate: `${L._lean}deg` }, { translate: `${L._dx}px ${-fs * 0.12}px`, rotate: `${L._lean * 0.3}deg`, offset: 0.45 }, { translate: `${L._dx}px ${fs * 0.01}px`, rotate: `${L._lean * 1.6}deg`, offset: 0.7 }, { translate: `${L._dx}px 0`, rotate: `${L._lean}deg` }], { duration: per, delay: at, easing: "ease-in-out" });
+        const cell = cells[[6, 7, 8, 3, 4, 5, 0, 1, 2][k]];
+        const sx = L ? chars[i].x + chars[i].w / 2 + L._dx - mid : 0;
+        cell.animate([{ opacity: 0, translate: `${sx}px ${fs * 0.35}px`, scale: 0.4, rotate: "90deg" }, { opacity: 1, offset: 0.3 }, { opacity: 1, translate: "0 0", scale: 1, rotate: "0deg" }], { duration: per + 120, delay: at + per * 0.55, easing: E, fill: "both" });
+        setTimeout(() => { c.imp = 0.6; }, at + per * 0.6);
+      }
+      // 3) 지붕 얹고 완성 → 다 같이 한 발 물러나 뿌듯하게 콩
+      roof.animate([{ opacity: 0, translate: `0 ${-fs * 0.15}px` }, { opacity: 1, translate: "0 0" }], { duration: 380, delay: t2, easing: "cubic-bezier(0.3, 1.6, 0.5, 1)", fill: "both" });
+      Ls.forEach((L, i) => L.animate([{ translate: `${L._dx}px 0`, rotate: `${L._lean}deg` }, { translate: `0 ${-fs * 0.06}px`, rotate: "0deg", offset: 0.5 }, { translate: "0 0", rotate: "0deg" }], { duration: 700, delay: t2 + 300 + i * 40, easing: E, fill: "forwards" }));
+      O.animate([{ opacity: 1, translate: "-50% 0" }, { opacity: 1, translate: `-50% ${-fs * 0.05}px`, offset: 0.4 }, { opacity: 0, translate: `-50% ${-fs * 0.18}px` }], { duration: 900, delay: t3, easing: "ease-in", fill: "forwards" });
+      setTimeout(() => { gl.style.visibility = ""; w.remove(); }, t3 + 900);
+    };
+    const reading = (c, j, t) => {
+      const el = c.el; if (el.querySelector(".rd")) return;
+      const w = D.createElement("i"); w.className = "rd"; w.setAttribute("aria-hidden", "true");
+      w.innerHTML = `<svg class="rd-g" viewBox="0 0 44 16"><rect class="rd-lz" x="3" y="3" width="15" height="11" rx="5"/><rect class="rd-lz" x="26" y="3" width="15" height="11" rx="5"/><path d="M18 7q4-3 8 0M3 6L0 4M41 6l3-2"/><path class="rd-sh" d="M7 6l3-2M30 6l3-2"/></svg>`
+        + `<svg class="rd-b" viewBox="0 0 40 22"><path d="M20 4Q12 0 2 2v18q10-2 18 2q8-4 18-2V2Q28 0 20 4zM20 4v18"/><path class="rd-ln" d="M6 7h10M6 10h10M6 13h8M24 7h10M24 10h10M24 13h7"/></svg>`
+        + `<svg class="rd-pg" viewBox="0 0 20 22"><path d="M0 4Q8 0 18 2v18Q8 18 0 22z"/></svg>`;
+      el.appendChild(w);
+      const G = $(".rd-g", w), B = $(".rd-b", w), PG = $(".rd-pg", w), dur = 5200, E = "cubic-bezier(0.16, 1, 0.3, 1)";
+      c.fx = t + dur + 400; c.read = t + dur - 600;
+      G.animate([{ opacity: 0, translate: "0 -0.42em", rotate: "-14deg" }, { opacity: 1, translate: "0 -0.36em", rotate: "-14deg", offset: 0.05 }, { opacity: 1, translate: "0 -0.36em", rotate: "-14deg", offset: 0.1 },
+        { opacity: 1, translate: "0 0.02em", rotate: "0deg", offset: 0.16 }, { opacity: 1, translate: "0 0", rotate: "0deg", offset: 0.78 },
+        { opacity: 1, translate: "0 -0.38em", rotate: "-14deg", offset: 0.86 }, { opacity: 1, translate: "0 -0.36em", rotate: "-14deg", offset: 0.96 }, { opacity: 0, translate: "0 -0.36em", rotate: "-14deg" }], { duration: dur + 900, easing: "cubic-bezier(0.45, 0, 0.2, 1)", fill: "both" });
+      B.animate([{ opacity: 0, translate: "0 0.15em", rotate: "-8deg" }, { opacity: 1, translate: "0 0", rotate: "0deg", offset: 0.1 }, { opacity: 1, offset: 0.85 }, { opacity: 0, translate: "0 0.1em", rotate: "6deg" }], { duration: dur, easing: E, fill: "both" });
+      PG.animate([{ opacity: 0, scale: "1 1" }, { opacity: 1, scale: "1 1", offset: 0.05 }, { opacity: 1, scale: "-1 1", offset: 0.9 }, { opacity: 0, scale: "-1 1" }], { duration: 700, delay: 1700, iterations: 3, easing: "ease-in-out", endDelay: 0 });
+      setTimeout(() => { c.ponder = performance.now() + 2200; }, dur - 600); // 다 읽고 고개를 젖혀 생각
+      setTimeout(() => w.remove(), dur + 1000);
     };
     const pose = (c, t) => { // 진행 중인 뜀의 자세: 웅크림 → 날기(늘어남) → 착지(눌림)
       const a = c.act, p = clamp((t - a.t0) / (a.dur / SPD));
@@ -1129,7 +1252,7 @@
         if (c.mode !== "wander") rest = false;
         if (c.mode === "held" || c.mode === "drop") { physics(c, j, dt); return; }
         const run = c.mode === "run", per = j === PI ? 0.8 : isKid(j) || j === YI ? 1.12 : j === WORD && c.mode === "back" ? 1.3 : 1; // P는 서두르지 않고, STUDIO는 일하러 제일 빨리 돌아와요
-        const vmax = (run ? (j === WORD ? 260 : 340) : c.mode === "back" ? 300 : 120) * SPD * per, acc = (run ? 950 : 650) * SPD * per;
+        const vmax = (run ? (j === WORD ? 260 : 340) : c.mode === "back" ? 300 : c.mode === "wander" && j === YI ? 240 : 120) * SPD * per, acc = (run ? 950 : 650) * SPD * per;
         if (t < (c.wait || 0)) { if (c.dizzy > t || c.huff > t - 900) { c.vx = 0; c.ax = 0; return; } c.crouch = Math.min(1, (c.crouch || 0) + dt * 6); c.vx = 0; c.ax = 0; c.tdir = Math.sign(c.tx - c.x); return; } // 출발 전: 반대쪽으로 웅크려요
         c.crouch = Math.max(0, (c.crouch || 0) - dt * 7);
         { // 늘 바닥(수평선)으로 — 다른 글자와 겹치려 하면 그 위로 뛰어넘어요
@@ -1201,7 +1324,8 @@
         if (c.dizzy > t) want = Math.sin(t / 150 + j) * 8 * Math.min(1, (c.dizzy - t) / 1200); // 어지러워 비틀비틀
         if (HJ >= 0 && j !== HJ) want += Math.sin(t / 26 + j * 2) * 0.9; // 친구가 잡혀 있으면 불안해서 떨어요
         if (c.mode === "home") {
-          if (j === PI) want += t < (c.ponder || 0) ? -6 + Math.sin(t / 1400) * 2.5 : Math.sin(t / 3200) * 1.5; // 철학자: 고개를 젖히고 천천히 갸웃
+          if (j === PI && t < (c.read || 0)) want += 5 + Math.sin(t / 700) * 1.2; // 책 쪽으로 몸을 숙이고 천천히 끄덕
+          else if (j === PI) want += t < (c.ponder || 0) ? -6 + Math.sin(t / 1400) * 2.5 : Math.sin(t / 3200) * 1.5; // 철학자: 고개를 젖히고 천천히 갸웃
           if (j === YI) want += Math.sin(t / 260) * 1.4; // 깨발랄: 늘 들썩들썩
           if (isKid(j) && !c.act) want += Math.sin(t / 180 + j) * 2; // 꼬마: 가만있질 못해요
           if (j === WORD && t < (c.work || 0)) want += Math.sin(t / 40) * 1.2; // 일잘러: 일하는 중 미세한 떨림
