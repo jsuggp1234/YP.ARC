@@ -255,6 +255,7 @@ html.docked .brand h1 { font-weight: 500; }
 #d-3d { aspect-ratio: auto !important; outline: 0 !important; background: none !important; overflow: visible; display: flex; flex-direction: column; gap: 12px; }
 #d-3d #d-cv3, #d-3d .hint, #d-3d .nav-lg, #d-3d .tag, #d-3d .v3bar, #d-3d .ov3 { display: none !important; }
 #d-3d .lk-bar { position: static; max-width: none; max-height: none; background: none; padding: 0; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+#d-3d { width: 100% !important; } /* 핀 #342: 평면은 왼쪽 끝, 단면은 넓게 */
 #d-diag { display: block; width: 100%; height: clamp(260px, 42svh, 420px); }
 .d-cap { font-size: var(--t-m) !important; margin-top: 8px; }
 .d-cap b { font-weight: 600; }
