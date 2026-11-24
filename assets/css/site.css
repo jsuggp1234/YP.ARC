@@ -2701,3 +2701,8 @@ html.sb-on { overflow-x: hidden; }
 @media (max-width: 760px) { .seq-jd { max-width: 100%; margin: 6px 0; } .seq-jd img { width: auto; max-width: 60%; max-height: 17svh; } }
 /* 핀 #324·#337: 모바일 장면 넘김 그림은 남은 높이에 맞춘 폭(--fitw, site.js)으로 — 위가 잘리지 않게 */
 @media (max-width: 760px) { .seq-pin > .seq-stage { max-width: var(--fitw, none); justify-self: center; align-self: center; } }
+/* 핀 #325: 모바일 Natural Palette 개념 단면 — 화면 안에 통째로 들어오게 작게, 잘림 없이 */
+@media (max-width: 760px) {
+  .figs figure:has(img[src*="natural-palette/axo-concept"]) > .media { width: min(74%, calc((100svh - 260px) * var(--r))) !important; margin-inline: auto; }
+  .media img[src*="natural-palette/axo-concept"] { object-fit: contain; }
+}
