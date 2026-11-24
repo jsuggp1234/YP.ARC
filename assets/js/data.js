@@ -16,7 +16,7 @@
 // ============================================================
 
 const SITE = {
-  name: "YP.STUDIO",
+  name: "YP.STUDIO & LAB", // 핀 #250·#252
   // 표지 다음 화면의 휘어진 이미지 띠 — [작품 slug, 사진, 가로/세로 비율]. 작품 사진(렌더)만, 작품마다 1~2장
   reel: [
     ["re-tide", "assets/img/re-tide/cover.jpg", 0.859],
@@ -59,6 +59,9 @@ const SITE = {
     { key: "philosophy", title: "philosophy", glyph: "P", href: "philosophy.html", note: "Answer before image — air and light, structure and joints." },
     { key: "contact", title: "contact", glyph: ".", word: ".contact", href: "#contact", contact: true, note: "Email · Instagram · Portfolio PDF" },
     { key: "works", title: "studio", glyph: "STUDIO", word: "STUDIO", href: "works.html", note: "Selected works, 2022—2027" },
+    // 핀 #247: "YP. STUDIO & LAB" — &는 contact(연락 패널), LAB은 lab 페이지
+    { key: "contact", title: "contact", glyph: "&", word: "&contact", href: "#contact", contact: true, note: "Email · Instagram · Portfolio PDF" },
+    { key: "lab", title: "lab", glyph: "LAB", word: "LAB", href: "lab.html", note: "Simulations — tide-sim, bim-sim" },
   ],
   pages: [
     { key: "about", title: "yeop", href: "about.html" },

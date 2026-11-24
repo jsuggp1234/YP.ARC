@@ -443,7 +443,7 @@
     }
     if (pg.key === "lab") {
       const L = SITE.lab || {};
-      return top + `<p class="mn-note">${esc(L.note || "")}<span>${(L.items || []).map((it) => esc(it.title)).join(" · ")}</span></p><div class="mn-row">${(L.items || []).map((it) => `<div class="mn-ar" style="aspect-ratio:${397 / 525}">${mImg(it.img)}</div>`).join("")}</div>`;
+      return top + `<p class="mn-note">${esc(L.note || "")}<span>${(L.items || []).map((it) => esc(it.title)).join(" · ")}</span></p>`; // 핀 #249: 대표 사진 없이 여백
     }
     if (pg.key === "archive") {
       const A = SITE.archive || {};
@@ -915,7 +915,7 @@
     const eIn = (v) => v * v * v, eOut = (v) => 1 - Math.pow(1 - v, 3);
     const measure = () => {
       tr.style.fontSize = ""; const e = parseFloat(getComputedStyle(HTML).getPropertyValue("--g4-e")) || 16;
-      const fit = Math.min(1, (innerWidth - 2 * e) / (tr.scrollWidth || 1)); // 한 화면 폭 안에 들어오게
+      const fit = Math.min(0.86, ((innerWidth - 2 * e) * 0.86) / (tr.scrollWidth || 1)); // 한 화면 폭 안에 들어오게, 핀 #248: 양옆 여백을 두고 조금 작게
       if (fit < 1) tr.style.fontSize = parseFloat(getComputedStyle(tr).fontSize) * fit + "px";
       geo = as.map((a) => { const g = $(".st-gl", a), fs = parseFloat(getComputedStyle(g).fontSize), rc = g.getBoundingClientRect();
         return { a, g, fs, hw: rc.width / 2, x0: rc.left + rc.width / 2 - (parseFloat(a.style.translate) || 0), by: rc.bottom, bs: $$(".st-b", a), sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; });
