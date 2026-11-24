@@ -110,6 +110,17 @@ def patch_guides(R, T):
       "  const n = g.T.reduce((a, t) => Math.abs(t.z - z) < Math.abs(a.z - z) ? t : a, g.T[0]); return [XC + (n.r0 + n.r1) / 2, NM[n.k] || '맨 위 바닥']; }\n"
       "VIEWS.rules = {", 1)
 
+# 핀 #307: 기단이 4–5개면 이웃끼리 낮고 매끈한 모래톱 목(스커트)으로 이어요. 등성이 높이 = 연결 변수(이음목 높이 g.C)라 섬이 되는 날 함께 잠겨요
+def patch_skirts(R, T):
+    R("  const pads = [{ x: 0, z: 0, R: Rf }].concat(cl.map(c => ({ x: c.x, z: c.z, R: c.R })));\n",
+      "  const pads = [{ x: 0, z: 0, R: Rf }].concat(cl.map(c => ({ x: c.x, z: c.z, R: c.R })));\n"
+      "  if (cl.length >= 3 && g.C > gr + 0.2) { const H = g.C - gr, Wd = Math.max(8, 2.4 * H), inT = [0], E = [];\n"
+      "    while (inT.length < pads.length) { let best = null; for (const a of inT) pads.forEach((b, j) => { if (inT.includes(j)) return; const d = Math.hypot(b.x - pads[a].x, b.z - pads[a].z) - pads[a].R - b.R; if (!best || d < best[2]) best = [a, j, d]; }); inT.push(best[1]); E.push(best); }\n"
+      "    const sg = new THREE.SphereGeometry(1, 48, 12, 0, Math.PI * 2, 0, Math.PI / 2);\n"
+      "    for (const [a, b] of E) { const A = pads[a], B = pads[b], dx = B.x - A.x, dz = B.z - A.z, dd = Math.hypot(dx, dz) || 1, ux = dx / dd, uz = dz / dd;\n"
+      "      const sx = A.x + ux * A.R * 0.8, sz = A.z + uz * A.R * 0.8, ex = B.x - ux * B.R * 0.8, ez = B.z - uz * B.R * 0.8, L = Math.hypot(ex - sx, ez - sz); if (L < 1) continue;\n"
+      "      const m = new THREE.Mesh(sg, matTop(g.C)); m.scale.set(L / 2 + Wd * 0.25, H, Wd / 2); m.position.set((sx + ex) / 2, 0, (sz + ez) / 2); m.rotation.y = -Math.atan2(dz, dx); add(m, g.C, 'neck'); } }\n", 1)
+
 # 핀 #303: 변수체계 3D 자리에 평면 + 단면 그림 (diag.js)
 def patch_diag(R, T):
     R("<h3>3D로 보기 · 찾은 높이가 기단의 어느 부분이 되나", "<h3>평면과 단면 · 변수마다 바뀌는 부분", 1)

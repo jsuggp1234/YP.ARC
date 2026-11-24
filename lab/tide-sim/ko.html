@@ -2107,6 +2107,12 @@ function plinth3D(g, o = {}) {
   const nA = N1(), nB = N2(), nC = N3(), sm = t => t * t * (3 - 2 * t);
   const segD = (P, px, pz) => { let best = 1e9, acc = 0, at = 0; for (let i = 0; i < P.length - 1; i++) { const [ax, az] = P[i], [bx, bz] = P[i + 1], dx = bx - ax, dz = bz - az, L2 = dx * dx + dz * dz || 1e-6, t = clamp(((px - ax) * dx + (pz - az) * dz) / L2, 0, 1), d = Math.hypot(px - ax - t * dx, pz - az - t * dz), L = Math.sqrt(L2); if (d < best) { best = d; at = acc + t * L; } acc += L; } return [best, at / acc]; };
   const pads = [{ x: 0, z: 0, R: Rf }].concat(cl.map(c => ({ x: c.x, z: c.z, R: c.R })));
+  if (cl.length >= 3 && g.C > gr + 0.2) { const H = g.C - gr, Wd = Math.max(8, 2.4 * H), inT = [0], E = [];
+    while (inT.length < pads.length) { let best = null; for (const a of inT) pads.forEach((b, j) => { if (inT.includes(j)) return; const d = Math.hypot(b.x - pads[a].x, b.z - pads[a].z) - pads[a].R - b.R; if (!best || d < best[2]) best = [a, j, d]; }); inT.push(best[1]); E.push(best); }
+    const sg = new THREE.SphereGeometry(1, 48, 12, 0, Math.PI * 2, 0, Math.PI / 2);
+    for (const [a, b] of E) { const A = pads[a], B = pads[b], dx = B.x - A.x, dz = B.z - A.z, dd = Math.hypot(dx, dz) || 1, ux = dx / dd, uz = dz / dd;
+      const sx = A.x + ux * A.R * 0.8, sz = A.z + uz * A.R * 0.8, ex = B.x - ux * B.R * 0.8, ez = B.z - uz * B.R * 0.8, L = Math.hypot(ex - sx, ez - sz); if (L < 1) continue;
+      const m = new THREE.Mesh(sg, matTop(g.C)); m.scale.set(L / 2 + Wd * 0.25, H, Wd / 2); m.position.set((sx + ex) / 2, 0, (sz + ez) / 2); m.rotation.y = -Math.atan2(dz, dx); add(m, g.C, 'neck'); } }
   const hf = (px, pz) => {
     if (px <= x0) { const u = clamp((px - crest) / Wr, 0, 1), s = 0.82 * u + 0.18 * sm(u), rip = (u > 0.02 && u < 0.98) ? 0.22 * (fbm(nC, px / 40, pz / 40, 16, 3) - 0.5) : 0; return LH * (1 - s) + rip; }
     let keep = clamp((px - x0 - 0.5) / 5, 0, 1); for (const q of pads) keep = Math.min(keep, clamp((Math.hypot(px - q.x, pz - q.z) - q.R - 0.8) / 6, 0, 1));
