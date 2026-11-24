@@ -2509,3 +2509,7 @@ html.sb-on { overflow-x: hidden; }
 .cx-go { font-size: var(--t-xxl); letter-spacing: -.01em; }
 /* 핀 #237: 연락 패널 위 탭(Email·Instagram·PDF)은 아래 목록과 겹쳐서 숨김 */
 .ct-tabs { display: none; }
+/* 핀 #233: Modular O′ Kit of Parts 띠 끝선을 위 아이소 뷰(화면 폭)와 맞춤 */
+.cx-body .pj-sec[data-toc="Kit of Parts"] { --bx: 0%; --bw: 100%; }
+/* 핀 #235: Modular O′ 단면도 화면 폭 가득 */
+.cx-body .pj-sec[data-toc="Section and Detail"] { --bx: 0%; --bw: 100%; }
