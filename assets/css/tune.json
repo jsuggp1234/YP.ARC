@@ -523,10 +523,11 @@
     "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(6) > div.media > div.mz > img",
     "props": {
       "scale": "1.04",
-      "object-position": "74% 38%",
-      "object-fit": "contain"
+      "object-position": "74% 100%",
+      "object-fit": "contain",
+      "transform-origin": "50% 100%"
     },
-    "label": "works · img “La Junita”"
+    "label": "works · img “The Tree House” (핀 #356: 아래 바다가 더 보이게)"
   },
   {
     "id": "z7j6t4h",
