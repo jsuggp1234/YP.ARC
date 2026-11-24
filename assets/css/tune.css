@@ -260,6 +260,16 @@ html[data-slug="natural-palette"] body[data-page="project"] #main > article.pg.c
 html[data-slug="natural-palette"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv {
   overflow: hidden !important;
 }
+/* project#the-tree-house · img “Blooming” */
+html[data-slug="the-tree-house"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img {
+  object-position: 46% 100% !important;
+  scale: 1.01 !important;
+}
+/* project#the-tree-house · cx-cv */
+html[data-slug="the-tree-house"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv {
+  overflow: hidden !important;
+  margin-left: -3% !important;
+}
 
 @media (min-width: 761px) {
   /* works · cs-track “RE:TIDE MOTORISM TIM(TEAM) W” */
