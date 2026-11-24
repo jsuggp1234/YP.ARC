@@ -125,7 +125,7 @@ def build(lang):
     R("if (Math.abs(pe.getBoundingClientRect().height - ph) > 2) pe.style.height = ph + 'px';", "if (!matchMedia('(min-width: 901px)').matches && Math.abs(pe.getBoundingClientRect().height - ph) > 2) pe.style.height = ph + 'px';", 1)
     R("new ResizeObserver(() => v.req()).observe($('#s-cv'));", "new ResizeObserver(() => v.req()).observe($('#s-cv'));\n    { let w0 = 0; const ro = new ResizeObserver(() => { const w = $('#s-plan').clientWidth * 10000 + $('#s-plan').clientHeight + $('#s-sec').clientHeight; if (w !== w0) { w0 = w; inval('site'); } }); ro.observe($('#s-plan')); ro.observe($('#s-sec')); }", 1)
 
-    exec(open(os.path.join(HERE, 'patch_more.py'), encoding='utf8').read(), G0 := {}); G0['patch_more'](R, T); G0['patch_sec'](R, T); G0['patch_fit'](R, T); G0['patch_plan'](R, T); G0['patch_plan2'](R, T); G0['patch_plan3'](R, T); G0['patch_dock'](R, T)
+    exec(open(os.path.join(HERE, 'patch_more.py'), encoding='utf8').read(), G0 := {'os': os, 'HERE': HERE}); G0['patch_more'](R, T); G0['patch_sec'](R, T); G0['patch_fit'](R, T); G0['patch_plan'](R, T); G0['patch_plan2'](R, T); G0['patch_plan3'](R, T); G0['patch_dock'](R, T)
 
     # 핀 #293 (예전 #259 대신): SketchUp 같은 3D 조작 — nav3d.js
     i = s.find("  const pts = new Map(); let pinch = 0;"); j = s.find("canvas.addEventListener('contextmenu', e => e.preventDefault());", i)
@@ -170,6 +170,8 @@ def build(lang):
 
     # 핀 #292: 화살표 그림 자동 재생을 느리게 (1초에 90분 → 20분)
     R("PH.t = (PH.t + dt * 60 * 1.5) % 21240;", "PH.t = (PH.t + dt * 20) % 21240;", 1)
+
+    G0['patch_icons'](R, T)
 
     # 큰 읽기 값의 글자 크기는 토큰으로
     R('style="font-family:var(--font);font-size:19px"', 'style="font-size:var(--t-xl)"')

@@ -678,6 +678,32 @@ html.docked .brand h1 { font-weight: 500; }
 #v-structure .card:has(#r-row) .kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; }
 #v-structure .card:has(#r-row) .kv dt { white-space: normal; }
 </style>
+<style>
+/* 핀 #302: 3D 안 링크 고르기 — 그림 버튼(그림 + 아래 짧은 이름, 올리면 전체 이름) */
+.lk-g { gap: 4px 6px; }
+.lk-bar button { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; width: 62px; padding: 4px 2px; text-align: center; line-height: 1.15; text-decoration: none !important; border-bottom: 1px solid transparent; }
+.lk-bar button span { font-size: var(--t-xs); max-width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.lk-bar button[aria-pressed="true"] { border-bottom-color: var(--ink); }
+.lk-bar { max-width: min(52%, 470px); }
+.icn { display: block; flex: none; }
+/* 핀 #304: 변수 바꿔 보기 — 조작판이 맨 위, 설명은 맨 아래, 변수 줄 크게 */
+#v-rules .stack:has(#u-ctl) { display: flex; flex-direction: column; }
+#v-rules .stack:has(#u-ctl) > .card { margin-top: 0; }
+#u-ctl { order: -1; border-top: 0; padding-top: 0; }
+#v-rules .stack:has(#u-ctl) > .u7 { order: 9; }
+#u-ctl .gh { display: flex; align-items: center; font-size: var(--t-m); font-weight: 600; }
+#u-ctl .gh > span { display: inline-flex; align-items: center; gap: 8px; }
+#u-ctl .gh .icn { width: 20px; height: 20px; }
+#u-ctl .ctl .row { font-size: var(--t-m); color: var(--ink); }
+#u-ctl .ctl .row .v { font-weight: 600; }
+#u-ctl .ctl .sub { display: block; font-size: var(--t-s); color: var(--muted); margin-top: 2px; }
+#u-ctl .gio { font-size: var(--t-s) !important; color: var(--muted); }
+</style>
+<style>
+.lk-bar { max-width: min(40%, 380px); padding: 8px 10px; gap: 6px; }
+.lk-bar button { width: 54px; padding: 3px 1px; }
+.lk-bar button span { -webkit-line-clamp: 1; white-space: nowrap; display: block; }
+</style>
 <div class="ybar" role="banner">
   <a class="y-logo" href="../../index.html" aria-label="YP.STUDIO &amp; LAB home"><span class="roll"><span data-t="YP.STUDIO &amp; LAB">YP.STUDIO &amp; LAB</span></span></a>
   <a class="y-work" href="../../lab.html"><span class="roll"><span data-t="Lab / tide-sim">Lab / tide-sim</span></span></a>
@@ -3000,7 +3026,7 @@ VIEWS.rules = {
     const AUX = ['p50', 'margin', 'stayH', 'wMin', 'wMax'];
     const sl = ([k, lab, a, b, st, f, sub]) => `<div class="ctl" data-k="${k}"><div class="row"><label for="u-${k}">${lab}</label><span class="v" id="u-${k}-v"></span></div>
        <input type="range" id="u-${k}" min="${a}" max="${b}" step="${st}">${sub ? `<span class="sub">${sub}</span>` : ''}</div>`;
-    const grpH = ([gname, items, M]) => `<div class="group${M.read ? ' read' : ''}" data-k="${M.k}"><div class="gh"><span><span class="gnum">${M.n}</span>${M.read ? 'Reading · ' : ''}${gname}</span></div>`
+    const grpH = ([gname, items, M]) => `<div class="group${M.read ? ' read' : ''}" data-k="${M.k}"><div class="gh"><span>${icn(M.k)}<span class="gnum">${M.n}</span>${M.read ? 'Reading · ' : ''}${gname}</span></div>`
       + `<div class="gio">Reads: ${M.col} → ${M.read ? 'reads' : 'builds'}: ${M.out}<br><b id="u-out-${M.k}"></b></div>`
       + items.filter(it => !AUX.includes(it[0])).map(sl).join('') + '</div>';
     const auxH = UCTL.filter(u => u[2].n && !u[2].read).map(([gname, items]) => { const a = items.filter(it => AUX.includes(it[0])); return a.length ? `<div class="auxg"><div class="gh2">${gname}</div>${a.map(sl).join('')}</div>` : ''; }).join('');
@@ -3354,6 +3380,33 @@ VIEWS.derive = {
 };
 
 // ---------------------------------------------------------------- 4-2. 링크 시뮬레이션: 물음 → 데이터 열 → 변수 → 기단 부분
+// 핀 #302·#304: 물음 · 데이터 열 · 변수 · 기단 부분마다 작은 그림 (먹선, 20×20)
+const ICN_D = {
+  q0: '<circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="16" cy="10" r="1.6"/>',
+  q1: '<path d="M3 10H17M3 6V14M17 6V14"/>',
+  q2: '<circle cx="10" cy="10" r="6.5"/><path d="M10 10V5.5M10 10L13 12"/>',
+  q3: '<path d="M4 16L16 4M10 4H16V10"/>',
+  days: '<rect x="3" y="4.5" width="14" height="12.5"/><path d="M3 8.5H17M7 2.5V6M13 2.5V6"/>',
+  above: '<path d="M2 15c2-2 4 2 6 0s4 2 6 0 3 1 4 0M10 12V3M7 6l3-3 3 3"/>',
+  daylit: '<circle cx="10" cy="12" r="3"/><path d="M2 16H18M10 4.5V7M4 8l1.6 1.6M16 8l-1.6 1.6"/>',
+  noonc: '<circle cx="10" cy="10" r="7"/><path d="M10 10V4"/>',
+  speed: '<path d="M4 12l6-6 6 6M4 17l6-6 6 6"/>',
+  layer: '<path d="M3 5.5H17M5 10H15M7 14.5H13"/>',
+  edge: '<path d="M2 17H6V13H10V9H14V5H18"/>',
+  connect: '<circle cx="5" cy="10" r="3"/><circle cx="15" cy="10" r="3"/><path d="M8 10H12"/>',
+  stay: '<circle cx="10" cy="5.5" r="2"/><path d="M10 7.5V12M7 16l3-4 3 4M3 17H17"/>',
+  slope: '<path d="M2 17L18 5M2 17H18"/>',
+  zone: '<path d="M2 4.5H18M2 8.5H18M2 12.5H18M2 16.5H18"/>',
+  noon: '<circle cx="10" cy="8" r="3"/><path d="M2 15H18M10 2V3.5"/>',
+  floors: '<rect x="6" y="3.5" width="8" height="3"/><rect x="4" y="8.5" width="12" height="3"/><rect x="2" y="13.5" width="16" height="3"/>',
+  steps: '<path d="M2 17H5V14H8V11H11V8H14V5H18"/>',
+  neck: '<circle cx="4.5" cy="10" r="2.5"/><path d="M7 8.5H18M7 11.5H18"/>',
+  ramp: '<path d="M2 7.5H8L18 15"/>',
+  widths: '<path d="M3 10H17M3 10l3-3M3 10l3 3M17 10l-3-3M17 10l-3 3"/>',
+  zones: '<rect x="2" y="4" width="16" height="12"/><path d="M7 4V16M12 4V16"/>',
+  open: '<circle cx="10" cy="6.5" r="3"/><path d="M3 13.5H17M5 17H15"/>'
+};
+const icn = k => ICN_D[k] ? `<svg class="icn" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">${ICN_D[k]}</svg>` : '';
 const LK = {
   cols: ['Question', 'Data column (step 03 record)', 'Seven variables (condition)', 'Plinth part (dimension)'],
   nodes: [
@@ -3416,7 +3469,7 @@ function drawLinks() {
       DD3.v.anims.push((t, dt) => { if (DD3.p3) DD3.p3.tick(t, dt); }); new ResizeObserver(() => DD3.v.req()).observe($('#d-cv3')); new IntersectionObserver(es => { if (es[0].isIntersecting) DD3.v.play(); }).observe($('#d-cv3')); }
     catch (e) { fail3D($('#d-3d'), e); }
     { const box = $('#d-3d'), bar = document.createElement('div'); bar.className = 'lk-bar'; bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Link choices');
-      bar.innerHTML = LK.cols.map((t, c) => `<div class="lk-g"><span class="lk-h">${t}</span>${LK.nodes.filter(n => n[1] === c).map(n => `<button type="button" data-k="${n[0]}" aria-pressed="false">${n[2]}</button>`).join('')}</div>`).join('');
+      bar.innerHTML = LK.cols.map((t, c) => `<div class="lk-g"><span class="lk-h">${t}</span>${LK.nodes.filter(n => n[1] === c).map(n => `<button type="button" data-k="${n[0]}" aria-pressed="false" title="${[n[2], n[3]].filter(Boolean).join(' — ')}" aria-label="${n[2]}">${icn(n[0])}<span>${n[2]}</span></button>`).join('')}</div>`).join('');
       box.appendChild(bar); bar.addEventListener('pointerdown', e => e.stopPropagation()); bar.addEventListener('wheel', e => e.stopPropagation());
       bar.addEventListener('click', e => { const b = e.target.closest('button[data-k]'); if (!b) return; const k = b.dataset.k; LK.sel = k; const i = DV.findIndex(v => v.k === k); if (i >= 0 && i !== D4.i) { this.stopAuto(); this.pick(i); } else { drawLinks(); inval('derive'); } }); }
     drawLinks();
