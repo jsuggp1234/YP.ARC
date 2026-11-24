@@ -171,7 +171,7 @@ def build(lang):
     # 핀 #292: 화살표 그림 자동 재생을 느리게 (1초에 90분 → 20분)
     R("PH.t = (PH.t + dt * 60 * 1.5) % 21240;", "PH.t = (PH.t + dt * 20) % 21240;", 1)
 
-    G0['patch_icons'](R, T); G0['patch_vtable'](R, T); G0['patch_playwater'](R, T); G0['patch_guides'](R, T); G0['patch_diag'](R, T); G0['patch_skirts'](R, T); G0['patch_perf'](R, T); G0['patch_bg'](R, T); G0['patch_wvars'](R, T)
+    G0['patch_icons'](R, T); G0['patch_vtable'](R, T); G0['patch_playwater'](R, T); G0['patch_guides'](R, T); G0['patch_diag'](R, T); G0['patch_skirts'](R, T); G0['patch_perf'](R, T); G0['patch_bg'](R, T); G0['patch_wvars'](R, T); G0['patch_wday'](R, T)
 
     # 큰 읽기 값의 글자 크기는 토큰으로
     R('style="font-family:var(--font);font-size:19px"', 'style="font-size:var(--t-xl)"')

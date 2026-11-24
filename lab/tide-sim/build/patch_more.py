@@ -143,6 +143,41 @@ def patch_bg(R, T):
 def patch_wvars(R, T):
     R("  ST.view = view;\n  $$('.view').forEach(", "  ST.view = view;\n  { const uc = $('#u-ctl'); if (uc) { if (!uc._home) uc._home = [uc.parentElement, uc.nextElementSibling]; const st = $$('#v-water .stack').pop();\n    if (view === 'water' && st) { if (uc.parentElement !== st) st.insertBefore(uc, st.children[1] || null); } else if (uc.parentElement !== uc._home[0]) uc._home[0].insertBefore(uc, uc._home[1]); } }\n  $$('.view').forEach(", 1)
 
+# 핀 #359: 시뮬레이션 한 화면 안에 물높이 그래프 — 이틀 치 조석 곡선 위를 누르거나 끌면 그 시각의 물높이로 3D·단면·평면이 바로 바뀌어요
+def patch_wday(R, T):
+    R('<div class="legend" id="w-legend"></div>\n        </div>\n',
+      '<div class="legend" id="w-legend"></div>\n        </div>\n'
+      '        <div class="card wday"><h3>' + T("Water level", "물높이") + ' <small>' + T("two days · click or drag to set the time", "이틀 · 누르거나 끌어서 시각 고르기") + '</small></h3>'
+      '<canvas class="ch" id="w-day" style="height:120px" aria-label="' + T("Tide curve: drag to set the water level", "조석 곡선: 끌어서 물높이 고르기") + '"></canvas></div>\n', 1)
+    R("    { const { x, w: Wd, h } = cv('w-fort'), L = 36,",
+      "    drawWDay(s, g);\n    { const { x, w: Wd, h } = cv('w-fort'), L = 36,", 1)
+    R("function wAt(id, t) {",
+      "const WDY = { t0: null, drag: false };\n"
+      "function drawWDay(s, g) {\n"
+      "  const el = document.getElementById('w-day'); if (!el || el.getBoundingClientRect().width < 10) return;\n"
+      "  const { x, w: Wd, h } = cv('w-day'), span = 2880, mx = +document.getElementById('w-t').max, L = 34, Rr = Wd - 6, T0 = 6, B = h - 16;\n"
+      "  if (WDY.t0 == null || (!WDY.drag && (W5.t < WDY.t0 + span * 0.08 || W5.t > WDY.t0 + span * 0.92))) WDY.t0 = clamp(Math.round((W5.t - span / 2) / 60) * 60, 0, mx - span);\n"
+      "  const N = 288, ys = []; let lo = 1e9, hi = -1e9; for (let i = 0; i <= N; i++) { const v = wAt(ST.sea, WDY.t0 + span * i / N); ys.push(v); lo = Math.min(lo, v); hi = Math.max(hi, v); }\n"
+      "  lo -= 0.3; hi = Math.max(hi, g.top) + 0.3;\n"
+      "  const X = lin(WDY.t0, WDY.t0 + span, L, Rr), Y = lin(lo, hi, B, T0);\n"
+      "  x.save(); x.lineWidth = 1; x.strokeStyle = K.line || '#ddd'; x.font = FS(9.5); x.fillStyle = K.faint; x.textBaseline = 'middle';\n"
+      "  for (const z of ticks(lo, hi, 3)) { x.beginPath(); x.moveTo(L, Math.round(Y(z)) + .5); x.lineTo(Rr, Math.round(Y(z)) + .5); x.globalAlpha = .5; x.stroke(); x.globalAlpha = 1; x.textAlign = 'right'; x.fillText(fH(z, 0), L - 5, Y(z)); }\n"
+      "  x.textAlign = 'center'; x.textBaseline = 'alphabetic'; for (let t = Math.ceil(WDY.t0 / 360) * 360; t <= WDY.t0 + span; t += 360) { const hh = Math.round(((t % 1440) + 1440) % 1440 / 60); x.fillText(String(hh).padStart(2, '0') + ':00', X(t), h - 3); x.beginPath(); x.moveTo(Math.round(X(t)) + .5, B); x.lineTo(Math.round(X(t)) + .5, B + 3); x.stroke(); }\n"
+      "  x.setLineDash([3, 3]); x.strokeStyle = K.faint; for (const z of [g.top]) { x.beginPath(); x.moveTo(L, Y(z)); x.lineTo(Rr, Y(z)); x.stroke(); } x.setLineDash([]);\n"
+      "  x.strokeStyle = K.ink; x.lineWidth = 1; x.beginPath(); ys.forEach((v, i) => { const px = L + (Rr - L) * i / N; i ? x.lineTo(px, Y(v)) : x.moveTo(px, Y(v)); }); x.stroke();\n"
+      "  const cx = X(W5.t), w = wAt(ST.sea, W5.t); x.strokeStyle = K.ink; x.beginPath(); x.moveTo(Math.round(cx) + .5, T0); x.lineTo(Math.round(cx) + .5, B); x.stroke();\n"
+      "  x.setLineDash([2, 2]); x.beginPath(); x.moveTo(L, Y(w)); x.lineTo(Rr, Y(w)); x.stroke(); x.setLineDash([]);\n"
+      "  x.fillStyle = K.ink; x.beginPath(); x.arc(cx, Y(w), 3, 0, 2 * Math.PI); x.fill();\n"
+      "  x.font = FS(10, true); x.textAlign = cx > (L + Rr) / 2 ? 'right' : 'left'; x.fillText(fH(w), cx + (cx > (L + Rr) / 2 ? -6 : 6), Math.max(T0 + 9, Y(w) - 6));\n"
+      "  x.restore();\n"
+      "  if (!el._wd) { el._wd = 1; el.style.cursor = 'ew-resize'; el.style.touchAction = 'none';\n"
+      "    const set = e => { const r = el.getBoundingClientRect(), f = clamp((e.clientX - r.left - L) / (r.width - 6 - L), 0, 1), sl = document.getElementById('w-t'); const v = Math.round((WDY.t0 + span * f) / 10) * 10; if (v !== +sl.value) { sl.value = v; sl.dispatchEvent(new Event('input', { bubbles: true })); } };\n"
+      "    el.addEventListener('pointerdown', e => { WDY.drag = true; try { el.setPointerCapture(e.pointerId); } catch (_) {} set(e); });\n"
+      "    el.addEventListener('pointermove', e => { if (WDY.drag) set(e); });\n"
+      "    const up = () => { WDY.drag = false; }; el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); }\n"
+      "}\n"
+      "function wAt(id, t) {", 1)
+
 # 핀 #303: 변수체계 3D 자리에 평면 + 단면 그림 (diag.js)
 def patch_diag(R, T):
     R("<h3>3D로 보기 · 찾은 높이가 기단의 어느 부분이 되나", "<h3>평면과 단면 · 변수마다 바뀌는 부분", 1)

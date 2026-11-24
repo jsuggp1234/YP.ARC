@@ -767,6 +767,22 @@ html.docked .brand h1 { font-weight: 500; }
   #v-water .grid > .stack:first-child h3 small { display: none; }
 }
 </style>
+<style>
+/* 핀 #359·#360: 둘째 칸 = 단면 · 평면(남는 높이를 채움) · 물높이 그래프, 3D와 위아래 끝선이 같게 */
+@media (min-width: 1100px) {
+  #v-water .grid > .stack:first-child { grid-template-rows: auto minmax(0, 1fr) auto; align-items: stretch; }
+  #v-water .grid > .stack:first-child > .card:nth-child(1) { grid-row: 1 / 4; display: flex; flex-direction: column; }
+  #v-water .grid > .stack:first-child > .card:nth-child(1) #w-3d { flex: 1 1 auto; }
+  #v-water .grid > .stack:first-child > .card.wday { grid-column: 2; grid-row: 3; }
+  #v-water .grid > .stack:first-child > .card:nth-child(3) { grid-column: 2; grid-row: 1; }
+  #v-water .grid > .stack:first-child > .card:nth-child(4) { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; min-height: 0; }
+  #v-water .grid > .stack:first-child > .card:nth-child(4) #w-plan { flex: 1 1 auto; height: auto !important; min-height: 220px; }
+  #v-water .grid > .stack:first-child > .card { padding-left: 0; padding-right: 0; }
+  #v-water .grid > .stack:first-child > .two { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 12px; margin: 0; }
+  #v-water .grid > .stack:first-child > .two > * { margin: 0; min-width: 0; }
+}
+#w-day { display: block; width: 100%; }
+</style>
 <div class="ybar" role="banner">
   <a class="y-logo" href="../../index.html" aria-label="YP.STUDIO &amp; LAB home"><span class="roll"><span data-t="YP.STUDIO &amp; LAB">YP.STUDIO &amp; LAB</span></span></a>
   <a class="y-work" href="../../lab.html"><span class="roll"><span data-t="Lab / tide-sim">Lab / tide-sim</span></span></a>
@@ -1156,6 +1172,7 @@ html.docked .brand h1 { font-weight: 500; }
           <div class="cv3" id="w-3d"><canvas id="w-cv" aria-label="기단과 물 3D"></canvas><span class="hint">끌어서 돌리기 · 휠이나 두 손가락으로 확대</span><span class="tag" id="w-tag"></span></div>
           <div class="legend" id="w-legend"></div>
         </div>
+        <div class="card wday"><h3>물높이 <small>이틀 · 누르거나 끌어서 시각 고르기</small></h3><canvas class="ch" id="w-day" style="height:120px" aria-label="조석 곡선: 끌어서 물높이 고르기"></canvas></div>
         <div class="card">
           <h3>단면 <small>뭍에서 바다 쪽으로 기단 가운데를 자른 모습 · 실제 비례</small></h3>
           <canvas class="ch" id="w-sec" style="height:210px" aria-label="기단 단면과 물"></canvas>
@@ -1528,6 +1545,30 @@ function ser(id) {                       // 10분 간격 1년의 물높이 (기�
   return SER[id];
 }
 const NT = 52560;
+const WDY = { t0: null, drag: false };
+function drawWDay(s, g) {
+  const el = document.getElementById('w-day'); if (!el || el.getBoundingClientRect().width < 10) return;
+  const { x, w: Wd, h } = cv('w-day'), span = 2880, mx = +document.getElementById('w-t').max, L = 34, Rr = Wd - 6, T0 = 6, B = h - 16;
+  if (WDY.t0 == null || (!WDY.drag && (W5.t < WDY.t0 + span * 0.08 || W5.t > WDY.t0 + span * 0.92))) WDY.t0 = clamp(Math.round((W5.t - span / 2) / 60) * 60, 0, mx - span);
+  const N = 288, ys = []; let lo = 1e9, hi = -1e9; for (let i = 0; i <= N; i++) { const v = wAt(ST.sea, WDY.t0 + span * i / N); ys.push(v); lo = Math.min(lo, v); hi = Math.max(hi, v); }
+  lo -= 0.3; hi = Math.max(hi, g.top) + 0.3;
+  const X = lin(WDY.t0, WDY.t0 + span, L, Rr), Y = lin(lo, hi, B, T0);
+  x.save(); x.lineWidth = 1; x.strokeStyle = K.line || '#ddd'; x.font = FS(9.5); x.fillStyle = K.faint; x.textBaseline = 'middle';
+  for (const z of ticks(lo, hi, 3)) { x.beginPath(); x.moveTo(L, Math.round(Y(z)) + .5); x.lineTo(Rr, Math.round(Y(z)) + .5); x.globalAlpha = .5; x.stroke(); x.globalAlpha = 1; x.textAlign = 'right'; x.fillText(fH(z, 0), L - 5, Y(z)); }
+  x.textAlign = 'center'; x.textBaseline = 'alphabetic'; for (let t = Math.ceil(WDY.t0 / 360) * 360; t <= WDY.t0 + span; t += 360) { const hh = Math.round(((t % 1440) + 1440) % 1440 / 60); x.fillText(String(hh).padStart(2, '0') + ':00', X(t), h - 3); x.beginPath(); x.moveTo(Math.round(X(t)) + .5, B); x.lineTo(Math.round(X(t)) + .5, B + 3); x.stroke(); }
+  x.setLineDash([3, 3]); x.strokeStyle = K.faint; for (const z of [g.top]) { x.beginPath(); x.moveTo(L, Y(z)); x.lineTo(Rr, Y(z)); x.stroke(); } x.setLineDash([]);
+  x.strokeStyle = K.ink; x.lineWidth = 1; x.beginPath(); ys.forEach((v, i) => { const px = L + (Rr - L) * i / N; i ? x.lineTo(px, Y(v)) : x.moveTo(px, Y(v)); }); x.stroke();
+  const cx = X(W5.t), w = wAt(ST.sea, W5.t); x.strokeStyle = K.ink; x.beginPath(); x.moveTo(Math.round(cx) + .5, T0); x.lineTo(Math.round(cx) + .5, B); x.stroke();
+  x.setLineDash([2, 2]); x.beginPath(); x.moveTo(L, Y(w)); x.lineTo(Rr, Y(w)); x.stroke(); x.setLineDash([]);
+  x.fillStyle = K.ink; x.beginPath(); x.arc(cx, Y(w), 3, 0, 2 * Math.PI); x.fill();
+  x.font = FS(10, true); x.textAlign = cx > (L + Rr) / 2 ? 'right' : 'left'; x.fillText(fH(w), cx + (cx > (L + Rr) / 2 ? -6 : 6), Math.max(T0 + 9, Y(w) - 6));
+  x.restore();
+  if (!el._wd) { el._wd = 1; el.style.cursor = 'ew-resize'; el.style.touchAction = 'none';
+    const set = e => { const r = el.getBoundingClientRect(), f = clamp((e.clientX - r.left - L) / (r.width - 6 - L), 0, 1), sl = document.getElementById('w-t'); const v = Math.round((WDY.t0 + span * f) / 10) * 10; if (v !== +sl.value) { sl.value = v; sl.dispatchEvent(new Event('input', { bubbles: true })); } };
+    el.addEventListener('pointerdown', e => { WDY.drag = true; try { el.setPointerCapture(e.pointerId); } catch (_) {} set(e); });
+    el.addEventListener('pointermove', e => { if (WDY.drag) set(e); });
+    const up = () => { WDY.drag = false; }; el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); }
+}
 function wAt(id, t) { const y = ser(id), f = t / 10, i = Math.max(0, Math.min(NT - 2, Math.floor(f))), a = Math.min(1, Math.max(0, f - i)); return y[i] * (1 - a) + y[i + 1] * a; }
 const SEA = () => DATA.seas[ST.sea];
 
@@ -3878,6 +3919,7 @@ VIEWS.water = {
  }
     this.plan(w);
     // 보름
+    drawWDay(s, g);
     { const { x, w: Wd, h } = cv('w-fort'), L = 36, R = Wd - 6, T = 8, B = h - 20, t0 = W5.t - 7 * 1440, t1 = W5.t + 7 * 1440, X = lin(t0, t1, L, R), zlo = s.stats.lat - 0.2, zhi = Math.max(s.stats.hat, g.top) + 0.2, Y = lin(zlo, zhi, B, T), y = ser(ST.sea);
       for (const v of ticks(zlo, zhi, 3)) txt(x, fH(v, 0), L - 4, Y(v), { align: 'right', font: FS(10, true) });
       const i0 = Math.max(0, Math.floor(t0 / 10)), i1 = Math.min(NT - 1, Math.ceil(t1 / 10));
