@@ -58,7 +58,7 @@ def patch_plan(R, T):
 # 핀 #306: 평면 색을 무채색 도면 색으로 바꿔 그린 뒤 되돌려요
 def patch_plan2(R, T):
     R("{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { _dp(cvId, id, w, o);",
-      "{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { const dk = isDark(), G = dk ? { mudLo: '#2a2a2a', con: '#4a4a4a', rev: '#333333', land: '#3a3a3a' } : { mudLo: '#e2e2e2', con: '#cfcfcf', rev: '#dedede', land: '#ececec' }, GK = dk ? { water: '#727272', water2: '#444444' } : { water: '#b6b6b6', water2: '#d2d2d2' };\n"
+      "{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { const dk = isDark(), G = dk ? { mudLo: '#2a2a2a', con: '#4a4a4a', rev: '#333333', land: '#3a3a3a' } : { mudLo: '#e2e2e2', con: '#cfcfcf', rev: '#dedede', land: '#ececec' }, GK = dk ? { water: '#f2f2f2', water2: '#5e5e5e' } : { water: '#111111', water2: '#a9a9a9' }; /* 핀 #372: 잠긴 면은 중간 회색, 물가선은 진한 선 */\n"
       "  const s3 = {}, sk = {}; for (const k in G) { s3[k] = C3[k]; C3[k] = G[k]; } for (const k in GK) { sk[k] = K[k]; K[k] = GK[k]; } try { _dp(cvId, id, w, o); } finally { Object.assign(C3, s3); Object.assign(K, sk); }", 1)
 
 def patch_plan3(R, T):
@@ -145,10 +145,10 @@ def patch_wvars(R, T):
 
 # 핀 #359: 시뮬레이션 한 화면 안에 물높이 그래프 — 이틀 치 조석 곡선 위를 누르거나 끌면 그 시각의 물높이로 3D·단면·평면이 바로 바뀌어요
 def patch_wday(R, T):
-    R('<div class="legend" id="w-legend"></div>\n        </div>\n',
-      '<div class="legend" id="w-legend"></div>\n        </div>\n'
-      '        <div class="card wday"><h3>' + T("Water level", "물높이") + ' <small>' + T("two days · click or drag to set the time", "이틀 · 누르거나 끌어서 시각 고르기") + '</small></h3>'
-      '<canvas class="ch" id="w-day" style="height:120px" aria-label="' + T("Tide curve: drag to set the water level", "조석 곡선: 끌어서 물높이 고르기") + '"></canvas></div>\n', 1)
+    # 핀 #368: 그래프는 오른쪽 조절 칸의 '시각' 슬라이더 바로 밑에
+    R('<input type="range" id="w-t" min="0" max="525590" step="10" value="0">\n',
+      '<input type="range" id="w-t" min="0" max="525590" step="10" value="0">\n'
+      '            <canvas id="w-day" aria-label="' + T("Tide curve, two days: drag to set the water level", "이틀 치 조석 곡선: 끌어서 물높이 고르기") + '"></canvas>\n            <div class="wd-cap">' + T("Drag or scroll to move the time · Shift + wheel: 1 h", "끌어서 물높이 조절 · 휠로 시간 이동 (Shift 1시간)") + '</div>\n', 1)
     R("    { const { x, w: Wd, h } = cv('w-fort'), L = 36,",
       "    drawWDay(s, g);\n    { const { x, w: Wd, h } = cv('w-fort'), L = 36,", 1)
     R("function wAt(id, t) {",
@@ -162,20 +162,68 @@ def patch_wday(R, T):
       "  const X = lin(WDY.t0, WDY.t0 + span, L, Rr), Y = lin(lo, hi, B, T0);\n"
       "  x.save(); x.lineWidth = 1; x.strokeStyle = K.line || '#ddd'; x.font = FS(9.5); x.fillStyle = K.faint; x.textBaseline = 'middle';\n"
       "  for (const z of ticks(lo, hi, 3)) { x.beginPath(); x.moveTo(L, Math.round(Y(z)) + .5); x.lineTo(Rr, Math.round(Y(z)) + .5); x.globalAlpha = .5; x.stroke(); x.globalAlpha = 1; x.textAlign = 'right'; x.fillText(fH(z, 0), L - 5, Y(z)); }\n"
-      "  x.textAlign = 'center'; x.textBaseline = 'alphabetic'; for (let t = Math.ceil(WDY.t0 / 360) * 360; t <= WDY.t0 + span; t += 360) { const hh = Math.round(((t % 1440) + 1440) % 1440 / 60); x.fillText(String(hh).padStart(2, '0') + ':00', X(t), h - 3); x.beginPath(); x.moveTo(Math.round(X(t)) + .5, B); x.lineTo(Math.round(X(t)) + .5, B + 3); x.stroke(); }\n"
+      "  x.textAlign = 'center'; x.textBaseline = 'alphabetic'; const stp = (Rr - L) < 420 ? 720 : 360; for (let t = Math.ceil(WDY.t0 / stp) * stp; t <= WDY.t0 + span; t += stp) { const hh = Math.round(((t % 1440) + 1440) % 1440 / 60); x.fillText(String(hh).padStart(2, '0') + ':00', X(t), h - 3); x.beginPath(); x.moveTo(Math.round(X(t)) + .5, B); x.lineTo(Math.round(X(t)) + .5, B + 3); x.stroke(); }\n"
       "  x.setLineDash([3, 3]); x.strokeStyle = K.faint; for (const z of [g.top]) { x.beginPath(); x.moveTo(L, Y(z)); x.lineTo(Rr, Y(z)); x.stroke(); } x.setLineDash([]);\n"
       "  x.strokeStyle = K.ink; x.lineWidth = 1; x.beginPath(); ys.forEach((v, i) => { const px = L + (Rr - L) * i / N; i ? x.lineTo(px, Y(v)) : x.moveTo(px, Y(v)); }); x.stroke();\n"
       "  const cx = X(W5.t), w = wAt(ST.sea, W5.t); x.strokeStyle = K.ink; x.beginPath(); x.moveTo(Math.round(cx) + .5, T0); x.lineTo(Math.round(cx) + .5, B); x.stroke();\n"
       "  x.setLineDash([2, 2]); x.beginPath(); x.moveTo(L, Y(w)); x.lineTo(Rr, Y(w)); x.stroke(); x.setLineDash([]);\n"
-      "  x.fillStyle = K.ink; x.beginPath(); x.arc(cx, Y(w), 3, 0, 2 * Math.PI); x.fill();\n"
+      "  x.beginPath(); x.arc(cx, Y(w), 5.5, 0, 2 * Math.PI); x.fillStyle = getComputedStyle(el).getPropertyValue('--wd-knob').trim() || '#fff'; x.fill(); x.lineWidth = 1.5; x.strokeStyle = K.ink; x.stroke(); x.lineWidth = 1; x.fillStyle = K.ink;\n"
       "  x.font = FS(10, true); x.textAlign = cx > (L + Rr) / 2 ? 'right' : 'left'; x.fillText(fH(w), cx + (cx > (L + Rr) / 2 ? -6 : 6), Math.max(T0 + 9, Y(w) - 6));\n"
       "  x.restore();\n"
-      "  if (!el._wd) { el._wd = 1; el.style.cursor = 'ew-resize'; el.style.touchAction = 'none';\n"
+      "  if (!el._wd) { el._wd = 1; el.style.cursor = 'col-resize'; el.style.touchAction = 'none';\n"
       "    const set = e => { const r = el.getBoundingClientRect(), f = clamp((e.clientX - r.left - L) / (r.width - 6 - L), 0, 1), sl = document.getElementById('w-t'); const v = Math.round((WDY.t0 + span * f) / 10) * 10; if (v !== +sl.value) { sl.value = v; sl.dispatchEvent(new Event('input', { bubbles: true })); } };\n"
       "    el.addEventListener('pointerdown', e => { WDY.drag = true; try { el.setPointerCapture(e.pointerId); } catch (_) {} set(e); });\n"
       "    el.addEventListener('pointermove', e => { if (WDY.drag) set(e); });\n"
-      "    const up = () => { WDY.drag = false; }; el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); }\n"
+      "    el.addEventListener('wheel', e => { e.preventDefault(); e.stopPropagation(); const d = Math.sign(e.deltaY || e.deltaX); if (!d) return; const sl = document.getElementById('w-t'), v = clamp(+sl.value + d * (e.shiftKey ? 60 : 10), +sl.min, +sl.max); if (v !== +sl.value) { sl.value = v; sl.dispatchEvent(new Event('input', { bubbles: true })); } }, { passive: false }); el.setAttribute('data-lenis-prevent', ''); const up = () => { WDY.drag = false; }; el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up); }\n"
       "}\n"
+      "function wAt(id, t) {", 1)
+    # 핀 #369: 바로가기 버튼은 누른 것을 진하게, 시각을 직접 움직이면 풀림
+    R("$('#w-jumps').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { this.jump(b.dataset.j); } });",
+      "$('#w-jumps').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { this.jump(b.dataset.j); $$('#w-jumps button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); } });\n"
+      "    $('#w-t').addEventListener('input', () => $$('#w-jumps button').forEach(x => x.setAttribute('aria-pressed', 'false')));", 1)
+
+# 핀 #370: 시뮬레이션 칸 끝선 — 3D 높이 = 오른쪽 (물높이 카드 + 변수 7개) 높이, 그래서 3D·평면·조절 칸의 위아래가 한 선
+def patch_walign(R, T):
+    R("function wAt(id, t) {",
+      "function wAlign() {\n"
+      "  const L = document.querySelector('#v-water .grid > .stack:first-child'), Rt = document.querySelector('#v-water .grid > .stack:last-child'); if (!L || !Rt || !L.children[0]) return;\n"
+      "  const c3 = L.children[0]; if (innerWidth < 1100 || L.offsetParent === null) { if (innerWidth < 1100) c3.style.height = ''; return; }\n"
+      "  const a = Rt.children[0].getBoundingClientRect(), u = document.getElementById('u-ctl'), b = (u && Rt.contains(u) ? u : Rt.children[0]).getBoundingClientRect(), H = Math.round(b.bottom - a.top);\n"
+      "  if (H > 300 && c3.style.height !== H + 'px') c3.style.height = H + 'px';\n"
+      "}\n"
+      "setTimeout(() => { const ro = new ResizeObserver(() => requestAnimationFrame(wAlign)); const Rt = document.querySelector('#v-water .grid > .stack:last-child'); if (Rt) { ro.observe(Rt); [...Rt.children].forEach(c => ro.observe(c)); } const u = document.getElementById('u-ctl'); if (u) ro.observe(u); addEventListener('resize', wAlign); addEventListener('hashchange', () => setTimeout(wAlign, 50)); wAlign(); }, 0);\n"
+      "function wAt(id, t) {", 1)
+
+# 핀 #373: 연결 표를 화면 폭 끝까지 / #374: 변수체계 단계의 변수 칸은 아이콘 + 이름 + 바뀌는 것 체크만 / #375: 숫자를 눌러 키보드로 입력
+def patch_upick(R, T):
+    R("const W = 1000, H = 460, cx = [12, 232, 478, 748], cw = [150, 200, 220, 240], top = 36, ns = {};",
+      "const W = Math.max(720, Math.round(svg.getBoundingClientRect().width) || 1000), k = W / 1000, H = 460, cx = [0, 232, 478, 760].map(v => v * k), cw = [150, 200, 220, 240].map(v => v * k), top = 36, ns = {};\n"
+      "  if (!drawLinks._rs) { drawLinks._rs = 1; const re = () => { clearTimeout(drawLinks._t); drawLinks._t = setTimeout(drawLinks, 120); }; addEventListener('resize', re); addEventListener('hashchange', re); setTimeout(re, 60); }", 1)
+    R("{ const uc = $('#u-ctl'); if (uc) { if (!uc._home)", "{ const uc = $('#u-ctl'); if (uc) { uc.classList.toggle('u-pick', view !== 'water'); if (typeof uTags === 'function') uTags(); if (!uc._home)", 1)
+    R("function wAt(id, t) {",
+      "function uTags() { const uc = document.getElementById('u-ctl'); if (!uc) return;\n"
+      "  uc.querySelectorAll('.vrow').forEach(r => { const sm = r.querySelector('small'); if (!sm || r.querySelector('.u-tg')) return; const parts = sm.textContent.split('\u2192'); if (parts.length < 2) return;\n"
+      "    const tg = document.createElement('span'); tg.className = 'u-tg'; tg.innerHTML = '<i>" + T("changes", "바뀌는 것") + "</i>' + parts.slice(1).join(' ').split(/[·,]/).map(t => t.trim()).filter(Boolean).map(t => '<em>' + t + '</em>').join(''); r.appendChild(tg); r.setAttribute('role', 'button'); if (!r.hasAttribute('aria-pressed')) r.setAttribute('aria-pressed', 'false'); }); }\n"
+      "setTimeout(() => { const uc = document.getElementById('u-ctl'); if (!uc) return; uTags(); setTimeout(uTags, 400);\n"
+      "  uc.addEventListener('click', e => { if (!uc.classList.contains('u-pick')) return; const r = e.target.closest('.vrow'); if (!r || e.target.closest('input,button,a')) return; const on = !r.classList.contains('pk'); r.classList.toggle('pk', on); r.setAttribute('aria-pressed', String(on)); });\n"
+      "  uc.querySelectorAll('.vrow').forEach(r => { r.setAttribute('role', 'button'); r.setAttribute('aria-pressed', 'false'); });\n"
+      "  document.addEventListener('click', e => { const v = e.target.closest('#u-ctl .v[id$=\"-v\"]'); if (!v || v.querySelector('input') || uc.classList.contains('u-pick')) return; const rg = document.getElementById(v.id.slice(0, -2)); if (!rg || rg.type !== 'range') return;\n"
+      "    const old = v.innerHTML, inp = document.createElement('input'); inp.type = 'number'; inp.className = 'v-ed'; inp.min = rg.min; inp.max = rg.max; inp.step = rg.step; inp.value = rg.value; inp.setAttribute('aria-label', rg.getAttribute('aria-label') || rg.id); v.innerHTML = ''; v.appendChild(inp); inp.focus(); inp.select(); let done = false;\n"
+      "    const fin = ok => { if (done) return; done = true; v.innerHTML = old; if (ok && inp.value.trim() !== '' && isFinite(+inp.value)) { const st = +rg.step || 1, mn = +rg.min, mx = +rg.max; let n = clamp(+inp.value, mn, mx); n = +(mn + Math.round((n - mn) / st) * st).toFixed(6); n = clamp(n, mn, mx); rg.value = n; rg.dispatchEvent(new Event('input', { bubbles: true })); rg.dispatchEvent(new Event('change', { bubbles: true })); } };\n"
+      "    inp.addEventListener('keydown', k => { if (k.key === 'Enter') { k.preventDefault(); fin(true); } else if (k.key === 'Escape') { k.preventDefault(); fin(false); } }); inp.addEventListener('blur', () => fin(true)); });\n"
+      "  uc.querySelectorAll('.v[id$=\"-v\"]').forEach(v => { if (document.getElementById(v.id.slice(0, -2))?.type === 'range') { v.classList.add('v-edit'); v.title = '" + T("Click to type a value", "눌러서 숫자 입력") + "'; } });\n"
+      "}, 0);\n"
+      "function wAt(id, t) {", 1)
+
+# 핀 #376: 페이지를 열면 TIDE-SIM 제목이 가운데에서 제자리로 올라가 앉고, 아래 내용이 바로 이어서 떠올라요 (움직임 줄이기면 그대로)
+def patch_tintro(R, T):
+    R("function wAt(id, t) {",
+      "(() => { const h = document.querySelector('.brand h1'); if (!h || innerWidth <= 760 || scrollY > 10 || matchMedia('(prefers-reduced-motion: reduce)').matches || !h.animate) return;\n"
+      "  const r = h.getBoundingClientRect(), dy = Math.max(0, innerHeight / 2 - r.height * 0.7 - r.top), E = 'cubic-bezier(.22, 1, .36, 1)';\n"
+      "  const rest = [...document.querySelectorAll('header.top .wrap > :not(.brand), .brand > :not(h1), header.top ~ *')].filter(e => e.tagName !== 'SCRIPT' && !e.classList.contains('dock-bg') && getComputedStyle(e).position !== 'fixed');\n"
+      "  const a = h.animate([{ transform: `translateY(${dy}px) scale(1.25)` }, { transform: 'translateY(0) scale(1)' }], { duration: 900, easing: E });\n"
+      "  rest.forEach((e, i) => e.animate([{ opacity: 0, transform: 'translateY(28px)' }, { opacity: 1, transform: 'none' }], { duration: 700, delay: 420 + Math.min(i, 6) * 45, easing: E, fill: 'backwards' }));\n"
+      "  a.finished.then(() => dispatchEvent(new Event('resize'))).catch(() => {}); })();\n"
       "function wAt(id, t) {", 1)
 
 # 핀 #303: 변수체계 3D 자리에 평면 + 단면 그림 (diag.js)
