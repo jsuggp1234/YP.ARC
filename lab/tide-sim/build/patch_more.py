@@ -96,3 +96,16 @@ def patch_playwater(R, T):
       "        const w = wAt(ST.sea, U3.t); if (U3.p3) { U3.p3.setWater(w, null); U3.wl = w; U3.v && U3.v.req && U3.v.req(); } out.textContent = fDate(U3.t) + ' · ' + fH(w) + ' m'; raf = requestAnimationFrame(f); };\n"
       "      b.addEventListener('click', () => { if (raf) { stop(); return; } if (U3.t == null) U3.t = 0; last = performance.now(); b.setAttribute('aria-pressed', 'true'); lab.textContent = '" + st + "'; ic.setAttribute('d', 'M2.5 1.5H5V10.5H2.5ZM7 1.5H9.5V10.5H7Z'); raf = requestAnimationFrame(f); });\n"
       "      $('#u3-w').addEventListener('click', () => { stop(); U3.t = null; out.textContent = ''; }); }", 1)
+
+# 핀 #301·#309: 기록에서 찾은 점 → 그 높이가 만드는 기단 부분까지 점선이 끝까지 '찍~' 그어지고, 끝에 점과 이름
+def patch_guides(R, T):
+    R("const zz = mk.to != null ? mk.to : mk.z; x.save(); x.setLineDash([2, 3]); x.strokeStyle = K.water; x.beginPath(); x.moveTo(px, Y(zz)); x.lineTo(Xs(CORE.XL), Y(zz)); x.stroke(); x.restore();",
+      "const zz = mk.to != null ? mk.to : mk.z, tg = guideTo(g, zz), tx = Xs(tg[0]), f = D4.scan >= 1 ? 1 : clamp((scanZ - mk.z) / ((zhi - zlo) * 0.12), 0, 1), ex = px + (tx - px) * f;\n"
+      "      x.save(); x.setLineDash([4, 3]); x.strokeStyle = K.water; x.lineWidth = 1.1; x.beginPath(); x.moveTo(px, Y(zz)); x.lineTo(ex, Y(zz)); x.stroke(); x.restore();\n"
+      "      if (f >= 1) { x.fillStyle = K.water; x.beginPath(); x.arc(tx, Y(zz), 3.4, 0, 7); x.fill(); x.strokeStyle = K.surface; x.lineWidth = 1; x.stroke(); txt(x, '→ ' + tg[1] + ' ' + fH(zz), Math.min(tx + 7, SR - 4), Y(zz) - 8, { align: tx + 120 > SR ? 'right' : 'left', font: FS(10, true), color: K.water, halo: K.surface }); }", 1)
+    R("VIEWS.rules = {", "function guideTo(g, z) { const XC = CORE.XC, NM = { p99: '둘째 바닥', p50: '아래 바닥', step: '수변 단' };\n"
+      "  const t = g.T.find(t => Math.abs(t.z - z) < 0.03); if (t) return [XC + (t.r0 + t.r1) / 2, NM[t.k] || '맨 위 바닥'];\n"
+      "  if (Math.abs(g.C - z) < 0.03 && g.xn1 > g.xn0) return [(g.xn0 + g.xn1) / 2, '이음목'];\n"
+      "  if (g.L > 0.1 && Math.abs(g.P - z) < 0.05) return [(g.xs0 + g.xs1) / 2, '자락 끝'];\n"
+      "  const n = g.T.reduce((a, t) => Math.abs(t.z - z) < Math.abs(a.z - z) ? t : a, g.T[0]); return [XC + (n.r0 + n.r1) / 2, NM[n.k] || '맨 위 바닥']; }\n"
+      "VIEWS.rules = {", 1)

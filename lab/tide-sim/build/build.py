@@ -8,7 +8,7 @@ SRC = open(os.path.join(HERE, "source.html"), encoding="utf8").read()
 RUNS = json.load(open(os.path.join(HERE, "runs.json"), encoding="utf8"))
 exec(open(os.path.join(HERE, "en_runs.py"), encoding="utf8").read())
 assert len(EN) == len(RUNS)
-RUN_EN = dict(zip(RUNS, EN)); RUN_EN.update({"렌더": "Render", "렌더 보기": "Render view", "세로 축척 = 가로 축척 (실제 비율)": "Vertical = horizontal (true scale)", "세로 ×": "Vertical ×", " · 3D·평면과 같은 땅 높이": " · same ground as 3D and plan"})
+RUN_EN = dict(zip(RUNS, EN)); RUN_EN.update({"렌더": "Render", "렌더 보기": "Render view", "세로 축척 = 가로 축척 (실제 비율)": "Vertical = horizontal (true scale)", "세로 ×": "Vertical ×", "둘째 바닥": "Second floor", "아래 바닥": "Lower floor", "수변 단": "Waterside step", "맨 위 바닥": "Top floor", "이음목": "Neck", "자락 끝": "Apron end", " · 3D·평면과 같은 땅 높이": " · same ground as 3D and plan"})
 RUN_RE = r"[^`'\"$\{\}<>\n]*[가-힣][^`'\"$\{\}<>\n]*"
 
 
@@ -171,7 +171,7 @@ def build(lang):
     # 핀 #292: 화살표 그림 자동 재생을 느리게 (1초에 90분 → 20분)
     R("PH.t = (PH.t + dt * 60 * 1.5) % 21240;", "PH.t = (PH.t + dt * 20) % 21240;", 1)
 
-    G0['patch_icons'](R, T); G0['patch_playwater'](R, T)
+    G0['patch_icons'](R, T); G0['patch_playwater'](R, T); G0['patch_guides'](R, T)
 
     # 큰 읽기 값의 글자 크기는 토큰으로
     R('style="font-family:var(--font);font-size:19px"', 'style="font-size:var(--t-xl)"')

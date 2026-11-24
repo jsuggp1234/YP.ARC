@@ -3026,6 +3026,11 @@ function readings(id, V) {   // 읽기 지표와 1년의 값
   return { isl, open, openMin: Math.min(...open), openMax: Math.max(...open), nParts: T.length,
     p99days: T.filter(t => t.k === 'p99').map(t => CORE.daysOver(s, t.z))[0], lowDays: CORE.daysOver(s, zs[zs.length - 1]) };
 }
+function guideTo(g, z) { const XC = CORE.XC, NM = { p99: '둘째 바닥', p50: '아래 바닥', step: '수변 단' };
+  const t = g.T.find(t => Math.abs(t.z - z) < 0.03); if (t) return [XC + (t.r0 + t.r1) / 2, NM[t.k] || '맨 위 바닥'];
+  if (Math.abs(g.C - z) < 0.03 && g.xn1 > g.xn0) return [(g.xn0 + g.xn1) / 2, '이음목'];
+  if (g.L > 0.1 && Math.abs(g.P - z) < 0.05) return [(g.xs0 + g.xs1) / 2, '자락 끝'];
+  const n = g.T.reduce((a, t) => Math.abs(t.z - z) < Math.abs(a.z - z) ? t : a, g.T[0]); return [XC + (n.r0 + n.r1) / 2, NM[n.k] || '맨 위 바닥']; }
 VIEWS.rules = {
   init() {
     const box = $('#u-ctl');
@@ -3372,7 +3377,9 @@ VIEWS.derive = {
       const px = Xc(mk.v), py = Y(mk.z);
       x.fillStyle = K.water; x.beginPath(); x.arc(px, py, mk.small ? 2.6 : 3.6, 0, 7); x.fill();
       if (mk.up) { const y2 = Y(mk.to); x.save(); x.strokeStyle = K.water; x.lineWidth = 1.2; x.beginPath(); x.moveTo(px, py); x.lineTo(px, y2); x.stroke(); x.beginPath(); x.moveTo(px - 3, y2 + 4); x.lineTo(px, y2); x.lineTo(px + 3, y2 + 4); x.stroke(); x.restore(); }
-      const zz = mk.to != null ? mk.to : mk.z; x.save(); x.setLineDash([2, 3]); x.strokeStyle = K.water; x.beginPath(); x.moveTo(px, Y(zz)); x.lineTo(Xs(CORE.XL), Y(zz)); x.stroke(); x.restore();
+      const zz = mk.to != null ? mk.to : mk.z, tg = guideTo(g, zz), tx = Xs(tg[0]), f = D4.scan >= 1 ? 1 : clamp((scanZ - mk.z) / ((zhi - zlo) * 0.12), 0, 1), ex = px + (tx - px) * f;
+      x.save(); x.setLineDash([4, 3]); x.strokeStyle = K.water; x.lineWidth = 1.1; x.beginPath(); x.moveTo(px, Y(zz)); x.lineTo(ex, Y(zz)); x.stroke(); x.restore();
+      if (f >= 1) { x.fillStyle = K.water; x.beginPath(); x.arc(tx, Y(zz), 3.4, 0, 7); x.fill(); x.strokeStyle = K.surface; x.lineWidth = 1; x.stroke(); txt(x, '→ ' + tg[1] + ' ' + fH(zz), Math.min(tx + 7, SR - 4), Y(zz) - 8, { align: tx + 120 > SR ? 'right' : 'left', font: FS(10, true), color: K.water, halo: K.surface }); }
     });
     reveal.forEach(mk => { if (mk.lab) txt(x, mk.lab, clamp(Xc(mk.v) + 7, L, CR - 150), Y(mk.z) + (mk.up ? 10 : -9), { font: FS(10, true), color: K.water, halo: K.surface }); });
     if (D4.scan >= 1) { x.save(); x.beginPath(); x.rect(SL - 2, 0, SR - SL + 4, h); x.clip(); partLines(x, g, P, cur.k, K.water); x.restore(); }

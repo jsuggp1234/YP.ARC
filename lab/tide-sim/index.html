@@ -3026,6 +3026,11 @@ function readings(id, V) {   // 읽기 지표와 1년의 값
   return { isl, open, openMin: Math.min(...open), openMax: Math.max(...open), nParts: T.length,
     p99days: T.filter(t => t.k === 'p99').map(t => CORE.daysOver(s, t.z))[0], lowDays: CORE.daysOver(s, zs[zs.length - 1]) };
 }
+function guideTo(g, z) { const XC = CORE.XC, NM = { p99: 'Second floor', p50: 'Lower floor', step: 'Waterside step' };
+  const t = g.T.find(t => Math.abs(t.z - z) < 0.03); if (t) return [XC + (t.r0 + t.r1) / 2, NM[t.k] || 'Top floor'];
+  if (Math.abs(g.C - z) < 0.03 && g.xn1 > g.xn0) return [(g.xn0 + g.xn1) / 2, 'Neck'];
+  if (g.L > 0.1 && Math.abs(g.P - z) < 0.05) return [(g.xs0 + g.xs1) / 2, 'Apron end'];
+  const n = g.T.reduce((a, t) => Math.abs(t.z - z) < Math.abs(a.z - z) ? t : a, g.T[0]); return [XC + (n.r0 + n.r1) / 2, NM[n.k] || 'Top floor']; }
 VIEWS.rules = {
   init() {
     const box = $('#u-ctl');
@@ -3095,7 +3100,7 @@ VIEWS.rules = {
     const id = ST.sea, s = SEA(), V = ST.V, m = model(id), g = m.g, r = m.r, gd = model(id, CORE.DEF).g, rd = readings(id, V);
     this.table();
     const st = g.T.filter(t => t.k === 'step'), wl = waterlineMin(g, s, V);
-    const big = [['Diameter', (2 * g.R).toFixed(1), 'm'], ['Height', (g.top - g.ground).toFixed(2), 'm'], ['Waterside steps', st.length, ''], ['Island days', rd.isl, ' days'],
+    const big = [['Diameter', (2 * g.R).toFixed(1), 'm'], ['Height', (g.top - g.ground).toFixed(2), 'm'], ['Waterside step', st.length, ''], ['Island days', rd.isl, ' days'],
       ['Waterline 1 m', wl.length ? (Math.min(...wl).toFixed(0) === Math.max(...wl).toFixed(0) ? Math.min(...wl).toFixed(0) : `${Math.min(...wl).toFixed(0)}~${Math.max(...wl).toFixed(0)}`) : '—', ' min']];
     $('#u-big').innerHTML = big.map(([k, n, u]) => `<div><div class="k">${k}</div><div class="n">${n}<small> ${u}</small></div></div>`).join('');
     // ---- 기록 + 단면
@@ -3372,7 +3377,9 @@ VIEWS.derive = {
       const px = Xc(mk.v), py = Y(mk.z);
       x.fillStyle = K.water; x.beginPath(); x.arc(px, py, mk.small ? 2.6 : 3.6, 0, 7); x.fill();
       if (mk.up) { const y2 = Y(mk.to); x.save(); x.strokeStyle = K.water; x.lineWidth = 1.2; x.beginPath(); x.moveTo(px, py); x.lineTo(px, y2); x.stroke(); x.beginPath(); x.moveTo(px - 3, y2 + 4); x.lineTo(px, y2); x.lineTo(px + 3, y2 + 4); x.stroke(); x.restore(); }
-      const zz = mk.to != null ? mk.to : mk.z; x.save(); x.setLineDash([2, 3]); x.strokeStyle = K.water; x.beginPath(); x.moveTo(px, Y(zz)); x.lineTo(Xs(CORE.XL), Y(zz)); x.stroke(); x.restore();
+      const zz = mk.to != null ? mk.to : mk.z, tg = guideTo(g, zz), tx = Xs(tg[0]), f = D4.scan >= 1 ? 1 : clamp((scanZ - mk.z) / ((zhi - zlo) * 0.12), 0, 1), ex = px + (tx - px) * f;
+      x.save(); x.setLineDash([4, 3]); x.strokeStyle = K.water; x.lineWidth = 1.1; x.beginPath(); x.moveTo(px, Y(zz)); x.lineTo(ex, Y(zz)); x.stroke(); x.restore();
+      if (f >= 1) { x.fillStyle = K.water; x.beginPath(); x.arc(tx, Y(zz), 3.4, 0, 7); x.fill(); x.strokeStyle = K.surface; x.lineWidth = 1; x.stroke(); txt(x, '→ ' + tg[1] + ' ' + fH(zz), Math.min(tx + 7, SR - 4), Y(zz) - 8, { align: tx + 120 > SR ? 'right' : 'left', font: FS(10, true), color: K.water, halo: K.surface }); }
     });
     reveal.forEach(mk => { if (mk.lab) txt(x, mk.lab, clamp(Xc(mk.v) + 7, L, CR - 150), Y(mk.z) + (mk.up ? 10 : -9), { font: FS(10, true), color: K.water, halo: K.surface }); });
     if (D4.scan >= 1) { x.save(); x.beginPath(); x.rect(SL - 2, 0, SR - SL + 4, h); x.clip(); partLines(x, g, P, cur.k, K.water); x.restore(); }
@@ -3387,7 +3394,7 @@ VIEWS.derive = {
     txt(x, `Section height ×${(((SR - SL) / (xMax - CORE.XL)) / ((B - T) / (zhi - zlo))).toFixed(1) === '0.0' ? '' : (1 / (((SR - SL) / (xMax - CORE.XL)) / ((B - T) / (zhi - zlo)))).toFixed(1)}`, SR - 2, 10, { align: 'right', font: FS(10), color: K.faint });
     // 읽은 값
     const st = g.T.filter(t => t.k === 'step');
-    kv($('#d-read'), [['Top · second · lower floor', g.T.filter(t => t.k !== 'step').map(t => fH(t.z)).join(' · ')], ['Waterside steps', st.length ? `${st.length}, ${fH(st[0].z)}~${fH(st[st.length - 1].z)}` : 'none'],
+    kv($('#d-read'), [['Top · second · lower floor', g.T.filter(t => t.k !== 'step').map(t => fH(t.z)).join(' · ')], ['Waterside step', st.length ? `${st.length}, ${fH(st[0].z)}~${fH(st[st.length - 1].z)}` : 'none'],
       ['Neck', `${fH(g.C)} · island ${CORE.daysOver(s, g.C)} days`], ['Apron end', m.r.Pfound ? fH(g.P) : 'not found'], ['Step width', st.length ? `${Math.min(...st.map(t => t.r1 - t.r0)).toFixed(1)}~${Math.max(...st.map(t => t.r1 - t.r0)).toFixed(1)} m` : '—']]);
   }
 };
@@ -3672,7 +3679,7 @@ function status(id, g, w) {    // 물높이 w에서 부분마다
   const sub = st.filter(under).length, out = [];
   out.push(['Top floor', under(T[0]) ? 'flooded' : 'dry']);
   const p99 = T.find(t => t.k === 'p99'); if (p99) out.push(['Second floor', under(p99) ? 'flooded' : 'dry']);
-  out.push(['Waterside steps', `${sub} / ${st.length} flooded`]);
+  out.push(['Waterside step', `${sub} / ${st.length} flooded`]);
   const p50 = T.find(t => t.k === 'p50'); if (p50) out.push(['Lower floor', under(p50) ? 'flooded' : 'dry']);
   if (g.L > 0.1) out.push(['Apron', w <= g.P ? 'dry' : w >= g.zl ? 'flooded' : `${((g.zl - w) / (g.zl - g.P) * 100).toFixed(0)} % dry`]);
   out.push(['Neck', w > g.C ? `flooded · island (${((w - g.C) * 100).toFixed(0)} cm below)` : `joined (${((g.C - w) * 100).toFixed(0)} cm higher)`]);
@@ -3974,7 +3981,7 @@ VIEWS.seas = {
       }
       // 숫자
       const st = g.T.filter(t => t.k === 'step'), hit = st.filter(t => Math.abs(t.r1 - t.r0 - ST.V.wMin) < 1e-6).length, wl = S.wl;
-      const cells = W6.mode === 'one' ? [['Range', s.stats.range_max.toFixed(1) + '<small> m</small>'], ['Waterside steps', st.length + '<small></small>'], ['Diameter', (2 * g.R).toFixed(1) + '<small> m</small>'],
+      const cells = W6.mode === 'one' ? [['Range', s.stats.range_max.toFixed(1) + '<small> m</small>'], ['Waterside step', st.length + '<small></small>'], ['Diameter', (2 * g.R).toFixed(1) + '<small> m</small>'],
         ['Waterline 1 m', wl.length ? (Math.min(...wl).toFixed(0) === Math.max(...wl).toFixed(0) ? Math.min(...wl).toFixed(0) : Math.min(...wl).toFixed(0) + '~' + Math.max(...wl).toFixed(0)) + '<small> min</small>' : '—'],
         ['Island days', S.isl + '<small> days</small>'], [s.stats.form > 3 ? 'of which moon far from equator' : 'of which spring side', (s.stats.form > 3 ? S.tropic : S.spring).toFixed(0) + '<small>%</small>'], ['Island hours (median)', S.hours.toFixed(1) + '<small> h</small>']]
         : [['Spread of top floors', (S.five[1].top - S.five[3].top).toFixed(2) + '<small> m</small>'], ['Plinths standing', S.five.filter(p => p.ok).length + '<small></small>'], ['Largest diameter', (2 * Math.max(...S.five.map(p => p.R))).toFixed(1) + '<small> m</small>']];
