@@ -2723,3 +2723,18 @@ html.sb-on { overflow-x: hidden; }
 
 /* 핀 #353: studio 그리드 보기 — 전체를 살짝 위로 올려 사진 아래(다음 줄)가 첫 화면에 더 보이게 */
 @media (min-width: 761px) { .cs-gd { padding-top: calc(var(--hdr) + 12px); } }
+
+/* 핀 #361: Tree House 모바일 대표 사진 — 위아래 빈 여백 없이, 사진 전체가 다 보이면서 화면 폭을 꽉 채우게(사진 비율 그대로) */
+@media (max-width: 760px) {
+  html[data-slug="the-tree-house"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv { margin: 0 calc(-1 * var(--g4-e)) !important; padding-top: calc(var(--hdr) + 8px); }
+  html[data-slug="the-tree-house"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media { height: auto !important; aspect-ratio: var(--r) !important; background: none; }
+  html[data-slug="the-tree-house"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img { object-fit: cover !important; object-position: 50% 50% !important; scale: 1 !important; }
+}
+
+/* 핀 #356·#362: studio 그리드 Tree House 카드 — 사진을 마스크 안에서 위로 올려 아래 바닷물까지 보이게(아래 끝 기준, 위만 살짝 잘림) */
+html:not(#_) body[data-page="works"] #cases > div.cs-gd > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(6) > div.media > div.mz > img { object-fit: cover !important; object-position: 74% 100% !important; scale: 1 !important; }
+
+/* 핀 #363·#364: Tim(team) Work 모바일 — 다이어그램 시뮬레이션(#s2·#s3 장면 넘김) 크기를 줄여요 */
+@media (max-width: 760px) {
+  html[data-slug="timteam-work"]:not(#_) body[data-page="project"] :is(#s2, #s3) > div.seq.seq-frames > div.seq-pin > div.seq-stage { width: min(68%, calc((100vh - 320px) * var(--r))) !important; }
+}
