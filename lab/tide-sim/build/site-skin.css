@@ -160,7 +160,8 @@ body > footer .wrap { padding-block: 0 40px; }
   #v-site .grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(230px, 0.6fr); grid-template-rows: minmax(0, 1.9fr) minmax(0, 1fr);
     grid-template-areas: "td pl ct" "td se ct"; gap: 20px var(--g4-gap); align-items: stretch; height: calc(100svh - 150px); min-height: 560px; }
   #v-site .grid > .stack:first-child { display: contents; }
-  #v-site .card { margin: 0; min-height: 0; height: 100%; display: flex; flex-direction: column; }
+  #v-site .card { margin: 0; min-height: 0; }
+  #v-site .card:has(canvas) { height: 100%; display: flex; flex-direction: column; }
   #v-site .card:has(#s-3d) { grid-area: td; }
   #v-site .card:has(#s-plan) { grid-area: pl; }
   #v-site .card:has(#s-sec) { grid-area: se; }
@@ -194,4 +195,12 @@ body > footer .wrap { padding-block: 0 40px; }
 .steps a { font-size: var(--t-l); padding: 14px 0 12px; }
 .steps a .n { font-size: var(--t-s); }
 .stp-ct { font-size: var(--t-s); }
+</style>
+<style>
+/* 핀 #316: 변수체계 3D(d-cv3)는 내용 폭의 70%, 높이 60svh 이하로 가운데 */
+#d-3d { width: min(70%, calc(60svh * 16 / 9.5)); margin-inline: auto; }
+@media (max-width: 760px) { #d-3d { width: 100%; } }
+</style>
+<style>
+@media (min-width: 901px) { #v-site .grid > .stack:last-child { display: flex; flex-direction: column; } #v-site .grid > .stack:last-child > .card { flex: none; } }
 </style>

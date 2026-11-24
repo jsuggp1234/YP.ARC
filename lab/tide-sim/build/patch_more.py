@@ -36,3 +36,30 @@ def patch_fit(R, T):
       "cam.aspect = w0 / h0; cam.updateProjectionMatrix(); if (o.fit) { const vf = cam.fov * Math.PI / 360, hf = Math.atan(Math.tan(vf) * cam.aspect), d = o.fit / Math.sin(Math.min(vf, hf)); home.dist = d; if (!touched) orb.dist = d; } }", 1)
     R("View3D($('#s-cv'), { tx: 2, ty: 4, tz: 0, az: 0.62, el: 0.5, dist: 150, min: 25, max: 500, only: 'wire' })",
       "View3D($('#s-cv'), { tx: 0, ty: 3, tz: 0, az: 0.62, el: 0.55, dist: 150, min: 25, max: 500, only: 'wire', fit: 60 })", 1)
+
+# 핀 #306·#310: 평면을 무채색 도면처럼 + 축척 막대·북쪽 화살표, 시뮬레이션 평면은 기단 범위로 확대
+def patch_plan(R, T):
+    R("const full = o.dims !== false && !o.sc, x0 = full ? -PS.Wr - 4 : Math.max(CORE.XL, XC - Rf - 2),",
+      "const full = o.dims !== false && !o.sc, x0 = o.tight ? XC - Rf - 6 : full ? -PS.Wr - 4 : Math.max(CORE.XL, XC - Rf - 2),", 1)
+    R("if (full) { const el = document.getElementById(cvId), Wd = el.getBoundingClientRect().width || 600; el.style.height = Math.round(clamp((Wd - 38) * 2 * yH / (x1 - x0) + 46, 300, 780)) + 'px'; }",
+      "if (full) { const el = document.getElementById(cvId), Wd = el.getBoundingClientRect().width || 600; el.style.height = Math.round(clamp((Wd - 38) * 2 * yH / (x1 - x0) + 46, 300, o.tight ? 640 : 780)) + 'px'; }", 1)
+    R("const CX = X(XC), CY = Y(0);\n", "const CX = X(XC), CY = Y(0); PLAN_SC = sc;\n", 1)
+    R("plan(w) { drawPlan('w-plan', ST.sea, w, { zones: W5.zones, dims: W5.dims, cluster: clusterOf(ST.sea) }); },",
+      "plan(w) { drawPlan('w-plan', ST.sea, w, { zones: W5.zones, dims: W5.dims, cluster: clusterOf(ST.sea), tight: true }); },", 1)
+    R("function seaStats(id) {",
+      "let PLAN_SC = 1;\n"
+      "{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { _dp(cvId, id, w, o); const el = document.getElementById(cvId); if (!el) return; const x = el.getContext('2d'), dpr = el.width / Math.max(1, el.getBoundingClientRect().width);\n"
+      "  x.save(); x.setTransform(1, 0, 0, 1, 0, 0); x.globalCompositeOperation = 'saturation'; x.fillStyle = '#808080'; x.fillRect(0, 0, el.width, el.height); x.globalCompositeOperation = 'source-over';\n"
+      "  x.setTransform(dpr, 0, 0, dpr, 0, 0); const Wc = el.width / dpr, Hc = el.height / dpr, ink = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#111';\n"
+      "  x.fillStyle = ink; x.strokeStyle = ink; x.lineWidth = 1; x.font = '10px ' + getComputedStyle(document.body).fontFamily; x.textAlign = 'center'; const nx = Wc - 64, ny = 24; x.beginPath(); x.moveTo(nx, ny - 10); x.lineTo(nx + 5, ny + 6); x.lineTo(nx, ny + 3); x.closePath(); x.fill(); x.beginPath(); x.moveTo(nx, ny - 10); x.lineTo(nx - 5, ny + 6); x.lineTo(nx, ny + 3); x.closePath(); x.stroke(); x.fillText('N', nx, ny - 13);\n"
+      "  x.restore(); }; }\n"
+      "function seaStats(id) {", 1)
+
+# 핀 #306: 평면 색을 무채색 도면 색으로 바꿔 그린 뒤 되돌려요
+def patch_plan2(R, T):
+    R("{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { _dp(cvId, id, w, o);",
+      "{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { const dk = isDark(), G = dk ? { mudLo: '#2a2a2a', con: '#4a4a4a', rev: '#333333', land: '#3a3a3a' } : { mudLo: '#e2e2e2', con: '#cfcfcf', rev: '#dedede', land: '#ececec' }, GK = dk ? { water: '#6a6a6a', water2: '#3c3c3c' } : { water: '#c4c4c4', water2: '#dcdcdc' };\n"
+      "  const s3 = {}, sk = {}; for (const k in G) { s3[k] = C3[k]; C3[k] = G[k]; } for (const k in GK) { sk[k] = K[k]; K[k] = GK[k]; } try { _dp(cvId, id, w, o); } finally { Object.assign(C3, s3); Object.assign(K, sk); }", 1)
+
+def patch_plan3(R, T):
+    R("x1 = XC + ext + (full ? 15 : 3), yH = ey + (full ? 7 : 2);", "x1 = o.tight ? XC + Rf + 6 : XC + ext + (full ? 15 : 3), yH = o.tight ? Rf + 5 : ey + (full ? 7 : 2);", 1)

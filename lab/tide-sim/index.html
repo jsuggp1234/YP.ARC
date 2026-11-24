@@ -620,7 +620,8 @@ body > footer .wrap { padding-block: 0 40px; }
   #v-site .grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(230px, 0.6fr); grid-template-rows: minmax(0, 1.9fr) minmax(0, 1fr);
     grid-template-areas: "td pl ct" "td se ct"; gap: 20px var(--g4-gap); align-items: stretch; height: calc(100svh - 150px); min-height: 560px; }
   #v-site .grid > .stack:first-child { display: contents; }
-  #v-site .card { margin: 0; min-height: 0; height: 100%; display: flex; flex-direction: column; }
+  #v-site .card { margin: 0; min-height: 0; }
+  #v-site .card:has(canvas) { height: 100%; display: flex; flex-direction: column; }
   #v-site .card:has(#s-3d) { grid-area: td; }
   #v-site .card:has(#s-plan) { grid-area: pl; }
   #v-site .card:has(#s-sec) { grid-area: se; }
@@ -654,6 +655,14 @@ body > footer .wrap { padding-block: 0 40px; }
 .steps a { font-size: var(--t-l); padding: 14px 0 12px; }
 .steps a .n { font-size: var(--t-s); }
 .stp-ct { font-size: var(--t-s); }
+</style>
+<style>
+/* 핀 #316: 변수체계 3D(d-cv3)는 내용 폭의 70%, 높이 60svh 이하로 가운데 */
+#d-3d { width: min(70%, calc(60svh * 16 / 9.5)); margin-inline: auto; }
+@media (max-width: 760px) { #d-3d { width: 100%; } }
+</style>
+<style>
+@media (min-width: 901px) { #v-site .grid > .stack:last-child { display: flex; flex-direction: column; } #v-site .grid > .stack:last-child > .card { flex: none; } }
 </style>
 <div class="ybar" role="banner">
   <a class="y-logo" href="../../index.html" aria-label="YP.STUDIO &amp; LAB home"><span class="roll"><span data-t="YP.STUDIO &amp; LAB">YP.STUDIO &amp; LAB</span></span></a>
@@ -2673,7 +2682,7 @@ VIEWS.site = {
     const bubble = (x, X0, Y0, t) => { x.beginPath(); x.arc(X0, Y0, 8, 0, 7); x.fillStyle = K.surface; x.fill(); x.strokeStyle = red; x.lineWidth = 1; x.stroke(); txt(x, t, X0, Y0 + .5, { align: 'center', font: FS(10, true), color: red }); };
     const axisV = (x, X0, y0, y1, t) => { x.save(); x.strokeStyle = red; x.lineWidth = .9; x.setLineDash([10, 3, 2, 3]); x.beginPath(); x.moveTo(X0, y0); x.lineTo(X0, y1); x.stroke(); x.restore(); bubble(x, X0, y0 - 9, t); };
     // ---- 평면: 땅의 색 + 0.25 m 등고선 + 축선 + 치수
-    if (!matchMedia('(min-width: 901px)').matches) { const pe = $('#s-plan'), pw = pe.getBoundingClientRect().width || 600, ph = Math.round(Math.min(760, Math.max(260, (pw - 66) / 100 * 60 + 80))); if (Math.abs(pe.getBoundingClientRect().height - ph) > 2) pe.style.height = ph + 'px';
+    { const pe = $('#s-plan'), pw = pe.getBoundingClientRect().width || 600, ph = Math.round(Math.min(760, Math.max(260, (pw - 66) / 100 * 60 + 80))); if (!matchMedia('(min-width: 901px)').matches && Math.abs(pe.getBoundingClientRect().height - ph) > 2) pe.style.height = ph + 'px';
       const { x, w, h } = cv('s-plan'), L = 52, R = w - 14, T = 28, sc = Math.min((R - L) / 100, (h - T - 50) / 60), B = T + 60 * sc, X = v => L + v * sc, Y = v => T + v * sc;
       const c = new THREE.Color(), dd = S2N.d, wet = k === 6;
       for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) { const q = j * nx + i, z = F.Z[q]; c.set(this.color(z, i * dd, false, F.LL[q]));
@@ -3672,7 +3681,7 @@ VIEWS.water = {
     const tot = T.length, cnt = open.length;
     $('#w-noon').innerHTML = `${fDay(d)} noon water <b>${fHm(n)}</b>. Floors and steps: ${tot} parts — <b>${cnt} open</b> above water at midday` + (names.length ? `: ${names.join(', ')}.` : '.') + ` Following the moon’s age, over the year ${Math.min(...s.noon.map(v => T.filter(t => t.z > v).length))}~${Math.max(...s.noon.map(v => T.filter(t => t.z > v).length))} parts open.`;
   },
-  plan(w) { drawPlan('w-plan', ST.sea, w, { zones: W5.zones, dims: W5.dims, cluster: clusterOf(ST.sea) }); },
+  plan(w) { drawPlan('w-plan', ST.sea, w, { zones: W5.zones, dims: W5.dims, cluster: clusterOf(ST.sea), tight: true }); },
   calAt(x, y) { const c = this.cal; if (!c) return null; const col = Math.floor((x - c.L) / c.cw), row = Math.floor((y - c.T) / c.ch); if (row < 0 || row > 11 || col < 0 || col > 30) return null; const d = c.map[row][col]; return d == null ? null : d; },
   draw() {
     const s = SEA(), m = model(ST.sea), g = m.g, w = wAt(ST.sea, W5.t);
@@ -3717,12 +3726,12 @@ VIEWS.water = {
 function drawPlan(cvId, id, w, o = {}) {
     const m = model(id), g = m.g, V = m.V, XC = CORE.XC, T = g.T, CL = o.cluster || [], PS = plinthSite(g, null, CL), Rf = PS.Rf;
     let ext = Rf, ey = Rf; for (const c of CL) { ext = Math.max(ext, c.x + c.R); ey = Math.max(ey, Math.abs(c.z) + c.R); }
-    const full = o.dims !== false && !o.sc, x0 = full ? -PS.Wr - 4 : Math.max(CORE.XL, XC - Rf - 2), x1 = XC + ext + (full ? 15 : 3), yH = ey + (full ? 7 : 2);
-    if (full) { const el = document.getElementById(cvId), Wd = el.getBoundingClientRect().width || 600; el.style.height = Math.round(clamp((Wd - 38) * 2 * yH / (x1 - x0) + 46, 300, 780)) + 'px'; }
+    const full = o.dims !== false && !o.sc, x0 = o.tight ? XC - Rf - 6 : full ? -PS.Wr - 4 : Math.max(CORE.XL, XC - Rf - 2), x1 = o.tight ? XC + Rf + 6 : XC + ext + (full ? 15 : 3), yH = o.tight ? Rf + 5 : ey + (full ? 7 : 2);
+    if (full) { const el = document.getElementById(cvId), Wd = el.getBoundingClientRect().width || 600; el.style.height = Math.round(clamp((Wd - 38) * 2 * yH / (x1 - x0) + 46, 300, o.tight ? 640 : 780)) + 'px'; }
     const { x, w: W, h } = cv(cvId);
     const padL = full ? 26 : 8, padB = full ? 30 : 8;
     const sc = o.sc || Math.min((W - padL - 12) / (x1 - x0), (h - padB - 16) / (2 * yH)), ox = o.sc ? W * 0.42 - (XC - x0) * sc : padL, X = v => ox + (v - x0) * sc, cy = o.sc ? h / 2 : 12 + yH * sc, Y = v => cy + v * sc;
-    const CX = X(XC), CY = Y(0);
+    const CX = X(XC), CY = Y(0); PLAN_SC = sc;
     // 바탕: 갯벌 (물이 들면 물빛)
     x.fillStyle = C3.mudLo; x.globalAlpha = .45; x.fillRect(X(0), 0, W - X(0), h); x.globalAlpha = 1;
     // 갯골 (중심선을 따라 폭이 바뀌는 물골)
@@ -3796,6 +3805,13 @@ function drawPlan(cvId, id, w, o = {}) {
 
 // ---------------------------------------------------------------- 6. 네 바다
 const W6 = { t: 0, play: 0, speed: 6, mode: 'one', last: 0, stats: {} };
+let PLAN_SC = 1;
+{ const _dp = drawPlan; drawPlan = function (cvId, id, w, o = {}) { const dk = isDark(), G = dk ? { mudLo: '#2a2a2a', con: '#4a4a4a', rev: '#333333', land: '#3a3a3a' } : { mudLo: '#e2e2e2', con: '#cfcfcf', rev: '#dedede', land: '#ececec' }, GK = dk ? { water: '#6a6a6a', water2: '#3c3c3c' } : { water: '#c4c4c4', water2: '#dcdcdc' };
+  const s3 = {}, sk = {}; for (const k in G) { s3[k] = C3[k]; C3[k] = G[k]; } for (const k in GK) { sk[k] = K[k]; K[k] = GK[k]; } try { _dp(cvId, id, w, o); } finally { Object.assign(C3, s3); Object.assign(K, sk); } const el = document.getElementById(cvId); if (!el) return; const x = el.getContext('2d'), dpr = el.width / Math.max(1, el.getBoundingClientRect().width);
+  x.save(); x.setTransform(1, 0, 0, 1, 0, 0); x.globalCompositeOperation = 'saturation'; x.fillStyle = '#808080'; x.fillRect(0, 0, el.width, el.height); x.globalCompositeOperation = 'source-over';
+  x.setTransform(dpr, 0, 0, dpr, 0, 0); const Wc = el.width / dpr, Hc = el.height / dpr, ink = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim() || '#111';
+  x.fillStyle = ink; x.strokeStyle = ink; x.lineWidth = 1; x.font = '10px ' + getComputedStyle(document.body).fontFamily; x.textAlign = 'center'; const nx = Wc - 64, ny = 24; x.beginPath(); x.moveTo(nx, ny - 10); x.lineTo(nx + 5, ny + 6); x.lineTo(nx, ny + 3); x.closePath(); x.fill(); x.beginPath(); x.moveTo(nx, ny - 10); x.lineTo(nx - 5, ny + 6); x.lineTo(nx, ny + 3); x.closePath(); x.stroke(); x.fillText('N', nx, ny - 13);
+  x.restore(); }; }
 function seaStats(id) {     // 바다마다 1년의 값 (지금 규칙)
   const key = id + JSON.stringify(ST.V); if (W6.stats[key]) return W6.stats[key];
   const m = model(id), s = m.s, g = m.g, y = ser(id), isl = [];

@@ -122,10 +122,10 @@ def build(lang):
       "soil = new THREE.MeshStandardMaterial({ map: repTex(texSoil(), 4, 24), color: '#8f8166', roughness: 1 });\n  const mud = tag(new THREE.Mesh(new THREE.BoxGeometry(W, 60, L), [soil, soil, mudTop, soil, soil, soil]), 'terrain'); mud.position.y = -30;", 1)
 
     # 핀 #294: 넓은 화면에선 평면 높이를 그리드 칸이 정해요 (폭으로 높이를 맞추던 것 끄기) + 칸 크기가 바뀌면 다시 그리기
-    R("{ const pe = $('#s-plan'), pw = pe.getBoundingClientRect().width || 600,", "if (!matchMedia('(min-width: 901px)').matches) { const pe = $('#s-plan'), pw = pe.getBoundingClientRect().width || 600,", 1)
+    R("if (Math.abs(pe.getBoundingClientRect().height - ph) > 2) pe.style.height = ph + 'px';", "if (!matchMedia('(min-width: 901px)').matches && Math.abs(pe.getBoundingClientRect().height - ph) > 2) pe.style.height = ph + 'px';", 1)
     R("new ResizeObserver(() => v.req()).observe($('#s-cv'));", "new ResizeObserver(() => v.req()).observe($('#s-cv'));\n    { let w0 = 0; const ro = new ResizeObserver(() => { const w = $('#s-plan').clientWidth * 10000 + $('#s-plan').clientHeight + $('#s-sec').clientHeight; if (w !== w0) { w0 = w; inval('site'); } }); ro.observe($('#s-plan')); ro.observe($('#s-sec')); }", 1)
 
-    exec(open(os.path.join(HERE, 'patch_more.py'), encoding='utf8').read(), G0 := {}); G0['patch_more'](R, T); G0['patch_sec'](R, T); G0['patch_fit'](R, T)
+    exec(open(os.path.join(HERE, 'patch_more.py'), encoding='utf8').read(), G0 := {}); G0['patch_more'](R, T); G0['patch_sec'](R, T); G0['patch_fit'](R, T); G0['patch_plan'](R, T); G0['patch_plan2'](R, T); G0['patch_plan3'](R, T)
 
     # 핀 #293 (예전 #259 대신): SketchUp 같은 3D 조작 — nav3d.js
     i = s.find("  const pts = new Map(); let pinch = 0;"); j = s.find("canvas.addEventListener('contextmenu', e => e.preventDefault());", i)
