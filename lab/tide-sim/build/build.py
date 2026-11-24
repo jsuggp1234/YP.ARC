@@ -217,6 +217,6 @@ HTML_EN_CODE = compile(open(os.path.join(HERE, "html_en.py"), encoding="utf8").r
 
 if __name__ == "__main__":
     for lang, name in [("en", "index.html"), ("ko", "ko.html")]:
-        html = build(lang)
+        html = build(lang).rstrip("\n") + '\n<script src="../../assets/js/pullback.js" defer></script>\n'  # 끌어서 뒤로 가기 (사이트 공통)
         open(os.path.join(HERE, "..", name), "w", encoding="utf8", newline="\n").write(html)
         print(name, len(html))
