@@ -125,7 +125,7 @@ def build(lang):
     R("if (Math.abs(pe.getBoundingClientRect().height - ph) > 2) pe.style.height = ph + 'px';", "if (!matchMedia('(min-width: 901px)').matches && Math.abs(pe.getBoundingClientRect().height - ph) > 2) pe.style.height = ph + 'px';", 1)
     R("new ResizeObserver(() => v.req()).observe($('#s-cv'));", "new ResizeObserver(() => v.req()).observe($('#s-cv'));\n    { let w0 = 0; const ro = new ResizeObserver(() => { const w = $('#s-plan').clientWidth * 10000 + $('#s-plan').clientHeight + $('#s-sec').clientHeight; if (w !== w0) { w0 = w; inval('site'); } }); ro.observe($('#s-plan')); ro.observe($('#s-sec')); }", 1)
 
-    exec(open(os.path.join(HERE, 'patch_more.py'), encoding='utf8').read(), G0 := {}); G0['patch_more'](R, T); G0['patch_sec'](R, T); G0['patch_fit'](R, T); G0['patch_plan'](R, T); G0['patch_plan2'](R, T); G0['patch_plan3'](R, T)
+    exec(open(os.path.join(HERE, 'patch_more.py'), encoding='utf8').read(), G0 := {}); G0['patch_more'](R, T); G0['patch_sec'](R, T); G0['patch_fit'](R, T); G0['patch_plan'](R, T); G0['patch_plan2'](R, T); G0['patch_plan3'](R, T); G0['patch_dock'](R, T)
 
     # 핀 #293 (예전 #259 대신): SketchUp 같은 3D 조작 — nav3d.js
     i = s.find("  const pts = new Map(); let pinch = 0;"); j = s.find("canvas.addEventListener('contextmenu', e => e.preventDefault());", i)
@@ -146,7 +146,7 @@ def build(lang):
     R("$$('#stepNav a').forEach(a => a.setAttribute('aria-current', a.dataset.v === view ? 'page' : 'false'));",
       "$$('#stepNav a').forEach(a => a.setAttribute('aria-current', a.dataset.v === view ? 'page' : 'false'));\n  { const i = ['collect', 'site', 'structure', 'derive', 'water', 'seas'].indexOf(view), c = $('#stepCt'), b = $('#stepBar'); if (c) c.textContent = String(i + 1).padStart(2, '0') + ' / 06'; if (b) b.style.width = ((i + 1) / 6 * 100) + '%'; }", 1)
     R("window.addEventListener('hashchange', route); route();",
-      "window.addEventListener('hashchange', route); route();\n  document.addEventListener('click', e => { if (e.target.closest('a.nx, #stepNav a')) setTimeout(() => { const m = $('#main'), t = m.getBoundingClientRect().top + scrollY - 96; if (scrollY > t) scrollTo(0, t); }, 0); });", 1)
+      "window.addEventListener('hashchange', route); route();\n  document.addEventListener('click', e => { if (e.target.closest('a.nx, #stepNav a')) setTimeout(() => { const m = $('#main'), t = m.getBoundingClientRect().top + scrollY - 136; if (scrollY > t) scrollTo(0, t); }, 0); });", 1)
 
     # 핀 #272: 링크(물음 → 열 → 변수 → 부분) 고르기를 3D 화면 안 작은 버튼으로
     R("    drawLinks();\n  };\n  D.pick = function",

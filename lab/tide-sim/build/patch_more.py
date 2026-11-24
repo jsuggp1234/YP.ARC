@@ -63,3 +63,15 @@ def patch_plan2(R, T):
 
 def patch_plan3(R, T):
     R("x1 = XC + ext + (full ? 15 : 3), yH = ey + (full ? 7 : 2);", "x1 = o.tight ? XC + Rf + 6 : XC + ext + (full ? 15 : 3), yH = o.tight ? Rf + 5 : ey + (full ? 7 : 2);", 1)
+
+# 핀 #315: 큰 제목이 스크롤을 따라 맨 위로 올라가 작아지며 얇은 줄에 붙어요 (움직임 줄이기면 그대로 지나감)
+def patch_dock(R, T):
+    R("  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paint);\n",
+      "  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paint);\n"
+      "  { const h = document.querySelector('.brand h1'), RM = matchMedia('(prefers-reduced-motion: reduce)'); if (h) { const bg = document.createElement('div'); bg.className = 'dock-bg'; bg.setAttribute('aria-hidden', 'true'); document.body.appendChild(bg);\n"
+      "    let top0 = 0, fs = 64, q = 0; const px = n => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(n)) || 0;\n"
+      "    const measure = () => { h.style.transform = ''; top0 = h.getBoundingClientRect().top + scrollY; fs = parseFloat(getComputedStyle(h).fontSize) || 64; upd(); };\n"
+      "    const upd = () => { q = 0; if (RM.matches) { h.style.transform = ''; bg.style.opacity = 0; document.documentElement.classList.remove('docked'); return; }\n"
+      "      const hdr = px('--hdr') || 40, dock = px('--dock') || 40, small = innerWidth <= 760 ? 13 : 17, s = Math.min(1, small / fs), tgt = hdr + (dock - fs * s) / 2, D = Math.max(1, top0 - tgt), y = scrollY, p = Math.min(1, Math.max(0, y / D));\n"
+      "      h.style.transform = `translateY(${Math.max(0, y - D).toFixed(1)}px) scale(${(1 + (s - 1) * p).toFixed(4)})`; bg.style.opacity = p >= 1 ? 1 : 0; document.documentElement.classList.toggle('docked', p >= 1); };\n"
+      "    addEventListener('scroll', () => { if (!q) q = requestAnimationFrame(upd); }, { passive: true }); addEventListener('resize', measure); RM.addEventListener('change', measure); if (document.fonts) document.fonts.ready.then(measure); measure(); } }\n", 1)

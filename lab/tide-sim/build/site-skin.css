@@ -204,3 +204,17 @@ body > footer .wrap { padding-block: 0 40px; }
 <style>
 @media (min-width: 901px) { #v-site .grid > .stack:last-child { display: flex; flex-direction: column; } #v-site .grid > .stack:last-child > .card { flex: none; } }
 </style>
+<style>
+/* 핀 #315: 제목이 붙는 얇은 줄 + 그 아래 단계 줄 */
+:root { --dock: 40px; }
+@media (max-width: 760px) { :root { --dock: 32px; } }
+.brand h1 { position: relative; z-index: 26; transform-origin: 0 0; will-change: transform; justify-self: start; }
+.dock-bg { position: fixed; left: 0; right: 0; top: calc(var(--hdr) + env(safe-area-inset-top, 0px)); height: var(--dock); background: var(--bg); z-index: 25; opacity: 0; pointer-events: none; transition: opacity .2s; }
+.steps { top: calc(var(--hdr) + var(--dock) + env(safe-area-inset-top, 0px)); z-index: 24; background: var(--bg); }
+html.docked .brand h1 { font-weight: 500; }
+</style>
+<style>
+.dock-bg { top: 0; height: calc(var(--hdr) + var(--dock) + env(safe-area-inset-top, 0px)); }
+#v-structure .card:has(#r-row) .kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; }
+#v-structure .card:has(#r-row) .kv dt { white-space: normal; }
+</style>
