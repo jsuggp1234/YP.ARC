@@ -80,3 +80,19 @@ def patch_icons(R, T):
     R("const LK = {\n", open(os.path.join(HERE, "icons.js"), encoding="utf8").read() + "const LK = {\n", 1)
     R("""aria-pressed="false">${n[2]}</button>""", """aria-pressed="false" title="${[n[2], n[3]].filter(Boolean).join(' — ')}" aria-label="${n[2]}">${icn(n[0])}<span>${n[2]}</span></button>""", 1)
     R('<div class="gh"><span><span class="gnum">${M.n}</span>', '<div class="gh"><span>${icn(M.k)}<span class="gnum">${M.n}</span>', 1)
+
+# 핀 #305: 변수를 맞춘 뒤 조작판 끝 '물 흘려 보기' — 같은 3D에서 물이 차고 빠져요 (1초에 20분)
+def patch_playwater(R, T):
+    R("const lv = { lo: s.q[0], T2: r.T2, C: g.C, T1: r.T1 }, w = lv[U3.w];", "const lv = { lo: s.q[0], T2: r.T2, C: g.C, T1: r.T1 }, w = U3.t != null ? wAt(id, U3.t) : lv[U3.w];", 1)
+    pl, st = T("Play water", "물 흘려 보기"), T("Pause water", "멈추기")
+    R("      + '<div class=\"btns\" style=\"margin-top:12px\"><button class=\"btn\" id=\"u-reset\">",
+      "      + '<div class=\"u-play\"><button class=\"btn\" id=\"u-play\" aria-pressed=\"false\"><svg viewBox=\"0 0 12 12\" width=\"11\" height=\"11\" aria-hidden=\"true\"><path d=\"M2 1.5L10.5 6L2 10.5Z\" fill=\"currentColor\"/></svg><span>" + pl + "</span></button><span class=\"u-play-t num\" id=\"u-play-t\"></span></div>'\n"
+      "      + '<div class=\"btns\" style=\"margin-top:12px\"><button class=\"btn\" id=\"u-reset\">", 1)
+    R("    $('#u-reset').addEventListener('click', () => { ST.V = Object.assign({}, CORE.DEF); this.sync(); onModel(); });",
+      "    $('#u-reset').addEventListener('click', () => { ST.V = Object.assign({}, CORE.DEF); this.sync(); onModel(); });\n"
+      "    { const b = $('#u-play'), lab = b.querySelector('span'), ic = b.querySelector('path'), out = $('#u-play-t'); let raf = 0, last = 0;\n"
+      "      const stop = () => { cancelAnimationFrame(raf); raf = 0; b.setAttribute('aria-pressed', 'false'); lab.textContent = '" + pl + "'; ic.setAttribute('d', 'M2 1.5L10.5 6L2 10.5Z'); };\n"
+      "      const f = now => { if (ST.view !== 'rules' && ST.view !== 'derive') { stop(); return; } const dt = Math.min(.1, (now - last) / 1000); last = now; U3.t = ((U3.t || 0) + dt * 20) % 525590;\n"
+      "        const w = wAt(ST.sea, U3.t); if (U3.p3) { U3.p3.setWater(w, null); U3.wl = w; U3.v && U3.v.req && U3.v.req(); } out.textContent = fDate(U3.t) + ' · ' + fH(w) + ' m'; raf = requestAnimationFrame(f); };\n"
+      "      b.addEventListener('click', () => { if (raf) { stop(); return; } if (U3.t == null) U3.t = 0; last = performance.now(); b.setAttribute('aria-pressed', 'true'); lab.textContent = '" + st + "'; ic.setAttribute('d', 'M2.5 1.5H5V10.5H2.5ZM7 1.5H9.5V10.5H7Z'); raf = requestAnimationFrame(f); });\n"
+      "      $('#u3-w').addEventListener('click', () => { stop(); U3.t = null; out.textContent = ''; }); }", 1)

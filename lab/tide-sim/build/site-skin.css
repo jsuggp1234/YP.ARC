@@ -244,3 +244,9 @@ html.docked .brand h1 { font-weight: 500; }
 .lk-bar button { width: 54px; padding: 3px 1px; }
 .lk-bar button span { -webkit-line-clamp: 1; white-space: nowrap; display: block; }
 </style>
+<style>
+/* 핀 #305: 조작판 끝 '물 흘려 보기' */
+.u-play { display: flex; align-items: baseline; gap: 14px; margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--line); }
+.u-play .btn { display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-m); color: var(--ink) !important; }
+.u-play-t { font-size: var(--t-s); color: var(--muted); }
+</style>
