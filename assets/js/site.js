@@ -915,12 +915,15 @@
     const eIn = (v) => v * v * v, eOut = (v) => 1 - Math.pow(1 - v, 3);
     const measure = () => {
       tr.style.fontSize = ""; const e = parseFloat(getComputedStyle(HTML).getPropertyValue("--g4-e")) || 16;
-      const fit = Math.min(0.86, ((innerWidth - 2 * e) * 0.86) / (tr.scrollWidth || 1)); // 한 화면 폭 안에 들어오게, 핀 #248: 양옆 여백을 두고 조금 작게
+      const fit = Math.min(1, ((innerWidth - 2 * e) * 0.8) / (tr.scrollWidth || 1)); // 한 화면 폭 안에 들어오게, 핀 #248: 양옆 여백을 두고 조금 작게
       if (fit < 1) tr.style.fontSize = parseFloat(getComputedStyle(tr).fontSize) * fit + "px";
       geo = as.map((a) => { const g = $(".st-gl", a), fs = parseFloat(getComputedStyle(g).fontSize), rc = g.getBoundingClientRect();
         return { a, g, fs, hw: rc.width / 2, x0: rc.left + rc.width / 2 - (parseFloat(a.style.translate) || 0), by: rc.bottom, bs: $$(".st-b", a), sl: $$(".st-b > i", a).map((el, k) => ({ el, y: rc.top + ((k + 0.5) / N) * rc.height, cur: 0 })) }; });
     };
-    measure(); addEventListener("resize", measure);
+    // 핀 #255: 글자들이 서 있는 수평선에 아주 옅은 바닥 — 선 한 줄과 아래로 사라지는 그림자 띠
+    const floor = document.createElement("i"); floor.className = "sl-fl"; floor.setAttribute("aria-hidden", "true"); nav.prepend(floor);
+    const placeFloor = () => { const g = geo[0]; if (g) floor.style.top = g.by - g.fs * 0.2 + "px"; }; // 글자 상자 아래 0.2em = 글자 발끝(기준선)
+    measure(); placeFloor(); addEventListener("resize", () => { measure(); placeFloor(); });
     let msp = 0, pmT = 0, pmx = 0, pmy = 0; // 커서 빠르기(px/s): 빠르면 놀라고, 느리면 궁금해해요
     addEventListener("pointermove", (e) => { const n = performance.now(); if (pmT) { const v = (Math.hypot(e.clientX - pmx, e.clientY - pmy) / Math.max(8, n - pmT)) * 1000; msp += (v - msp) * 0.35; } pmx = e.clientX; pmy = e.clientY; pmT = n; mx = e.clientX; my = e.clientY; last = n; }, { passive: true });
     D.addEventListener("pointerleave", () => { if (!nav.classList.contains("holding")) mx = my = -1e4; });

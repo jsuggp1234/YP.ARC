@@ -2552,3 +2552,13 @@ html.sb-on { overflow-x: hidden; }
   /* 핀 #239: SMART PIXEL 단면 A–A는 모바일 화면 폭 가득 */
   .figs figure:has(img[src*="smart-pixel/section-aa"]) > .media { width: 100vw; margin-left: calc(50% - 50vw); }
 }
+
+/* 핀 #254: 첫 화면 글자 조금 더 작게 */
+.sl-tr { font-size: clamp(72px, 7.6vw, 150px); }
+@media (max-width: 760px) { .sl-tr { font-size: 22vw; } }
+/* 핀 #255: 글자들이 딛고 선 수평선 — 아주 옅은 선 + 아래로 사라지는 바닥 띠, 양끝은 흐려져요 */
+.sl-fl { position: absolute; left: 0; right: 0; height: 0; pointer-events: none; border-top: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent); mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent); }
+/* 핀 #247: YP. STUDIO & LAB — 단어 사이 띄어쓰기 */
+.sl-tr .sl-a[href="works.html"], .sl-tr .sl-a[data-contact]:has(.st-gl[data-g="&"]) { margin-right: 0.28em; }
+.sl-tr .sl-a:has(.st-gl[data-g="."]) { margin-right: 0.28em; }
