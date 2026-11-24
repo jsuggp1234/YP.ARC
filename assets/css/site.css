@@ -2720,3 +2720,6 @@ html.sb-on { overflow-x: hidden; }
   .media:has(img[src*="la-junita/plan-"]) .ftag:not(.pt) { font-size: 5px; }
   .media:has(img[src*="la-junita/plan-"]) .ftag.pt { width: 9px; height: 9px; font-size: 5px; }
 }
+
+/* 핀 #353: studio 그리드 보기 — 전체를 살짝 위로 올려 사진 아래(다음 줄)가 첫 화면에 더 보이게 */
+@media (min-width: 761px) { .cs-gd { padding-top: calc(var(--hdr) + 12px); } }
