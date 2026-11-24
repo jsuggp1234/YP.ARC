@@ -1086,7 +1086,7 @@
     const experiment = (c, j, t) => {
       const S = splitGlyph(c.el, "lx"); if (!S) return;
       const { Ls, fs } = S, [L, A, B] = Ls; if (!A || !B) { S.done(); return; }
-      const E = "cubic-bezier(0.16, 1, 0.3, 1)", T = { mix: 450, boom: 2300, out: 4700, end: 5600 };
+      const E = "cubic-bezier(0.16, 1, 0.3, 1)", T = { mix: 450, boom: 2300, out: 3300, end: 4200 };
       c.fx = t + T.end + 600;
       const pose = (el, kf, o) => el.animate(kf, Object.assign({ fill: "forwards" }, o));
       // 1) 다가서기: L은 한 발 물러나 팔짱 낀 듯 관찰, B는 A 쪽으로 붙어요
@@ -1100,16 +1100,13 @@
       A.animate([{ translate: "0 0" }, { translate: `${fs * 0.008}px 0` }, { translate: `${-fs * 0.008}px 0` }, { translate: "0 0" }], { duration: 60, delay: T.boom - 420, iterations: 7, composite: "add" });
       // 4) 펑! 그을음이 터지고 다들 날아가요 → A 머리에 불
       setTimeout(() => {
-        for (let k = 0; k < 14; k++) { const q = D.createElement("i"); q.className = "fx-sm fx-boom"; A.appendChild(q); const an = (k / 14) * Math.PI * 2, r = 0.18 + Math.random() * 0.12;
+        for (let k = 0; k < 8; k++) { const q = D.createElement("i"); q.className = "fx-sm fx-boom"; A.appendChild(q); const an = (k / 14) * Math.PI * 2, r = 0.18 + Math.random() * 0.12;
           q.animate([{ opacity: 0.9, translate: "0 0", scale: 0.6 }, { opacity: 0, translate: `${Math.cos(an) * r}em ${Math.sin(an) * r * 0.7 - 0.08}em`, scale: 2.4 }], { duration: 700 + Math.random() * 300, easing: "cubic-bezier(0.1, 0.8, 0.3, 1)", fill: "forwards" }).onfinish = () => q.remove(); }
         c.imp = 1; c.trem = performance.now();
         if (L) pose(L, [{ translate: `${-fs * 0.03}px 0`, rotate: "-3deg" }, { translate: `${-fs * 0.14}px ${-fs * 0.05}px`, rotate: "-24deg", offset: 0.35 }, { translate: `${-fs * 0.1}px 0`, rotate: "-8deg" }], { duration: 650, easing: E });
         pose(B, [{ translate: `${-fs * 0.1}px ${-fs * 0.04}px`, rotate: "-22deg" }, { translate: `${fs * 0.1}px ${-fs * 0.32}px`, rotate: "160deg", offset: 0.45 }, { translate: `${fs * 0.14}px 0`, rotate: "350deg" }], { duration: 900, easing: "cubic-bezier(0.3, 0.6, 0.5, 1)" });
         pose(A, [{ scale: "1 1", translate: "0 0" }, { scale: "1.25 0.68", translate: "0 0", offset: 0.25 }, { scale: "0.9 1.12", translate: `0 ${-fs * 0.08}px`, offset: 0.55 }, { scale: "1 1", translate: "0 0" }], { duration: 600, easing: E });
-        const fh = D.createElement("i"); fh.className = "fx-host"; A.appendChild(fh); flames(fh, T.out - T.boom);
-        // 허둥지둥: 불붙은 A가 좌우로 뛰어다니고, L·B는 몸을 젖혀 피해요
-        const run = [0, -0.16, 0.12, -0.2, 0.16, -0.08, 0.06, 0];
-        A.animate(run.map((x, k) => ({ translate: `${x * fs}px ${k % 2 ? -fs * 0.05 : 0}px`, rotate: `${-x * 60}deg` })), { duration: T.out - T.boom - 300, delay: 450, easing: "ease-in-out", composite: "add" });
+        // 핀 #311: 불 타는 모션은 뺐어요 — 펑 하고 그을음만
       }, T.boom);
       // 5) 불이 꺼지면 연기 속에서 몸을 털고(부르르) 제자리로
       setTimeout(() => {
