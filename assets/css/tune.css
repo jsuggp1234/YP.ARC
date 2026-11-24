@@ -151,6 +151,115 @@ html[data-slug="timteam-work"] body[data-page="project"] #main > article.pg.cx >
 html[data-slug="modular-o-housing"] body[data-page="project"] #s4 > figure.pan-loop.solid > div.pan-win > div.pan-belt > span.pan-cell:nth-of-type(1) {
   margin-left: -50% !important;
 }
+/* project#timteam-work · img “Exterior at night” */
+html[data-slug="timteam-work"] body[data-page="project"] #s8 > div.scn:nth-of-type(2) > div.scn-r:nth-of-type(1) > figure:nth-of-type(1) > div.media > div.mz > img {
+  object-position: 50% 100% !important;
+}
+/* project#timteam-work · img “Exterior at night” */
+html[data-slug="timteam-work"] body[data-page="project"] #s10 > div.scn:nth-of-type(2) > div.scn-r:nth-of-type(2) > figure:nth-of-type(1) > div.media > div.mz > img {
+  object-position: 50% 100% !important;
+}
+/* works · img “Motorism” */
+body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(2) > div.media > div.mz > img {
+  object-position: 12% 55% !important;
+  scale: 0.91 !important;
+}
+/* works · img “Tim(team) Work” */
+body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(3) > div.media > div.mz > img {
+  scale: 0.93 !important;
+  object-position: 35.5% 100% !important;
+}
+/* works · media */
+body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(6) > div.media {
+  overflow: hidden !important;
+}
+/* works · img “La Junita” */
+body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(6) > div.media > div.mz > img {
+  scale: 0.89 !important;
+}
+/* works · img “Samgakji Residential Project” */
+body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(5) > div.media > div.mz > img {
+  scale: 0.93 !important;
+  object-position: 26% 52.5% !important;
+}
+/* works · img “Modular O′ housing” */
+body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(4) > div.media > div.mz > img {
+  scale: 0.91 !important;
+}
+/* works · img “Campus Renovation J′” */
+body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(8) > div.media > div.mz > img {
+  scale: 0.91 !important;
+}
+/* project#timteam-work · img “Tim(team) Work” */
+html[data-slug="timteam-work"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img {
+  object-position: 50% 46% !important;
+  scale: 1.19 !important;
+}
+/* works · img “SMART PIXEL” */
+body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(7) > div.media > div.mz > img {
+  object-position: 50% 96% !important;
+}
+/* works · img “Flowing layers” */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(6) > div.media > div.mz > img {
+  object-position: 100% 50% !important;
+}
+/* works · img “PRND” */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(2) > div.media > div.mz > img {
+  object-position: 30% 37.5% !important;
+  scale: 0.85 !important;
+}
+/* works · img “Tim(team) Work” */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(3) > div.media > div.mz > img {
+  object-position: 50% 100% !important;
+}
+/* works · media */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(7) > div.media {
+  overflow: hidden !important;
+}
+/* works · img “SMART PIXEL” */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(7) > div.media > div.mz > img {
+  scale: 0.91 !important;
+}
+/* works · img “Modular O′ housing” */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(4) > div.media > div.mz > img {
+  scale: 0.89 !important;
+}
+/* works · img “Blooming” */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(9) > div.media > div.mz > img {
+  scale: 0.91 !important;
+}
+/* works · dg “Natural Palette” */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(11) > div.media > div.mz > img.dg {
+  scale: 0.96 !important;
+}
+/* works · img “Natural Palette” */
+body[data-page="works"] #cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(10) > div.media > div.mz > img {
+  object-position: 64.5% 92.5% !important;
+  scale: 0.89 !important;
+}
+/* works · img “Natural Palette” */
+body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(10) > div.media > div.mz > img {
+  object-position: 72.5% 50% !important;
+  scale: 0.94 !important;
+}
+/* project#samgakji-residential · cx-cv “Play film” */
+html[data-slug="samgakji-residential"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv {
+  overflow: hidden !important;
+}
+/* project#samgakji-residential · img “Share ho'US'e” */
+html[data-slug="samgakji-residential"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img {
+  scale: 1.33 !important;
+  object-position: 45% 35.5% !important;
+}
+/* project#natural-palette · img “Natural Palette” */
+html[data-slug="natural-palette"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img {
+  scale: 1.04 !important;
+  object-position: 7.5% 90% !important;
+}
+/* project#natural-palette · cx-cv */
+html[data-slug="natural-palette"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv {
+  overflow: hidden !important;
+}
 
 @media (min-width: 761px) {
   /* works · cs-track “RE:TIDE MOTORISM TIM(TEAM) W” */

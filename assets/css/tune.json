@@ -455,5 +455,289 @@
       "margin-left": "-50%"
     },
     "label": "project#modular-o-housing · pan-cell “V-00 Module frame the base o”"
+  },
+  {
+    "id": "592rth6",
+    "page": "project",
+    "slug": "timteam-work",
+    "media": "all",
+    "sel": "#s8 > div.scn:nth-of-type(2) > div.scn-r:nth-of-type(1) > figure:nth-of-type(1) > div.media > div.mz > img",
+    "props": {
+      "object-position": "50% 100%"
+    },
+    "label": "project#timteam-work · img “Exterior at night”"
+  },
+  {
+    "id": "v0opqhe",
+    "page": "project",
+    "slug": "timteam-work",
+    "media": "all",
+    "sel": "#s10 > div.scn:nth-of-type(2) > div.scn-r:nth-of-type(2) > figure:nth-of-type(1) > div.media > div.mz > img",
+    "props": {
+      "object-position": "50% 100%"
+    },
+    "label": "project#timteam-work · img “Exterior at night”"
+  },
+  {
+    "id": "zzn01gk",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(2) > div.media > div.mz > img",
+    "props": {
+      "object-position": "12% 55%",
+      "scale": "0.91"
+    },
+    "label": "works · img “Motorism”"
+  },
+  {
+    "id": "lhosvec",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(3) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.93",
+      "object-position": "35.5% 100%"
+    },
+    "label": "works · img “Tim(team) Work”"
+  },
+  {
+    "id": "oy5ratk",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(6) > div.media",
+    "props": {
+      "overflow": "hidden"
+    },
+    "label": "works · media"
+  },
+  {
+    "id": "cairf3z",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(6) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.89"
+    },
+    "label": "works · img “La Junita”"
+  },
+  {
+    "id": "z7j6t4h",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(5) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.93",
+      "object-position": "26% 52.5%"
+    },
+    "label": "works · img “Samgakji Residential Project”"
+  },
+  {
+    "id": "qypo8hb",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(4) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.91"
+    },
+    "label": "works · img “Modular O′ housing”"
+  },
+  {
+    "id": "o33lrzf",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(8) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.91"
+    },
+    "label": "works · img “Campus Renovation J′”"
+  },
+  {
+    "id": "3r58lkd",
+    "page": "project",
+    "slug": "timteam-work",
+    "media": "all",
+    "sel": "#main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img",
+    "props": {
+      "object-position": "50% 46%",
+      "scale": "1.19"
+    },
+    "label": "project#timteam-work · img “Tim(team) Work”"
+  },
+  {
+    "id": "zuzer05",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(7) > div.media > div.mz > img",
+    "props": {
+      "object-position": "50% 96%"
+    },
+    "label": "works · img “SMART PIXEL”"
+  },
+  {
+    "id": "33kjzhn",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(6) > div.media > div.mz > img",
+    "props": {
+      "object-position": "100% 50%"
+    },
+    "label": "works · img “Flowing layers”"
+  },
+  {
+    "id": "tf1hmew",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(2) > div.media > div.mz > img",
+    "props": {
+      "object-position": "30% 37.5%",
+      "scale": "0.85"
+    },
+    "label": "works · img “PRND”"
+  },
+  {
+    "id": "wc4hzv7",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(3) > div.media > div.mz > img",
+    "props": {
+      "object-position": "50% 100%"
+    },
+    "label": "works · img “Tim(team) Work”"
+  },
+  {
+    "id": "3tjxcjy",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(7) > div.media",
+    "props": {
+      "overflow": "hidden"
+    },
+    "label": "works · media"
+  },
+  {
+    "id": "a5tbifv",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(7) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.91"
+    },
+    "label": "works · img “SMART PIXEL”"
+  },
+  {
+    "id": "rfab8th",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(4) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.89"
+    },
+    "label": "works · img “Modular O′ housing”"
+  },
+  {
+    "id": "i2dskq1",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(9) > div.media > div.mz > img",
+    "props": {
+      "scale": "0.91"
+    },
+    "label": "works · img “Blooming”"
+  },
+  {
+    "id": "8hglj0s",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(11) > div.media > div.mz > img.dg",
+    "props": {
+      "scale": "0.96"
+    },
+    "label": "works · dg “Natural Palette”"
+  },
+  {
+    "id": "in96cwl",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(10) > div.media > div.mz > img",
+    "props": {
+      "object-position": "64.5% 92.5%",
+      "scale": "0.89"
+    },
+    "label": "works · img “Natural Palette”"
+  },
+  {
+    "id": "pgvcodc",
+    "page": "works",
+    "slug": "",
+    "media": "all",
+    "sel": "#cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(10) > div.media > div.mz > img",
+    "props": {
+      "object-position": "72.5% 50%",
+      "scale": "0.94"
+    },
+    "label": "works · img “Natural Palette”"
+  },
+  {
+    "id": "aiccith",
+    "page": "project",
+    "slug": "samgakji-residential",
+    "media": "all",
+    "sel": "#main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv",
+    "props": {
+      "overflow": "hidden"
+    },
+    "label": "project#samgakji-residential · cx-cv “Play film”"
+  },
+  {
+    "id": "jdrulu7",
+    "page": "project",
+    "slug": "samgakji-residential",
+    "media": "all",
+    "sel": "#main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img",
+    "props": {
+      "scale": "1.33",
+      "object-position": "45% 35.5%"
+    },
+    "label": "project#samgakji-residential · img “Share ho'US'e”"
+  },
+  {
+    "id": "mchykyc",
+    "page": "project",
+    "slug": "natural-palette",
+    "media": "all",
+    "sel": "#main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img",
+    "props": {
+      "scale": "1.04",
+      "object-position": "7.5% 90%"
+    },
+    "label": "project#natural-palette · img “Natural Palette”"
+  },
+  {
+    "id": "5rtqw3v",
+    "page": "project",
+    "slug": "natural-palette",
+    "media": "all",
+    "sel": "#main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv",
+    "props": {
+      "overflow": "hidden"
+    },
+    "label": "project#natural-palette · cx-cv"
   }
 ]
