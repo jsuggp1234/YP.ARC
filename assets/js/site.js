@@ -1363,8 +1363,9 @@
       geo.forEach((g) => g.sl.forEach((o) => { o.el.style.translate = ""; o.cur = 0; }));
       const A = [];
       as.forEach((o) => { if (o === a) return;
-        $$(".st-b", o).forEach((b) => A.push(b.animate([{ translate: "0 0", rotate: "0deg", opacity: 1 }, { translate: `${(Math.random() - 0.5) * 0.3}em ${0.5 + Math.random() * 0.8}em`, rotate: `${(Math.random() - 0.5) * 14}deg`, opacity: 0 }], { duration: 700 + Math.random() * 300, delay: Math.random() * 220, easing: "cubic-bezier(0.55, 0, 0.75, 0.3)", fill: "forwards" })));
-      });
+        $$(".st-b", o).forEach((b) => A.push(b.animate([{ translate: "0 0", rotate: "0deg", opacity: 1 }, { translate: `${(Math.random() - 0.5) * 0.2}em ${0.25 + Math.random() * 0.35}em`, rotate: `${(Math.random() - 0.5) * 10}deg`, opacity: 0 }], { duration: 240 + Math.random() * 100, delay: Math.random() * 60, easing: "cubic-bezier(0.4, 0, 1, 1)", fill: "forwards" })));
+        A.push(o.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 1, delay: 420, fill: "forwards" })); // 핀 #358: 다 흩어진 뒤엔 남김없이 숨겨요
+      }); // 핀 #358: 다른 글자는 0.4초 안에 다 사라지고, 그 뒤에야 누른 글자가 가운데로 가요 → 가운데에서 겹치지 않아요
       $$(".sl-t", nav).forEach((t) => A.push(t.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" })));
       setTimeout(() => stSpell(a, pg).then(() => {
         if (!isC) { ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "blank" })); return location.assign(a.href); }
@@ -1372,7 +1373,7 @@
         const btn = $(".hdr [data-contact]") || $("[data-contact]:not(.sl-a)"); if (btn) btn.click();
         busy = false; prev = 0; requestAnimationFrame(tick);
         $$(".st-b", a).forEach((x, k) => x.animate([{ translate: "0 0.14em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 900, delay: 400 + (N - 1 - k) * 20, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
-      }), 380);
+      }), 430);
     });
   };
   // 예전 카드형 첫 화면 (2026-11-22까지) — 쓰지 않아요
