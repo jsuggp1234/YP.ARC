@@ -2706,3 +2706,9 @@ html.sb-on { overflow-x: hidden; }
   .figs figure:has(img[src*="natural-palette/axo-concept"]) > .media { width: min(74%, calc((100svh - 260px) * var(--r))) !important; margin-inline: auto; }
   .media img[src*="natural-palette/axo-concept"] { object-fit: contain; }
 }
+
+/* 핀 #333: 축 그림(lead) 지시선은 더 가늘게, 이름표는 조금 작게 */
+.seq-ln { height: 0.5px; margin-top: -.25px; opacity: .7; }
+.seq-dt { width: 2.5px; height: 2.5px; margin: -1.25px 0 0 -1.25px; }
+.seq-lb { font-size: calc(var(--t-xs) * 0.9); }
+@media (max-width: 760px) { .seq-ln { height: 0.5px; opacity: .6; } .seq-lb { font-size: 6px; } }
