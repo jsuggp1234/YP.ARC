@@ -523,11 +523,10 @@
     "sel": "#cases > div.cs-gd:nth-of-type(1) > div.cs-gd-in > a.cs-card.cs-gc:nth-of-type(6) > div.media > div.mz > img",
     "props": {
       "scale": "1.04",
-      "object-position": "74% 100%",
-      "object-fit": "contain",
-      "transform-origin": "50% 100%"
+      "object-position": "74% 44.5%",
+      "object-fit": "contain"
     },
-    "label": "works · img “The Tree House” (핀 #356: 아래 바다가 더 보이게)"
+    "label": "works · img “La Junita”"
   },
   {
     "id": "z7j6t4h",
@@ -753,7 +752,8 @@
     "sel": "#main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img",
     "props": {
       "object-position": "46% 100%",
-      "scale": "1.01"
+      "scale": "1.01",
+      "object-fit": "contain"
     },
     "label": "project#the-tree-house · img “Blooming”"
   },
@@ -765,7 +765,8 @@
     "sel": "#main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv",
     "props": {
       "overflow": "hidden",
-      "margin-left": "-3%"
+      "margin-left": "0%",
+      "margin-top": "-300px"
     },
     "label": "project#the-tree-house · cx-cv"
   }
