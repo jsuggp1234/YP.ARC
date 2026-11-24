@@ -985,25 +985,55 @@
     // STUDIO는 무거워서 작게 뛰거나 몸을 떨어요. 점이 날면 다른 글자들이 고개(기울기)로 따라가고, 점이 내려앉은 글자는 살짝 눌려요.
     const CH = as.map((a) => ({ el: $(".sl-g", a), x: 0, y: 0, base: 0, sx: 1, sy: 1, rot: 0, act: null, q: [], imp: 0, on: -1, look: 0, lookT: 0, mode: "home", tx: 0, ty: 0, gp: 0, dirx: 0 }));
     const DOT = ST.findIndex((pg) => pg.glyph === "."), WORD = ST.findIndex((pg) => (pg.glyph || "").length > 1);
+    // 핀 #257: 성격 — Y 깨발랄 · P 철학자 · STUDIO 워커홀릭 일잘러 · LAB 공대 연구자 · 점과 &는 천진난만한 꼬마(다른 글자 머리 위를 밟고 다녀요)
+    const GI = (ch) => ST.findIndex((pg) => pg.glyph === ch);
+    const YI = GI("Y"), PI = GI("P"), LABI = GI("LAB"), KIDS = [DOT, GI("&")].filter((k) => k >= 0);
+    const isKid = (j) => KIDS.includes(j);
+    const SPD = 1.2; // 전체 움직임 조금 더 빠르게
     let nextAt = 0;
     const hop = (c, x1, y1, h, dur, t0) => ({ k: "hop", t0, dur, x0: c.x, y0: c.base, x1, y1, h });
-    const later = (c, t, x1, y1, h, dur) => { const last = c.q.length ? c.q[c.q.length - 1] : c.act; const t0 = last ? last.t0 + last.dur + 40 : t; c.q.push(hop({ x: last ? last.x1 : c.x, base: last ? last.y1 : c.base }, x1, y1, h, dur, t0)); };
+    const later = (c, t, x1, y1, h, dur) => { const last = c.q.length ? c.q[c.q.length - 1] : c.act; const t0 = last ? last.t0 + last.dur / SPD + 30 : t; c.q.push(hop({ x: last ? last.x1 : c.x, base: last ? last.y1 : c.base }, x1, y1, h, dur, t0)); };
     const pick = (t) => {
       const fs0 = geo[0] ? geo[0].fs : 100, r = Math.random();
-      const who = r < 0.34 ? DOT : r < 0.66 ? 0 : r < 0.86 ? 1 : WORD;
+      const kid = KIDS[Math.floor(Math.random() * KIDS.length)];
+      const who = r < 0.42 ? kid : r < 0.62 ? YI : r < 0.72 ? PI : r < 0.86 ? WORD : LABI;
       const c = CH[who]; if (!c || c.act || c.q.length || c.mode !== "home") return;
-      if (who === DOT) {
-        if (c.on >= 0 && Math.random() < 0.55) { later(c, t, 0, 0, fs0 * 0.45, 820); c.on = -1; return; } // 집으로
-        const tg = [0, 1, WORD].filter((j) => j !== c.on && geo[j] && CH[j].mode === "home")[Math.floor(Math.random() * 2.999)];
-        if (tg == null || !geo[tg] || !geo[DOT]) return;
-        const gt = geo[tg], dx = gt.x0 + CH[tg].x + (Math.random() - 0.5) * gt.hw * (tg === WORD ? 1.4 : 0.6) - geo[DOT].x0;
-        later(c, t, dx, -gt.fs * 0.73, fs0 * (0.5 + Math.random() * 0.25), 900 + Math.abs(dx) / fs0 * 120); c.on = tg; c.tgt = tg;
-        if (Math.random() < 0.35) later(c, t, dx, -gt.fs * 0.73, fs0 * 0.12, 380); // 올라가서 한 번 더 통통
+      if (isKid(who)) { // 꼬마들: 다른 글자 머리 위로 폴짝 → 그 위에서 콩콩 → 다음 글자 머리로 건너뛰거나 집으로
+        const me = geo[who]; if (!me) return;
+        if (c.on >= 0 && Math.random() < 0.4) { later(c, t, 0, 0, fs0 * 0.5, 700); c.on = -1; return; } // 집으로
+        const cand = CH.map((_, j) => j).filter((j) => j !== who && j !== c.on && geo[j] && CH[j].mode === "home" && !isKid(j));
+        const tg = cand[Math.floor(Math.random() * cand.length)]; if (tg == null) return;
+        const gt = geo[tg], top = -gt.fs * 0.73, dx = gt.x0 + CH[tg].x + (Math.random() - 0.5) * gt.hw * 1.2 - me.x0;
+        later(c, t, dx, top, fs0 * (0.55 + Math.random() * 0.3), 700 + (Math.abs(dx) / fs0) * 90); c.on = tg; c.tgt = tg;
+        const n = Math.floor(Math.random() * 3); // 머리 위에서 콩콩 (밟힌 글자는 눌려요)
+        let x = dx; for (let i = 0; i < n; i++) { x = Math.max(gt.x0 - gt.hw * 0.8 - me.x0, Math.min(gt.x0 + gt.hw * 0.8 - me.x0, x + (Math.random() - 0.5) * gt.hw * 0.8)); later(c, t, x, top, fs0 * (0.12 + Math.random() * 0.12), 300); }
         return;
       }
-      if (CH[DOT] && CH[DOT].on === who) { if (who === WORD) c.shake = t; else c.lookT = t + 1500; return; } // 점이 올라앉아 있으면 뛰지 않고 몸만
-      if (who === WORD) {
-        if (Math.random() < 0.55) later(c, t, 0, 0, fs0 * 0.09, 620); else { c.shake = t; }
+      if (KIDS.some((k) => CH[k] && CH[k].on === who)) { // 꼬마가 머리 위에 있으면
+        if (who === WORD) c.shake = t; // STUDIO: 일 방해받아 몸을 털어요
+        else if (who === PI) c.ponder = t + 2600; // P: 아랑곳 않고 생각에 잠겨요
+        else if (who === LABI) c.lookT = t + 2000; // LAB: 올려다보며 관찰
+        else later(c, t, c.x, 0, fs0 * 0.1, 360); // Y: 같이 신나서 통통
+        return;
+      }
+      if (who === WORD) { // STUDIO 일잘러: 짧고 빠른 작업 리듬(톡톡톡) — 늘 같은 높이, 같은 간격
+        const n = 3 + Math.floor(Math.random() * 3); for (let i = 0; i < n; i++) later(c, t, 0, 0, fs0 * 0.035, 170);
+        c.work = t + n * 200 + 400; return;
+      }
+      if (who === PI) { // P 철학자: 천천히 한 걸음 → 멈춰 고개를 젖히고 깊은 생각
+        if (Math.random() < 0.45) { const x = Math.max(-fs0 * 0.12, Math.min(fs0 * 0.12, c.x + (Math.random() < 0.5 ? -1 : 1) * fs0 * 0.06)); later(c, t, x, 0, fs0 * 0.025, 1100); }
+        c.ponder = t + 3200 + Math.random() * 2400; return;
+      }
+      if (who === LABI) { // LAB 연구자: 자로 잰 듯 같은 보폭 세 번 → 멈춰 관찰 → 같은 보폭으로 정확히 제자리
+        const d = (Math.random() < 0.5 ? -1 : 1) * fs0 * 0.04;
+        for (let i = 1; i <= 3; i++) later(c, t, d * i, 0, fs0 * 0.02, 240);
+        later(c, t, d * 3, 0, 0, 900); for (let i = 2; i >= 0; i--) later(c, t, d * i, 0, fs0 * 0.02, 240);
+        c.lookT = t + 1400; return;
+      }
+      if (who === YI) { // Y 깨발랄: 높이 뛰며 한 바퀴, 깡충깡충 스킵
+        if (Math.random() < 0.4) { later(c, t, c.x, 0, fs0 * 0.42, 720); c.spin = t + 160; c.spinDir = Math.random() < 0.5 ? -1 : 1; }
+        else { const dir = Math.abs(c.x) > fs0 * 0.1 ? -Math.sign(c.x) : Math.random() < 0.5 ? -1 : 1; let x = c.x;
+          for (let i = 0; i < 4; i++) { x = Math.max(-fs0 * 0.2, Math.min(fs0 * 0.2, x + dir * fs0 * 0.06)); later(c, t, x, 0, fs0 * (i % 2 ? 0.08 : 0.2), 300); } }
         return;
       }
       if (who === 0 && Math.random() < 0.5) { // Y: 화면 왼쪽을 천천히 돌아다니다가 돌아와요
@@ -1021,7 +1051,7 @@
       } else { c.lookT = t + 1500; } // 쳐다보기
     };
     const pose = (c, t) => { // 진행 중인 뜀의 자세: 웅크림 → 날기(늘어남) → 착지(눌림)
-      const a = c.act, p = clamp((t - a.t0) / a.dur);
+      const a = c.act, p = clamp((t - a.t0) / (a.dur / SPD));
       let sx = 1, sy = 1, x = a.x0, y = a.y0;
       if (p < 0.22) { const w = Math.sin((Math.PI * p) / 0.22); sy = 1 - 0.13 * w; sx = 1 + 0.07 * w; }
       else if (p < 0.8) { const q = (p - 0.22) / 0.58, w = Math.sin(Math.PI * q); x = a.x0 + (a.x1 - a.x0) * eOut(q); y = a.y0 + (a.y1 - a.y0) * q - a.h * 4 * q * (1 - q); sy = 1 + 0.08 * w; sx = 1 - 0.05 * w; }
@@ -1098,14 +1128,15 @@
         const g = geo[j]; if (!g || c.mode === "home") return;
         if (c.mode !== "wander") rest = false;
         if (c.mode === "held" || c.mode === "drop") { physics(c, j, dt); return; }
-        const run = c.mode === "run", vmax = run ? (j === WORD ? 260 : 340) : c.mode === "back" ? 300 : 120, acc = run ? 950 : 650;
+        const run = c.mode === "run", per = j === PI ? 0.8 : isKid(j) || j === YI ? 1.12 : j === WORD && c.mode === "back" ? 1.3 : 1; // P는 서두르지 않고, STUDIO는 일하러 제일 빨리 돌아와요
+        const vmax = (run ? (j === WORD ? 260 : 340) : c.mode === "back" ? 300 : 120) * SPD * per, acc = (run ? 950 : 650) * SPD * per;
         if (t < (c.wait || 0)) { if (c.dizzy > t || c.huff > t - 900) { c.vx = 0; c.ax = 0; return; } c.crouch = Math.min(1, (c.crouch || 0) + dt * 6); c.vx = 0; c.ax = 0; c.tdir = Math.sign(c.tx - c.x); return; } // 출발 전: 반대쪽으로 웅크려요
         c.crouch = Math.max(0, (c.crouch || 0) - dt * 7);
         { // 늘 바닥(수평선)으로 — 다른 글자와 겹치려 하면 그 위로 뛰어넘어요
           let lift = 0; const cx = g.x0 + c.x; if (j !== WORD) // STUDIO는 무거워서 뛰어넘지 않고, 작은 글자들이 STUDIO 위로 올라타 넘어가요
           CH.forEach((o, k) => { const go = geo[k]; if (k === j || !go || o.mode === "held" || o.mode === "drop") return;
             const d = Math.abs(cx - (go.x0 + o.x)), span = g.hw + go.hw; if (d >= span) return;
-            const hgt = (k === DOT ? 0.2 : 0.78) * go.fs; lift = Math.max(lift, hgt * Math.min(1, ((span - d) / (span * 0.35)))); });
+            const hgt = (k === DOT ? 0.2 : k === KIDS[1] ? 0.5 : 0.78) * go.fs; lift = Math.max(lift, hgt * Math.min(1, ((span - d) / (span * 0.35)))); });
           c.base += (-lift - c.base) * Math.min(1, dt * (lift > -c.base ? 14 : 9));
         }
         const dx = c.tx - c.x, dist = Math.abs(dx);
@@ -1124,8 +1155,8 @@
         c.dirx = c.vx / 340;
         c.gp += (Math.abs(c.vx) * dt) / (g.fs * (run ? 0.1 : 0.13)); // 보폭: 빨리 달릴수록 걸음이 빨라져요
       });
-      if (calm && t > nextAt) { pick(t); nextAt = t + 900 + Math.random() * 1900; }
-      const dotC = CH[DOT], dotG = geo[DOT], dotAir = dotC && dotC.act && dotC.act.t0 <= t;
+      if (calm && t > nextAt) { pick(t); nextAt = t + 600 + Math.random() * 1300; }
+      const AIR = KIDS.find((k) => CH[k] && CH[k].act && CH[k].act.t0 <= t), dotC = CH[AIR ?? DOT], dotG = geo[AIR ?? DOT], dotAir = AIR != null;
       const HJ = CH.findIndex((c) => c.mode === "held");
       // 감정: 졸음(9초 넘게 아무 입력 없으면 서서히 꾸벅) → 깨면 깜짝 / 커서가 빠르게 스치면 깜짝 놀라 물러섬 / 천천히 다가오면 궁금해 까치발
       msp *= Math.exp(-dt * 5);
@@ -1140,25 +1171,26 @@
         }
         if (!c.act && c.q.length && c.q[0].t0 <= t) c.act = c.q.shift();
         if (c.act && c.act.t0 <= t) {
-          if (pose(c, t)) { c.base = c.act.y1; c.x = c.act.x1; c.y = c.base; c.sx = c.sy = 1; if (j === DOT && c.on >= 0 && CH[c.on]) CH[c.on].imp = 1; c.act = null; }
+          if (pose(c, t)) { c.base = c.act.y1; c.x = c.act.x1; c.y = c.base; c.sx = c.sy = 1; if (isKid(j) && c.on >= 0 && CH[c.on]) CH[c.on].imp = 1; c.act = null; }
         } else if (c.mode !== "home") { // 종종걸음: 발을 디딜 때마다 살짝 눌리고, 가는 쪽으로 몸을 기울이며 좌우로 흔들려요
           const ab = Math.abs(Math.sin(c.gp)), sp = Math.min(1, Math.abs(c.vx || 0) / 300), cr = c.crouch || 0;
           c.y = c.base - ab * g0(j).fs * 0.065 * sp; c.sy = 1 - 0.07 * (1 - ab) * sp - 0.12 * cr; c.sx = 1 + 0.04 * (1 - ab) * sp + 0.07 * cr;
         } else {
           c.sx += (1 - c.sx) * 0.2; c.sy += (1 - c.sy) * 0.2; c.y = c.base;
           const gq = g0(j), cx = (gq.x0 || 0) + c.x, cy = (gq.by || 0) - gq.fs * 0.4 + c.base, dm = mx > -1e3 ? Math.hypot(mx - cx, my - cy) : 1e9;
-          if (c.mode === "home" && !c.act && !c.q.length && dm < gq.fs * 1.1 && msp > 1300 && t > (c.fearT || 0) + 1400) { // 깜짝: 움찔하며 한 발 물러서요
+          if (c.mode === "home" && j !== WORD && !c.act && !c.q.length && dm < gq.fs * 1.1 && msp > (j === PI ? 2200 : 1300) && t > (c.fearT || 0) + 1400) { // 깜짝: 움찔하며 한 발 물러서요
             c.fearT = t; c.trem = t; const away = Math.sign(cx - mx) || 1;
             later(c, t, Math.max(-gq.fs * 0.2, Math.min(gq.fs * 0.2, c.x + away * gq.fs * 0.09)), c.base, gq.fs * 0.1, 360);
           }
-          const want = c.mode === "home" && dm < gq.fs * 2.4 && msp < 260 && sleep < 0.3 ? 1 : 0; c.cur = (c.cur || 0) + (want - (c.cur || 0)) * 0.06; // 궁금함
-          c.bp = (c.bp || j * 1.7) + dt * ((Math.PI * 2) / (1.25 + j * 0.17)) * (1 - 0.45 * sleep); // 숨: 잠들면 느리고 깊게
-          const br = Math.sin(c.bp), amp = (j === WORD ? 0.007 : 0.013) * (1 + sleep * 1.3);
+          const want = c.mode === "home" && j !== WORD && dm < gq.fs * (j === LABI ? 3.2 : 2.4) && msp < 260 && sleep < 0.3 ? 1 : 0; // STUDIO는 커서에 관심 없고, LAB은 멀리서도 궁금 c.cur = (c.cur || 0) + (want - (c.cur || 0)) * 0.06; // 궁금함
+          const per2 = j === PI ? 2.6 : j === YI || isKid(j) ? 0.85 : j === WORD ? 1.0 : j === LABI ? 1.6 : 1.25 + j * 0.17; // P는 깊고 느리게, 꼬마·Y는 빠르게
+          c.bp = (c.bp || j * 1.7) + dt * ((Math.PI * 2) / per2) * (1 - 0.45 * sleep); // 숨: 잠들면 느리고 깊게
+          const br = Math.sin(c.bp), amp = (j === WORD ? 0.007 : j === PI ? 0.02 : j === YI || isKid(j) ? 0.018 : j === LABI ? 0.006 : 0.013) * (1 + sleep * 1.3);
           c.sy *= 1 + amp * br + 0.035 * c.cur - 0.035 * sleep; c.sx *= 1 - amp * 0.5 * br - 0.012 * c.cur;
         }
         // 쳐다보기: 점이 날고 있으면 점 쪽으로, 아니면 쳐다보기 중일 때 커서 쪽으로 (바닥을 축으로 기울어요)
         const g = geo[j]; let want = 0;
-        if (g && j !== DOT && dotAir && dotG) want = Math.max(-7, Math.min(7, ((dotG.x0 + dotC.x - g.x0) / g.fs) * 5));
+        if (g && !isKid(j) && dotAir && dotG) want = Math.max(-7, Math.min(7, ((dotG.x0 + dotC.x - g.x0) / g.fs) * 5));
         else if (g && t < c.lookT && mx > -1e3) want = Math.max(-9, Math.min(9, ((mx - g.x0) / g.fs) * 6));
         if (HJ >= 0 && j !== HJ && g && geo[HJ]) want = Math.max(-8, Math.min(8, ((geo[HJ].x0 + CH[HJ].x - g.x0) / g.fs) * 5));
         if (c.mode !== "home") want = Math.max(-16, Math.min(16, ((c.vx || 0) / 340) * 9 + ((c.ax || 0) / 950) * 6 + Math.sin(c.gp * 2) * 1.5 * Math.min(1, Math.abs(c.vx || 0) / 300) - (c.crouch || 0) * (c.tdir || 0) * 5));
@@ -1168,11 +1200,19 @@
         if (c.mode === "home") want += slp * ((j % 2 ? 4 : -3.5) + Math.sin(t / 1700 + j) * 1.5); // 졸면 고개를 꾸벅
         if (c.dizzy > t) want = Math.sin(t / 150 + j) * 8 * Math.min(1, (c.dizzy - t) / 1200); // 어지러워 비틀비틀
         if (HJ >= 0 && j !== HJ) want += Math.sin(t / 26 + j * 2) * 0.9; // 친구가 잡혀 있으면 불안해서 떨어요
+        if (c.mode === "home") {
+          if (j === PI) want += t < (c.ponder || 0) ? -6 + Math.sin(t / 1400) * 2.5 : Math.sin(t / 3200) * 1.5; // 철학자: 고개를 젖히고 천천히 갸웃
+          if (j === YI) want += Math.sin(t / 260) * 1.4; // 깨발랄: 늘 들썩들썩
+          if (isKid(j) && !c.act) want += Math.sin(t / 180 + j) * 2; // 꼬마: 가만있질 못해요
+          if (j === WORD && t < (c.work || 0)) want += Math.sin(t / 40) * 1.2; // 일잘러: 일하는 중 미세한 떨림
+          if (j === LABI) want = Math.round(want / 3) * 3; // 연구자: 3° 단위로 딱딱 (정밀)
+        }
         if (j === WORD) want *= 0.4; // STUDIO는 넓어서 조금만 기울어요
-        c.rot += (want - c.rot) * (c.mode !== "home" ? 0.18 : 0.08);
+        c.rot += (want - c.rot) * (c.mode !== "home" ? 0.18 : j === LABI ? 0.25 : j === PI ? 0.03 : 0.08);
         c.imp *= 0.88; // 점이 앉으면 살짝 눌렸다 펴져요
         const sy = c.sy * (1 - 0.07 * c.imp), sx = c.sx * (1 + 0.035 * c.imp);
-        const tf = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0) rotate(${c.rot.toFixed(2)}deg) scale(${sx.toFixed(3)}, ${sy.toFixed(3)})`;
+        const spn = c.spin && t > c.spin && t < c.spin + 520 ? c.spinDir * 360 * eOut((t - c.spin) / 520) : 0; // Y: 공중에서 한 바퀴
+        const tf = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0) rotate(${(c.rot + spn).toFixed(2)}deg) scale(${sx.toFixed(3)}, ${sy.toFixed(3)})`;
         if (c.el.style.transform !== tf) c.el.style.transform = tf;
       });
       return rest;
@@ -3269,23 +3309,28 @@
     $(".cl").addEventListener("pointerleave", () => show(-1));
     addEventListener("pointermove", (e) => { if (on < 0) return; tx = e.clientX; ty = e.clientY; if (!raf) raf = requestAnimationFrame(frame); }, { passive: true });
   }
-  render.lab = () => {
+  render.lab = () => { // 핀 #277: studio처럼 카드 띠(caseStrip). 사진 대신 글씨만 있는 카드
+    HTML.classList.add("v2-home", "lab-home");
     const L = SITE.lab || {}, list = L.items || [];
+    const reps = Math.max(1, Math.ceil(6 / Math.max(1, list.length))); // 카드가 적어도 띠가 화면을 채우게 한 벌 안에 여러 번
+    const one = [...Array(reps)].map(() => list.map((it, i) => `
+      <a class="cs-card lb-cd${it.soon ? " soon" : ""}" ${it.href ? `href="${esc(it.href)}"` : 'aria-disabled="true"'} draggable="false" data-i="${i}">
+        <span class="cs-lab"><span class="cs-no num">${i + 1}.</span> ${esc(it.title)}</span>
+        <div class="media"><div class="mz lb-tx">
+          <span class="lb-n num">${pad(i + 1)}</span>
+          <span class="lb-t">${esc(it.title)}</span>
+          <span class="lb-m">${esc(it.type || "")}</span>
+          <span class="lb-y num">${it.soon ? "Coming soon" : esc(it.year || "")}</span>
+          <span class="lb-go">${it.soon ? "" : "Open →"}</span>
+        </div></div>
+      </a>`).join("")).join("");
     $("#main").innerHTML = `
-      <section class="ar-hd cl-hd g4">
-        <h1 class="ar-h">${esc(L.title || "lab")}</h1>
-        <p class="ar-note">${esc(L.note || "")}<span class="num">(${pad(list.length)})</span></p>
-      </section>
-      <ol class="cl lab">${list.map((it, i) => `
-        <li><a class="cl-row g4${it.soon ? " soon" : ""}" ${it.href ? `href="${esc(it.href)}"` : 'aria-disabled="true"'} data-i="${i}">
-          <span class="cl-t"><span class="cl-n num">${pad(i + 1)}</span>${esc(it.title)}</span>
-          <span class="cl-m">${esc(it.type || "")}</span>
-          <span class="cl-y num">${it.soon ? "Coming soon" : esc(it.year || "")}</span>
-          <span class="cl-th" aria-hidden="true">${it.img ? `<img src="${esc(it.img)}" alt="" loading="lazy" decoding="async">` : ""}</span>
-        </a></li>`).join("")}
-      </ol>
-      <div class="cl-pv" aria-hidden="true">${list.map((it) => `<img data-src="${esc(it.img || "")}" alt="">`).join("")}</div>`;
-    clHover();
+      <section class="cs lb" id="cases" aria-label="Lab"> <!-- 핀 #278: studio와 똑같은 띠 (#cases 배치 규칙을 같이 써요) -->
+        <h1 class="sr">${esc(SITE.name)} — Lab</h1>
+        <p class="lb-note">${esc(L.note || "")}<span class="num">(${pad(list.length)})</span></p>
+        <div class="cs-track">${[0, 1, 2].map((k) => k === 1 ? `<div class="cs-set">${one}</div>` : `<div class="cs-set" aria-hidden="true">${one.replace(/<a /g, '<a tabindex="-1" ')}</div>`).join("")}</div>
+      </section>`;
+    caseStrip();
   };
   render.projects = () => {
     const I = SITE.index || {}, list = PROJECTS.filter((p) => !p.draft);
