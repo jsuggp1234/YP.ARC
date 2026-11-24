@@ -76,7 +76,7 @@ const SITE = {
     note: "Tools built alongside the work — simulations that read data and turn it into space.",
     items: [
       { key: "tide-sim", title: "tide-sim", href: "lab/tide-sim/", type: "Simulation — tidal plinths", year: "2026", img: "assets/img/lab/tide-sim.jpg" },
-      { key: "bim-sim", title: "bim-sim", href: "https://jsuggp1234.github.io/bim-ai-sim/", type: "Simulation — BIM", year: "2026", img: "assets/img/lab/bim-sim.svg" } /* 핀 #246 */,
+      { key: "bim-sim", title: "bim-sim", href: "https://jsuggp1234.github.io/bim-ai-sim/", local: "lab/bim-sim/index.html", type: "Simulation — BIM", year: "2026", img: "assets/img/lab/bim-sim.svg" } /* 핀 #246 */,
     ],
   },
   // About 페이지 (v2 8–10단계). draft: true 인 글은 제가 쓴 초안이라 화면에 "Draft"가 붙어요 — 확인 후 draft를 지우면 표시가 사라져요

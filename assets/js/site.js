@@ -3420,12 +3420,14 @@
     $(".cl").addEventListener("pointerleave", () => show(-1));
     addEventListener("pointermove", (e) => { if (on < 0) return; tx = e.clientX; ty = e.clientY; if (!raf) raf = requestAnimationFrame(frame); }, { passive: true });
   }
+  // 핀 꽂기용: 이 컴퓨터(localhost)에서는 bim-sim을 사이트 안 사본(lab/bim-sim/, git 제외)으로 열어 피드백 핀을 꽂을 수 있게
+  const LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   render.lab = () => { // 핀 #277: studio처럼 카드 띠(caseStrip). 사진 대신 글씨만 있는 카드
     HTML.classList.add("v2-home", "lab-home");
     const L = SITE.lab || {}, list = L.items || [];
     const reps = Math.max(1, Math.ceil(6 / Math.max(1, list.length))); // 카드가 적어도 띠가 화면을 채우게 한 벌 안에 여러 번
     const one = [...Array(reps)].map(() => list.map((it, i) => `
-      <a class="cs-card lb-cd${it.soon ? " soon" : ""}" ${it.href ? `href="${esc(it.href)}"` : 'aria-disabled="true"'} draggable="false" data-i="${i}">
+      <a class="cs-card lb-cd${it.soon ? " soon" : ""}" ${it.href ? `href="${esc(LOCAL && it.local ? it.local : it.href)}"` : 'aria-disabled="true"'} draggable="false" data-i="${i}">
         <span class="cs-lab"><span class="cs-no num">${i + 1}.</span> ${esc(it.title)}</span>
         <div class="media"><div class="mz lb-tx">
           <span class="lb-n num">${pad(i + 1)}</span>
