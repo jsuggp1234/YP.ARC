@@ -1117,41 +1117,29 @@
       }, T.out);
       setTimeout(() => S.done(), T.end + 300);
     };
-    const workshop = (c, j, t) => {
-      const el = c.el, gl = $(".st-gl", el), g0t = gl && $(".st-g0", gl); if (!g0t || el.querySelector(".wk")) return;
-      // 글자 하나하나의 자리 재기 (몸의 기울기·눌림은 잠깐 빼고)
-      const pt = el.style.transform; el.style.transform = "none";
-      const er = el.getBoundingClientRect(), tn = g0t.firstChild, rg = D.createRange(), cs = getComputedStyle(gl), fs = parseFloat(cs.fontSize);
-      const chars = [...(tn.textContent || "")].map((ch, i) => { rg.setStart(tn, i); rg.setEnd(tn, i + 1); const r = rg.getBoundingClientRect(); return { ch, x: r.left - er.left, y: r.top - er.top + (r.height - fs) / 2, w: r.width }; });
-      el.style.transform = pt;
-      if (!chars.length) return;
-      const w = D.createElement("i"); w.className = "wk"; w.setAttribute("aria-hidden", "true");
-      w.style.cssText = `font-family:${cs.fontFamily};font-size:${fs}px;font-weight:${cs.fontWeight};letter-spacing:${cs.letterSpacing}`;
-      const mid = (chars[0].x + chars[chars.length - 1].x + chars[chars.length - 1].w) / 2;
-      w.innerHTML = chars.map((q) => `<span class="wk-l" style="left:${q.x}px;top:${q.y}px">${esc(q.ch)}</span>`).join("")
-        + `<span class="wk-o" style="left:${mid}px">${[...Array(9)].map((_, k) => `<i style="--x:${k % 3};--y:${Math.floor(k / 3)}"></i>`).join("")}<b></b></span>`;
-      el.appendChild(w); gl.style.visibility = "hidden";
-      const Ls = $$(".wk-l", w), O = $(".wk-o", w), cells = $$("i", O), roof = $("b", O), E = "cubic-bezier(0.16, 1, 0.3, 1)";
-      const n = cells.length, per = 230, t1 = 520, t2 = t1 + n * per, t3 = t2 + 900;
-      c.fx = t + t3 + 900;
-      // 1) 모여요: 가운데로 바짝 붙어 둘러서요
-      Ls.forEach((L, i) => { const q = chars[i], dx = (mid - (q.x + q.w / 2)) * 0.38, lean = Math.sign(mid - (q.x + q.w / 2)) * 6;
-        L._dx = dx; L._lean = lean;
-        L.animate([{ translate: "0 0", rotate: "0deg" }, { translate: `${dx}px 0`, rotate: `${lean}deg` }], { duration: t1, easing: E, fill: "forwards" }); });
-      // 2) 뚝딱뚝딱: 한 명씩 번갈아 콩 찧을 때마다 네모 모듈이 하나씩 튀어 올라 쌓여요 (아래층부터)
-      for (let k = 0; k < n; k++) {
-        const i = [0, 5, 1, 4, 2, 3][k % 6], L = Ls[i], at = t1 + k * per;
-        if (L) L.animate([{ translate: `${L._dx}px 0`, rotate: `${L._lean}deg` }, { translate: `${L._dx}px ${-fs * 0.12}px`, rotate: `${L._lean * 0.3}deg`, offset: 0.45 }, { translate: `${L._dx}px ${fs * 0.01}px`, rotate: `${L._lean * 1.6}deg`, offset: 0.7 }, { translate: `${L._dx}px 0`, rotate: `${L._lean}deg` }], { duration: per, delay: at, easing: "ease-in-out" });
-        const cell = cells[[6, 7, 8, 3, 4, 5, 0, 1, 2][k]];
-        const sx = L ? chars[i].x + chars[i].w / 2 + L._dx - mid : 0;
-        cell.animate([{ opacity: 0, translate: `${sx}px ${fs * 0.35}px`, scale: 0.4, rotate: "90deg" }, { opacity: 1, offset: 0.3 }, { opacity: 1, translate: "0 0", scale: 1, rotate: "0deg" }], { duration: per + 120, delay: at + per * 0.55, easing: E, fill: "both" });
-        setTimeout(() => { c.imp = 0.6; }, at + per * 0.6);
-      }
-      // 3) 지붕 얹고 완성 → 다 같이 한 발 물러나 뿌듯하게 콩
-      roof.animate([{ opacity: 0, translate: `0 ${-fs * 0.15}px` }, { opacity: 1, translate: "0 0" }], { duration: 380, delay: t2, easing: "cubic-bezier(0.3, 1.6, 0.5, 1)", fill: "both" });
-      Ls.forEach((L, i) => L.animate([{ translate: `${L._dx}px 0`, rotate: `${L._lean}deg` }, { translate: `0 ${-fs * 0.06}px`, rotate: "0deg", offset: 0.5 }, { translate: "0 0", rotate: "0deg" }], { duration: 700, delay: t2 + 300 + i * 40, easing: E, fill: "forwards" }));
-      O.animate([{ opacity: 1, translate: "-50% 0" }, { opacity: 1, translate: `-50% ${-fs * 0.05}px`, offset: 0.4 }, { opacity: 0, translate: `-50% ${-fs * 0.18}px` }], { duration: 900, delay: t3, easing: "ease-in", fill: "forwards" });
-      setTimeout(() => { gl.style.visibility = ""; w.remove(); }, t3 + 900);
+    const workshop = (c, j, t) => { // 핀 #313: 물건 없이 행동만 — 모여서 차례로 콩콩(점점 빨라지는 리듬) → 바쁘게 자리 바꾸기 → 딱 바로 서기
+      const S = splitGlyph(c.el, "wk"); if (!S) return;
+      const { Ls, fs, chars } = S, n = Ls.length, E = "cubic-bezier(0.16, 1, 0.3, 1)";
+      const mid = (chars[0].x + chars[n - 1].x + chars[n - 1].w) / 2;
+      const dx = chars.map((q) => (mid - (q.x + q.w / 2)) * 0.22);
+      let at = 0; const add = (ms) => { const v = at; at += ms; return v; };
+      // 1) 바짝 모여요
+      Ls.forEach((L, i) => L.animate([{ translate: "0 0" }, { translate: `${dx[i]}px 0` }], { duration: 380, easing: E, fill: "forwards" }));
+      add(420);
+      // 2) 작업 리듬: 왼쪽부터 차례로 콩콩 — 세 바퀴, 갈수록 빨라져요
+      [150, 120, 95].forEach((per) => { for (let i = 0; i < n; i++) { const d = add(per * 0.55);
+        Ls[i].animate([{ translate: `${dx[i]}px 0`, scale: "1 1" }, { translate: `${dx[i]}px ${-fs * 0.07}px`, scale: "0.96 1.05", offset: 0.4 }, { translate: `${dx[i]}px 0`, scale: "1.06 0.92", offset: 0.75 }, { translate: `${dx[i]}px 0`, scale: "1 1" }], { duration: per, delay: d, easing: "ease-in-out" }); }
+        add(per); });
+      // 3) 바쁘게 자리 바꾸기: 두 글자가 종종걸음으로 엇갈렸다가 되돌아와요
+      const a1 = 1, b1 = Math.min(n - 2, 3), sw = (chars[b1].x - chars[a1].x);
+      const d3 = add(700);
+      [[a1, sw, -1], [b1, -sw, 1]].forEach(([i, d, up]) => Ls[i].animate([{ translate: `${dx[i]}px 0` }, { translate: `${dx[i] + d * 0.5}px ${up * fs * 0.12}px`, offset: 0.25 }, { translate: `${dx[i] + d}px 0`, offset: 0.5 }, { translate: `${dx[i] + d * 0.5}px ${-up * fs * 0.12}px`, offset: 0.75 }, { translate: `${dx[i]}px 0` }], { duration: 700, delay: d3, easing: "ease-in-out" }));
+      // 4) 딱 바로 서기: 동시에 제자리로, 한 번에 착 멈춰요
+      const d4 = add(450);
+      Ls.forEach((L, i) => L.animate([{ translate: `${dx[i]}px 0` }, { translate: "0 0" }], { duration: 380, delay: d4, easing: "cubic-bezier(0.5, 0, 0.1, 1)", fill: "forwards" }));
+      setTimeout(() => { c.imp = 0.8; }, d4 + 380);
+      c.fx = t + at + 900;
+      setTimeout(() => S.done(), at + 450);
     };
     const reading = (c, j, t) => {
       const el = c.el; if (el.querySelector(".rd")) return;
