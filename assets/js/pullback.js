@@ -1,5 +1,5 @@
 /* 끌어서 뒤로 가기 (2026-11-24 요청)
-   화면 왼쪽 절반 어디서든 마우스 왼쪽 버튼을 누른 채 오른쪽 → 왼쪽으로 잡아당기면,
+   화면 왼쪽 35% 안에서 마우스 왼쪽 버튼을 누른 채 왼쪽 → 오른쪽으로 잡아당기면(2026-11-24 방향 수정),
    커서 앞에 동그라미가 생기며 당긴 만큼 테두리가 차오르고, 끝까지 당겨 놓으면 이전 페이지로 가요.
    동그라미는 먹색으로 채워지고 안의 작은 화살표만 뚫려 있어서(마스크) 화살표 사이로 뒤 화면이 비쳐요.
    다른 기능을 쓰는 곳(링크·버튼·입력칸·캔버스·가로 띠·도면 장면·메뉴 등)에서 시작한 끌기는 건드리지 않아요.
@@ -41,7 +41,7 @@
     "html.pb-on,html.pb-on *{user-select:none!important;-webkit-user-select:none!important;cursor:grabbing!important}" +
     "html.pb-ready .pb-dot{fill-opacity:1}" +
     "html.pb-ready .pb-ring{stroke-opacity:1}" +
-    "html.pb-on body>main,html.pb-on body>#main{transform:translate3d(calc(var(--pbd,0px)*-.12),0,0);transition:none}" +
+    "html.pb-on body>main,html.pb-on body>#main{transform:translate3d(calc(var(--pbd,0px)*.12),0,0);transition:none}" +
     "html.pb-back body>main,html.pb-back body>#main{transform:translate3d(0,0,0);transition:transform .35s cubic-bezier(.16,1,.3,1)}" +
     "html.pb-go .pb{transition:transform .32s cubic-bezier(.7,0,.84,0),opacity .32s;opacity:0}" +
     "html.pb-go body>main,html.pb-go body>#main{transform:translate3d(18vw,0,0);opacity:0;transition:transform .32s cubic-bezier(.7,0,.84,0),opacity .32s}";
@@ -52,8 +52,8 @@
 
   var st = null; // { id, x0, y0, on, d, v, xl, tl }
   var setVars = function (x, y, k, d) {
-    // 동그라미는 커서보다 조금 앞(왼쪽)에서 따라오고, 당길수록 커져요
-    var cx = Math.max(44, x - 70 - k * 20);
+    // 동그라미는 커서보다 조금 앞(오른쪽)에서 따라오고, 당길수록 커져요
+    var cx = Math.min(innerWidth - 44, x + 70 + k * 20);
     root.style.setProperty("--pbx", cx + "px");
     root.style.setProperty("--pby", y + "px");
     root.style.setProperty("--pbs", (0.45 + 0.55 * Math.min(1, k) + (k >= 1 ? 0.08 : 0)).toFixed(3));
@@ -65,7 +65,7 @@
 
   D.addEventListener("pointerdown", function (e) {
     if (e.button !== 0 || e.pointerType === "touch" || !e.isPrimary) return;
-    if (e.clientX > innerWidth / 2) return;
+    if (e.clientX > innerWidth * 0.35) return; // 왼쪽 절반보다 조금 더 왼쪽에서만
     if (root.classList.contains("mn-on") || root.classList.contains("sb-on")) return;
     var t = e.target; if (t && t.closest && t.closest(SKIP)) return;
     if (!isBackOk()) return;
@@ -74,7 +74,7 @@
 
   D.addEventListener("pointermove", function (e) {
     if (!st || e.pointerId !== st.id) return;
-    var dx = st.x0 - e.clientX, dy = e.clientY - st.y0;
+    var dx = e.clientX - st.x0, dy = e.clientY - st.y0;
     if (!st.on) {
       if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx)) { st = null; return; } // 세로로 움직이면 평소대로(글 고르기·스크롤)
       if (dx < 12 || dx < Math.abs(dy) * 1.4) { if (dx < -12) st = null; return; }
@@ -82,7 +82,7 @@
       try { var s = getSelection(); s && s.removeAllRanges(); } catch (er) {}
     }
     e.preventDefault();
-    var now = performance.now(); if (now > st.tl) { st.v = (st.xl - e.clientX) / (now - st.tl); st.xl = e.clientX; st.tl = now; }
+    var now = performance.now(); if (now > st.tl) { st.v = (e.clientX - st.xl) / (now - st.tl); st.xl = e.clientX; st.tl = now; }
     st.d = Math.max(0, dx);
     setVars(e.clientX, e.clientY, st.d / need(), st.d);
   }, true);
@@ -104,6 +104,8 @@
       setTimeout(function () { root.classList.remove("pb-on", "pb-back"); }, 360);
     }
   };
+  // 사진·글 위에서 시작해도 브라우저 기본 끌기(그림 끌어 옮기기)가 가로채지 않게
+  D.addEventListener("dragstart", function (e) { if (st) e.preventDefault(); }, true);
   D.addEventListener("pointerup", end, true);
   D.addEventListener("pointercancel", end, true);
   // 끌기가 시작되면 이어지는 click(링크 눌림 등)은 막아요
