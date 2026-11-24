@@ -52,8 +52,8 @@
 
   var st = null; // { id, x0, y0, on, d, v, xl, tl }
   var setVars = function (x, y, k, d) {
-    // 동그라미는 커서보다 조금 앞(오른쪽)에서 따라오고, 당길수록 커져요
-    var cx = Math.min(innerWidth - 44, x + 70 + k * 20);
+    // 동그라미는 커서 왼쪽에 간격을 두고 따라오고(사용자 요청), 당길수록 커져요
+    var cx = Math.max(44, x - 80);
     root.style.setProperty("--pbx", cx + "px");
     root.style.setProperty("--pby", y + "px");
     root.style.setProperty("--pbs", (0.45 + 0.55 * Math.min(1, k) + (k >= 1 ? 0.08 : 0)).toFixed(3));
