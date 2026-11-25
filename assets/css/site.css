@@ -2866,3 +2866,20 @@ html:not(#_) body[data-page="works"] #cases > div.cs-gd > div.cs-gd-in > a.cs-ca
   .fp-lg.on { flex: 1 1 auto; min-height: 0; overflow: auto; }
   .fp-lg li { padding: 3px 0; }
 }
+
+/* 2026-11-25 사용자 요청: 작품 페이지 뒤로가기(작품 목록) — 화면 아래 가운데에 늘 떠 있음 */
+.bk { position: fixed; left: 50%; bottom: 14px; translate: -50% 0; z-index: 80; display: inline-flex; align-items: center; gap: 4px; height: 30px; padding: 0 12px 0 8px; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in srgb, var(--bg) 88%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: var(--ink); font-size: var(--t-xs); text-decoration: none; transition: border-color .25s, background .25s; }
+.bk svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: translate .25s var(--ease); }
+.bk:hover { border-color: var(--ink); }
+.bk:hover svg { translate: -2px 0; }
+.bk:focus-visible { outline: 1px solid var(--ink); outline-offset: 2px; }
+html.mn-on .bk, html.sb-on .bk { opacity: 0; pointer-events: none; }
+@media (max-width: 760px) { .bk { bottom: calc(10px + env(safe-area-inset-bottom, 0px)); height: 28px; } }
+
+/* 2026-11-25 사용자 요청: 단면 레벨 표기 — tags 종류 "el": 글자 + 슬래브 선을 가리키는 ▽, 흰 바탕 없이 */
+.media .ftag.el { display: inline-flex; align-items: center; gap: 4px; font-size: var(--t-xs); font-variant-numeric: tabular-nums; color: var(--ink); letter-spacing: .01em; }
+.media .ftag.el::after, .media .ftag.el:not(.r)::before { content: ""; width: 0; height: 0; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent; border-top: 6px solid currentColor; flex: none; }
+.media .ftag.el:not(.r)::after { display: none; }
+.media .ftag.el.r { padding-right: 2px; }
+.media .ftag.el { text-shadow: 0 0 2px var(--bg), 0 0 2px var(--bg), 0 0 2px var(--bg); }
+@media (max-width: 760px) { .media .ftag.el { gap: 2px; } .media .ftag.el::after, .media .ftag.el:not(.r)::before { border-left-width: 2.5px; border-right-width: 2.5px; border-top-width: 4px; } }

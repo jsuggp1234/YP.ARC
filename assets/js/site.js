@@ -4070,6 +4070,12 @@
     ed.className = "sb-edge"; ed.setAttribute("aria-hidden", "true");
     ed.innerHTML = `<i class="sb-gr"></i><span class="sb-lb"><b>←</b> Studio</span>`;
     document.body.appendChild(ed);
+    // 2026-11-25 사용자 요청: 화면 아래 가운데에 늘 따라다니는 작은 뒤로가기 → studio(작품 목록)
+    const bk = document.createElement("a");
+    bk.className = "bk"; bk.href = "works.html"; bk.setAttribute("aria-label", "Back to all works");
+    bk.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6 8.5 12l6 6"/></svg><span>Works</span>`;
+    bk.addEventListener("click", () => ss.set("yp-hi", "1"));
+    document.body.appendChild(bk);
     let x0 = null, dx = 0, t0 = 0, xl = 0, tl = 0, v = 0;
     const set = (d) => { dx = d; root.style.setProperty("--sb", `${d}px`); root.style.setProperty("--sbk", Math.min(1, d / (innerWidth * 0.33)).toFixed(3)); };
     const anim = (to, ms, done) => {
