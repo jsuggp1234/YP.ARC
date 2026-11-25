@@ -135,3 +135,11 @@
 - 그림에 구워져 있던 동그라미 기호·검정 원 번호는 지우고(scratchpad `bub.py` 인페인트) 같은 자리에 tags로 다시 씀: Motorism 6개 층, Tim(team) Work 8개 층(1F는 원래 기호 없음 → 기호만 추가), RE:TIDE 파빌리온·리프(오른쪽 A–F, SA–SJ), The Tree House 평면·네 상태.
 - Natural Palette 층별 평면(`fplan.grid`, `site.js`의 `axHtml`): 배치도 그리드 X1–X10·Y1–Y9과 치수(mm)를 같은 축척으로 옮겨 그림(배치도 → 평면 변환 2.16배, 벽·기둥에 맞춰 확인).
 - Campus Renovation 평면은 원래 이 방식이라 그대로. Samgakji·Smart Pixel·RE:TIDE 광역 배치도·캠퍼스 배치도·메타버스 지도는 도시 스케일 분석도라 그리드를 넣지 않음.
+
+## 2026-11-25 모바일 도면 글자 정리 (사용자 요청: 모바일에서 그림 속 글자 겹침)
+- 모바일(≤760px)에선 그림 위 글자(`.ftag`, `.seq-dm em`, `.fp-n` 등)가 **그림 폭에 비례**해요: `site.js`의 `mwInit()`이 그림마다 `--mw`(지금 폭 px)와 `--fr`(데스크톱에서 잰 "글자 ÷ 그림 폭")을 넣고, site.css 끝 블록이 `font-size = mw × fr`(5–9px, 치수 ×0.8, 그리드·번호 ×0.9)로 계산 → 모바일도 데스크톱과 같은 배치.
+- `--fr` 값은 `assets/js/figw.js`(`window.FIGW`, 그림 src별). **그림 위 글자 크기나 데스크톱 배치를 바꾸면 scratchpad `figw.js`(데스크톱 1440에서 재서 다시 씀)로 다시 만들기.** 없는 그림은 0.0125.
+- 모바일은 글자 뒤 얇은 흰 테두리(text-shadow)로 선 위에서도 읽혀요.
+- seq `box`(Tim(team) Work 여섯 상세): 모바일은 지시선 끝에 번호만, 번호·이름 목록(`.sbx-lg`)은 그림 바로 아래.
+- 겹치던 글자 위치 정리: RE:TIDE 마운드 배치도 프로그램 이름, Natural Palette 층 분해도(층 이름 3줄로 왼쪽), 홀 단면 "Lake ground", Modular O′ X1–X6(위로), Motorism 하중 그림(데스크톱 7px, "10 % trunk" 오른쪽 맞춤, 그림에 구워진 검정 원 번호 지움).
+- 모바일 작품 페이지 `.pg.cx { overflow-x: clip }`(가로 넘침 방지).

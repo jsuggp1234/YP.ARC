@@ -3587,7 +3587,8 @@
     return `<div class="seq seq-${q.kind}${q.lite ? " seq-lite" : ""}${q.fade ? " seq-fade" : ""}${q.below ? " seq-below" : ""}${q.drop ? " seq-drop" : ""}${q.box ? " seq-box" : ""}${q.legend ? " seq-lgd" : ""}" data-seq style="--n:${q.n || N};--k:${q.k || 1}${q.box ? `;--sbx:${q.box}%` : ""}${q.cols ? `;--c:${q.cols}` : ""}${q.len ? `;--len:${q.len}` : ""}">
       <div class="seq-pin">
         ${q.tl ? `<div class="seq-tl" aria-hidden="true">${q.tl.bands.map(([nm, a, b], bi) => `<div class="tl-b" style="flex:${b - a}"><span class="tl-n">${esc(nm)}</span><div class="tl-r">${q.steps.map((f, i) => f.tm && f.tm[0] === bi ? `<i class="tl-s${i ? "" : " on"}" data-i="${i}" style="left:${((f.tm[1] - a) / (b - a)) * 100}%;width:${((f.tm[2] - f.tm[1]) / (b - a)) * 100}%"><em>${"•".repeat(f.tm[3])}</em></i>` : "").join("")}</div><span class="tl-h"><b>${hmTl(a)}</b><b>${hmTl(b)}</b></span></div>`).join("")}</div>` : ""}
-        <div class="seq-stage media" style="aspect-ratio:${q.r};--r:${q.r}">${stage}${q.legend ? q.steps.map((f, i) => f.k ? `<ol class="seq-ft seq-lg${i ? "" : " on"}" data-i="${i}">${f.k.map(([a, b]) => `<li><b class="num">${esc(b)}</b>${esc(a)}</li>`).join("")}</ol>` : "").join("") : ""}${(q.dims || []).map(([a, b, c, t, v]) => v ? `<span class="seq-dm v${c < 50 ? " l" : ""}" style="left:${c}%;top:${a}%;height:${b - a}%"><em>${esc(t)}</em></span>` : `<span class="seq-dm" style="left:${a}%;width:${b - a}%;top:${c}%"><em>${esc(t)}</em></span>`).join("")}${q.box ? `<i class="sbx-fr" aria-hidden="true"></i>${q.steps.map((f, i) => (f.lb || []).map(([sd, y, n]) => `<span class="seq-ft sbx-lb ${sd}${i ? "" : " on"}" data-i="${i}" style="top:${y}%"><b class="num">${esc(n)}</b>${esc(((f.k || []).find((r) => r[1] === n) || [""])[0])}</span>`).join("")).join("")}` : ""}${q.kind === "frames" ? q.steps.map((f, i) => (f.tags || []).map(([x, y, t, al, k]) => `<span class="ftag seq-ft${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}${i ? "" : " on"}" data-i="${i}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("")).join("") : ""}${q.tag ? `<p class="ssn-tag seq-tag"><b>${esc(q.steps[0].t)}</b><span>${esc(q.steps[0].s || "")}</span></p>` : ""}</div>
+        <div class="seq-stage media" style="aspect-ratio:${q.r};--r:${q.r}">${stage}${q.legend ? q.steps.map((f, i) => f.k ? `<ol class="seq-ft seq-lg${i ? "" : " on"}" data-i="${i}">${f.k.map(([a, b]) => `<li><b class="num">${esc(b)}</b>${esc(a)}</li>`).join("")}</ol>` : "").join("") : ""}${(q.dims || []).map(([a, b, c, t, v]) => v ? `<span class="seq-dm v${c < 50 ? " l" : ""}" style="left:${c}%;top:${a}%;height:${b - a}%"><em>${esc(t)}</em></span>` : `<span class="seq-dm" style="left:${a}%;width:${b - a}%;top:${c}%"><em>${esc(t)}</em></span>`).join("")}${q.box ? `<i class="sbx-fr" aria-hidden="true"></i>${q.steps.map((f, i) => (f.lb || []).map(([sd, y, n]) => `<span class="seq-ft sbx-lb ${sd}${i ? "" : " on"}" data-i="${i}" style="top:${y}%"><b class="num">${esc(n)}</b><span class="sbx-nm">${esc(((f.k || []).find((r) => r[1] === n) || [""])[0])}</span></span>`).join("")).join("")}` : ""}${q.kind === "frames" ? q.steps.map((f, i) => (f.tags || []).map(([x, y, t, al, k]) => `<span class="ftag seq-ft${al ? ` ${al}` : ""}${k ? ` ${k}` : ""}${i ? "" : " on"}" data-i="${i}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("")).join("") : ""}${q.tag ? `<p class="ssn-tag seq-tag"><b>${esc(q.steps[0].t)}</b><span>${esc(q.steps[0].s || "")}</span></p>` : ""}</div>
+        ${q.box ? q.steps.map((f, i) => f.k ? `<ol class="seq-ft sbx-lg${i ? "" : " on"}" data-i="${i}">${f.k.slice().sort((x, y) => x[1] - y[1]).map(([a, b]) => `<li><b class="num">${esc(b)}</b>${esc(a)}</li>`).join("")}</ol>` : "").join("") : ""}<!-- 2026-11-25: 모바일은 지시선 끝에 번호만, 이름은 그림 아래 목록 -->
         <div class="seq-side">
           <p class="seq-ctr num"><b>01</b> / ${pad(N)}</p>
           <ol>${q.steps.map((f, i) => `<li${i ? "" : ' class="on"'}><span class="num mid">${pad(i + 1)}</span><div><b>${esc(f.t)}</b> <span class="mid">${esc(f.s || "")}</span>${f.d ? `<p>${esc(f.d)}</p>` : ""}${f.j ? `<figure class="seq-jd"><img src="${esc(f.j.src)}" alt="${esc(f.j.t)}" decoding="async" loading="lazy"><figcaption><b>${esc(f.j.t)}</b>${f.j.s ? ` <span class="mid">${esc(f.j.s)}</span>` : ""}</figcaption></figure>` : ""}${f.k ? `<dl>${f.k.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd class="num">${esc(b)}</dd></div>`).join("")}</dl>` : ""}</div></li>`).join("")}</ol>
@@ -3750,6 +3751,16 @@
       html += g.yv.map((v, i) => `<span class="ftag c lv dim-t dv dl" style="left:${dl}%;top:${(Y[i] + Y[i + 1]) / 2}%">${esc(v)}</span>`).join("");
     }
     return `<svg class="dims ax" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${svg}</svg>${html}`;
+  };
+  // 2026-11-25 모바일 정리: 그림 폭(px)을 --mw로 넣어, 그림 위 글자가 그림 크기에 맞춰 같이 작아지게 (site.css 끝 "그림 글자 비례")
+  const mwInit = () => {
+    const els = $$(".media, .seq-stage, .fp-m, .mapp-sq");
+    const set = (el) => el.style.setProperty("--mw", Math.round(el.getBoundingClientRect().width) || 800);
+    // 2026-11-25: 그림마다 데스크톱에서 잰 "글자 ÷ 그림 폭" 비율(figw.js의 FIGW)을 --fr로 — 모바일에서도 데스크톱과 같은 배치로 보여요
+    const FW = window.FIGW || {};
+    els.forEach((el) => { const im = el.querySelector("img"); const r = im && FW[im.getAttribute("src")]; if (r) el.style.setProperty("--fr", r); });
+    els.forEach(set);
+    if ("ResizeObserver" in window) { const ro = new ResizeObserver((es) => es.forEach((e) => set(e.target))); els.forEach((el) => ro.observe(el)); }
   };
   const fplanHtml = (q) => `<div class="fp" data-fp style="--n:${q.floors.length}"><div class="fp-in">
     <div class="fp-st"><div class="media fp-m" style="aspect-ratio:${q.r};--r:${q.r}">${q.grid ? axHtml(q.grid) : ""}${q.floors.map((f, i) => `<img class="dg fp-img${i ? "" : " on"}" data-f="${i}" src="${esc(f.src)}" alt="${esc(`${f.t} — ${f.s}`)}" decoding="async"${i ? ' loading="lazy"' : ""}>`).join("")}${q.floors.map((f, i) => (f.lv || []).map(([x, y, t]) => `<span class="fp-lv num${i ? "" : " on"}" data-f="${i}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") + f.items.map(([n, x, y]) => `<button type="button" class="fp-n num${i ? "" : " on"}" data-f="${i}" data-n="${n}" style="left:${x}%;top:${y}%" tabindex="-1" aria-hidden="true">${n}</button>`).join("")).join("")}</div></div>
@@ -4189,7 +4200,7 @@
         else { v.pause(); b.setAttribute("aria-label", "Play film"); $("span", b).textContent = "Play film"; }
         b.classList.toggle("on", !v.paused);
       }));
-      baInit(); xpInit(); seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit(); fpInit(); sunInit();
+      baInit(); xpInit(); seqInit(p); ssnInit(p); panInit(); revealCols(); keyedInit(); fpInit(); sunInit(); mwInit();
       if (window.TideWidgets) $$("[data-tw]").forEach((w) => TideWidgets.mount(w, w.dataset.tw));
       if (window.MVSims) $$("[data-mv]").forEach((w) => MVSims.mount(w, w.dataset.mv));
       // 목차 + 현재 위치 표시
