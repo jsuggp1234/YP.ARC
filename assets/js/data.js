@@ -1243,28 +1243,28 @@ const SITE = {
           k: 1.25,
           steps: [
             {
-              src: "assets/img/samgakji-residential/macro-1.jpg",
+              src: "assets/img/samgakji-residential/macro-v2-1.jpg", tags: [[65.38,20.67,"Military land → Yongsan Park","","m"],[65.38,24.92,"Base boundary (fenced)","","m"],[65.38,29.16,"Gyeongbu / Yongsan rail","","m"],[65.38,33.41,"Arterial road · subway below","","m"],[65.38,37.65,"Built fabric","","m"],[65.38,41.89,"Site","","m"],[65.38,46.14,"Station","","m"],[60.0,53.1,"Length of each boundary in view (approx.)","","m"],[60.0,54.73,"1  Military land and park edge","",""],[73.35,56.53,"4.5 km","","m"],[60.0,58.87,"2  Rail corridor","",""],[69.83,60.66,"3.3 km","","m"],[60.0,63.0,"3  Arterial roads","",""],[79.54,64.8,"6.7 km","","m"],[40.77,30.47,"1  Military facilities · Yongsan Park","c","m"],[42.31,73.99,"1  Yongsan Park (former US base)","c","m"],[18.08,28.29,"2  Railway","r","m"],[26.64,34.82,"3  Hangang-daero","r","m"],[9.62,38.08,"3  Baekbeom-ro","c","m"],[43.08,51.14,"Itaewon-ro","c","m"],[60.0,70.73,"Park area in view ≈ 390 ha","","m"],[60.0,72.91,"Three lines draw the district: a fence, a track, a road.","","m"],[29.77,47.06,"Samgakji Stn · Line 4/6","","m"],[9.44,70.4,"Yongsan Stn","r","m"],[51.15,14.47,"N","c","m"],[60.0,93.25,"0","c","m"],[70.12,93.25,"500 m (approx.)","c","m"]],
               t: "Boundaries",
               s: "army base and park, rail, road",
               d: "Military facilities and Yongsan Park, the rail infrastructure and the roads that disconnect the district."
             },
             {
-              src: "assets/img/samgakji-residential/macro-2.jpg",
+              src: "assets/img/samgakji-residential/macro-v2-2.jpg", tags: [[65.38,20.67,"Development stream (south → north)","","m"],[65.38,24.92,"Rail corridor · Yongsan Station adjacency","","m"],[65.38,29.16,"Development along the road axis","","m"],[65.38,33.41,"Han River-front residences","","m"],[65.38,37.65,"Walk rings from the hub: 250 · 500 · 1000 m","","m"],[65.38,41.89,"Rail","","m"],[65.38,46.14,"Road · Line 4 / Line 6 below","","m"],[60.0,53.1,"Distance from the site (approx.)","","m"],[60.0,54.73,"Samgakji Stn (Line 4/6)","",""],[63.63,56.53,"290 m","","m"],[60.0,58.87,"Yongsan Park edge","",""],[62.72,60.66,"210 m","","m"],[60.0,63.0,"Rail line","",""],[63.94,64.8,"320 m","","m"],[60.0,67.14,"Yongsan Stn","",""],[70.52,68.93,"930 m","","m"],[60.0,71.27,"Han River","",""],[79.13,73.07,"1720 m","","m"],[33.68,51.67,"250 m","","m"],[38.44,54.11,"500 m","","m"],[47.95,58.97,"1000 m","","m"],[19.42,56.5,"Rail stream","r","m"],[20.37,64.9,"Road stream","","m"],[60.0,77.26,"Two streams run up from the river and lock together at the 4/6 crossing.","","m"],[29.77,47.06,"Samgakji Stn · Line 4/6","","m"],[9.44,70.4,"Yongsan Stn","r","m"],[51.15,14.47,"N","c","m"],[60.0,93.25,"0","c","m"],[70.12,93.25,"500 m (approx.)","c","m"]],
               t: "Axes",
               s: "rail and road",
-              d: "Development along the rail and road axes; Yongsan Station and the subway crossing beside the site."
+              d: "Development runs up from the Han River along the rail and road axes and locks together at the Line 4/6 crossing, about 300 m from the site."
             },
             {
-              src: "assets/img/samgakji-residential/macro-3.jpg",
+              src: "assets/img/samgakji-residential/macro-v2-3.jpg", tags: [[65.38,20.67,"1  Daegu-tang alley extension","","m"],[65.38,24.92,"2  Daegu-tang alley (post-war, grew with the base)","","m"],[65.38,29.16,"3  Yongnidan-gil (planned commercial street)","","m"],[65.38,33.41,"4  Large business blocks by Yongsan Station","","m"],[65.38,37.65,"5  Han River-front communal residences","","m"],[65.38,41.89,"Site","","m"],[60.0,52.01,"Area of each district in view (approx.)","","m"],[60.0,53.65,"Daegu-tang alley extension","",""],[61.3,55.44,"1.8 ha","","m"],[60.0,57.78,"Daegu-tang alley","",""],[62.43,59.58,"4.2 ha","","m"],[60.0,61.92,"Yongnidan-gil","",""],[64.36,63.71,"8.4 ha","","m"],[60.0,66.05,"Large business blocks by Yongsan Station","",""],[78.8,67.85,"39.4 ha","","m"],[60.0,70.18,"Han River-front communal residences","",""],[70.62,71.98,"21.8 ha","","m"],[29.5,38.03,"1","c","b"],[29.81,56.37,"2","c","b"],[24.08,63.93,"3","c","b"],[16.5,87.38,"4","c","b"],[21.35,97.71,"5","c","b"],[60.0,76.17,"The site sits where the alley grown by the base meets the new street of cafés.","","m"],[29.77,47.06,"Samgakji Stn · Line 4/6","","m"],[9.44,70.4,"Yongsan Stn","r","m"],[51.15,14.47,"N","c","m"],[60.0,93.25,"0","c","m"],[70.12,93.25,"500 m (approx.)","c","m"]],
               t: "Districts",
               s: "Yongnidan-gil, station, Daegu-tang alley",
               d: "A planned commercial street, the large business blocks by the station, and the post-war alley that grew with the base."
             },
             {
-              src: "assets/img/samgakji-residential/macro-4.jpg",
+              src: "assets/img/samgakji-residential/macro-v2-4.jpg", tags: [[65.38,20.67,"Edges that close the site in","","m"],[65.38,24.92,"Reachable on foot without crossing an edge","","m"],[65.38,29.16,"Walk rings from the site: 400 · 800 m","","m"],[65.38,33.41,"Yongsan Park","","m"],[65.38,37.65,"Site","","m"],[60.0,46.57,"Walkable ground within 800 m of the site (approx.)","","m"],[60.0,48.2,"Ground inside 800 m","",""],[79.54,50.0,"100 %","","m"],[60.0,52.34,"Reachable without a crossing","",""],[66.37,54.13,"31 %","","m"],[60.0,60.39,"Site ≈ 20,700 m² · cell ≈ 35.7 ha","","m"],[60.0,62.57,"Fence to the east, road to the west and north, rail behind it.","","m"],[34.75,61.11,"400 m · 5 min","","m"],[42.36,65.01,"800 m · 10 min","","m"],[22.22,59.39,"Remnant","r","m"],[29.77,47.06,"Samgakji Stn · Line 4/6","","m"],[51.15,14.47,"N","c","m"],[60.0,93.25,"0","c","m"],[70.12,93.25,"500 m (approx.)","c","m"]],
               t: "Remnant",
               s: "a parcel isolated by its edges",
-              d: "Where the four boundaries meet, the triangle is left isolated from everything around it."
+              d: "Where the boundaries meet, the triangle is left isolated: within 800 m, only about a third of the ground can be reached on foot without crossing a road, the rail or the fence."
             }
           ]
         }
