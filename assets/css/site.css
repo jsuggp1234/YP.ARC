@@ -2835,3 +2835,17 @@ html:not(#_) body[data-page="works"] #cases > div.cs-gd > div.cs-gd-in > a.cs-ca
 @media (max-width: 760px) {
   html:not(#_) .fp-lv, html:not(#_) .media .ftag.lv:not(.dim-t) { font-size: clamp(4px, calc(var(--mw, 360) * var(--fr, 0.0125) * 0.72px), 6.5px) !important; }
 }
+
+/* 2026-11-25 사용자 요청: 삼각지 Strategy 단계 — 평면 옆에 3D 엑소노(axon: true, 단계마다 ax 그림) */
+.seq-duo { display: flex; gap: 2%; justify-content: center; align-items: center; width: 100%; min-height: 0; }
+.seq-duo > .seq-stage { width: min(49%, calc((100vh - 330px) * var(--r))); flex: none; justify-self: auto; }
+.seq-axc { position: absolute; left: 8px; top: 6px; font-size: var(--t-xs); color: color-mix(in srgb, var(--ink) 55%, var(--bg)); letter-spacing: .02em; z-index: 7; pointer-events: none; }
+.seq-ax img { opacity: 1; }
+.seq-lite .seq-ax img { opacity: 1; }
+:root[data-mode="dark"] .seq-ax img { filter: invert(.92); }
+@media (max-width: 760px) {
+  .seq-duo { flex-direction: column; gap: 8px; }
+  .seq-duo > .seq-stage { width: 100%; max-width: var(--fitw, none); }
+  .seq-axc { top: 3px; left: 4px; font-size: 7px; }
+}
+.seq-ax .ftag { text-shadow: 0 0 2px var(--bg), 0 0 3px var(--bg), 0 0 4px var(--bg); }

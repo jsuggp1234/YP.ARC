@@ -1289,6 +1289,7 @@ const SITE = {
         images: [],
         seq: {
           kind: "frames",
+          axon: true,
           r: 1.612,
           lite: true,
           fade: true,
@@ -1297,67 +1298,67 @@ const SITE = {
           k: 1,
           steps: [
             {
-              src: "assets/img/samgakji-residential/process-01.jpg", tags: [[8.8,58,"Residential blocks","","m"],[38.5,13.9,"Main road","","m"],[93.1,59.2,"Old neighbourhood","r","m"],[48.1,40.6,"Site","c","b"]],
+              src: "assets/img/samgakji-residential/strategy-step-01.jpg", ax: "assets/img/samgakji-residential/axon-01.jpg", axTags: [], tags: [[8.8,58,"Residential blocks","","m"],[38.5,13.9,"Main road","","m"],[93.1,59.2,"Old neighbourhood","r","m"],[48.1,40.6,"Site","c","b"]],
               t: "Block",
               s: "relations with the adjacent zones"
             },
             {
-              src: "assets/img/samgakji-residential/process-02.jpg", tags: [[48.1,15.2,"69 existing parcels","c","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-02.jpg", ax: "assets/img/samgakji-residential/axon-02.jpg", axTags: [], tags: [[48.1,15.2,"69 existing parcels","c","m"]],
               t: "Parcels",
               s: "the existing parcel configuration"
             },
             {
-              src: "assets/img/samgakji-residential/process-03.jpg", tags: [[48.1,15.2,"Old parcel lines","c","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-03.jpg", ax: "assets/img/samgakji-residential/axon-03.jpg", axTags: [], tags: [[48.1,15.2,"Old parcel lines","c","m"]],
               t: "Alignment",
               s: "the layout laid on the old division"
             },
             {
-              src: "assets/img/samgakji-residential/process-04.jpg", tags: [[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[86.5,51.8,"Transit axis","r","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-04.jpg", ax: "assets/img/samgakji-residential/axon-04.jpg", axTags: [[98.5,76.6,"Contrast axis","r","m"],[98.5,88.3,"Commercial axis","r","m"],[61.4,23.2,"Green axis","c","m"],[98.5,42.6,"Green axis","r","m"],[54.1,25.9,"Transit axis","c","m"]], tags: [[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[86.5,51.8,"Transit axis","r","m"]],
               t: "Axes",
               s: "commercial, green, contrast, transit",
               d: "With the parcels kept, the road axes extend naturally into the site and the street network stays continuous."
             },
             {
-              src: "assets/img/samgakji-residential/process-05.jpg", tags: [[48.1,15.2,"Basic mass from the edges","c","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-05.jpg", ax: "assets/img/samgakji-residential/axon-05.jpg", axTags: [], tags: [[48.1,15.2,"Basic mass from the edges","c","m"]],
               t: "Basic mass",
               s: "height and program from the edges"
             },
             {
-              src: "assets/img/samgakji-residential/process-06.jpg", tags: [[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[83.8,9.1,"Step 01 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-06.jpg", ax: "assets/img/samgakji-residential/axon-06.jpg", axTags: [[61.4,23.2,"Green axis","c","m"],[98.5,42.6,"Green axis","r","m"],[27.599999999999998,60.3,"+13 m","","m"]], tags: [[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[83.8,9.1,"Step 01 / 07","","m"]],
               t: "Step 01",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/process-07.jpg", tags: [[1.5,49.3,"Commercial axis","","m"],[1.5,65.4,"Commercial axis","","m"],[83.8,9.1,"Step 02 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-07.jpg", ax: "assets/img/samgakji-residential/axon-07.jpg", axTags: [[98.5,88.3,"Commercial axis","r","m"],[40.5,76.1,"Commercial axis","c","m"],[27.599999999999998,60.3,"+13 m","","m"]], tags: [[1.5,49.3,"Commercial axis","","m"],[1.5,65.4,"Commercial axis","","m"],[83.8,9.1,"Step 02 / 07","","m"]],
               t: "Step 02",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/process-08.jpg", tags: [[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[86.5,51.8,"Transit axis","r","m"],[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 03 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-08.jpg", ax: "assets/img/samgakji-residential/axon-08.jpg", axTags: [[61.4,23.2,"Green axis","c","m"],[98.5,42.6,"Green axis","r","m"],[54.1,25.9,"Transit axis","c","m"],[98.5,76.6,"Contrast axis","r","m"],[98.5,88.3,"Commercial axis","r","m"],[68,44.5,"+17 m","","m"]], tags: [[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[86.5,51.8,"Transit axis","r","m"],[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 03 / 07","","m"]],
               t: "Step 03",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/process-09.jpg", tags: [[46,6.5,"Green axis","","m"],[1.5,49.3,"Commercial axis","","m"],[1.5,65.4,"Commercial axis","","m"],[83.8,9.1,"Step 04 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-09.jpg", ax: "assets/img/samgakji-residential/axon-09.jpg", axTags: [[61.4,23.2,"Green axis","c","m"],[98.5,88.3,"Commercial axis","r","m"],[25.6,67.9,"Commercial axis","c","m"],[27.599999999999998,60.3,"+13 m","","m"]], tags: [[46,6.5,"Green axis","","m"],[1.5,49.3,"Commercial axis","","m"],[1.5,65.4,"Commercial axis","","m"],[83.8,9.1,"Step 04 / 07","","m"]],
               t: "Step 04",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/process-10.jpg", tags: [[46,6.5,"Green axis","","m"],[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 05 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-10.jpg", ax: "assets/img/samgakji-residential/axon-10.jpg", axTags: [[61.4,23.2,"Green axis","c","m"],[98.5,76.6,"Contrast axis","r","m"],[98.5,88.3,"Commercial axis","r","m"],[35.6,11.7,"+78 m","","m"]], tags: [[46,6.5,"Green axis","","m"],[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 05 / 07","","m"]],
               t: "Step 05",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/process-11.jpg", tags: [[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 06 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-11.jpg", ax: "assets/img/samgakji-residential/axon-11.jpg", axTags: [[98.5,76.6,"Contrast axis","r","m"],[98.5,88.3,"Commercial axis","r","m"],[25.599999999999998,33.1,"+26 m","","m"]], tags: [[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 06 / 07","","m"]],
               t: "Step 06",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/process-12.jpg", tags: [[83.8,9.1,"Step 07 / 07","","m"],[48.1,15.2,"Gateways at the three corners","c","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-12.jpg", ax: "assets/img/samgakji-residential/axon-12.jpg", axTags: [[88.5,55.3,"+23 m","","m"]], tags: [[83.8,9.1,"Step 07 / 07","","m"],[48.1,15.2,"Gateways at the three corners","c","m"]],
               t: "Step 07",
               s: "of seven"
             },
-            { src: "assets/img/samgakji-residential/site-plan-aligned-c.jpg", t: "Site plan", s: "the village on the old parcel lines", d: "The village inside the triangle, with the old parcel lines still readable and the streets running through it." }
+            { src: "assets/img/samgakji-residential/site-plan-aligned-c.jpg", ax: "assets/img/samgakji-residential/axon-13.jpg", axTags: [], t: "Site plan", s: "the village on the old parcel lines", d: "The village inside the triangle, with the old parcel lines still readable and the streets running through it." }
           ]
         }
       },
