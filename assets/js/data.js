@@ -1279,7 +1279,7 @@ const SITE = {
         big: true,
         heading: "Concept — Accommodating Contrast",
         text: "Mixing, inflow, cycle. Rather than the aggressive approach of an apartment complex, the design accepts the context and flows around it and sets up a new village inside the boundary — and draws the foot traffic from outside into it.",
-        seq: {"kind":"frames","r":1.353,"lite":true,"fade":true,"k":0.45,"steps":[{"src":"assets/img/samgakji-residential/concept-inflow.jpg","t":"Inflow","s":"the outside flows in from every edge"},{"src":"assets/img/samgakji-residential/concept-mixing.jpg","t":"Mixing","s":"new and old programs mixed along the spine"},{"src":"assets/img/samgakji-residential/concept-cycle.jpg","t":"Cycle","s":"small loops that keep people moving through"}]},
+        seq: {"kind":"frames","r":1.536,"lite":true,"fade":true,"k":0.9,"steps":[{"src":"assets/img/samgakji-residential/concept-inflow-v2.jpg","t":"Inflow","s":"the outside flows in from every edge","tags":[[46.5,2.2,"From the main road","c","m"],[0.2,19.6,"From the alleys","","m"],[61.9,80,"From the diagonal street","c","m"],[50.2,35.7,"Spine","","m"]]},{"src":"assets/img/samgakji-residential/concept-mixing-v2.jpg","t":"Mixing","s":"new and old programs mixed along the spine","tags":[[35.8,43.2,"Shared yard","c","m"],[56.3,38.9,"Shared yard","c","m"],[87.9,28.6,"Spine","","m"]]},{"src":"assets/img/samgakji-residential/concept-cycle-v2.jpg","t":"Cycle","s":"small loops that keep people moving through","tags":[[35.8,50,"Loop 1","c","m"],[56.3,44.6,"Loop 2","c","m"],[76.7,35.7,"Loop 3","c","m"],[37.7,72.9,"Loop 4","","m"]]}]},
         images: [{ src: "assets/img/samgakji-residential/concept-skyline.jpg", caption: "The skyline steps from tower to village", r: 5.875 }]
       },
       {
@@ -1289,75 +1289,75 @@ const SITE = {
         images: [],
         seq: {
           kind: "frames",
-          r: 1.414,
+          r: 1.612,
           lite: true,
           fade: true,
           below: true,
           cols: 7,
-          k: 1.25,
+          k: 1,
           steps: [
             {
-              src: "assets/img/samgakji-residential/strategy-1.jpg",
+              src: "assets/img/samgakji-residential/strategy-1-c.jpg",
               t: "Block",
               s: "relations with the adjacent zones"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-2.jpg",
+              src: "assets/img/samgakji-residential/strategy-2-c.jpg",
               t: "Parcels",
               s: "the existing parcel configuration"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-3.jpg",
+              src: "assets/img/samgakji-residential/strategy-3-c.jpg",
               t: "Alignment",
               s: "the layout laid on the old division"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-4.jpg",
+              src: "assets/img/samgakji-residential/strategy-4-c.jpg", tags: [[29.2,31.2,"Contrast axis","","m"],[28.7,48.8,"Commercial axis","","m"],[40.4,64.8,"Green axis","","rl"],[55.4,60.4,"Transit axis","","m"]],
               t: "Axes",
               s: "commercial, green, contrast, transit",
               d: "With the parcels kept, the road axes extend naturally into the site and the street network stays continuous."
             },
             {
-              src: "assets/img/samgakji-residential/mass-0.jpg",
+              src: "assets/img/samgakji-residential/mass-0-c.jpg",
               t: "Basic mass",
               s: "height and program from the edges"
             },
             {
-              src: "assets/img/samgakji-residential/mass-1.jpg",
+              src: "assets/img/samgakji-residential/mass-1-c.jpg",
               t: "Step 01",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-2.jpg",
+              src: "assets/img/samgakji-residential/mass-2-c.jpg",
               t: "Step 02",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-3.jpg",
+              src: "assets/img/samgakji-residential/mass-3-c.jpg",
               t: "Step 03",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-4.jpg",
+              src: "assets/img/samgakji-residential/mass-4-c.jpg",
               t: "Step 04",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-5.jpg",
+              src: "assets/img/samgakji-residential/mass-5-c.jpg",
               t: "Step 05",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-6.jpg",
+              src: "assets/img/samgakji-residential/mass-6-c.jpg",
               t: "Step 06",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-7.jpg",
+              src: "assets/img/samgakji-residential/mass-7-c.jpg",
               t: "Step 07",
               s: "of seven"
             },
-            { src: "assets/img/samgakji-residential/site-plan-aligned.jpg", t: "Site plan", s: "the village on the old parcel lines", d: "The village inside the triangle, with the old parcel lines still readable and the streets running through it." }
+            { src: "assets/img/samgakji-residential/site-plan-aligned-c.jpg", t: "Site plan", s: "the village on the old parcel lines", d: "The village inside the triangle, with the old parcel lines still readable and the streets running through it." }
           ]
         }
       },
@@ -2559,7 +2559,7 @@ const SITE = {
       { heading: "Four Readings of the Site", // KG-04 A–D
         text: "Sun, view, noise and access — the four things the slope gives and takes.",
         images: [], // 핀 #323: 네 장을 스크롤로 한 단계씩 넘기는 장면으로
-        seq: {"kind": "frames", "r": 0.902, "k": 0.55, "fade": true, "tag": true, "below": true, "steps": [{"src": "assets/img/natural-palette/sun.jpg", "t": "A Sun", "s": "south and east open", "d": "open to the south and east. Classrooms and the play deck take the low winter sun; the light well lets the high summer sun in deep.", "tags": [[44.4, 3.9, "W", "c", "m"], [11.6, 45.9, "S", "c", "m"], [44.4, 96.4, "E", "c", "m"], [40, 70.2, "Winter solstice", "", "m"], [38.2, 82, "Summer solstice", "", "m"], [62.6, 45.6, "Light well", "", "m"]]}, {"src": "assets/img/natural-palette/view.jpg", "t": "B View", "s": "lake below, forest above", "d": "the water below, the forest ridge above. The first floor looks at the lake; the second, the third and the roof classroom look at the forest.", "tags": [[31, 9.8, "Forest ridge", "c", "m"], [93.1, 10.2, "Forest", "c", "m"], [57.3, 95.8, "Reservoir", "c", "m"]]}, {"src": "assets/img/natural-palette/noise.jpg", "t": "C Noise", "s": "road filtered, yards inside", "d": "the road is filtered by the front yard, the street trees and the parking block; the play yards withdraw inside the building.", "tags": [[49.1, 37.5, "Quiet yard", "c", "m"], [10.2, 83.2, "Road", "", "m"]]}, {"src": "assets/img/natural-palette/access.jpg", "t": "D Access", "s": "drop zone · two doors", "d": "cars end at the drop zone and the parking on the road. Children walk in two ways: the main door on the first floor, the forest door on the second.", "tags": [[10.6, 3.9, "Walk", "", "m"], [25.9, 3.9, "Car", "", "m"], [13.9, 13.2, "Forest entrance", "", "m"], [15.7, 55.6, "Main entrance", "c", "m"], [24.8, 63.5, "Drop zone", "c", "m"]]}]} },
+        seq: {"kind": "frames", "r": 0.9, "k": 0.8, "fade": true, "tag": true, "below": true, "steps": [{"src": "assets/img/natural-palette/read-sun.jpg", "t": "A Sun", "s": "south and east open", "d": "open to the south and east. Classrooms and the play deck take the low winter sun; the light well lets the high summer sun in deep.", "tags": [[48.4, 0.4, "W", "c", "m"], [48.4, 79.7, "E", "c", "m"], [4.4, 40, "S", "c", "m"], [92.3, 40, "N", "c", "m"], [23.5, 62.5, "Winter · noon 29°", "", "m"], [50, 62.5, "Summer · noon 76°", "", "m"], [38.1, 17.5, "Equinox", "", "m"], [28.9, 23.6, "30°", "c", "m"], [38.7, 31.8, "60°", "c", "m"], [62.7, 39, "Light well", "", "m"], [99, 52, "Winter shadow", "r", "m"]]}, {"src": "assets/img/natural-palette/read-view.jpg", "t": "B View", "s": "lake below, forest above", "d": "the water below, the forest ridge above. The first floor looks at the lake; the second, the third and the roof classroom look at the forest.", "tags": [[7.7, 2, "Forest ridge", "", "m"], [95.1, 4.9, "Forest", "r", "m"], [50, 94.4, "Reservoir — the lake below", "c", "m"], [46.2, 66.7, "1F · lake", "c", "m"], [24.2, 17.8, "2F–3F · forest", "r", "m"], [52.2, 13.6, "Forest yard", "c", "m"]]}, {"src": "assets/img/natural-palette/read-noise.jpg", "t": "C Noise", "s": "road filtered, yards inside", "d": "the road is filtered by the front yard, the street trees and the parking block; the play yards withdraw inside the building.", "tags": [[2.7, 77.4, "Road", "", "m"], [99, 70.3, "Street trees", "r", "m"], [46.4, 67, "Front yard", "c", "m"], [69.7, 61.3, "Parking block", "c", "m"], [54.5, 28.4, "Garden", "c", "m"], [54.5, 34.8, "Sand yard", "c", "m"], [54.5, 45, "Play deck", "c", "m"], [51.5, 19.3, "Forest yard", "c", "m"], [70.3, 43, "Quiet side", "c", "m"]]}, {"src": "assets/img/natural-palette/read-access.jpg", "t": "D Access", "s": "drop zone · two doors", "d": "cars end at the drop zone and the parking on the road. Children walk in two ways: the main door on the first floor, the forest door on the second.", "tags": [[33, 57.6, "Main door · 1F ±0", "", "m"], [17, 18.8, "Forest door · 2F +3.9", "", "m"], [23.9, 63, "Drop zone", "c", "m"], [71.4, 62.5, "Parking", "", "m"], [99.5, 76.1, "Cars", "r", "m"], [2.7, 10.6, "Hill path", "", "m"]]}]} },
       { heading: "Read, Insert, Carve, Play", big: true, // KG-07 매스 과정
         text: "The slope that falls from the forest to the lake is set into two flat grounds, and a three-storey mass is slid in between. The middle of the mass is carved so light and eyes reach the play deck on the first floor; the rest of the slope is cut into sand, garden and small-forest yards that children climb one step at a time.",
         images: [],

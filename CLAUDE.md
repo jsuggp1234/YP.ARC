@@ -145,3 +145,8 @@
 - 모바일 작품 페이지 `.pg.cx { overflow-x: clip }`(가로 넘침 방지).
 - Natural Palette 배치도(2026-11-25 요청): 깃발(`fl`) 빼고 글자만, X는 `gx`·Y는 `gyr`(층별 평면과 같은 표현), 치수선 0.5px·숫자 8px. 좁은 치수 칸은 `dims` 6번째 값 `"b"`로 숫자를 선 반대쪽에(`.dim-t.db`).
 - 같은 날 요청: 치수 끝 빗금을 아주 작게(그림 옵션 `tk`, 기본 0.6 → 배치도 0.22), 치수 숫자는 100 단위 반올림(합계도 맞춤: 36,900 · 26,400). 층별 평면 `fplan.grid` 값도 같이 반올림.
+
+## 2026-11-25 다이어그램 고도화 (사용자 요청: 유치원·삼각지 다이어그램을 다른 작품 수준으로)
+- Natural Palette "Four Readings of the Site": 실제 배치도(`site.jpg`)를 옅게 깐 위에 벡터로 새로 그린 `read-{sun,view,noise,access}.jpg`(scratchpad `np-read.js` → 글자 tags `np-fix.js` → 연결 `np-wire.js`). 해: 37.5° 하늘 반구 투영·하지/춘추분/동지 경로·정오 그림자, 조망: 층별 시야 원뿔, 소음: 도로 소음 띠와 거르는 켜, 접근: 차·아이 동선과 두 출입구. 예전 sun/view/noise/access.jpg는 남겨 둠.
+- 삼각지 콘셉트 Inflow·Mixing·Cycle: 449px 작은 그림 대신 실제 대지(strategy-3) 위에 새로 그린 `concept-*-v2.jpg`(scratchpad `sg-concept.js`, `sg-wire.js`).
+- 삼각지 Strategy·Mass 13장: 위에 구워진 STRATEGY/MASS PROCESS 제목·설명 문장은 위 225px를 잘라 빼고, strategy-4 축 이름은 지운 뒤 tags로 다시 씀, 초록 축 → 붉은색·갈색 축 → 회색·주황 → 옅은 붉은색(scratchpad `sg-clean.py` → `*-c.jpg`, 원본은 그대로 둠).
