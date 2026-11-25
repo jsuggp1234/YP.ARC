@@ -1354,11 +1354,11 @@ const SITE = {
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-step-12.jpg", ax: "assets/img/samgakji-residential/axon-12.jpg", axTags: [[50.6,82.1,"4F · +13 m","c","m"]], tags: [[83.8,9.1,"Step 07 / 07","","m"],[48.1,15.2,"Gateways at the three corners","c","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-12-open.jpg", ax: "assets/img/samgakji-residential/axon-12-open.jpg", axTags: [[51.6,95,"Open space","c","m"],[12.2,69.3,"Open space","c","m"],[73.5,38.5,"Sunken garden","c","m"]], tags: [[83.8,9.1,"Step 07 / 07","","m"],[48.1,15.2,"Open space at the three corners — no buildings","c","m"]],
               t: "Step 07",
               s: "of seven"
             },
-            { src: "assets/img/samgakji-residential/site-plan-aligned-c.jpg", ax: "assets/img/samgakji-residential/axon-13.jpg", axTags: [], t: "Site plan", s: "the village on the old parcel lines", d: "The village inside the triangle, with the old parcel lines still readable and the streets running through it." }
+            { src: "assets/img/samgakji-residential/site-plan-aligned-c.jpg", ax: "assets/img/samgakji-residential/axon-13-open.jpg", axTags: [], t: "Site plan", s: "the village on the old parcel lines", d: "The village inside the triangle, with the old parcel lines still readable and the streets running through it." }
           ]
         }
       },
