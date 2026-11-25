@@ -228,7 +228,7 @@ body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs
 body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(4) > div.media > div.mz > img {
   scale: 0.89 !important;
 }
-/* works · img “Blooming” */
+/* works · img “UNFURL” */
 body[data-page="works"] #cases > div.cs-track:nth-of-type(2) > div.cs-set > a.cs-card:nth-of-type(9) > div.media > div.mz > img {
   scale: 0.91 !important;
 }
@@ -264,7 +264,7 @@ html[data-slug="natural-palette"] body[data-page="project"] #main > article.pg.c
 html[data-slug="natural-palette"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv {
   overflow: hidden !important;
 }
-/* project#the-tree-house · img “Blooming” */
+/* project#the-tree-house · img “UNFURL” */
 html[data-slug="the-tree-house"] body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img {
   object-position: 46% 100% !important;
   scale: 1.01 !important;

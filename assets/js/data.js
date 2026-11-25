@@ -1523,9 +1523,9 @@ const SITE = {
   // ---- 자료 준비 중 (CV의 수상·스튜디오 기록만 있어요. 자료를 받으면 채워요) ----
   {
     "slug": "the-tree-house", "blurb": "강원도 인제군 The tree house",
-    "title": "Blooming",
-    "titleKo": "블루밍 — 자작나무 숲의 트리하우스 키트",
-    "subtitle": "Blooming — a tree house kit that hangs on a living birch and opens like a flower",
+    "title": "UNFURL",
+    "titleKo": "언펄(UNFURL) — 자작나무 숲의 트리하우스 키트",
+    "subtitle": "UNFURL — a tree house kit that hangs on a living birch and opens like a flower",
     "type": "Pavilion",
     "year": "2024",
     "studio": "Volume Zero 국제공모",
