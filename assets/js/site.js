@@ -4119,7 +4119,7 @@
         pts.forEach((p, i) => { p.ly = Math.max(p.y, i ? pts[i - 1].ly + G : 2); });
         for (let i = pts.length - 1; i >= 0; i--) { const hi = i === pts.length - 1 ? 98 : pts[i + 1].ly - G; if (pts[i].ly > hi) pts[i].ly = hi; }
         const X = (x) => x * m * 10, E1 = m * 1000 + 8, E2 = m * 1000 + 26, E3 = m * 1000 + 34;
-        return `<svg class="ld-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">${pts.map((p) => `<path d="M${X(p.x).toFixed(1)} ${(p.y * 10).toFixed(1)}H${E1.toFixed(1)}L${E2.toFixed(1)} ${(p.ly * 10).toFixed(1)}H${E3.toFixed(1)}"/>`).join("")}</svg>`
+        return `<svg class="ld-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">${pts.map((p) => `<path d="M${(X(p.x) + 15).toFixed(1)} ${(p.y * 10).toFixed(1)}H${E1.toFixed(1)}L${E2.toFixed(1)} ${(p.ly * 10).toFixed(1)}H${E3.toFixed(1)}"/>`).join("")}</svg>`
           + pts.map((p) => `<i class="ld-dot" style="left:${(p.x * m).toFixed(2)}%;top:${p.y}%"></i><span class="ld-lb" style="left:calc(${(m * 100).toFixed(2)}% + 3.6%);top:${p.ly.toFixed(2)}%"><b class="num">${esc(p.t)}</b>${esc(p.nm)}</span>`).join("");
       };
       // 치수선: 끝 눈금(45° 짧은 사선) + 가운데 글자. 좌표는 그림의 %

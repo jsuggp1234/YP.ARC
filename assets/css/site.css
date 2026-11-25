@@ -2824,3 +2824,14 @@ html:not(#_) body[data-page="works"] #cases > div.cs-gd > div.cs-gd-in > a.cs-ca
 /* 좁은 치수 칸은 숫자를 선 반대쪽으로 번갈아 (dims 6번째 값 "b") */
 .media .ftag.dim-t.db { transform: translate(-50%, 1px); }
 .media .ftag.dim-t.dv.db { transform: translate(-50%, -50%) rotate(90deg) translateY(calc(50% + 2px)); }
+
+/* 2026-11-25 사용자 요청: 지시선은 번호 오른쪽에서 시작(번호와 겹치지 않게), 점은 숨김 · 레벨 숫자는 실 번호보다 작고 연하게 · 강조도 무채색 */
+.ld-dot { display: none; }
+.media .ftag.ld-alt { text-shadow: 0 0 2px var(--bg), 0 0 2px var(--bg), 0 0 2px var(--bg); }
+.fp-lv { font-size: calc(var(--t-xs) * .78); color: color-mix(in srgb, var(--ink) 45%, var(--bg)); background: none; font-weight: 300; letter-spacing: .01em; }
+.fp-n { font-size: calc(var(--t-xs) * 1.15); }
+.fp-n.fp-on { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.media .ftag.lv:not(.dim-t) { font-size: calc(var(--t-xs) * .8); color: color-mix(in srgb, var(--ink) 45%, var(--bg)); font-weight: 300; }
+@media (max-width: 760px) {
+  html:not(#_) .fp-lv, html:not(#_) .media .ftag.lv:not(.dim-t) { font-size: clamp(4px, calc(var(--mw, 360) * var(--fr, 0.0125) * 0.72px), 6.5px) !important; }
+}
