@@ -1313,7 +1313,7 @@ const SITE = {
               s: "the layout laid on the old division"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-step-04.jpg", ax: "assets/img/samgakji-residential/axon-04.jpg", axTags: [[98.5,76.6,"Contrast axis","r","m"],[98.5,88.3,"Commercial axis","r","m"],[61.4,23.2,"Green axis","c","m"],[98.5,42.6,"Green axis","r","m"],[54.1,25.9,"Transit axis","c","m"]], tags: [[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[86.5,51.8,"Transit axis","r","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-04.jpg", ax: "assets/img/samgakji-residential/axon-04.jpg", axTags: [[98.5,26.7,"Contrast axis","r","m"],[98.5,38.2,"Commercial axis","r","m"],[32.6,34.1,"Green axis","c","m"],[63.5,21.5,"Green axis","c","m"],[31.8,41,"Transit axis","c","m"]], tags: [[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[86.5,51.8,"Transit axis","r","m"]],
               t: "Axes",
               s: "commercial, green, contrast, transit",
               d: "With the parcels kept, the road axes extend naturally into the site and the street network stays continuous."
@@ -1324,37 +1324,37 @@ const SITE = {
               s: "height and program from the edges"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-step-06.jpg", ax: "assets/img/samgakji-residential/axon-06.jpg", axTags: [[61.4,23.2,"Green axis","c","m"],[98.5,42.6,"Green axis","r","m"],[27.599999999999998,60.3,"+13 m","","m"]], tags: [[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[83.8,9.1,"Step 01 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-06.jpg", ax: "assets/img/samgakji-residential/axon-06.jpg", axTags: [[32.6,34.1,"Green axis","c","m"],[63.5,21.5,"Green axis","c","m"],[47.6,25.1,"18F · +59 m","c","m"]], tags: [[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[83.8,9.1,"Step 01 / 07","","m"]],
               t: "Step 01",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-step-07.jpg", ax: "assets/img/samgakji-residential/axon-07.jpg", axTags: [[98.5,88.3,"Commercial axis","r","m"],[40.5,76.1,"Commercial axis","c","m"],[27.599999999999998,60.3,"+13 m","","m"]], tags: [[1.5,49.3,"Commercial axis","","m"],[1.5,65.4,"Commercial axis","","m"],[83.8,9.1,"Step 02 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-07.jpg", ax: "assets/img/samgakji-residential/axon-07.jpg", axTags: [[98.5,38.2,"Commercial axis","r","m"],[73.1,74.2,"Commercial axis","c","m"],[55,74.1,"4F · +13 m","c","m"]], tags: [[1.5,49.3,"Commercial axis","","m"],[1.5,65.4,"Commercial axis","","m"],[83.8,9.1,"Step 02 / 07","","m"]],
               t: "Step 02",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-step-08.jpg", ax: "assets/img/samgakji-residential/axon-08.jpg", axTags: [[61.4,23.2,"Green axis","c","m"],[98.5,42.6,"Green axis","r","m"],[54.1,25.9,"Transit axis","c","m"],[98.5,76.6,"Contrast axis","r","m"],[98.5,88.3,"Commercial axis","r","m"],[68,44.5,"+17 m","","m"]], tags: [[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[86.5,51.8,"Transit axis","r","m"],[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 03 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-08.jpg", ax: "assets/img/samgakji-residential/axon-08.jpg", axTags: [[32.6,34.1,"Green axis","c","m"],[63.5,21.5,"Green axis","c","m"],[31.8,41,"Transit axis","c","m"],[98.5,26.7,"Contrast axis","r","m"],[98.5,38.2,"Commercial axis","r","m"],[53.3,27,"14F · +46 m","c","m"]], tags: [[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[86.5,51.8,"Transit axis","r","m"],[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 03 / 07","","m"]],
               t: "Step 03",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-step-09.jpg", ax: "assets/img/samgakji-residential/axon-09.jpg", axTags: [[61.4,23.2,"Green axis","c","m"],[98.5,88.3,"Commercial axis","r","m"],[25.6,67.9,"Commercial axis","c","m"],[27.599999999999998,60.3,"+13 m","","m"]], tags: [[46,6.5,"Green axis","","m"],[1.5,49.3,"Commercial axis","","m"],[1.5,65.4,"Commercial axis","","m"],[83.8,9.1,"Step 04 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-09.jpg", ax: "assets/img/samgakji-residential/axon-09.jpg", axTags: [[32.6,34.1,"Green axis","c","m"],[98.5,38.2,"Commercial axis","r","m"],[58.6,81.9,"Commercial axis","c","m"],[55,74.1,"4F · +13 m","c","m"]], tags: [[46,6.5,"Green axis","","m"],[1.5,49.3,"Commercial axis","","m"],[1.5,65.4,"Commercial axis","","m"],[83.8,9.1,"Step 04 / 07","","m"]],
               t: "Step 04",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-step-10.jpg", ax: "assets/img/samgakji-residential/axon-10.jpg", axTags: [[61.4,23.2,"Green axis","c","m"],[98.5,76.6,"Contrast axis","r","m"],[98.5,88.3,"Commercial axis","r","m"],[35.6,11.7,"+78 m","","m"]], tags: [[46,6.5,"Green axis","","m"],[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 05 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-10.jpg", ax: "assets/img/samgakji-residential/axon-10.jpg", axTags: [[32.6,34.1,"Green axis","c","m"],[98.5,26.7,"Contrast axis","r","m"],[98.5,38.2,"Commercial axis","r","m"],[41.5,62.2,"4F · +13 m","c","m"]], tags: [[46,6.5,"Green axis","","m"],[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 05 / 07","","m"]],
               t: "Step 05",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-step-11.jpg", ax: "assets/img/samgakji-residential/axon-11.jpg", axTags: [[98.5,76.6,"Contrast axis","r","m"],[98.5,88.3,"Commercial axis","r","m"],[25.599999999999998,33.1,"+26 m","","m"]], tags: [[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 06 / 07","","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-11.jpg", ax: "assets/img/samgakji-residential/axon-11.jpg", axTags: [[98.5,26.7,"Contrast axis","r","m"],[98.5,38.2,"Commercial axis","r","m"],[23.6,42.6,"14F · +46 m","c","m"]], tags: [[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 06 / 07","","m"]],
               t: "Step 06",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-step-12.jpg", ax: "assets/img/samgakji-residential/axon-12.jpg", axTags: [[88.5,55.3,"+23 m","","m"]], tags: [[83.8,9.1,"Step 07 / 07","","m"],[48.1,15.2,"Gateways at the three corners","c","m"]],
+              src: "assets/img/samgakji-residential/strategy-step-12.jpg", ax: "assets/img/samgakji-residential/axon-12.jpg", axTags: [[50.6,82.1,"4F · +13 m","c","m"]], tags: [[83.8,9.1,"Step 07 / 07","","m"],[48.1,15.2,"Gateways at the three corners","c","m"]],
               t: "Step 07",
               s: "of seven"
             },
