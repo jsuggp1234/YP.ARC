@@ -149,4 +149,5 @@
 ## 2026-11-25 다이어그램 고도화 (사용자 요청: 유치원·삼각지 다이어그램을 다른 작품 수준으로)
 - Natural Palette "Four Readings of the Site": 실제 배치도(`site.jpg`)를 옅게 깐 위에 벡터로 새로 그린 `read-{sun,view,noise,access}.jpg`(scratchpad `np-read.js` → 글자 tags `np-fix.js` → 연결 `np-wire.js`). 해: 37.5° 하늘 반구 투영·하지/춘추분/동지 경로·정오 그림자, 조망: 층별 시야 원뿔, 소음: 도로 소음 띠와 거르는 켜, 접근: 차·아이 동선과 두 출입구. 예전 sun/view/noise/access.jpg는 남겨 둠.
 - 삼각지 콘셉트 Inflow·Mixing·Cycle: 449px 작은 그림 대신 실제 대지(strategy-3) 위에 새로 그린 `concept-*-v2.jpg`(scratchpad `sg-concept.js`, `sg-wire.js`).
-- 삼각지 Strategy·Mass 13장: 위에 구워진 STRATEGY/MASS PROCESS 제목·설명 문장은 위 225px를 잘라 빼고, strategy-4 축 이름은 지운 뒤 tags로 다시 씀, 초록 축 → 붉은색·갈색 축 → 회색·주황 → 옅은 붉은색(scratchpad `sg-clean.py` → `*-c.jpg`, 원본은 그대로 둠).
+- 삼각지 Strategy·Mass 12장(2차, 사용자 "훨씬 고도화"): 원본에서 필지·기본 매스·단계별 검정 매스를 윤곽으로 뽑아(scratchpad `sg-geo.py` → /tmp/pl/sg-geo.json) 벡터로 새로 그린 `process-01..12.jpg`(`sg-steps.js`, 연결 `sg-wire2.js`). 바탕 strategy-2를 옅게, 축은 단색 화살표(상업 축 붉은색·녹지 축 검정·대비 축 회색·교통 축 검정), Step 01–07은 지난 단계 매스 회색 + 이번 단계 검정(붉은 테두리) + 오른쪽 위 7칸 진행 표시. 13번 배치도는 `site-plan-aligned-c.jpg`.
+- 같은 날 유치원 2차(사용자: 그라데이션 쓰지 말고 정보 더): `np-read2.js` — 해: 동지 08–16시 일조 시간 지도(건물 높이로 계산, 1 m 칸 4단계)·하늘 반구 15° 고리·09/12/15시 그림자, 조망: 층별 눈높이·시야각·10 m 고리·조망 쪽 창, 소음: 도로 72 dB 선음원 15log 감쇠·건물 뒤 −9·가로수 −2 dB 지도(5 dB 단계)와 마당별 값, 접근: 동선 길이·아이 걸음 시간(0.9 m/s)·주차/내려주는 칸. 그라데이션 없음, 범례는 오른쪽 위 상자 + tags.

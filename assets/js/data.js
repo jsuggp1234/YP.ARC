@@ -1297,63 +1297,63 @@ const SITE = {
           k: 1,
           steps: [
             {
-              src: "assets/img/samgakji-residential/strategy-1-c.jpg",
+              src: "assets/img/samgakji-residential/process-01.jpg", tags: [[8.8,58,"Residential blocks","","m"],[38.5,13.9,"Main road","","m"],[93.1,59.2,"Old neighbourhood","r","m"],[48.1,40.6,"Site","c","b"]],
               t: "Block",
               s: "relations with the adjacent zones"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-2-c.jpg",
+              src: "assets/img/samgakji-residential/process-02.jpg", tags: [[48.1,15.2,"69 existing parcels","c","m"]],
               t: "Parcels",
               s: "the existing parcel configuration"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-3-c.jpg",
+              src: "assets/img/samgakji-residential/process-03.jpg", tags: [[48.1,15.2,"Old parcel lines","c","m"]],
               t: "Alignment",
               s: "the layout laid on the old division"
             },
             {
-              src: "assets/img/samgakji-residential/strategy-4-c.jpg", tags: [[29.2,31.2,"Contrast axis","","m"],[28.7,48.8,"Commercial axis","","m"],[40.4,64.8,"Green axis","","rl"],[55.4,60.4,"Transit axis","","m"]],
+              src: "assets/img/samgakji-residential/process-04.jpg", tags: [[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[86.5,51.8,"Transit axis","r","m"]],
               t: "Axes",
               s: "commercial, green, contrast, transit",
               d: "With the parcels kept, the road axes extend naturally into the site and the street network stays continuous."
             },
             {
-              src: "assets/img/samgakji-residential/mass-0-c.jpg",
+              src: "assets/img/samgakji-residential/process-05.jpg", tags: [[48.1,15.2,"Basic mass from the edges","c","m"]],
               t: "Basic mass",
               s: "height and program from the edges"
             },
             {
-              src: "assets/img/samgakji-residential/mass-1-c.jpg",
+              src: "assets/img/samgakji-residential/process-06.jpg", tags: [[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[83.8,9.1,"Step 01 / 07","","m"]],
               t: "Step 01",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-2-c.jpg",
+              src: "assets/img/samgakji-residential/process-07.jpg", tags: [[1.5,49.3,"Commercial axis","","m"],[1.5,65.4,"Commercial axis","","m"],[83.8,9.1,"Step 02 / 07","","m"]],
               t: "Step 02",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-3-c.jpg",
+              src: "assets/img/samgakji-residential/process-08.jpg", tags: [[46,6.5,"Green axis","","m"],[69.2,8.4,"Green axis","","m"],[86.5,51.8,"Transit axis","r","m"],[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 03 / 07","","m"]],
               t: "Step 03",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-4-c.jpg",
+              src: "assets/img/samgakji-residential/process-09.jpg", tags: [[46,6.5,"Green axis","","m"],[1.5,49.3,"Commercial axis","","m"],[1.5,65.4,"Commercial axis","","m"],[83.8,9.1,"Step 04 / 07","","m"]],
               t: "Step 04",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-5-c.jpg",
+              src: "assets/img/samgakji-residential/process-10.jpg", tags: [[46,6.5,"Green axis","","m"],[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 05 / 07","","m"]],
               t: "Step 05",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-6-c.jpg",
+              src: "assets/img/samgakji-residential/process-11.jpg", tags: [[1.5,31.2,"Contrast axis","","m"],[1.5,49.3,"Commercial axis","","m"],[83.8,9.1,"Step 06 / 07","","m"]],
               t: "Step 06",
               s: "of seven"
             },
             {
-              src: "assets/img/samgakji-residential/mass-7-c.jpg",
+              src: "assets/img/samgakji-residential/process-12.jpg", tags: [[83.8,9.1,"Step 07 / 07","","m"],[48.1,15.2,"Gateways at the three corners","c","m"]],
               t: "Step 07",
               s: "of seven"
             },
@@ -2559,7 +2559,7 @@ const SITE = {
       { heading: "Four Readings of the Site", // KG-04 A–D
         text: "Sun, view, noise and access — the four things the slope gives and takes.",
         images: [], // 핀 #323: 네 장을 스크롤로 한 단계씩 넘기는 장면으로
-        seq: {"kind": "frames", "r": 0.9, "k": 0.8, "fade": true, "tag": true, "below": true, "steps": [{"src": "assets/img/natural-palette/read-sun.jpg", "t": "A Sun", "s": "south and east open", "d": "open to the south and east. Classrooms and the play deck take the low winter sun; the light well lets the high summer sun in deep.", "tags": [[48.4, 0.4, "W", "c", "m"], [48.4, 79.7, "E", "c", "m"], [4.4, 40, "S", "c", "m"], [92.3, 40, "N", "c", "m"], [23.5, 62.5, "Winter · noon 29°", "", "m"], [50, 62.5, "Summer · noon 76°", "", "m"], [38.1, 17.5, "Equinox", "", "m"], [28.9, 23.6, "30°", "c", "m"], [38.7, 31.8, "60°", "c", "m"], [62.7, 39, "Light well", "", "m"], [99, 52, "Winter shadow", "r", "m"]]}, {"src": "assets/img/natural-palette/read-view.jpg", "t": "B View", "s": "lake below, forest above", "d": "the water below, the forest ridge above. The first floor looks at the lake; the second, the third and the roof classroom look at the forest.", "tags": [[7.7, 2, "Forest ridge", "", "m"], [95.1, 4.9, "Forest", "r", "m"], [50, 94.4, "Reservoir — the lake below", "c", "m"], [46.2, 66.7, "1F · lake", "c", "m"], [24.2, 17.8, "2F–3F · forest", "r", "m"], [52.2, 13.6, "Forest yard", "c", "m"]]}, {"src": "assets/img/natural-palette/read-noise.jpg", "t": "C Noise", "s": "road filtered, yards inside", "d": "the road is filtered by the front yard, the street trees and the parking block; the play yards withdraw inside the building.", "tags": [[2.7, 77.4, "Road", "", "m"], [99, 70.3, "Street trees", "r", "m"], [46.4, 67, "Front yard", "c", "m"], [69.7, 61.3, "Parking block", "c", "m"], [54.5, 28.4, "Garden", "c", "m"], [54.5, 34.8, "Sand yard", "c", "m"], [54.5, 45, "Play deck", "c", "m"], [51.5, 19.3, "Forest yard", "c", "m"], [70.3, 43, "Quiet side", "c", "m"]]}, {"src": "assets/img/natural-palette/read-access.jpg", "t": "D Access", "s": "drop zone · two doors", "d": "cars end at the drop zone and the parking on the road. Children walk in two ways: the main door on the first floor, the forest door on the second.", "tags": [[33, 57.6, "Main door · 1F ±0", "", "m"], [17, 18.8, "Forest door · 2F +3.9", "", "m"], [23.9, 63, "Drop zone", "c", "m"], [71.4, 62.5, "Parking", "", "m"], [99.5, 76.1, "Cars", "r", "m"], [2.7, 10.6, "Hill path", "", "m"]]}]} },
+        seq: {"kind": "frames", "r": 0.9, "k": 1, "fade": true, "tag": true, "below": true, "steps": [{"src": "assets/img/natural-palette/read-sun.jpg", "t": "A Sun", "s": "south and east open", "d": "open to the south and east. Classrooms and the play deck take the low winter sun; the light well lets the high summer sun in deep.", "tags": [[48.4, 1.2, "W 270°", "c", "m"], [48.4, 78.9, "E 90°", "c", "m"], [5.4, 39.8, "S 180°", "r", "m"], [91.2, 39.8, "N 0°", "", "m"], [32, 21.6, "30°", "c", "m"], [40.3, 30.8, "60°", "c", "m"], [23.1, 59.8, "09:00", "r", "m"], [23.1, 20.3, "15:00", "r", "m"], [62.6, 38.8, "Light well", "", "m"], [78.5, 2.2, "Winter path · noon 29.1°", "", "m"], [78.5, 4.5, "Equinox · noon 52.5°", "", "m"], [78.5, 6.8, "Summer · noon 75.9°", "", "m"], [78.5, 9, "6 h + sun · 21 Dec", "", "m"], [78.5, 11.3, "4–6 h", "", "m"], [78.5, 13.6, "2–4 h", "", "m"], [78.5, 15.9, "under 2 h", "", "m"], [78.5, 18.1, "Shadow 09:00", "", "m"], [78.5, 20.4, "Shadow 12:00", "", "m"], [78.5, 22.7, "Shadow 15:00", "", "m"]]}, {"src": "assets/img/natural-palette/read-view.jpg", "t": "B View", "s": "lake below, forest above", "d": "the water below, the forest ridge above. The first floor looks at the lake; the second, the third and the roof classroom look at the forest.", "tags": [[36.9, 75.9, "10 m", "", "m"], [27.2, 88.1, "20 m", "", "m"], [41.1, 77.6, "Lake 17.3 m", "r", "m"], [7.7, 2, "Forest ridge", "", "b"], [50, 94.9, "Reservoir", "c", "b"], [47.4, 65.2, "1F +1.2 m", "", "m"], [71, 66.7, "1F +1.2 m", "", "m"], [24.7, 17.8, "3F +8.9 m", "r", "m"], [36.3, 17.8, "2F +5.1 m", "", "m"], [53.3, 18.3, "Yard +3.9 m", "", "m"], [46.2, 68.7, "Lake view 71°", "c", "m"], [78.5, 2.2, "Windows to the lake", "", "m"], [78.5, 4.5, "Windows to the forest", "", "m"], [78.5, 6.8, "View cone 1F", "", "m"], [78.5, 9, "View cone 2F–3F", "", "m"], [78.5, 11.3, "Distance ring 10 m", "", "m"]]}, {"src": "assets/img/natural-palette/read-noise.jpg", "t": "C Noise", "s": "road filtered, yards inside", "d": "the road is filtered by the front yard, the street trees and the parking block; the play yards withdraw inside the building.", "tags": [[51.5, 19.3, "Forest yard 49 dB", "c", "m"], [54.5, 28.4, "Garden 50 dB", "c", "m"], [54.5, 34.8, "Sand 51 dB", "c", "m"], [54.5, 45, "Deck 52 dB", "c", "m"], [46.3, 76.7, "72 dB", "", "m"], [46.3, 70.8, "69 dB", "", "m"], [46.3, 66.8, "66 dB", "", "m"], [2.7, 79.1, "Road 72 dB", "", "b"], [85.7, 70.3, "Street trees −2 dB", "", "m"], [69.7, 61.3, "Parking block", "c", "m"], [69.7, 43, "−9 dB behind", "c", "m"], [78.5, 2.2, "65 dB +", "", "m"], [78.5, 4.5, "60–65 dB", "", "m"], [78.5, 6.8, "55–60 dB", "", "m"], [78.5, 9, "50–55 dB", "", "m"], [78.5, 11.3, "under 50 dB", "", "m"]]}, {"src": "assets/img/natural-palette/read-access.jpg", "t": "D Access", "s": "drop zone · two doors", "d": "cars end at the drop zone and the parking on the road. Children walk in two ways: the main door on the first floor, the forest door on the second.", "tags": [[32.5, 57.6, "Main door · 1F ±0.0", "", "b"], [16.7, 18.8, "Forest door · 2F +3.9", "", "b"], [28, 65.7, "10 m · 11 s", "", "m"], [53.8, 69, "25 m · 28 s", "c", "m"], [7.7, 20.8, "11 m · 12 s", "c", "m"], [24.9, 75.9, "Drop zone · 3 cars", "c", "m"], [69.8, 56.4, "Parking · 3 cars", "c", "m"], [99.5, 76.1, "From the lake road", "r", "m"], [2.7, 10.6, "Hill path 1:12", "", "m"], [78.5, 2.2, "Car", "", "m"], [78.5, 4.5, "Child walk · 0.9 m/s", "", "m"], [78.5, 6.8, "Entrance", "", "m"], [78.5, 9, "Car space 2.5 × 5 m", "", "m"]]}]} },
       { heading: "Read, Insert, Carve, Play", big: true, // KG-07 매스 과정
         text: "The slope that falls from the forest to the lake is set into two flat grounds, and a three-storey mass is slid in between. The middle of the mass is carved so light and eyes reach the play deck on the first floor; the rest of the slope is cut into sand, garden and small-forest yards that children climb one step at a time.",
         images: [],
