@@ -3765,7 +3765,7 @@
   const fplanHtml = (q) => `<div class="fp" data-fp style="--n:${q.floors.length}"><div class="fp-in">
     <div class="fp-st"><div class="media fp-m" style="aspect-ratio:${q.r};--r:${q.r}">${q.grid ? axHtml(q.grid) : ""}${q.floors.map((f, i) => `<img class="dg fp-img${i ? "" : " on"}" data-f="${i}" src="${esc(f.src)}" alt="${esc(`${f.t} — ${f.s}`)}" decoding="async"${i ? ' loading="lazy"' : ""}>`).join("")}${q.floors.map((f, i) => (f.lv || []).map(([x, y, t]) => `<span class="fp-lv num${i ? "" : " on"}" data-f="${i}" style="left:${x}%;top:${y}%">${esc(t)}</span>`).join("") + f.items.map(([n, x, y]) => `<button type="button" class="fp-n num${i ? "" : " on"}" data-f="${i}" data-n="${n}" style="left:${x}%;top:${y}%" tabindex="-1" aria-hidden="true">${n}</button>`).join("")).join("")}</div></div>
     <div class="fp-sd">
-      <div class="fp-tabs" role="tablist">${q.floors.map((f, i) => `<button type="button" role="tab" class="fp-tb${i ? "" : " on"}" data-f="${i}" aria-selected="${i ? "false" : "true"}"><b>${esc(f.t)}</b> <span class="mid num">${esc(f.s)}</span></button>`).join("")}</div>
+      <div class="fp-tabs" role="tablist">${q.floors.map((f, i) => `<button type="button" role="tab" class="fp-tb${i ? "" : " on"}" data-f="${i}" aria-selected="${i ? "false" : "true"}"><b>${esc(f.t)}</b> <span class="mid num">${esc(f.s)}</span></button>`).join("")}</div><div class="fp-pg" aria-hidden="true"><i></i></div>
       ${q.floors.map((f, i) => `<ol class="fp-lg${i ? "" : " on"}" data-f="${i}">${f.items.map(([n, , , t, d]) => `<li data-n="${n}" tabindex="0"><span class="num">${n}</span><b>${esc(t)}</b><span class="mid">${esc(d)}</span></li>`).join("")}</ol>`).join("")}
     </div></div></div>`;
   const fpInit = () => $$("[data-fp]").forEach((el) => {
@@ -3787,6 +3787,7 @@
       if (!sticky()) return;
       const r = el.getBoundingClientRect(), span = r.height - innerHeight;
       const t = span > 0 ? Math.min(0.999, Math.max(0, -r.top / span)) : 0;
+      el.style.setProperty("--fpp", t.toFixed(4));
       show(Math.floor(t * N));
     };
     addEventListener("scroll", upd, { passive: true }); upd();

@@ -2386,7 +2386,7 @@ html.cg-open { overflow: hidden; }
 .fp-lg li .num { grid-row: span 2; }
 .fp-lg li b { font-weight: 600; }
 .fp-hot .fp-lg li:not(.fp-on) { opacity: .35; }
-@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   .fp { height: auto; }
   .fp-in { position: static; height: auto; grid-template-columns: 1fr; padding: 0; gap: 16px; }
   .fp-st { width: 100%; }
@@ -2849,3 +2849,20 @@ html:not(#_) body[data-page="works"] #cases > div.cs-gd > div.cs-gd-in > a.cs-ca
   .seq-axc { top: 3px; left: 4px; font-size: 7px; }
 }
 .seq-ax .ftag { text-shadow: 0 0 2px var(--bg), 0 0 3px var(--bg), 0 0 4px var(--bg); }
+
+/* 2026-11-25 사용자 요청: 층별 평면 — 모바일에서도 스크롤하면 층이 차례로 넘어가요(탭도 그대로). 진행 막대 .fp-pg */
+.fp-pg { position: relative; height: 1px; background: var(--line); margin: -12px 0 18px; }
+.fp-pg i { position: absolute; left: 0; top: -0.5px; height: 2px; width: calc(var(--fpp, 0) * 100%); background: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .fp-pg { display: none; } }
+@media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
+  .fp { height: calc(var(--n) * 110svh); }
+  .fp-in { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); align-items: start; gap: 12px; padding: 60px 0 12px; }
+  .fp-st { width: min(100%, calc((100svh - 320px) * var(--r, 1.05))); margin: 0 auto; }
+  .fp-sd { justify-content: flex-start; align-self: stretch; }
+  .fp-tabs { margin-bottom: 14px; gap: 4px 14px; }
+  .fp-pg { margin: -8px 0 10px; }
+  .fp-in { padding-bottom: 44px; }
+  .fp-sd { min-height: 0; }
+  .fp-lg.on { flex: 1 1 auto; min-height: 0; overflow: auto; }
+  .fp-lg li { padding: 3px 0; }
+}
