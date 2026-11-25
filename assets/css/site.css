@@ -2818,3 +2818,9 @@ html:not(#_) body[data-page="works"] #cases > div.cs-gd > div.cs-gd-in > a.cs-ca
 @media (min-width: 761px) { .media:has(img[src*="motorism/load-path"]) .ftag { font-size: 7px; } }
 /* 2026-11-25: 모바일 작품 페이지 가로 넘침 막기(나타나기 전 그림이 옆으로 비켜 있을 때 화면이 옆으로 밀리던 것) */
 @media (max-width: 760px) { .pg.cx { overflow-x: clip; } }
+/* 2026-11-25 요청: Natural Palette 배치도 치수를 아래 층별 평면과 같은 표현으로 — 얇은 선, 작은 숫자 */
+.media:has(img[src*="natural-palette/site.jpg"]) .dims line:not(.g) { stroke-width: .5; }
+.media:has(img[src*="natural-palette/site.jpg"]) .ftag.dim-t { font-size: 8px; }
+/* 좁은 치수 칸은 숫자를 선 반대쪽으로 번갈아 (dims 6번째 값 "b") */
+.media .ftag.dim-t.db { transform: translate(-50%, 1px); }
+.media .ftag.dim-t.dv.db { transform: translate(-50%, -50%) rotate(90deg) translateY(calc(50% + 2px)); }

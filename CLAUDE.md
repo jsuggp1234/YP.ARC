@@ -143,3 +143,4 @@
 - seq `box`(Tim(team) Work 여섯 상세): 모바일은 지시선 끝에 번호만, 번호·이름 목록(`.sbx-lg`)은 그림 바로 아래.
 - 겹치던 글자 위치 정리: RE:TIDE 마운드 배치도 프로그램 이름, Natural Palette 층 분해도(층 이름 3줄로 왼쪽), 홀 단면 "Lake ground", Modular O′ X1–X6(위로), Motorism 하중 그림(데스크톱 7px, "10 % trunk" 오른쪽 맞춤, 그림에 구워진 검정 원 번호 지움).
 - 모바일 작품 페이지 `.pg.cx { overflow-x: clip }`(가로 넘침 방지).
+- Natural Palette 배치도(2026-11-25 요청): 깃발(`fl`) 빼고 글자만, X는 `gx`·Y는 `gyr`(층별 평면과 같은 표현), 치수선 0.5px·숫자 8px. 좁은 치수 칸은 `dims` 6번째 값 `"b"`로 숫자를 선 반대쪽에(`.dim-t.db`).
