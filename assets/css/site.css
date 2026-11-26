@@ -2891,3 +2891,7 @@ html.mn-on .bk, html.sb-on .bk { opacity: 0; pointer-events: none; }
   html[data-slug="the-tree-house"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media { width: 100% !important; height: auto !important; aspect-ratio: var(--r) !important; background: none; }
   html[data-slug="the-tree-house"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img { object-fit: cover !important; object-position: 50% 50% !important; scale: 1 !important; }
 }
+
+/* 2026-11-26 (사용자): ‹ Works 뒤로가기 버튼을 왼쪽 위, YP.STUDIO & LAB 로고 바로 밑으로(스크롤해도 그 자리) */
+.bk { left: var(--g4-e); top: 36px; bottom: auto; translate: 0 0; height: 24px; padding: 0 10px 0 4px; }
+@media (max-width: 760px) { .bk { top: 34px; bottom: auto; height: 22px; } }
