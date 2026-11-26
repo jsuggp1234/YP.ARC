@@ -528,6 +528,12 @@ a:hover > .roll > span, a:focus-visible > .roll > span { transform: translateY(-
 .nx-a { margin-left: auto; transition: transform .6s var(--ease); }
 .nx:hover .nx-a { transform: translateX(10px); }
 @media (max-width: 760px) { .nx { grid-template-columns: 1fr; row-gap: 8px; margin-top: 72px; } .nx-t { grid-column: 1; } }
+/* 2026-11-26 (사용자): 다음 단계 버튼에 회색 바탕 — 누르는 버튼으로 읽히게 */
+.nx { background: color-mix(in srgb, var(--ink) 6%, var(--bg)); border-top: 0; border-radius: 4px; padding: 22px 24px; align-items: center; transition: background .3s; }
+.nx:hover { background: color-mix(in srgb, var(--ink) 11%, var(--bg)); }
+.nx-k { color: var(--ink); opacity: .6; }
+@media (max-width: 760px) { .nx { padding: 16px; } }
+
 
 /* 단계 머리: 번호(--t-s 굵게) · 제목(--t-l) · 한 줄 설명(본문) */
 main.wrap { padding-block: 56px 120px; }
