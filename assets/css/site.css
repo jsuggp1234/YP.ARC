@@ -2895,3 +2895,17 @@ html.mn-on .bk, html.sb-on .bk { opacity: 0; pointer-events: none; }
 /* 2026-11-26 (사용자): ‹ Works 뒤로가기 버튼을 왼쪽 위, YP.STUDIO & LAB 로고 바로 밑으로(스크롤해도 그 자리) */
 .bk { left: var(--g4-e); top: 36px; bottom: auto; translate: 0 0; height: 24px; padding: 0 10px 0 4px; }
 @media (max-width: 760px) { .bk { top: 34px; bottom: auto; height: 22px; } }
+
+/* 2026-11-26 (사용자): 그림 이름표 — 세로 점선 지시선 + 위 끝 검정 막대 + 오른쪽 영어 이름(작게) */
+.media .pin-l { position: absolute; z-index: 2; width: 0; border-left: 0.75px dashed var(--ink); pointer-events: none; }
+.media .ftag.pin { transform: none; margin-left: -1.5px; padding-left: 8px; line-height: 1.25; font-size: calc(var(--t-xs) * .9); text-shadow: 0 0 2px var(--bg), 0 0 2px var(--bg), 0 0 3px var(--bg); }
+.media .ftag.pin::before { content: ""; position: absolute; left: 0; top: 1px; width: 3px; height: 1.95em; background: var(--ink); }
+.media .ftag.pin b { display: block; font-weight: 500; }
+.media .ftag.pin span { display: block; color: color-mix(in srgb, var(--ink) 60%, var(--bg)); }
+.media .ftag.pin:not(:has(span))::before { height: 1em; }
+/* 핀 이름표: 오른쪽 끝 가까운 것은 좁은 화면에서 선 왼쪽으로 (2026-11-26) */
+@media (max-width: 1100px) {
+  .media .ftag.pin.pin-r { transform: translateX(-100%); margin-left: 1.5px; padding-left: 0; padding-right: 8px; text-align: right; }
+  .media .ftag.pin.pin-r::before { left: auto; right: 0; }
+}
+@media (max-width: 760px) { .media .ftag.pin::before { width: 2px; } .media .ftag.pin { padding-left: 5px; } .media .ftag.pin.pin-r { padding-right: 5px; } }

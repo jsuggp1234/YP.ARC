@@ -161,3 +161,4 @@
 - 2026-11-26(사용자, 태블릿 캡처): UNFURL 대표사진은 761px 이상에서 화면 양옆 끝까지·사진 비율 그대로(전체가 보이고 아래는 스크롤), tune.css의 contain·margin-top −300px를 site.css 끝 블록이 덮어씀. 아래 표시(.hud-n)가 다음 작품으로 넘어가도 예전 작품 이름(예: Share ho'US'e)으로 돌아가던 버그 → `nm.dataset.base`.
 - 2026-11-26(사용자): 뒤로가기 `.bk`는 화면 아래 가운데가 아니라 왼쪽 위 로고 바로 밑(top 36px, left --g4-e)에 고정 — site.css 끝 블록.
 - 2026-11-26(사용자): RE:TIDE 수위 시뮬 — 바탕 water-dry-a..f의 굵은 회색 물가선 지움(scratchpad `tide-lines.py`, 파빌리온 보호, 원본 bak/tide), water-flood.png에서 바다 수영장 5곳 t=0(늘 물)·파빌리온 254(`tide-flood.py`), site.js flDraw: 끝까지 마르는 땅(255) 둘레 2칸에 이웃 칸이 잠기면 물가선(NB) → 만조 +9.24에도 경계선.
+- 2026-11-26(사용자): RE:TIDE "Twelve Mounds" 분해 아이소에 프로그램 이름표 — 그림 `tags`의 새 종류 `"pin"`(`[x, y, "이름\n설명", "", "pin", 선 길이%]`, `site.js`의 `pinHtml`): (x, y)에서 위로 점선 지시선, 선 위 끝에 세로로 긴 검정 막대, 그 오른쪽에 영어 이름(굵게)+설명(회색). x>80이면 좁은 화면(≤1100px)에서 글이 선 왼쪽으로(`.pin-r`). 같은 그림의 산책로(데크)는 scratchpad `mounds-path.py`(중심선 직접 그림, 먹 45% 옅게, 원본 bak/mounds). 벡터화는 원본 .ai가 이 컨테이너에 없어 보류.

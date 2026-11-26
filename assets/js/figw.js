@@ -1,5 +1,5 @@
 // 그림별 데스크톱 "글자 크기 ÷ 그림 폭" (scratchpad figw.js로 생성, 2026-11-25). 모바일 그림 글자 비례용 — site.js mwInit
-window.FIGW = {"assets/img/re-tide/twelve-mounds.jpg":0.00568,
+window.FIGW = {"assets/img/re-tide/twelve-mounds.jpg":0.00639,
 "assets/img/re-tide/mound-layout.jpg":0.01052,
 "assets/img/motorism/strategy-3.jpg":0.01153,
 "assets/img/motorism/plan-b1.jpg":0.01394,
