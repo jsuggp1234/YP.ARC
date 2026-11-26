@@ -577,7 +577,7 @@
         const key = name + "|" + k + "|" + n;
         if (key === last) return;
         last = key;
-        nm.textContent = name || base;
+        nm.textContent = name || nm.dataset.base || base; // 다음 작품으로 넘어가도(해시만 바뀜) 지금 작품 이름
         if (n > 1) {
           if (col.children.length !== n) col.innerHTML = Array.from({ length: n }, (_, i) => `<i>${pad(i + 1)}</i>`).join("");
           col.style.setProperty("--k", k);
@@ -4117,7 +4117,7 @@
       HTML.dataset.slug = p.slug; // 디자인 조정(tune.css)에서 "이 작품에만" 규칙이 쓰는 이름
       const tb = $(".tb-title"); if (tb) tb.textContent = p.title;
       $$(".tblock dd")[0] && ($$(".tblock dd")[0].textContent = "A-1" + pad(i + 1));
-      const hs = $(".hud-s"), hn = $(".hud-n"); if (hs) hs.textContent = "A-1" + pad(i + 1); if (hn) hn.textContent = p.title; // 작품을 넘겨도 아래 표시가 따라오게
+      const hs = $(".hud-s"), hn = $(".hud-n"); if (hs) hs.textContent = "A-1" + pad(i + 1); if (hn) { hn.textContent = p.title; hn.dataset.base = p.title; } // 작품을 넘겨도 아래 표시가 따라오게
       let fig = 1;
       // 핀 #68: 번호 점에서 오른쪽 이름표까지 지시선. 이름표는 위에서부터 겹치지 않게 내려 놓아요
       const leadHtml = (im) => {

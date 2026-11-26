@@ -2883,3 +2883,11 @@ html.mn-on .bk, html.sb-on .bk { opacity: 0; pointer-events: none; }
 .media .ftag.el.r { padding-right: 2px; }
 .media .ftag.el { text-shadow: 0 0 2px var(--bg), 0 0 2px var(--bg), 0 0 2px var(--bg); }
 @media (max-width: 760px) { .media .ftag.el { gap: 2px; } .media .ftag.el::after, .media .ftag.el:not(.r)::before { border-left-width: 2.5px; border-right-width: 2.5px; border-top-width: 4px; } }
+
+/* 2026-11-26 (사용자, 태블릿 캡처): UNFURL 대표사진 — 데스크톱·태블릿에서도 화면 양옆 끝까지(여백 없음), 사진 비율 그대로라 잘리는 곳 없이 전체가 보여요.
+   tune.css의 contain·margin-top −300px(양옆 흰 여백과 위 잘림의 원인)를 덮어써요 */
+@media (min-width: 761px) {
+  html[data-slug="the-tree-house"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv { margin: 0 calc(-1 * var(--g4-e)) !important; padding-top: 0 !important; overflow: hidden; }
+  html[data-slug="the-tree-house"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media { width: 100% !important; height: auto !important; aspect-ratio: var(--r) !important; background: none; }
+  html[data-slug="the-tree-house"]:not(#_) body[data-page="project"] #main > article.pg.cx > header.cx-hd.g4 > figure.cx-cv > div.media > img { object-fit: cover !important; object-position: 50% 50% !important; scale: 1 !important; }
+}
