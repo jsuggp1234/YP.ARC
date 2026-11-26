@@ -3977,14 +3977,14 @@
       };
       const ease = (x) => x * x * (3 - 2 * x);
       // 핀 #83: 물이 차오르는 순서 지도(flood)가 있으면 물을 캔버스로 직접 그려, 물가가 실제로 번져 나가요. 평면은 물 없는 판(dry)끼리 겹쳐요
-      const fl = sim.flood && $(".sim-fl", el); let FT = null, FG = null, fctx = null, fimg = null, fw = 0, fh = 0, lastFv = -1;
+      const fl = sim.flood && $(".sim-fl", el); let FT = null, FG = null, NB = null, fctx = null, fimg = null, fw = 0, fh = 0, lastFv = -1;
       const TINT = sim.tint || [198, 208, 218], EDGE = sim.edge || [70, 86, 98];
       const flDraw = (v) => {
         if (!FT || Math.abs(v - lastFv) < 0.002) return; lastFv = v;
         const d = fimg.data, tv = v * 48 + 1, n = fw * fh;
         for (let i = 0, o = 0; i < n; i++, o += 4) {
           const t = FT[i]; let a, e;
-          if (t <= 0) { a = 1; e = 0; } else if (t >= 255) { a = 0; e = 0; } else { const g = FG[i], z = (tv - t) / g; a = z > 1 ? 1 : z < -1 ? 0 : (z + 1) / 2; e = z > 1.6 || z < -1.6 ? 0 : 1 - Math.abs(z) / 1.6; }
+          if (t <= 0) { a = 1; e = 0; } else if (t >= 254) { a = 0; e = 0; const j = NB[i]; if (j >= 0) { const zj = (tv - FT[j]) / FG[j]; e = zj > 1 ? 1 : zj < -1 ? 0 : (zj + 1) / 2; } } else { const g = FG[i], z = (tv - t) / g; a = z > 1 ? 1 : z < -1 ? 0 : (z + 1) / 2; e = z > 1.6 || z < -1.6 ? 0 : 1 - Math.abs(z) / 1.6; }
           const r = 255 - (255 - TINT[0]) * a, gg = 255 - (255 - TINT[1]) * a, b = 255 - (255 - TINT[2]) * a;
           d[o] = r + (EDGE[0] - r) * e; d[o + 1] = gg + (EDGE[1] - gg) * e; d[o + 2] = b + (EDGE[2] - b) * e; d[o + 3] = 255;
         }
@@ -3997,9 +3997,16 @@
           fctx = fl.getContext("2d"); fctx.drawImage(im, 0, 0); const raw = fctx.getImageData(0, 0, fw, fh).data, n = fw * fh;
           FT = new Float32Array(n); for (let i = 0; i < n; i++) FT[i] = raw[i * 4];
           // 계단 없애기: 단계 값끼리만 살짝 흐리고, 물가 폭(픽셀 1.3칸)이 어디서나 같게 기울기를 구해요
-          const T2 = new Float32Array(FT); for (let p = 0; p < 2; p++) for (let y = 1; y < fh - 1; y++) for (let x = 1; x < fw - 1; x++) { const i = y * fw + x; if (FT[i] <= 0 || FT[i] >= 255) continue; let s2 = 0, c = 0; for (const j of [i - 1, i + 1, i - fw, i + fw, i]) if (FT[j] > 0 && FT[j] < 255) { s2 += T2[j]; c++; } T2[i] = s2 / c; }
+          const T2 = new Float32Array(FT); for (let p = 0; p < 2; p++) for (let y = 1; y < fh - 1; y++) for (let x = 1; x < fw - 1; x++) { const i = y * fw + x; if (FT[i] <= 0 || FT[i] >= 254) continue; let s2 = 0, c = 0; for (const j of [i - 1, i + 1, i - fw, i + fw, i]) if (FT[j] > 0 && FT[j] < 254) { s2 += T2[j]; c++; } T2[i] = s2 / c; }
           FG = new Float32Array(n); for (let y = 0; y < fh; y++) for (let x = 0; x < fw; x++) { const i = y * fw + x, tx = (T2[Math.min(i + 1, n - 1)] - T2[Math.max(i - 1, 0)]) / 2, ty = (T2[Math.min(i + fw, n - 1)] - T2[Math.max(i - fw, 0)]) / 2; FG[i] = Math.max(0.35, Math.min(8, Math.hypot(tx, ty))) * 1.3; }
           FT = T2; fimg = fctx.createImageData(fw, fh);
+          // 2026-11-26 사용자: 물이 다 차도 남은 땅 둘레에 물가선 — 끝까지 마르는 땅(255)이 차오르는 칸과 닿는 곳(2칸 폭)에, 그 칸이 물에 잠기면 선을 그려요. 파빌리온(254) 둘레는 빼요
+          NB = new Int32Array(n).fill(-1);
+          for (let y = 2; y < fh - 2; y++) for (let x = 2; x < fw - 2; x++) {
+            const i = y * fw + x; if (raw[i * 4] < 255) continue; let best = -1, bt = -1;
+            for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) { if (dx * dx + dy * dy > 5) continue; const j = i + dy * fw + dx, tj = raw[j * 4]; if (tj > 0 && tj < 254 && FT[j] > bt) { bt = FT[j]; best = j; } }
+            NB[i] = best;
+          }
           imgs.forEach((x) => { if (x.dataset.dry) x.src = x.dataset.dry; });
           el.classList.add("fl-on"); lastFv = -1; set(cv);
         }).catch(() => {});
