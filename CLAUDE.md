@@ -163,3 +163,9 @@
 - 2026-11-26(사용자): RE:TIDE 수위 시뮬 — 바탕 water-dry-a..f의 굵은 회색 물가선 지움(scratchpad `tide-lines.py`, 파빌리온 보호, 원본 bak/tide), water-flood.png에서 바다 수영장 5곳 t=0(늘 물)·파빌리온 254(`tide-flood.py`), site.js flDraw: 끝까지 마르는 땅(255) 둘레 2칸에 이웃 칸이 잠기면 물가선(NB) → 만조 +9.24에도 경계선.
 - 2026-11-26(사용자): RE:TIDE "Twelve Mounds" 분해 아이소에 프로그램 이름표 — 그림 `tags`의 새 종류 `"pin"`(`[x, y, "이름\n설명", "", "pin", 선 길이%]`, `site.js`의 `pinHtml`): (x, y)에서 위로 점선 지시선, 선 위 끝에 세로로 긴 검정 막대, 그 오른쪽에 영어 이름(굵게)+설명(회색). x>80이면 좁은 화면(≤1100px)에서 글이 선 왼쪽으로(`.pin-r`). 같은 그림의 산책로(데크)는 scratchpad `mounds-path.py`(중심선 직접 그림, 먹 45% 옅게, 원본 bak/mounds). 벡터화는 원본 .ai가 이 컨테이너에 없어 보류.
 - 2026-11-26(사용자, 마지막 기회): RE:TIDE 수위 시뮬 잠김 지도를 사용자가 빨간 선으로 그린 네 수위 물가선(+3.08 · +5.44 · +7.96 · +9.24, 스크린샷 → 1600 지도 좌표 `tw-red.py`)에 맞춰 다시 만듦(`tw-build.py`): 수위마다 땅 집합 = 빨간 선 가까이(≤30px 전부, 100px까지 점점)는 빨간 선 부호 거리, 그 밖은 예전 시뮬 물가선. +9.24는 빨간 선 안만 땅. 수위 사이는 두 물가선까지 거리 비율로 보간, 수영장 0·파빌리온 254·만조에도 남는 땅 255. 빨간 선과의 거리 중앙값 0 px(예전 6–9 px). 비교판 `tw-comp.py`, 오차 `tw-err.py`, 원본 bak/tide2. flood 경로에 `?v=`로 캐시 갱신.
+
+## 2026-11-26 12번 작품 LUMINOUS ABODE (사용자 요청)
+- 환경친화건축(2024-2, 팀) 시트 20장을 웹 작품 `luminous-abode`로. 글은 모두 영어, `data.js` PROJECTS 맨 끝(시트 A-112). 그림은 `assets/img/luminous-abode/`(시트 SVG에서 글자·지시선 뺀 판, scratchpad `web/clean.py`→`crop.py`).
+- 시뮬레이션 10개는 `assets/js/abode.js`(project.html에서 church.js 다음에 불러요, `MVSims`에 `la-*` 종류를 더함): la-climate(인천 IWEC 8,760시간) · la-cluster(엇갈림/정렬 일조) · la-float(부력·수위) · la-wall(Glaser 결로) · la-sun(태양 궤적·단면 일사) · la-air(굴뚝·맞통풍·열회수) · la-pv(네 경사면 PV) · la-balance(에너지 수지) · la-rain(빗물 저수조) · la-carbon(LCA). 데이터 `sim.json`은 scratchpad `web/prep_data.py`. 캔버스 비율은 `fit(el, 데스크톱, 모바일)`.
+- 도면 표기: 평면 fplan(X1–X4·Y1–Y4, 3,000), 단면 gx + el 레벨 + 치수(2,700/3,400/3,440/1,110) + 부위 번호 R1·W1·G1·F2·F1·H1, 입면 그리드·레벨·3,000/11,600, 지붕 평면 11,600·RD. 이 작품 그림 위 글자에는 바탕색 테두리(site.css 맨 끝). 모바일 글자 비율은 scratchpad `web/figw-la.js`로 figw.js에 더함.
+- 확인: scratchpad `web/pshot.js <slug> d|m` — 섹션마다 화면 + 그림 위 글자 겹침·삐져나감 자동 검사.
