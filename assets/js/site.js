@@ -3995,7 +3995,7 @@
         im.decode().then(() => {
           fw = im.naturalWidth; fh = im.naturalHeight; fl.width = fw; fl.height = fh;
           fctx = fl.getContext("2d"); fctx.drawImage(im, 0, 0); const raw = fctx.getImageData(0, 0, fw, fh).data, n = fw * fh;
-          FT = new Float32Array(n); for (let i = 0; i < n; i++) FT[i] = raw[i * 4];
+          FT = new Float32Array(n); for (let i = 0; i < n; i++) { const r0 = raw[i * 4]; FT[i] = r0 < 254 ? r0 + raw[i * 4 + 1] / 256 : r0; } // G = 소수 부분(2026-11-26, 매끈한 물가선)
           // 계단 없애기: 단계 값끼리만 살짝 흐리고, 물가 폭(픽셀 1.3칸)이 어디서나 같게 기울기를 구해요
           const T2 = new Float32Array(FT); for (let p = 0; p < 2; p++) for (let y = 1; y < fh - 1; y++) for (let x = 1; x < fw - 1; x++) { const i = y * fw + x; if (FT[i] <= 0 || FT[i] >= 254) continue; let s2 = 0, c = 0; for (const j of [i - 1, i + 1, i - fw, i + fw, i]) if (FT[j] > 0 && FT[j] < 254) { s2 += T2[j]; c++; } T2[i] = s2 / c; }
           FG = new Float32Array(n); for (let y = 0; y < fh; y++) for (let x = 0; x < fw; x++) { const i = y * fw + x, tx = (T2[Math.min(i + 1, n - 1)] - T2[Math.max(i - 1, 0)]) / 2, ty = (T2[Math.min(i + fw, n - 1)] - T2[Math.max(i - fw, 0)]) / 2; FG[i] = Math.max(0.35, Math.min(8, Math.hypot(tx, ty))) * 1.3; }
