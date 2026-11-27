@@ -900,8 +900,11 @@
       <nav class="sl" aria-label="Start"><div class="sl-tr">${[...Array(SETS)].map((_, k) => ST.map((pg, i) => item(pg, i, k)).join("")).join("")}</div></nav>`;
     const nav = $(".sl"), tr = $(".sl-tr", nav), as = $$(".sl-a", nav);
     as.forEach((a) => $(".sl-g", a).appendChild(stGlyph(ST[+a.dataset.i].glyph, N)));
+    // 2026-11-27 사용자: 글자 움직임은 빼고, 시네마틱 오프닝으로 한 번 무게감 있게 등장 → CINE
+    const CINE = true;
+    if (CINE) HTML.classList.add("sl-cine");
     // 들어올 때: 층이 아래부터 쌓이고, 글자는 왼쪽부터 차례로
-    if (!REDUCED) as.forEach((a, j) => {
+    if (!REDUCED && !CINE) as.forEach((a, j) => {
       $$(".st-b", a).forEach((b, k) => b.animate([{ translate: "0 0.14em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 1000, delay: 250 + j * 90 + (N - 1 - k) * 22, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
       $(".sl-t", a).animate([{ opacity: 0, translate: "0 8px" }, { opacity: 1, translate: "0 0" }], { duration: 800, delay: 800 + j * 90, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" });
     });
@@ -924,15 +927,27 @@
     const floor = document.createElement("i"); floor.className = "sl-fl"; floor.setAttribute("aria-hidden", "true"); nav.prepend(floor);
     const placeFloor = () => { const g = geo[0]; if (g) floor.style.top = g.by - g.fs * 0.2 + "px"; }; // 글자 상자 아래 0.2em = 글자 발끝(기준선)
     measure(); placeFloor(); addEventListener("resize", () => { measure(); placeFloor(); });
+    // 시네마틱 오프닝: 화면이 잠깐 비어 있다가 → 수평선이 가운데에서 양옆으로 그어지고 → 글자가 수평선 아래에서
+    // 한 자씩 천천히 떠올라 제자리에 묵직하게 멈춰요(튀지 않음, 흐림 → 선명). 그 뒤로는 움직이지 않아요.
+    if (CINE && !REDUCED) {
+      const E = "cubic-bezier(0.76, 0, 0.24, 1)", E2 = "cubic-bezier(0.16, 1, 0.3, 1)", T0 = 450;
+      floor.animate([{ transform: "scaleX(0)", opacity: 0 }, { transform: "scaleX(1)", opacity: 1 }], { duration: 1600, delay: T0, easing: E, fill: "backwards" });
+      as.forEach((a, j) => {
+        const g = $(".sl-g", a), gl = $(".st-gl", a), d = T0 + 900 + j * 130;
+        g.animate([{ clipPath: "inset(-40% -30% 0.2em -30%)" }, { clipPath: "inset(-40% -30% 0.2em -30%)" }], { duration: 2100, delay: d, fill: "backwards" }); // 수평선(글자 발끝) 아래는 가려서, 수평선에서 떠오르듯
+        gl.animate([{ transform: "translateY(0.55em)", filter: "blur(10px)", opacity: 0 }, { transform: "translateY(0.06em)", filter: "blur(1px)", opacity: 1, offset: 0.78 }, { transform: "translateY(0)", filter: "blur(0)", opacity: 1 }], { duration: 2100, delay: d, easing: E2, fill: "backwards" });
+      });
+      const hd = $(".hdr"); if (hd) hd.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1200, delay: T0 + 900 + as.length * 130 + 1100, easing: "ease", fill: "backwards" });
+    }
     let msp = 0, pmT = 0, pmx = 0, pmy = 0; // 커서 빠르기(px/s): 빠르면 놀라고, 느리면 궁금해해요
     addEventListener("pointermove", (e) => { const n = performance.now(); if (pmT) { const v = (Math.hypot(e.clientX - pmx, e.clientY - pmy) / Math.max(8, n - pmT)) * 1000; msp += (v - msp) * 0.35; } pmx = e.clientX; pmy = e.clientY; pmT = n; mx = e.clientX; my = e.clientY; last = n; }, { passive: true });
     D.addEventListener("pointerleave", () => { if (!nav.classList.contains("holding")) mx = my = -1e4; });
     nav.addEventListener("pointerover", (e) => { hovering = !!e.target.closest(".sl-a"); });
     nav.addEventListener("pointerleave", () => { hovering = false; });
-    const push = (d) => { if (busy || REDUCED || !d) return; lastIn = performance.now(); }; // 스크롤·끌기·키 = 글자들이 흥분해요
-    nav.addEventListener("wheel", (e) => { e.preventDefault(); push((Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) / (innerHeight * 4)); }, { passive: false });
+    const push = (d) => { if (CINE || busy || REDUCED || !d) return; lastIn = performance.now(); }; // 스크롤·끌기·키 = 글자들이 흥분해요
+    if (!CINE) nav.addEventListener("wheel", (e) => { e.preventDefault(); push((Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) / (innerHeight * 4)); }, { passive: false });
     let down = null, moved = false;
-    nav.addEventListener("pointerdown", (e) => { if (!e.button) { const a = e.target.closest(".sl-a"); down = { x: e.clientX, y: e.clientY, id: e.pointerId, j: a && !REDUCED ? as.indexOf(a) : -1 }; moved = false; } });
+    nav.addEventListener("pointerdown", (e) => { if (!e.button) { const a = e.target.closest(".sl-a"); down = { x: e.clientX, y: e.clientY, id: e.pointerId, j: a && !REDUCED && !CINE ? as.indexOf(a) : -1 }; moved = false; } });
     nav.addEventListener("pointermove", (e) => {
       if (!down || busy) return; const dx = e.clientX - down.x, dy = e.clientY - down.y, d = Math.abs(dx) > Math.abs(dy) ? dx : dy;
       if (!moved && Math.abs(d) > 5) { moved = true; nav.setPointerCapture(down.id); nav.classList.add("drag"); if (down.j >= 0) { mx = e.clientX; my = e.clientY; grab(down.j, down.x, down.y); down.held = true; } }
@@ -946,7 +961,7 @@
     nav.addEventListener("lostpointercapture", dropAll);
     addEventListener("pointerup", dropAll); addEventListener("blur", dropAll);
     addEventListener("pointermove", (e) => { if (!e.buttons && CH.some((c) => c.mode === "held")) dropAll(); }, { passive: true }); // 버튼이 이미 떼어져 있으면 바로 놓아요 // 링크 기본 끌기를 막아야 글자를 잡을 수 있어요
-    addEventListener("keydown", (e) => { if (!busy && /^(Arrow(Left|Right|Up|Down)|PageDown|PageUp| )$/.test(e.key) && $("#menu").hidden) { e.preventDefault(); push(1); } });
+    if (!CINE) addEventListener("keydown", (e) => { if (!busy && /^(Arrow(Left|Right|Up|Down)|PageDown|PageUp| )$/.test(e.key) && $("#menu").hidden) { e.preventDefault(); push(1); } });
 
     // 글자 j의 층 k: 떠날 때(0~0.5)와 다시 설 때(0.5~1) 진행률
     const n = as.length, LW = 0.22, LS = n > 1 ? (0.5 - LW - 0.04) / (n - 1) : 0;
@@ -1348,7 +1363,7 @@
       }
       requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    if (!CINE) requestAnimationFrame(tick);
 
     // 누르기: 다른 글자는 층이 흩어지며 떨어지고, 누른 글자에서 단어가 써진 뒤 사라지고 이동 (contact는 연락 패널)
     nav.addEventListener("click", (e) => {
@@ -1371,7 +1386,7 @@
         if (!isC) { ss.set("yp-st", JSON.stringify({ t: Date.now(), k: "blank" })); return location.assign(a.href); }
         A.forEach((x) => x.cancel()); HTML.classList.remove("sl-go"); a.classList.remove("on"); const g0 = $(".st-gl", a); if (g0) g0.style.visibility = "";
         const btn = $(".hdr [data-contact]") || $("[data-contact]:not(.sl-a)"); if (btn) btn.click();
-        busy = false; prev = 0; requestAnimationFrame(tick);
+        busy = false; prev = 0; if (!CINE) requestAnimationFrame(tick);
         $$(".st-b", a).forEach((x, k) => x.animate([{ translate: "0 0.14em", opacity: 0 }, { translate: "0 0", opacity: 1 }], { duration: 900, delay: 400 + (N - 1 - k) * 20, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "backwards" }));
       }), 430);
     });
