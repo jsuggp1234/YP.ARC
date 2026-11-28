@@ -177,4 +177,4 @@
 ## 2026-11-28 모바일 심플 리디자인 (사용자: wangeunji.xyz 벤치마킹)
 - 모바일(≤760px)만 바꾸는 별도 파일 두 개: `assets/css/mobile.css`, `assets/js/mobile.js`(모든 html에서 tune.css·pullback.js 다음에 불러요). 데스크톱은 영향 없음. 되돌리려면 두 줄만 빼면 돼요.
 - 상단바: 왼쪽 로고 + 펼쳐 둔 메뉴 `Works · Lab · Info · Contact`(`.m-nav`, 지금 페이지는 밑줄). Menu 버튼·서울 시각·다이얼·Light/Dark·아래 표시줄(.hud)은 모바일에서 숨김. Contact는 원래 연락 패널을 열어요. Philosophy는 첫 화면 글자로 들어가요.
-- studio(works)·lab: 가로 띠 대신 세로 목록(`.ml`). works는 맨 위에 철학 문장(회색 작은 글) + 오른쪽 `Selected works (12)`, 이미지는 폭 100·64·82·48·72·56%로 왼쪽 정렬해 쌓고 아래에 번호·이름·연도 한 줄. lab은 글자 줄 목록. 첫 방문 로딩 인트로는 모바일에서 건너뜀.
+- studio(works)·lab: 가로 띠 대신 세로 목록(`.ml`). works는 맨 위에 철학 문장(회색 작은 글) + 오른쪽 `Selected works (12)`, 이미지는 모두 같은 크기(화면 폭, 4:3)로 쌓고 아래에 제목·연도만 8px로(2차 사용자 요청: 크기 일정, 글씨 최대한 작게, 제목·연도만). lab도 제목·연도만. lab은 글자 줄 목록. 첫 방문 로딩 인트로는 모바일에서 건너뜀.

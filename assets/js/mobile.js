@@ -36,7 +36,7 @@
   if (PAGE === "works") {
     const list = P.filter((p) => !p.draft);
     const media = $$(".cs-gd .cs-gc .media").map((m) => m.innerHTML);
-    const W = [100, 64, 82, 48, 72, 56]; // 참고 사이트처럼 이미지 폭이 조금씩 달라요(왼쪽 정렬)
+    // 2026-11-28 사용자: 사진 크기는 모두 같게, 글은 제목·연도만, 글씨는 최대한 작게
     const sec = D.createElement("section");
     sec.className = "ml"; sec.setAttribute("aria-label", "Selected works");
     sec.innerHTML = `
@@ -45,9 +45,9 @@
         <p class="ml-cat">Selected works<br><span class="num">(${pad(list.length)})</span></p>
       </header>
       <ol class="ml-l">${list.map((p, i) => `
-        <li style="--w:${W[i % W.length]}%"><a class="ml-it" href="project.html#${esc(p.slug)}">
+        <li><a class="ml-it" href="project.html#${esc(p.slug)}">
           <div class="ml-m media">${media[i] || ""}</div>
-          <div class="ml-cap"><span class="ml-t"><span class="num">${pad(i + 1)}</span> ${esc(p.title)}</span><span class="ml-y num">${esc(p.year || "")}</span></div>
+          <div class="ml-cap"><span class="ml-t">${esc(p.title)}</span><span class="ml-y num">${esc(p.year || "")}</span></div>
         </a></li>`).join("")}
       </ol>
       <a class="ml-ix" href="projects.html">Index of works</a>`;
@@ -64,10 +64,8 @@
       </header>
       <ol class="ml-r">${items.map((it, i) => `
         <li><a class="ml-row${it.soon ? " soon" : ""}" ${it.href ? `href="${esc(it.href)}"` : 'aria-disabled="true"'}>
-          <span class="ml-n num">${pad(i + 1)}</span>
           <span class="ml-t">${esc(it.title)}</span>
           <span class="ml-y num">${it.soon ? "Soon" : esc(it.year || "")}</span>
-          <span class="ml-s">${esc(it.type || "")}</span>
         </a></li>`).join("")}
       </ol>`;
     $("#main").appendChild(sec);
