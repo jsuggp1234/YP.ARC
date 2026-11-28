@@ -178,3 +178,4 @@
 - 모바일(≤760px)만 바꾸는 별도 파일 두 개: `assets/css/mobile.css`, `assets/js/mobile.js`(모든 html에서 tune.css·pullback.js 다음에 불러요). 데스크톱은 영향 없음. 되돌리려면 두 줄만 빼면 돼요.
 - 상단바: 왼쪽 로고 + 펼쳐 둔 메뉴 `Works · Lab · Info · Contact`(`.m-nav`, 지금 페이지는 밑줄). Menu 버튼·서울 시각·다이얼·Light/Dark·아래 표시줄(.hud)은 모바일에서 숨김. Contact는 원래 연락 패널을 열어요. Philosophy는 첫 화면 글자로 들어가요.
 - studio(works)·lab: 가로 띠 대신 세로 목록(`.ml`). works는 맨 위에 철학 문장(회색 작은 글) + 오른쪽 `Selected works (12)`, 이미지는 모두 같은 크기(화면 폭, 4:3)로 쌓고 아래에 제목·연도만 8px로(2차 사용자 요청: 크기 일정, 글씨 최대한 작게, 제목·연도만). lab도 제목·연도만. lab은 글자 줄 목록. 첫 방문 로딩 인트로는 모바일에서 건너뜀.
+- 3차(사용자): 모바일 글자 토큰 한 단계 더 작게(xs 8 · s 8.5 · m 10 · l 11 · xl 12 · xxl 15), 첫 화면 글자 15px, Light/Dark 버튼(`.m-sw`)은 로고 바로 아래 왼쪽에 7.5px. 작품 페이지 뒤로가기 `.bk`는 그 아래(top 52px).

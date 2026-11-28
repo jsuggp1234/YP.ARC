@@ -1,10 +1,14 @@
 /* 모바일(≤760px) 전용 정리 — 2026-11-28 사용자 요청 (wangeunji.xyz 벤치마킹)
    원칙: 위에는 이름 + 펼쳐 둔 메뉴 네 단어뿐. 작은 글자는 그대로, 크기 대신 여백과 정렬로 위계를 만들어요.
    데스크톱은 이 파일의 영향을 받지 않아요. */
-.m-nav, .ml { display: none; }
+.m-nav, .ml, .m-sw { display: none; }
 
 @media (max-width: 760px) {
   :root { --m-e: 20px; }
+  /* 2026-11-28 3차(사용자): 모바일 글자 전체를 한 단계 더 작게 */
+  :root { --t-xxs: 7.5px; --t-xs: 8px; --t-s: 8.5px; --t-m: 10px; --t-l: 11px; --t-xl: 12px; --t-xxl: 15px; }
+  /* 첫 화면 글자(YP. STUDIO & LAB)는 훨씬 작게 */
+  .sl-tr { font-size: 15px !important; }
 
   /* ---------- 상단바: YP.STUDIO & LAB | Works  Lab  Info  Contact ---------- */
   .hdr.g4 { grid-template-columns: 41% 1fr; padding: 0 var(--m-e); column-gap: 0; }
@@ -14,6 +18,10 @@
   .m-nav a { position: relative; padding: 6px 0; }
   .m-nav a.on::after { content: ""; position: absolute; left: 0; right: 0; bottom: 3px; height: 1px; background: currentColor; }
   .hud { display: none !important; }
+  /* 라이트/다크: 로고 바로 아래 왼쪽에 작게 */
+  .hdr .m-sw { display: flex !important; position: absolute; left: var(--m-e); top: calc(env(safe-area-inset-top, 0px) + 32px); gap: 8px; font-size: 7.5px; letter-spacing: 0.02em; }
+  .hdr .m-sw button { padding: 2px 0; }
+  .bk { top: 52px !important; }
   .bk { left: var(--m-e) !important; }
 
   /* ---------- studio · lab: 세로 목록 ---------- */

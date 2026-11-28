@@ -25,6 +25,11 @@
     nav.className = "m-nav"; nav.setAttribute("aria-label", "Main (mobile)");
     nav.innerHTML = items.map(([k, t, h]) => `<a href="${h}"${k === cur ? ' class="on" aria-current="page"' : ""}${k === "contact" ? " data-m-contact" : ""}>${t}</a>`).join("");
     hdr.appendChild(nav);
+    // 2026-11-28 사용자: 라이트/다크 버튼은 왼쪽 위(로고 아래)에 작게. 누르기 처리는 site.js의 .md-sw 클릭을 그대로 써요
+    const sw = D.createElement("div");
+    sw.className = "md-sw m-sw"; sw.setAttribute("role", "group"); sw.setAttribute("aria-label", "화면 밝기");
+    sw.innerHTML = `<button type="button" data-m="light" aria-pressed="${HTML.dataset.mode !== "dark"}">Light</button><button type="button" data-m="dark" aria-pressed="${HTML.dataset.mode === "dark"}">Dark</button>`;
+    hdr.appendChild(sw);
     nav.addEventListener("click", (e) => {
       const a = e.target.closest("[data-m-contact]"); if (!a) return;
       e.preventDefault(); const c = $(".hdr [data-contact]"); if (c) c.click(); // 원래 연락 패널을 열어요
