@@ -1,0 +1,47 @@
+/* 모바일(≤760px) 전용 정리 — 2026-11-28 사용자 요청 (wangeunji.xyz 벤치마킹)
+   원칙: 위에는 이름 + 펼쳐 둔 메뉴 네 단어뿐. 작은 글자는 그대로, 크기 대신 여백과 정렬로 위계를 만들어요.
+   데스크톱은 이 파일의 영향을 받지 않아요. */
+.m-nav, .ml { display: none; }
+
+@media (max-width: 760px) {
+  :root { --m-e: 20px; }
+
+  /* ---------- 상단바: YP.STUDIO & LAB | Works  Lab  Info  Contact ---------- */
+  .hdr.g4 { grid-template-columns: 41% 1fr; padding: 0 var(--m-e); column-gap: 0; }
+  .hdr.g4 > .logo { grid-column: 1 !important; }
+  .hdr.g4 > .hdr-n, .hdr.g4 > .hdr-t, .hdr.g4 > .hdr-m, .hdr-m, .hdr-t { display: none !important; }
+  .m-nav { grid-column: 2; grid-row: 1; display: flex; justify-content: space-between; gap: 12px; text-transform: none; letter-spacing: 0; font-size: var(--t-s); }
+  .m-nav a { position: relative; padding: 6px 0; }
+  .m-nav a.on::after { content: ""; position: absolute; left: 0; right: 0; bottom: 3px; height: 1px; background: currentColor; }
+  .hud { display: none !important; }
+  .bk { left: var(--m-e) !important; }
+
+  /* ---------- studio · lab: 세로 목록 ---------- */
+  html.m-on.v2-home, html.m-on.v2-home body { height: auto; overflow: visible; overscroll-behavior: auto; }
+  body[data-page="works"] .cs, body[data-page="lab"] .cs, html.m-on .cs-vw, html.m-on .cs-ix, html.m-on .hi { display: none !important; }
+  .ml { display: block; padding: calc(var(--hdr) + 92px) var(--m-e) 120px; }
+  .ml-hd { display: grid; grid-template-columns: 1fr auto; column-gap: 24px; align-items: start; margin-bottom: 28px; }
+  .ml-note { margin: 0; font-size: var(--t-s); line-height: 1.45; color: var(--mid); }
+  .ml-cat { margin: 0; font-size: var(--t-s); line-height: 1.45; text-align: right; }
+  .ml-l, .ml-r { list-style: none; margin: 0; padding: 0; }
+  .ml-l { display: grid; gap: 22px; }
+  .ml-l > li { width: var(--w, 100%); }
+  .ml-it { display: block; }
+  .ml-m { position: relative; overflow: hidden; background: var(--line); aspect-ratio: 4 / 5; }
+  .ml-l > li:nth-child(3n + 1) .ml-m { aspect-ratio: 1 / 1; }
+  .ml-m .mz { position: absolute; inset: 0; transform: none !important; }
+  .ml-m img, .ml-m video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ml-cap { display: flex; justify-content: space-between; gap: 10px; padding-top: 7px; font-size: var(--t-xs); line-height: 1.3; }
+  .ml-cap .num { color: var(--soft); margin-right: 2px; }
+  .ml-y { color: var(--mid); }
+  .ml-ix { display: inline-block; margin-top: 64px; font-size: var(--t-s); border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+  /* lab: 글자만 있는 줄 */
+  .ml-lab .ml-hd { margin-bottom: 56px; }
+  .ml-row { display: grid; grid-template-columns: 26px 1fr auto; column-gap: 8px; row-gap: 3px; align-items: baseline; padding: 12px 0; border-top: 1px solid var(--line); font-size: var(--t-s); }
+  .ml-r li:last-child .ml-row { border-bottom: 1px solid var(--line); }
+  .ml-n { color: var(--soft); font-size: var(--t-xs); }
+  .ml-row .ml-y { font-size: var(--t-xs); }
+  .ml-s { grid-column: 2 / -1; font-size: var(--t-xs); color: var(--mid); }
+  .ml-row.soon { color: var(--soft); }
+  .lb-note { display: none !important; }
+}
